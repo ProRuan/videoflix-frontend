@@ -1,0 +1,54 @@
+$dmSans: "DM Sans", Arial, Helvetica, sans-serif;
+
+$primBlue: #2e3edf;
+$white: #ffffff;
+// move variables!!!
+
+@mixin border($b: none, $br: 0) {
+  border: $b;
+  border-radius: $br;
+}
+
+@mixin colors($c: black, $bgc: transparent) {
+  color: $c;
+  background-color: $bgc;
+}
+
+@mixin flexbox($fd: row, $jc: flex-start, $ai: normal, $g: normal normal) {
+  display: flex;
+  flex-direction: $fd;
+  justify-content: $jc;
+  align-items: $ai;
+  gap: $g;
+}
+
+@mixin font($fs: 18px, $fw: 400, $lh: 100%) {
+  font-size: $fs;
+  font-weight: $fw;
+  line-height: $lh;
+}
+
+@mixin image($w: auto, $h: auto) {
+  display: block;
+  width: $w;
+  height: $h;
+}
+
+@mixin position($pos: static, $l: auto, $t: auto, $r: auto, $b: auto) {
+  position: $pos;
+  left: $l;
+  top: $t;
+  right: $r;
+  bottom: $b;
+}
+
+@mixin size($w: auto, $h: auto) {
+  width: $w;
+  height: $h;
+}
+
+@mixin width($w: auto, $min: 0, $max: none) {
+  width: $w;
+  min-width: $min;
+  max-width: $max;
+}

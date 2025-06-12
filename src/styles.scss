@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+@use "mixins" as *;
+
+body {
+  @include font();
+  margin: 0;
+  min-height: 100vh;
+  font-family: $dmSans;
+}
+
+h2 {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+// move!!!
+app-header,
+app-footer {
+  width: 100%;
+}

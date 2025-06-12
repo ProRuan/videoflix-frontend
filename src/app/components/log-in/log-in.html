@@ -1,1 +1,30 @@
-<p>log-in works!</p>
+<div class="log-in">
+    <app-header [notLogIn]="false"></app-header>
+
+    <section class="content">
+        <h2 class="title">Log in</h2>
+
+        <div class="input-group">
+            <div class="input-cont">
+                <img class="icon" src="/images/inputs/email.png" alt="email.png">
+                <input class="input" type="text" placeholder="Email Address">
+            </div>
+            <div class="input-cont">
+                <img class="icon" src="/images/inputs/password.png" alt="password.png">
+                <input class="input pr-60" type="text" placeholder="Password">
+                <button class="button"></button>
+            </div>
+        </div>
+
+        <div class="button-link-cont">
+            <button class="login-button">Log in</button>
+            <a class="forgot-password-link" href="">Forgot password?</a>
+            <div class="sign-up-group">
+                <span class="sign-up-text">New to Videoflix?</span>
+                <a class="sign-up-link" href="">Sign Up now</a>
+            </div>
+        </div>
+    </section>
+
+    <app-footer></app-footer>
+</div>

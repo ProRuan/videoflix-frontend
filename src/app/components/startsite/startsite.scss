@@ -1,0 +1,73 @@
+@use "mixins" as *;
+
+.startsite {
+  @include flexbox($fd: column, $jc: space-between, $ai: center);
+  min-height: 100vh;
+  background: linear-gradient(
+      180deg,
+      #000000 -19.89%,
+      rgba(0, 0, 0, 0.55) 40.46%,
+      #000000 100%
+    ),
+    url("/images/backgrounds/startsite_bg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// check box-shadow!
+.content {
+  @include flexbox($fd: column, $ai: center, $g: 32px);
+  width: fit-content;
+  box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.title-text-cont {
+  @include flexbox($fd: column, $ai: center, $g: 24px);
+}
+
+.title {
+  @include font($fs: 48px, $fw: 700);
+  padding: 7px 0;
+  text-align: center;
+  color: $white;
+}
+
+.text {
+  text-align: center;
+  color: $white;
+}
+
+.input-button-cont {
+  @include flexbox($g: 16px);
+}
+
+.input {
+  @include border($b: 1px solid $white, $br: 40px);
+  @include size($w: 360px, $h: 48px);
+  @include font($fs: 18px, $fw: 400);
+  @include colors($c: $white, $bgc: rgba(28, 26, 32, 0.8));
+  box-sizing: border-box;
+  padding: 12px 24px;
+
+  &::placeholder {
+    color: $white;
+  }
+}
+
+.button {
+  @include border($b: none, $br: 40px);
+  @include colors($c: $white, $bgc: $primBlue);
+  @include flexbox($jc: center, $ai: center, $g: 4px);
+  padding: 12px 24px;
+  height: 48px;
+  font-family: $dmSans;
+}
+
+.button-text {
+  @include font($fs: 18px, $fw: 700);
+}
+
+.button-icon {
+  @include image($h: 24px);
+}

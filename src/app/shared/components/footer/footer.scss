@@ -1,0 +1,19 @@
+@use "mixins" as *;
+
+.footer {
+  @include flexbox($jc: center, $ai: center);
+}
+
+.content {
+  @include width($w: 100%, $max: 1440px);
+  @include flexbox($jc: center, $ai: center, $g: 48px);
+  padding: 10px;
+  height: 123px;
+}
+
+.link {
+  @include font($fw: 500);
+  font-family: $dmSans;
+  text-decoration: none;
+  color: $white;
+}
