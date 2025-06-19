@@ -7,8 +7,9 @@
 .content {
   @include width($w: 100%, $max: 1440px);
   @include flexbox($jc: center, $ai: center, $g: 48px);
+  box-sizing: border-box;
   padding: 10px;
-  height: 123px;
+  height: 104px;
 }
 
 .link {

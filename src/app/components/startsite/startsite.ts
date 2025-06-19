@@ -15,4 +15,6 @@ export class Startsite {
   // check image (bg) size ... !
   // center elements by parents (only containers with simple elements) ...
   //   --> startsite, log-in, ...
+  // BACKEND
+  // replace username with email ... !
 }

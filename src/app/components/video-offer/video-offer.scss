@@ -1,0 +1,90 @@
+@use "mixins" as *;
+
+.video-offer {
+  @include flexbox($fd: column, $jc: space-between, $ai: center);
+  min-height: 100vh;
+  background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.8) -27.44%,
+      rgba(0, 0, 0, 0.44) 44.23%,
+      rgba(0, 0, 0, 0.8) 100%
+    ),
+    url("http://127.0.0.1:8000/media/videos/mighty_magic_thumbnail.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.content {
+  @include flexbox($fd: column, $g: 96px);
+  box-sizing: border-box;
+  padding: 96px 64px;
+  width: 100%;
+//   height: calc(100vh - 108px);
+  //   width: 520px;
+  //   background: rgba(27, 27, 34, 0.85);
+}
+
+.video-info {
+  @include flexbox($fd: column, $g: 32px);
+  width: 440px;
+}
+
+// double code!!!
+.title {
+  @include font($fs: 88px, $fw: 700);
+  padding: 13px 0;
+  color: $white;
+}
+
+.description {
+  @include font($fs: 16px, $lh: 136%);
+  color: $white;
+}
+
+.button {
+  @include border($b: none, $br: 40px);
+  @include size($w: fit-content, $h: 48px);
+  @include colors($c: $white, $bgc: $primBlue);
+  @include flexbox($jc: center, $ai: center, $g: 4px);
+  padding: 12px 24px;
+  font-family: $dmSans;
+}
+
+.button-text {
+  @include font($fs: 18px, $fw: 700);
+}
+
+.button-icon {
+  @include image($h: 24px);
+}
+
+.library {
+  @include flexbox($fd: column, $g: 48px);
+  padding: 0 96px;
+}
+
+.genre {
+  @include flexbox($fd: column, $g: 16px);
+}
+
+.genre-title {
+  @include font($fs: 22px, $fw: 700);
+  padding: 3px 0;
+  color: $white;
+}
+
+.genre-cont {
+  @include flexbox($g: 16px);
+}
+
+.thumbnail {
+  @include image($w: 213.33px, $h: 120px);
+  min-width: 213.33px;
+  // only for testing!
+  background-color: lightblue;
+}
+
+.img {
+  @include image($w: auto, $h: auto);
+}
