@@ -1,1 +1,32 @@
-<p>video-player works!</p>
+<section class="video-player">
+    <div class="player-header">
+        <button #arrowBack class="button arrow-back"></button>
+        <span class="info-text">Optimizing video for your screen 40%</span>
+        <div class="logo-cont">
+            <img src="images/logo/logo.png" alt="videoflix logo" class="logo">
+        </div>
+    </div>
+
+    <video #video class="video" src="Kristallbruch.mp4" type="video/mp4"></video>
+
+    <div class="player-bar">
+        <div class="progress-cont">
+            <div class="progress-bar"></div>
+            <div class="progress-time">1:00:00</div>
+        </div>
+
+        <div class="control-bar">
+            <div class="button-group">
+                <button #playButton class="button play" (click)="onPlay()"></button>
+                <button #forward class="button backward" (click)="onBackward()"></button>
+                <button #forward class="button forward" (click)="onForward()"></button>
+                <button #backward class="button volume" (click)="onVolume()"></button>
+            </div>
+            <h4 class="title">Mighty Magic</h4>
+            <div class="button-group">
+                <button #speed class="button speed" (click)="onPlaybackrate()"></button>
+                <button #fullScreen class="button full-screen" (click)="onFullScreen()"></button>
+            </div>
+        </div>
+    </div>
+</section>
