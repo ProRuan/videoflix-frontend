@@ -77,6 +77,22 @@
   background-color: #b5b5b5;
   display: flex;
   flex: 1;
+  position: relative;
+}
+
+.progress-bar-fill {
+  border-radius: 100px;
+  width: 50%;
+  height: 4px;
+  background-color: $primBlue;
+}
+
+.progress-handle {
+  @include size($w: 16px, $h: 16px);
+  @include position($pos: absolute, $t: -6px);
+  border-radius: 8px;
+  background-color: $primBlue;
+  transform: translateX(-50%);
 }
 
 .progress-time {

@@ -11,8 +11,12 @@
 
     <div class="player-bar">
         <div class="progress-cont">
-            <div class="progress-bar"></div>
-            <div class="progress-time">1:00:00</div>
+            <div #progressBar class="progress-bar" (click)="onCurrentTimeSet($event)"
+                (mousedown)="onDragStartCurrentTime($event)" (dragstart)="onDragPreventCurrentTime($event)">
+                <div class="progress-bar-fill" [style.width.%]="video.currentTime / video.duration * 100"></div>
+                <div class="progress-handle" [style.left.%]="video.currentTime / video.duration * 100"></div>
+            </div>
+            <div class="progress-time">{{ currentTime }}</div>
         </div>
 
         <div class="control-bar">

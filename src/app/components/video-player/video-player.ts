@@ -8,27 +8,35 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 })
 export class VideoPlayer {
   // remove test video from public folder ...
+  // improve progress bar and currentTime ...
+  //   --> save values in backend ... ?
   // play-button: play, pause, replay (icons + logic) ...
   // hide volume bar ...
   // hide speed values ...
   // fix full screen ...
 
+  currentTime: number = 0;
   playing: boolean = false;
   volume: number = 0.5;
+  draggingCurrentTime: boolean = false;
   dragging = false;
   playbackrate: number = 1;
   fullScreenEnabled: boolean = false;
 
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
+  @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
+    if (this.draggingCurrentTime) this.updateCurrentTime(event);
     if (this.dragging) this.updateVolume(event);
   }
 
   @HostListener('document:mouseup')
   stopDrag() {
+    this.draggingCurrentTime = false;
+    this.video.nativeElement.play(); // check and save play state first
     this.dragging = false;
   }
 
@@ -39,6 +47,37 @@ export class VideoPlayer {
     setTimeout(() => {
       console.log('video current time: ', this.video.nativeElement.currentTime);
     }, 3000);
+  }
+
+  onCurrentTimeSet(event: MouseEvent) {
+    this.updateCurrentTime(event);
+  }
+
+  // replace duration=40 with variable!!!
+  updateCurrentTime(event: MouseEvent) {
+    const bar = this.progressBar.nativeElement;
+    const rect = bar.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    this.currentTime = Math.max(
+      0,
+      Math.min(40, Math.floor((x / rect.width) * 40))
+    );
+    console.log('currentTime: ', this.currentTime);
+
+    // Sync with actual video element
+    const videoElement = this.video.nativeElement;
+    if (videoElement) videoElement.currentTime = this.currentTime;
+  }
+
+  onDragStartCurrentTime(event: MouseEvent) {
+    event.preventDefault();
+    this.draggingCurrentTime = true;
+    this.video.nativeElement.pause(); // check and save play state first
+    this.updateCurrentTime(event);
+  }
+
+  onDragPreventCurrentTime(event: DragEvent) {
+    event.preventDefault();
   }
 
   onPlay() {
