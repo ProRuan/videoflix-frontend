@@ -17,10 +17,18 @@
 
         <div class="control-bar">
             <div class="button-group">
-                <button #playButton class="button play" (click)="onPlay()"></button>
-                <button #forward class="button backward" (click)="onBackward()"></button>
-                <button #forward class="button forward" (click)="onForward()"></button>
-                <button #backward class="button volume" (click)="onVolume()"></button>
+                <button class="button play" (click)="onPlay()"></button>
+                <button class="button backward" (click)="onBackward()"></button>
+                <button class="button forward" (click)="onForward()"></button>
+                <div class="volume-container">
+                    <button class="button volume" (click)="onMuteToggle()"></button>
+                    <div #volumeBar class="volume-bar" (click)="onVolumeSet($event)" (mousedown)="onDragStart($event)"
+                        (dragstart)="onDragPrevent($event)">
+                        <div class="volume-fill" [style.width.%]="volume * 100"></div>
+                        <div class="volume-handle" [style.left.%]="volume * 100"></div>
+                    </div>
+                </div>
+
             </div>
             <h4 class="title">Mighty Magic</h4>
             <div class="button-group">

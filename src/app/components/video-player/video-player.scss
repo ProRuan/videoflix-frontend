@@ -113,11 +113,38 @@
   background-size: 36px auto;
 }
 
+.volume-container {
+  @include flexbox($ai: center);
+  gap: 12px;
+}
+
 .volume {
   background-image: url("/images/buttons/volume.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 36px auto;
+}
+
+.volume-bar {
+  @include size($w: 100px, $h: 8px);
+  border-radius: 4px;
+  background-color: #b5b5b5;
+  position: relative;
+  cursor: pointer;
+}
+
+.volume-fill {
+  @include size($w: 50%, $h: 100%);
+  border-radius: 4px;
+  background-color: $primBlue;
+}
+
+.volume-handle {
+  @include size($w: 16px, $h: 16px);
+  @include position($pos: absolute, $t: -4px);
+  border-radius: 8px;
+  background-color: $primBlue;
+  transform: translateX(-50%);
 }
 
 .speed {

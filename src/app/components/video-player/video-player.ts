@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-video-player',
@@ -10,9 +10,22 @@ export class VideoPlayer {
   // remove test video from public folder ...
 
   playing: boolean = false;
+  volume: number = 0.5;
+  dragging = false;
   fullScreenEnabled: boolean = false;
 
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
+  @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (this.dragging) this.updateVolume(event);
+  }
+
+  @HostListener('document:mouseup')
+  stopDrag() {
+    this.dragging = false;
+  }
 
   ngAfterViewInit() {
     console.log('video: ', this.video.nativeElement);
@@ -41,8 +54,37 @@ export class VideoPlayer {
     this.video.nativeElement.currentTime += 10;
   }
 
-  onVolume() {
-    this.video.nativeElement.volume -= 0.1;
+  onMuteToggle() {
+    const videoElement = this.video.nativeElement;
+    if (videoElement) {
+      videoElement.muted = !videoElement.muted;
+    }
+  }
+
+  onVolumeSet(event: MouseEvent) {
+    this.updateVolume(event);
+  }
+
+  updateVolume(event: MouseEvent) {
+    const bar = this.volumeBar.nativeElement;
+    const rect = bar.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(1, x / rect.width));
+    this.volume = percentage;
+
+    // Sync with actual video element
+    const videoElement = this.video.nativeElement;
+    if (videoElement) videoElement.volume = this.volume;
+  }
+
+  onDragStart(event: MouseEvent) {
+    event.preventDefault();
+    this.dragging = true;
+    this.updateVolume(event);
+  }
+
+  onDragPrevent(event: DragEvent) {
+    event.preventDefault();
   }
 
   onPlaybackrate() {
