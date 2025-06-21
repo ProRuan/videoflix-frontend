@@ -32,7 +32,23 @@
             </div>
             <h4 class="title">Mighty Magic</h4>
             <div class="button-group">
-                <button #speed class="button speed" (click)="onPlaybackrate()"></button>
+                <div class="speed-container">
+                    <button #speed class="button speed"></button>
+                    <div class="speed-button-group">
+                        <button class="speed-button" [disabled]="isSpeed(0.25)"
+                            (click)="onSpeedSelect(0.25)">0.25</button>
+                        <button class="speed-button" [disabled]="isSpeed(0.5)" (click)="onSpeedSelect(0.5)">0.5</button>
+                        <button class="speed-button" [disabled]="isSpeed(0.75)"
+                            (click)="onSpeedSelect(0.75)">0.75</button>
+                        <button class="speed-button" [disabled]="isSpeed(1)" (click)="onSpeedSelect(1.0)">1</button>
+                        <button class="speed-button" [disabled]="isSpeed(1.25)"
+                            (click)="onSpeedSelect(1.25)">1.25</button>
+                        <button class="speed-button" [disabled]="isSpeed(1.5)" (click)="onSpeedSelect(1.5)">1.5</button>
+                        <button class="speed-button" [disabled]="isSpeed(1.75)"
+                            (click)="onSpeedSelect(1.75)">1.75</button>
+                        <button class="speed-button" [disabled]="isSpeed(2)" (click)="onSpeedSelect(2)">2</button>
+                    </div>
+                </div>
                 <button #fullScreen class="button full-screen" (click)="onFullScreen()"></button>
             </div>
         </div>

@@ -147,11 +147,36 @@
   transform: translateX(-50%);
 }
 
+.speed-container {
+  @include flexbox($fd: row-reverse, $ai: center, $g: 12px);
+  // position: relative;
+}
+
 .speed {
   background-image: url("/images/buttons/speed.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 39.76px auto;
+}
+
+.speed-button-group {
+  @include flexbox($g: 12px);
+  // @include position($pos: absolute, $l: -151px, $t: -40px);
+  padding: 4px;
+}
+
+.speed-button {
+  @include border($b: none, $br: 24px);
+  @include size($w: 48px, $h: 48px);
+  @include font();
+  @include colors($c: $white, $bgc: #b5b5b5);
+  padding: 4px;
+  font-family: $dmSans;
+
+  &:disabled {
+    background-color: $primBlue;
+    cursor: default;
+  }
 }
 
 .full-screen {

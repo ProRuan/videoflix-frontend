@@ -8,10 +8,15 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 })
 export class VideoPlayer {
   // remove test video from public folder ...
+  // play-button: play, pause, replay (icons + logic) ...
+  // hide volume bar ...
+  // hide speed values ...
+  // fix full screen ...
 
   playing: boolean = false;
   volume: number = 0.5;
   dragging = false;
+  playbackrate: number = 1;
   fullScreenEnabled: boolean = false;
 
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
@@ -87,8 +92,13 @@ export class VideoPlayer {
     event.preventDefault();
   }
 
-  onPlaybackrate() {
-    this.video.nativeElement.playbackRate = 2;
+  onSpeedSelect(value: number) {
+    this.playbackrate = value;
+    this.video.nativeElement.playbackRate = value;
+  }
+
+  isSpeed(value: number) {
+    return value === this.playbackrate;
   }
 
   onFullScreen() {
