@@ -1,5 +1,5 @@
-<section class="video-player">
-    <div class="player-header">
+<section #videoPlayer class="video-player" (click)="onDelayedPlay()" (dblclick)="onFullScreen()">
+    <div class="player-header" (click)="onEventStop($event)" (dblclick)="onEventStop($event)">
         <button #arrowBack class="button arrow-back"></button>
         <span class="info-text">Optimizing video for your screen 40%</span>
         <div class="logo-cont">
@@ -9,7 +9,7 @@
 
     <video #video class="video" src="Kristallbruch.mp4" type="video/mp4"></video>
 
-    <div class="player-bar">
+    <div class="player-bar" (click)="onEventStop($event)" (dblclick)="onEventStop($event)">
         <div class="progress-cont">
             <div #progressBar class="progress-bar" (click)="onCurrentTimeSet($event)"
                 (mousedown)="onDragStartCurrentTime($event)" (dragstart)="onDragPreventCurrentTime($event)">

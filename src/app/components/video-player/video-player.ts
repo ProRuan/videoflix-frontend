@@ -15,14 +15,20 @@ export class VideoPlayer {
   // hide speed values ...
   // fix full screen ...
 
+  // click delay only on video-container (not on buttons) ...
+  //   --> button must react without delay ... !
+
   currentTime: number = 0;
   playing: boolean = false;
   volume: number = 0.5;
   draggingCurrentTime: boolean = false;
   dragging = false;
+  wasPlayingBeforeDrag: boolean = false;
   playbackrate: number = 1;
   fullScreenEnabled: boolean = false;
+  clickTimeout: any = null;
 
+  @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
   @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
@@ -36,8 +42,11 @@ export class VideoPlayer {
   @HostListener('document:mouseup')
   stopDrag() {
     this.draggingCurrentTime = false;
-    this.video.nativeElement.play(); // check and save play state first
+    if (this.wasPlayingBeforeDrag) {
+      this.video.nativeElement.play();
+    }
     this.dragging = false;
+    this.wasPlayingBeforeDrag = false;
   }
 
   ngAfterViewInit() {
@@ -47,6 +56,10 @@ export class VideoPlayer {
     setTimeout(() => {
       console.log('video current time: ', this.video.nativeElement.currentTime);
     }, 3000);
+  }
+
+  onEventStop(event: Event) {
+    event.stopPropagation();
   }
 
   onCurrentTimeSet(event: MouseEvent) {
@@ -72,7 +85,9 @@ export class VideoPlayer {
   onDragStartCurrentTime(event: MouseEvent) {
     event.preventDefault();
     this.draggingCurrentTime = true;
-    this.video.nativeElement.pause(); // check and save play state first
+    const videoElement = this.video.nativeElement;
+    this.wasPlayingBeforeDrag = !videoElement.paused;
+    videoElement.pause();
     this.updateCurrentTime(event);
   }
 
@@ -80,14 +95,23 @@ export class VideoPlayer {
     event.preventDefault();
   }
 
+  onDelayedPlay() {
+    if (this.clickTimeout) return;
+
+    this.clickTimeout = setTimeout(() => {
+      this.play();
+    }, 250);
+  }
+
+  play() {
+    this.clickTimeout = null;
+    const videoElement = this.video.nativeElement;
+    videoElement.paused ? videoElement.play() : videoElement.pause();
+  }
+
   onPlay() {
-    if (this.playing) {
-      this.video.nativeElement.pause();
-      this.playing = false;
-    } else {
-      this.video.nativeElement.play();
-      this.playing = true;
-    }
+    clearTimeout(this.clickTimeout);
+    this.play();
   }
 
   onBackward() {
@@ -140,15 +164,25 @@ export class VideoPlayer {
     return value === this.playbackrate;
   }
 
+  // onFullscreen() for button and onFullscreenDelayed() for video-container!!
   onFullScreen() {
-    if (this.fullScreenEnabled) {
-      this.video.nativeElement.style.width = '640px';
-      this.video.nativeElement.style.height = '360px';
-      this.fullScreenEnabled = false;
+    clearTimeout(this.clickTimeout);
+    this.clickTimeout = null;
+
+    const videoPlayerElement = this.videoPlayer.nativeElement;
+    if (!document.fullscreenElement) {
+      videoPlayerElement?.requestFullscreen?.();
     } else {
-      this.video.nativeElement.style.width = '100%';
-      this.video.nativeElement.style.height = '100vh';
-      this.fullScreenEnabled = true;
+      document.exitFullscreen?.();
     }
+    // if (this.fullScreenEnabled) {
+    //   this.videoPlayer.nativeElement.style.width = '640px';
+    //   this.videoPlayer.nativeElement.style.height = '360px';
+    //   this.fullScreenEnabled = false;
+    // } else {
+    //   this.videoPlayer.nativeElement.style.width = '100%';
+    //   this.videoPlayer.nativeElement.style.height = '100vh';
+    //   this.fullScreenEnabled = true;
+    // }
   }
 }
