@@ -3,15 +3,19 @@ $dmSans: "DM Sans", Arial, Helvetica, sans-serif;
 $primBlue: #2e3edf;
 $white: #ffffff;
 $error: #ff002e;
+$disabled: #5e5e5e;
+
 // move variables!!!
 
 @mixin background(
-  $bg: transparent,
+  $bg: none,
+  $color: transparent,
   $position: center,
   $repeat: no-repeat,
   $size: cover
 ) {
   background: $bg;
+  background-color: $color;
   background-position: $position;
   background-repeat: $repeat;
   background-size: $size;

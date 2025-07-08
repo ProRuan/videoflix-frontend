@@ -1,6 +1,8 @@
 <header class="header">
     <div class="content">
-        <button class="logo-button" [disabled]="isStartsite()" (click)="onHome()"></button>
-        <button *ngIf="notLogIn" class="button" (click)="onNavigate()">Log in</button>
+        <button class="home-button" [disabled]="isStartsite()" (click)="onHome()"></button>
+        @if (notLogIn) {
+        <button class="log-button" (click)="onNavigate()">Log in</button>
+        }
     </div>
 </header>

@@ -35,6 +35,7 @@ export class Startsite implements OnInit {
    * Initialize a startsite component.
    */
   ngOnInit(): void {
+    this.videoflix.setRouterURL('/');
     this.setEmailControl();
     this.setForm();
   }

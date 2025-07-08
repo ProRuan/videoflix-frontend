@@ -56,7 +56,8 @@ $background: linear-gradient(
   }
 
   &:disabled {
-    filter: grayscale(0.75);
+    background-color: $disabled;
+    filter: none;
     cursor: default;
   }
 }

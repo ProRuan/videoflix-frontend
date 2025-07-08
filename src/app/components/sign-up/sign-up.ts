@@ -27,6 +27,7 @@ export class SignUp implements OnInit {
   message: string = '';
 
   ngOnInit(): void {
+    this.videoflix.setRouterURL('sign-up');
     this.preEmail = this.videoflix.preEmail;
     console.log('pre-email: ', this.videoflix.preEmail);
   }
