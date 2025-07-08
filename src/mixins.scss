@@ -2,7 +2,20 @@ $dmSans: "DM Sans", Arial, Helvetica, sans-serif;
 
 $primBlue: #2e3edf;
 $white: #ffffff;
+$error: #ff002e;
 // move variables!!!
+
+@mixin background(
+  $bg: transparent,
+  $position: center,
+  $repeat: no-repeat,
+  $size: cover
+) {
+  background: $bg;
+  background-position: $position;
+  background-repeat: $repeat;
+  background-size: $size;
+}
 
 @mixin border($b: none, $br: 0) {
   border: $b;
@@ -22,7 +35,7 @@ $white: #ffffff;
   gap: $g;
 }
 
-@mixin font($fs: 18px, $fw: 400, $lh: 100%) {
+@mixin font($fs: 18px, $fw: 400, $lh: 23px) {
   font-size: $fs;
   font-weight: $fw;
   line-height: $lh;

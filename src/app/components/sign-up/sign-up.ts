@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Header } from '../../shared/components/header/header';
 import { Footer } from '../../shared/components/footer/footer';
 import { Authentication } from '../../shared/services/authentication';
+import { Videoflix } from '../../shared/services/videoflix';
 
 @Component({
   selector: 'app-sign-up',
@@ -9,10 +10,26 @@ import { Authentication } from '../../shared/services/authentication';
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })
-export class SignUp {
+export class SignUp implements OnInit {
+  private videoflix: Videoflix = inject(Videoflix);
   private auth: Authentication = inject(Authentication);
 
+  // create EmailInputComponent ...
+  // create PasswordInputComponent ...
+  // replace hex with rgba values (from Figma) ...
+  // check image (bg) size ... !
+  // center elements by parents (only containers with simple elements) ...
+  //   --> startsite, log-in, ...
+
+  // build root component with basic services, variables and methods ... ?
+
+  preEmail: string = '';
   message: string = '';
+
+  ngOnInit(): void {
+    this.preEmail = this.videoflix.preEmail;
+    console.log('pre-email: ', this.videoflix.preEmail);
+  }
 
   // use variables!!!
   onRegister() {

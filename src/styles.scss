@@ -15,7 +15,12 @@ p {
   margin: 0;
 }
 
+input {
+  font-family: $dmSans;
+}
+
 button {
+  font-family: $dmSans;
   cursor: pointer;
 }
 

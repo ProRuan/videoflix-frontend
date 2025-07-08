@@ -12,9 +12,34 @@
   height: 108px;
 }
 
-.logo {
-  @include image($h: 32px);
+.logo-button {
+  @include size($w: 201px, $h: 32px);
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  background-image: url("/images/logo/logo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 32px;
+  transition: filter 100ms ease-in-out;
+
+  &:hover {
+    filter: grayscale(0.25);
+  }
+
+  &:active {
+    filter: grayscale(0.5);
+  }
+
+  &:disabled {
+    filter: none;
+    cursor: default;
+  }
 }
+
+// .logo {
+//   @include image($h: 32px);
+// }
 
 // think about line-height/padding?!
 .button {
@@ -25,5 +50,13 @@
   padding: 12px 24px;
   height: 48px;
   font-family: $dmSans;
-  transition: color 100ms ease-in-out, background-color 100ms ease-in-out;
+  transition: filter 100ms ease-in-out;
+
+  &:hover {
+    filter: grayscale(0.25);
+  }
+
+  &:active {
+    filter: grayscale(0.5);
+  }
 }

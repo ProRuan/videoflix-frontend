@@ -1,6 +1,6 @@
 <header class="header">
     <div class="content">
-        <img class="logo" src="images/logo/logo.png" alt="logo.png">
-        <button *ngIf="notLogIn" class="button">Log in</button>
+        <button class="logo-button" [disabled]="isStartsite()" (click)="onHome()"></button>
+        <button *ngIf="notLogIn" class="button" (click)="onNavigate()">Log in</button>
     </div>
 </header>

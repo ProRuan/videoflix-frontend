@@ -1,0 +1,44 @@
+@use "mixins" as *;
+
+.input-error-cont {
+  @include flexbox($fd: column, $g: 4px);
+  height: 48px;
+}
+
+.input {
+  @include border($b: 1px solid $white, $br: 40px);
+  @include size($w: 360px, $h: 48px);
+  @include font();
+  @include colors($c: $white, $bgc: rgba(28, 26, 32, 0.8));
+  box-sizing: border-box;
+  padding: 12px 24px;
+  min-height: 48px;
+  transition: border-color 100ms ease-in-out;
+  outline: none;
+
+  &::placeholder {
+    color: $white;
+  }
+
+  &:focus-within:not(.invalid) {
+    border-color: $primBlue;
+  }
+}
+
+.invalid {
+  border-color: $error;
+}
+
+.error-cont {
+  @include flexbox($ai: center, $g: 4px);
+  transition: opacity 100ms ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.error {
+  @include font($fs: 15px, $lh: 20px);
+  color: $error;
+}

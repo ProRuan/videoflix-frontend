@@ -6,13 +6,13 @@
             <h2 class="title">Movies, TV shows, and more</h2>
             <p class="text">Enter your email to create or restart your subscription.</p>
         </div>
-        <div class="input-button-cont">
-            <input class="input" type="text" placeholder="Email Address">
-            <button class="button">
+        <form [formGroup]="form" class="form" (submit)="onSignUp()">
+            <app-email-input [control]="email"></app-email-input>
+            <button class="button" type="submit" [disabled]="form.invalid">
                 <span class="button-text">Sign Up</span>
-                <img class="button-icon" src="images/buttons/chevron_right.png" alt="chevron_right.png">
+                <img class="button-icon" src="images/buttons/chevron_right.png" alt="chevron right">
             </button>
-        </div>
+        </form>
     </section>
 
     <app-footer></app-footer>
