@@ -7,4 +7,8 @@ import { RouterLink } from '@angular/router';
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })
+
+/**
+ * Class representing a footer component.
+ */
 export class Footer {}
