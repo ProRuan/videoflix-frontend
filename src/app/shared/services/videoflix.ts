@@ -13,6 +13,6 @@ export class Videoflix {
   }
 
   isStartsite() {
-    this.routerURL() === '/';
+    return this.routerURL() === '/';
   }
 }

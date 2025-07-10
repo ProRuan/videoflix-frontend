@@ -1,114 +1,50 @@
 @use "mixins" as *;
 
+$background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8) -27.44%,
+    rgba(0, 0, 0, 0.44) 44.23%,
+    rgba(0, 0, 0, 0.8) 100%
+  ),
+  url("/images/backgrounds/sign_up_bg.jpg");
+
 .sign-up {
+  @include background($bg: $background);
   @include flexbox($fd: column, $jc: space-between, $ai: center);
   min-height: 100vh;
-  background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.8) -27.44%,
-      rgba(0, 0, 0, 0.44) 44.23%,
-      rgba(0, 0, 0, 0.8) 100%
-    ),
-    url("/images/backgrounds/sign_up_bg.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
-.content {
+.form {
+  @include spacing($p: 43px 56px);
   @include flexbox($fd: column, $jc: center, $g: 32px);
-  box-sizing: border-box;
   border-radius: 48px;
-  padding: 43px 56px;
   width: 520px;
-  background: rgba(27, 27, 34, 0.85);
-}
-
-// double code!!!
-.title {
-  @include font($fs: 48px, $fw: 700);
-  padding: 7px 0;
-  text-align: center;
-  color: $white;
-}
-
-// double code?! (6x)
-.input-group {
-  @include flexbox($fd: column, $g: 32px);
-}
-
-.input-cont {
-  position: relative;
-}
-
-.input {
-  @include border($b: 1px solid rgba(46, 62, 223, 1), $br: 12px);
-  @include font();
-  @include colors($c: $white, $bgc: rgba(28, 26, 32, 0.8));
-  box-sizing: border-box;
-  padding: 12px 24px 12px 60px;
-  width: 100%;
-  height: 48px;
-  font-family: $dmSans;
-
-  &::placeholder {
-    color: #d3d3d3;
-  }
-}
-
-.pr-60 {
-  padding-right: 60px;
-}
-
-.icon {
-  @include image($w: 24px, $h: 24px);
-  @include position($pos: absolute, $l: 25px, $t: 12px);
-}
-
-// vis + vis-off!!
-.button {
-  @include border($b: none);
-  @include size($w: 24px, $h: 24px);
-  @include position($pos: absolute, $t: 12px, $r: 25px);
-  padding: 0;
-  background-color: transparent;
-  background-image: url("/images/buttons/visibility.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto 24px;
-}
-
-.input-error-cont {
-  @include flexbox($fd: column, $g: 4px);
-}
-
-.error-cont {
-  @include flexbox($ai: center, $g: 4px);
-  height: 20px;
-}
-
-.error-icon {
-  @include image($w: auto, $h: 16px);
-}
-
-// color variable!!
-.error-text {
-  @include font($fs: 15px);
-  color: #ff002e;
+  background-color: $formBG;
 }
 
 .button-cont {
   @include flexbox($jc: center);
 }
 
-// own component?
-.sign-up-button {
+.button {
   @include border($b: none, $br: 40px);
+  @include spacing($p: 12px 24px);
   @include size($w: fit-content, $h: 48px);
   @include font($fw: 700);
   @include colors($c: $white, $bgc: $primBlue);
-  box-sizing: border-box;
-  padding: 12px 24px;
-  font-family: $dmSans;
-  transition: color 100ms ease-in-out, background-color 100ms ease-in-out;
+  transition: filter 100ms ease-in-out;
+
+  &:hover {
+    filter: grayscale(0.25);
+  }
+
+  &:active {
+    filter: grayscale(0.5);
+  }
+
+  &:disabled {
+    background-color: $disabled;
+    filter: none;
+    cursor: default;
+  }
 }

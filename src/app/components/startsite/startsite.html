@@ -3,13 +3,13 @@
 
     <section class="content">
         <div class="title-text-cont">
-            <h2 class="title">Movies, TV shows, and more</h2>
+            <h2 class="headline-2">Movies, TV shows, and more</h2>
             <p class="text">Enter your email to create or restart your subscription.</p>
         </div>
-        <form [formGroup]="form" class="form" (submit)="onSignUp()">
-            <app-email-input [control]="email"></app-email-input>
-            <button class="button" type="submit" [disabled]="form.invalid">
-                <span class="button-text">Sign Up</span>
+        <form [formGroup]="form" class="form" (ngSubmit)="onSignUp()">
+            <app-start-email-input [control]="email"></app-start-email-input>
+            <button class="button" type="submit" [disabled]="isFormInvalid()">
+                <span class="button-text">Sign up</span>
                 <img class="button-icon" src="images/buttons/chevron_right.png" alt="chevron right">
             </button>
         </form>

@@ -5,29 +5,21 @@
   height: 48px;
 }
 
-.input-cont {
-  position: relative;
-}
-
-.icon {
-  @include image($w: 24px, $h: 24px);
-  @include position($pos: absolute, $l: 25px, $t: 12px);
-}
-
 .input {
-  @include border($b: 1px solid $primBlue, $br: 12px);
-  @include spacing($p: 12px 24px 12px 60px);
-  @include size($w: 100%, $h: 48px);
+  @include border($b: 1px solid $white, $br: 40px);
+  @include spacing($p: 12px 24px);
+  @include size($w: 360px, $h: 48px);
   @include font();
   @include colors($c: $white, $bgc: $inputBG);
+  min-height: 48px;
   transition: border-color 100ms ease-in-out;
 
   &::placeholder {
-    color: $gray;
+    color: $white;
   }
 
   &:focus-within {
-    border-color: $white;
+    border-color: $primBlue;
   }
 
   &.invalid {
@@ -35,7 +27,6 @@
   }
 }
 
-// double code!
 .error-cont {
   @include flexbox($ai: center, $g: 4px);
   transition: opacity 100ms ease-in-out;

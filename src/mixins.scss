@@ -1,9 +1,15 @@
 $dmSans: "DM Sans", Arial, Helvetica, sans-serif;
 
 $primBlue: #2e3edf;
+
+$gray: #d3d3d3;
 $white: #ffffff;
+
 $error: #ff002e;
 $disabled: #5e5e5e;
+
+$formBG: rgba(27, 27, 34, 0.85);
+$inputBG: rgba(28, 26, 32, 0.8);
 
 // move variables!!!
 
@@ -62,6 +68,11 @@ $disabled: #5e5e5e;
 @mixin size($w: auto, $h: auto) {
   width: $w;
   height: $h;
+}
+
+@mixin spacing($p: 0 0 0 0) {
+  box-sizing: border-box;
+  padding: $p;
 }
 
 @mixin width($w: auto, $min: 0, $max: none) {

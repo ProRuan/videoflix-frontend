@@ -1,49 +1,26 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  forwardRef,
-  InjectionToken,
-  Input,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { ElementRef, signal } from '@angular/core';
 import { AbstractControl, ControlValueAccessor } from '@angular/forms';
 
-@Component({
-  selector: 'app-email-input',
-  imports: [CommonModule],
-  templateUrl: './email-input.html',
-  styleUrl: './email-input.scss',
-})
-export class EmailInput implements ControlValueAccessor {
+export abstract class BaseInput implements ControlValueAccessor {
   error: string = '';
   possibleErrors: string[] = [
     'required',
     'forbidden',
     'minLength',
-    'email',
+    'upperCase',
+    'lowerCase',
+    'digit',
+    'specialChar',
     'maxLength',
   ];
 
   isError = signal(false);
 
-  @Input() control!: AbstractControl<any, any> | null;
-  @Input() placeholder: string = 'Email address';
-
-  @ViewChild('email') emailInput!: ElementRef<HTMLInputElement>;
-
-  showError() {
-    if (this.error) {
-      this.isError.set(true);
-    } else {
-      this.isError.set(false);
-    }
-    // this.isError.update((isError) => !isError);
-  }
+  abstract get control(): AbstractControl | null;
+  abstract get input(): ElementRef<HTMLInputElement>;
 
   writeValue(): void {
-    const value = this.emailInput.nativeElement.value;
+    const value = this.input.nativeElement.value;
     this.control?.setValue(value);
   }
 
@@ -91,18 +68,13 @@ export class EmailInput implements ControlValueAccessor {
   getError(error: string): string {
     return this.control?.getError(error);
   }
-}
 
-/**
- * Gets the provider of a dependency.
- * @param token - The injection token of the implement.
- * @param component - The component to refer.
- * @returns The provider of the dependency.
- */
-export function getProvider<T>(token: InjectionToken<any>, component: T) {
-  return {
-    provide: token,
-    useExisting: forwardRef(() => component),
-    multi: true,
-  };
+  showError() {
+    const value = this.error ? true : false;
+    this.isError.set(value);
+  }
+
+  isFilled() {
+    return this.control?.value.length;
+  }
 }

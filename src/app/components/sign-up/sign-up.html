@@ -1,37 +1,20 @@
 <div class="sign-up">
     <app-header></app-header>
 
-    <div class="content">
-        <h2 class="title">Sign up</h2>
+    <form [formGroup]="form" class="form" (ngSubmit)="onRegister()">
+        <h2 class="headline-2">Sign up</h2>
 
-        <div class="input-group">
-            <div class="input-cont">
-                <img class="icon" src="/images/inputs/email.png" alt="email.png">
-                <input [value]="preEmail" class="input" type="text" placeholder="Email Address">
-            </div>
-            <div class="input-cont">
-                <img class="icon" src="/images/inputs/password.png" alt="password.png">
-                <input class="input pr-60" type="text" placeholder="Enter a password">
-                <button class="button"></button>
-            </div>
-            <div class="input-error-cont">
-                <div class="input-cont">
-                    <img class="icon" src="/images/inputs/password.png" alt="password.png">
-                    <input class="input pr-60" type="text" placeholder="Confirm Password">
-                    <button class="button"></button>
-                </div>
-                <div class="error-cont">
-                    <img class="error-icon" src="/images/inputs/warning.png" alt="warning.png">
-                    <span class="error-text">Passwords must match.</span>
-                </div>
-            </div>
+        <div class="column-32">
+            <app-email-input [control]="email" placeholder="Email address"></app-email-input>
+            <app-password-input [control]="password" placeholder="Enter a password"></app-password-input>
+            <app-password-input [control]="confirmPassword" placeholder="Confirm password"
+                [error]="isMatchError()"></app-password-input>
         </div>
 
         <div class="button-cont">
-            <!-- submit event!!! -->
-            <button class="sign-up-button" (click)="onRegister()">Get Started</button>
+            <button class="button" type="submit" [disabled]="isFormInvalid()">Get started</button>
         </div>
-    </div>
+    </form>
 
     <app-footer></app-footer>
 </div>

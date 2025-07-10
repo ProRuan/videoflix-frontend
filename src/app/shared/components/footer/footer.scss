@@ -17,7 +17,6 @@
 
 .link {
   @include font($fw: 500);
-  font-family: $dmSans;
   text-decoration: none;
   color: $white;
 

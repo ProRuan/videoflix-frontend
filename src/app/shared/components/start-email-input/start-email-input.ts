@@ -11,12 +11,12 @@ import {
 import { AbstractControl, ControlValueAccessor } from '@angular/forms';
 
 @Component({
-  selector: 'app-email-input',
+  selector: 'app-start-email-input',
   imports: [CommonModule],
-  templateUrl: './email-input.html',
-  styleUrl: './email-input.scss',
+  templateUrl: './start-email-input.html',
+  styleUrl: './start-email-input.scss',
 })
-export class EmailInput implements ControlValueAccessor {
+export class StartEmailInput implements ControlValueAccessor {
   error: string = '';
   possibleErrors: string[] = [
     'required',
@@ -29,7 +29,6 @@ export class EmailInput implements ControlValueAccessor {
   isError = signal(false);
 
   @Input() control!: AbstractControl<any, any> | null;
-  @Input() placeholder: string = 'Email address';
 
   @ViewChild('email') emailInput!: ElementRef<HTMLInputElement>;
 

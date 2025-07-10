@@ -7,14 +7,14 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Header } from '../../shared/components/header/header';
-import { EmailInput } from '../../shared/components/email-input/email-input';
+import { StartEmailInput } from '../../shared/components/start-email-input/start-email-input';
 import { Footer } from '../../shared/components/footer/footer';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 
 @Component({
   selector: 'app-startsite',
-  imports: [ReactiveFormsModule, Header, EmailInput, Footer],
+  imports: [ReactiveFormsModule, Header, StartEmailInput, Footer],
   templateUrl: './startsite.html',
   styleUrl: './startsite.scss',
 })
@@ -26,7 +26,7 @@ export class Startsite implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
-  private inputValidation: InputValidation = inject(InputValidation);
+  private validation: InputValidation = inject(InputValidation);
 
   form!: FormGroup;
   email!: FormControl;
@@ -35,16 +35,23 @@ export class Startsite implements OnInit {
    * Initialize a startsite component.
    */
   ngOnInit(): void {
-    this.videoflix.setRouterURL('/');
+    this.setRouterURL();
     this.setEmailControl();
     this.setForm();
+  }
+
+  /**
+   * Set the current router URL.
+   */
+  setRouterURL() {
+    this.videoflix.setRouterURL('/');
   }
 
   /**
    * Set an email control with default value and validators.
    */
   setEmailControl() {
-    this.email = new FormControl('', this.inputValidation.email);
+    this.email = new FormControl('', this.validation.email);
   }
 
   /**
@@ -60,7 +67,15 @@ export class Startsite implements OnInit {
    * Reserve a validated email and redirect to the sign-up component.
    */
   onSignUp() {
-    this.videoflix.preEmail = this.email?.getRawValue();
+    this.videoflix.preEmail = this.email?.value;
     this.router.navigateByUrl('sign-up');
+  }
+
+  /**
+   * Check a form for invalidity.
+   * @returns A boolean value.
+   */
+  isFormInvalid() {
+    return this.form.invalid;
   }
 }

@@ -7,10 +7,9 @@ $background: url("/images/logo/logo.png");
 }
 
 .content {
+  @include spacing($p: 10px 96px);
   @include width($w: 100%, $max: 1440px);
   @include flexbox($jc: space-between, $ai: center);
-  box-sizing: border-box;
-  padding: 10px 96px;
   height: 108px;
 }
 
@@ -37,12 +36,10 @@ $background: url("/images/logo/logo.png");
 
 .log-button {
   @include border($b: none, $br: 40px);
+  @include spacing($p: 12px 24px);
   @include font($fw: 700);
   @include colors($c: $white, $bgc: $primBlue);
-  box-sizing: border-box;
-  padding: 12px 24px;
   height: 48px;
-  font-family: $dmSans;
   transition: filter 100ms ease-in-out;
 
   &:hover {

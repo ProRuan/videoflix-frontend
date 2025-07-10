@@ -17,10 +17,12 @@ p {
 
 input {
   font-family: $dmSans;
+  outline: none;
 }
 
 button {
   font-family: $dmSans;
+  outline: none;
   cursor: pointer;
 }
 
@@ -28,4 +30,14 @@ button {
 app-header,
 app-footer {
   width: 100%;
+}
+
+.headline-2 {
+  @include font($fs: 48px, $fw: 700, $lh: 62px);
+  text-align: center;
+  color: $white;
+}
+
+.column-32 {
+  @include flexbox($fd: column, $g: 32px);
 }
