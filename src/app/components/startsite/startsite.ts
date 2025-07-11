@@ -34,7 +34,7 @@ export class Startsite implements OnInit {
   /**
    * Initialize a startsite component.
    */
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.setRouterURL();
     this.setEmailControl();
     this.setForm();
@@ -43,21 +43,21 @@ export class Startsite implements OnInit {
   /**
    * Set the current router URL.
    */
-  setRouterURL() {
+  private setRouterURL() {
     this.videoflix.setRouterURL('/');
   }
 
   /**
    * Set an email control with default value and validators.
    */
-  setEmailControl() {
+  private setEmailControl() {
     this.email = new FormControl('', this.validation.email);
   }
 
   /**
    * Set a form group with an email control.
    */
-  setForm() {
+  private setForm() {
     this.form = this.fb.group({
       email: this.email,
     });
@@ -66,7 +66,7 @@ export class Startsite implements OnInit {
   /**
    * Reserve a validated email and redirect to the sign-up component.
    */
-  onSignUp() {
+  public onSignUp() {
     this.videoflix.preEmail = this.email?.value;
     this.router.navigateByUrl('sign-up');
   }
@@ -75,7 +75,7 @@ export class Startsite implements OnInit {
    * Check a form for invalidity.
    * @returns A boolean value.
    */
-  isFormInvalid() {
+  public isFormInvalid() {
     return this.form.invalid;
   }
 }

@@ -67,6 +67,10 @@ export class SignUp implements OnInit {
   // check font-family for inputs and buttons ... !
   // mixin for button hover, active and disabled ...
 
+  // password input component
+  // fix error and match error ...
+  //   --> fix border-color and error text (0/2) ...
+
   form!: FormGroup;
   email!: FormControl;
   password!: FormControl;

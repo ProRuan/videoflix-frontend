@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, signal, ViewChild } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { autocompletes, types } from '../../ts/enums';
 import { BaseInput } from '../../models/base-input';
+import { Autocompletes, InputErrors, Types } from '../../ts/enums';
 
 @Component({
   selector: 'app-password-input',
@@ -9,42 +9,56 @@ import { BaseInput } from '../../models/base-input';
   templateUrl: './password-input.html',
   styleUrl: './password-input.scss',
 })
+
+/**
+ * Class representing a password input component.
+ * @extends BaseInput
+ */
 export class PasswordInput extends BaseInput {
-  override possibleErrors: string[] = [
-    'required',
-    'forbidden',
-    'minLength',
-    'upperCase',
-    'lowerCase',
-    'digit',
-    'specialChar',
-    'maxLength',
+  possibleErrors: string[] = [
+    InputErrors.required,
+    InputErrors.forbidden,
+    InputErrors.minLength,
+    InputErrors.upperCase,
+    InputErrors.lowerCase,
+    InputErrors.digit,
+    InputErrors.specialChar,
+    InputErrors.maxLength,
   ];
 
-  // fix error and match error ...
-  //   --> fix border-color and error text (0/2) ...
+  masked: boolean = true;
+  type = signal('password');
 
-  @Input() control!: AbstractControl<any, any> | null;
+  @Input() control!: AbstractControl | null;
   @Input() placeholder: string = 'Password';
-  @Input() autocomplete: string = autocompletes.newPassword;
+  @Input() autocomplete: string = Autocompletes.newPassword;
   @Input('error') matchError: boolean = false;
 
   @ViewChild('password') input!: ElementRef<HTMLInputElement>;
 
-  isType = signal('password');
-  masked: boolean = true;
+  /**
+   * Check a password input for the masked state.
+   * @returns A boolean value.
+   */
+  public isMasked() {
+    return this.masked && this.isInputFilled();
+  }
 
-  onMaskToggle() {
-    const value = this.toggleType(this.isType());
-    this.isType.set(value);
+  /**
+   * Toggle a password mask on click.
+   */
+  public onMaskToggle() {
+    const changedType = this.getChangedType(this.type());
+    this.type.set(changedType);
     this.masked = !this.masked;
   }
 
-  toggleType(value: string) {
-    return value == types.password ? types.text : types.password;
-  }
-
-  isMasked() {
-    return this.masked && this.isFilled();
+  /**
+   * Get a changed input type.
+   * @param value - The current input type.
+   * @returns The changed input type.
+   */
+  private getChangedType(value: string) {
+    return value === Types.password ? Types.text : Types.password;
   }
 }

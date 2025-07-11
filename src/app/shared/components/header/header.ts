@@ -22,21 +22,21 @@ export class Header {
    * Check a router url for the base href.
    * @returns A boolean value.
    */
-  isStartsite() {
+  public isStartsite() {
     return this.videoflix.isStartsite();
   }
 
   /**
    * Navigate to the startsite component.
    */
-  onHome() {
+  public onHome() {
     this.router.navigateByUrl('');
   }
 
   /**
    * Navigate to the log-in component.
    */
-  onNavigate() {
+  public onNavigate() {
     this.router.navigateByUrl('log-in');
   }
 }
