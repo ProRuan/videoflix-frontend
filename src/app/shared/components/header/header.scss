@@ -1,6 +1,6 @@
 @use "mixins" as *;
 
-$background: url("/images/logo/logo.png");
+$logo: url("/images/logo/logo.png");
 
 .header {
   @include flexbox($jc: center, $ai: center);
@@ -15,17 +15,17 @@ $background: url("/images/logo/logo.png");
 
 .home-button {
   @include size($w: 201px, $h: 32px);
-  @include background($bg: $background, $size: auto 32px);
+  @include background($bg: $logo, $size: auto 32px);
   border: none;
   padding: 0;
   transition: filter 100ms ease-in-out;
 
   &:hover {
-    filter: grayscale(0.25);
+    filter: grayscale($grayscale-hover);
   }
 
   &:active {
-    filter: grayscale(0.5);
+    filter: grayscale($grayscale-active);
   }
 
   &:disabled {
@@ -43,10 +43,10 @@ $background: url("/images/logo/logo.png");
   transition: filter 100ms ease-in-out;
 
   &:hover {
-    filter: grayscale(0.25);
+    filter: grayscale($grayscale-hover);
   }
 
   &:active {
-    filter: grayscale(0.5);
+    filter: grayscale($grayscale-active);
   }
 }
