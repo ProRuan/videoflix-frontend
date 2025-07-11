@@ -41,3 +41,31 @@ app-footer {
 .column-32 {
   @include flexbox($fd: column, $g: 32px);
 }
+
+.input-error-cont {
+  @include flexbox($fd: column, $g: 4px);
+  height: 48px;
+}
+
+.pos-relative {
+  position: relative;
+}
+
+.input-icon {
+  @include image($w: 24px, $h: 24px);
+  @include position($pos: absolute, $l: 25px, $t: 12px);
+}
+
+.error-cont {
+  @include flexbox($ai: center, $g: 4px);
+  transition: opacity 100ms ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.error {
+  @include font($fs: 15px, $lh: 20px);
+  color: $error;
+}

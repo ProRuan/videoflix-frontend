@@ -13,7 +13,7 @@ export abstract class BaseInput implements ControlValueAccessor {
   abstract get input(): ElementRef<HTMLInputElement>;
 
   /**
-   * Write the input value into a control value.
+   * Write an input value into a control value.
    */
   writeValue(): void {
     const value = this.input.nativeElement.value;
@@ -33,7 +33,7 @@ export abstract class BaseInput implements ControlValueAccessor {
   registerOnTouched(fn: any): void {}
 
   /**
-   * Write and validate the input value.
+   * Write and validate an input value.
    */
   onInput() {
     this.writeValue();
@@ -49,7 +49,7 @@ export abstract class BaseInput implements ControlValueAccessor {
   }
 
   /**
-   * Update the input error.
+   * Update an input error.
    */
   updateError() {
     this.error = '';

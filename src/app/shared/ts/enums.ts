@@ -7,6 +7,7 @@ export enum InputErrors {
   required = 'required',
   forbidden = 'forbidden',
   minLength = 'minLength',
+  email = 'email',
   upperCase = 'upperCase',
   lowerCase = 'lowerCase',
   digit = 'digit',

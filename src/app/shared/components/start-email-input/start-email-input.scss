@@ -1,10 +1,5 @@
 @use "mixins" as *;
 
-.input-error-cont {
-  @include flexbox($fd: column, $g: 4px);
-  height: 48px;
-}
-
 .input {
   @include border($b: 1px solid $white, $br: 40px);
   @include spacing($p: 12px 24px);
@@ -25,18 +20,4 @@
   &.invalid {
     border-color: $error;
   }
-}
-
-.error-cont {
-  @include flexbox($ai: center, $g: 4px);
-  transition: opacity 100ms ease-in-out;
-
-  @starting-style {
-    opacity: 0;
-  }
-}
-
-.error {
-  @include font($fs: 15px, $lh: 20px);
-  color: $error;
 }

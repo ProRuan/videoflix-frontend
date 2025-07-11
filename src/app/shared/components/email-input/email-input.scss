@@ -1,19 +1,5 @@
 @use "mixins" as *;
 
-.input-error-cont {
-  @include flexbox($fd: column, $g: 4px);
-  height: 48px;
-}
-
-.input-cont {
-  position: relative;
-}
-
-.icon {
-  @include image($w: 24px, $h: 24px);
-  @include position($pos: absolute, $l: 25px, $t: 12px);
-}
-
 .input {
   @include border($b: 1px solid $primBlue, $br: 12px);
   @include spacing($p: 12px 24px 12px 60px);
@@ -33,19 +19,4 @@
   &.invalid {
     border-color: $error;
   }
-}
-
-// double code!
-.error-cont {
-  @include flexbox($ai: center, $g: 4px);
-  transition: opacity 100ms ease-in-out;
-
-  @starting-style {
-    opacity: 0;
-  }
-}
-
-.error {
-  @include font($fs: 15px, $lh: 20px);
-  color: $error;
 }
