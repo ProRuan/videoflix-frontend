@@ -4,6 +4,7 @@
         <input #email [value]="control?.value" name="email" class="input" [class.invalid]="error" type="email"
             [placeholder]="placeholder" autocomplete="email" (input)="onInput()">
     </div>
+
     @if(isError()) {
     <div class="error-cont">
         <img src="images/inputs/warning.png" alt="warning">

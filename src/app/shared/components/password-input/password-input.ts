@@ -27,12 +27,13 @@ export class PasswordInput extends BaseInput {
   ];
 
   masked: boolean = true;
-  type = signal('password');
+  type = signal(Types.password);
 
   @Input() control!: AbstractControl | null;
   @Input() placeholder: string = 'Password';
   @Input() autocomplete: string = Autocompletes.newPassword;
   @Input('error') matchError: boolean = false;
+  @Input('errorDisplayed') matchErrorDisplayed: boolean = true;
 
   @ViewChild('password') input!: ElementRef<HTMLInputElement>;
 
@@ -42,6 +43,14 @@ export class PasswordInput extends BaseInput {
    */
   public isMasked() {
     return this.masked && this.isInputFilled();
+  }
+
+  /**
+   * Check a password input for invalidity.
+   * @returns A boolean value.
+   */
+  public isInvalid() {
+    return this.error || this.matchError;
   }
 
   /**
@@ -60,5 +69,21 @@ export class PasswordInput extends BaseInput {
    */
   private getChangedType(value: string) {
     return value === Types.password ? Types.text : Types.password;
+  }
+
+  /**
+   * Check a password input for validation or match error.
+   * @returns A boolean value.
+   */
+  public isPasswordError() {
+    return this.isError() || this.isMatchError();
+  }
+
+  /**
+   * Check a password input for a match error.
+   * @returns A boolean value.
+   */
+  public isMatchError() {
+    return this.matchError && this.matchErrorDisplayed;
   }
 }
