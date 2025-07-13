@@ -70,6 +70,44 @@ app-footer {
   color: $error;
 }
 
+// dialog styles
+.dialog {
+  @include size($w: 100%, $h: 100vh);
+  @include flexbox($jc: center, $ai: center);
+  @include position($pos: fixed, $l: 0, $t: 0);
+  margin: 0;
+  border: none;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+
+  &.hidden {
+    display: none;
+  }
+}
+
+// check padding
+// check gap
+.dialog-box {
+  @include spacing($p: 32px 40px);
+  @include flexbox($fd: column, $jc: center, $g: 24px);
+  width: 520px;
+  border-radius: 48px;
+  background-color: rgba(27, 27, 34, 1);
+  // background-color: $formBG;
+  box-shadow: 0 0 8px 3px $white;
+}
+
+.dialog-headline {
+  @include font($fs: 36px, $fw: 700, $lh: 47px);
+  text-align: center;
+  color: $white;
+}
+
+.dialog-text {
+  text-align: center;
+  color: $white;
+}
+
 .toast {
   @include position($pos: fixed, $l: 32px, $b: 32px);
 }

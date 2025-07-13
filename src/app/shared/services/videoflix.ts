@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class Videoflix {
-  preEmail: string = '';
+  cachedEmail: string = '';
 
   routerURL = signal('/');
 

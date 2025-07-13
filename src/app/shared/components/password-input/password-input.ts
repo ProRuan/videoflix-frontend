@@ -41,7 +41,7 @@ export class PasswordInput extends BaseInput {
    * Check a password input for the masked state.
    * @returns A boolean value.
    */
-  public isMasked() {
+  isMasked() {
     return this.masked && this.isInputFilled();
   }
 
@@ -49,14 +49,14 @@ export class PasswordInput extends BaseInput {
    * Check a password input for invalidity.
    * @returns A boolean value.
    */
-  public isInvalid() {
+  isInvalid() {
     return this.error || this.matchError;
   }
 
   /**
    * Toggle a password mask on click.
    */
-  public onMaskToggle() {
+  onMaskToggle() {
     const changedType = this.getChangedType(this.type());
     this.type.set(changedType);
     this.masked = !this.masked;
@@ -75,7 +75,7 @@ export class PasswordInput extends BaseInput {
    * Check a password input for validation or match error.
    * @returns A boolean value.
    */
-  public isPasswordError() {
+  isPasswordError() {
     return this.isError() || this.isMatchError();
   }
 
@@ -83,7 +83,7 @@ export class PasswordInput extends BaseInput {
    * Check a password input for a match error.
    * @returns A boolean value.
    */
-  public isMatchError() {
+  isMatchError() {
     return this.matchError && this.matchErrorDisplayed;
   }
 }

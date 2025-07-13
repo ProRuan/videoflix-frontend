@@ -20,4 +20,21 @@
     <app-footer></app-footer>
 </div>
 
-<app-error-toast [message]="message" [hidden]="isHidden()" class="toast" (hide)="onToastHide()"></app-error-toast>
+<!-- move to own component?! -->
+<dialog class="dialog" [class.hidden]="isDialogHidden()" (click)="onClose()">
+    <div class="dialog-box" (click)="onEventStop($event)">
+        <h3 class="dialog-headline">Registration successful</h3>
+        <p class="dialog-text">
+            Thank you for registering!
+        </p>
+        <p class="dialog-text">
+            We’ve sent a confirmation email to your inbox.
+            Please click the activation link inside to unlock your account.
+        </p>
+        <div class="button-cont">
+            <button class="button" (click)="onClose()">Close</button>
+        </div>
+    </div>
+</dialog>
+
+<app-error-toast [message]="message" [hidden]="isToastHidden()" class="toast" (hide)="onToastHide()"></app-error-toast>

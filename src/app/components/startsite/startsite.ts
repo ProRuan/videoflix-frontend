@@ -1,15 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BaseComponent } from '../../shared/models/base-component';
 import { Header } from '../../shared/components/header/header';
 import { StartEmailInput } from '../../shared/components/start-email-input/start-email-input';
 import { Footer } from '../../shared/components/footer/footer';
-import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 
 @Component({
@@ -22,11 +17,11 @@ import { InputValidation } from '../../shared/services/input-validation';
 /**
  * Class representing a startsite component.
  */
-export class Startsite implements OnInit {
-  private fb: FormBuilder = inject(FormBuilder);
+export class Startsite extends BaseComponent implements OnInit {
   private router: Router = inject(Router);
-  private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
+
+  readonly routerURL: string = '/';
 
   form!: FormGroup;
   email!: FormControl;
@@ -34,30 +29,30 @@ export class Startsite implements OnInit {
   /**
    * Initialize a startsite component.
    */
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.setRouterURL();
-    this.setEmailControl();
     this.setForm();
-  }
-
-  /**
-   * Set the current router URL.
-   */
-  private setRouterURL() {
-    this.videoflix.setRouterURL('/');
-  }
-
-  /**
-   * Set an email control with default value and validators.
-   */
-  private setEmailControl() {
-    this.email = new FormControl('', this.validation.email);
   }
 
   /**
    * Set a form group with an email control.
    */
   private setForm() {
+    this.setEmailControl();
+    this.setFormGroup();
+  }
+
+  /**
+   * Set an email control with default value and validators.
+   */
+  private setEmailControl() {
+    this.email = this.getFormControl('', this.validation.email);
+  }
+
+  /**
+   * Set a form group with an email control.
+   */
+  private setFormGroup() {
     this.form = this.fb.group({
       email: this.email,
     });
@@ -66,8 +61,8 @@ export class Startsite implements OnInit {
   /**
    * Reserve a validated email and redirect to the sign-up component.
    */
-  public onSignUp() {
-    this.videoflix.preEmail = this.email?.value;
+  onSignUp() {
+    this.videoflix.cachedEmail = this.email?.value;
     this.router.navigateByUrl('sign-up');
   }
 
@@ -75,7 +70,7 @@ export class Startsite implements OnInit {
    * Check a form for invalidity.
    * @returns A boolean value.
    */
-  public isFormInvalid() {
+  isFormInvalid() {
     return this.form.invalid;
   }
 }

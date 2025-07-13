@@ -12,7 +12,7 @@ export class InputValidator extends InputValidatorKit {
    * Validate the filled state of an input.
    * @returns The ValidatorFn.
    */
-  public required(): ValidatorFn {
+  required(): ValidatorFn {
     return (control: Control) => this.getRequiredError(control);
   }
 
@@ -21,7 +21,7 @@ export class InputValidator extends InputValidatorKit {
    * @param minLength - The minimum length.
    * @returns The ValidatorFn.
    */
-  public minLength(minLength: number): ValidatorFn {
+  minLength(minLength: number): ValidatorFn {
     return (control: Control) => this.getMinLengthError(control, minLength);
   }
 
@@ -30,7 +30,7 @@ export class InputValidator extends InputValidatorKit {
    * @param maxLength - The maximum length.
    * @returns The ValidatorFn.
    */
-  public maxLength(maxLength: number): ValidatorFn {
+  maxLength(maxLength: number): ValidatorFn {
     return (control: Control) => this.getMaxLengthError(control, maxLength);
   }
 
@@ -39,7 +39,7 @@ export class InputValidator extends InputValidatorKit {
    * @param pattern - The test pattern.
    * @returns The ValidatorFn.
    */
-  public forbidden(pattern: RegExp): ValidatorFn {
+  forbidden(pattern: RegExp): ValidatorFn {
     return this.getRejectorFn('forbidden', pattern);
   }
 
@@ -48,7 +48,7 @@ export class InputValidator extends InputValidatorKit {
    * @param pattern - The test pattern.
    * @returns The ValidatorFn.
    */
-  public email(pattern: RegExp): ValidatorFn {
+  email(pattern: RegExp): ValidatorFn {
     return this.getAcceptorFn('email', pattern);
   }
 
@@ -57,7 +57,7 @@ export class InputValidator extends InputValidatorKit {
    * @param pattern - The test pattern.
    * @returns The ValidatorFn.
    */
-  public upperCase(pattern: RegExp): ValidatorFn {
+  upperCase(pattern: RegExp): ValidatorFn {
     return this.getAcceptorFn('upperCase', pattern);
   }
 
@@ -66,7 +66,7 @@ export class InputValidator extends InputValidatorKit {
    * @param pattern - The test pattern.
    * @returns The ValidatorFn.
    */
-  public lowerCase(pattern: RegExp): ValidatorFn {
+  lowerCase(pattern: RegExp): ValidatorFn {
     return this.getAcceptorFn('lowerCase', pattern);
   }
 
@@ -75,7 +75,7 @@ export class InputValidator extends InputValidatorKit {
    * @param pattern - The test pattern.
    * @returns The ValidatorFn.
    */
-  public digit(pattern: RegExp): ValidatorFn {
+  digit(pattern: RegExp): ValidatorFn {
     return this.getAcceptorFn('digit', pattern);
   }
 
@@ -84,7 +84,7 @@ export class InputValidator extends InputValidatorKit {
    * @param pattern - The test pattern.
    * @returns The ValidatorFn.
    */
-  public specialChar(pattern: RegExp): ValidatorFn {
+  specialChar(pattern: RegExp): ValidatorFn {
     return this.getAcceptorFn('specialChar', pattern);
   }
 
@@ -93,7 +93,7 @@ export class InputValidator extends InputValidatorKit {
    * @param password - The password to match.
    * @returns The ValidatorFn.
    */
-  public matchword(password: string): ValidatorFn {
+  matchword(password: string): ValidatorFn {
     let pattern = new RegExp(`^${password}$`);
     return this.getAcceptorFn('matchword', pattern);
   }

@@ -12,6 +12,8 @@ import { Authentication } from '../../shared/services/authentication';
 export class LogIn {
   private auth: Authentication = inject(Authentication);
 
+  // https://angular.dev/guide/http/making-requests
+
   // center elements by parents (only containers with simple elements) ...
   //   --> startsite, log-in, ...
 
@@ -27,7 +29,14 @@ export class LogIn {
 
   // check font-family for inputs and buttons ... !
 
+  // simplify computed signals (no extra function) ...
+  // destroy subscriptions/signals ...
+
   // error toast idea (error_toast_20250712) ...
+  // add error-toast-cta component (e. g. button for continue video progress) ... !
+
+  // set private, readonly and so on (also for other components) ... !
+  // move/delete interface Video ...
 
   message: string = '';
 

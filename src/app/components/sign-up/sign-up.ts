@@ -1,27 +1,21 @@
 import {
   Component,
   computed,
-  effect,
   inject,
   OnInit,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
 import { Header } from '../../shared/components/header/header';
 import { Footer } from '../../shared/components/footer/footer';
 import { Authentication } from '../../shared/services/authentication';
-import { Videoflix } from '../../shared/services/videoflix';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidatorFn,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InputValidation } from '../../shared/services/input-validation';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { ErrorToast } from '../../shared/components/error-toast/error-toast';
+import { BaseComponent } from '../../shared/models/base-component';
 
 @Component({
   selector: 'app-sign-up',
@@ -40,79 +34,50 @@ import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 /**
  * Class representing a sign-up component.
  */
-export class SignUp implements OnInit {
-  private fb: FormBuilder = inject(FormBuilder);
+export class SignUp extends BaseComponent implements OnInit {
   private validation: InputValidation = inject(InputValidation);
 
-  // add error-toast component - in progress ...
-  // add error-toast-cta component (e. g. button for continue video progress) ... !
-
-  // check onRegister method ... !
-  // create abstract class BaseComponent ... ?
-
-  // https://angular.dev/guide/http/making-requests
-  // use http response: 'body' or 'response' (status, body) - check
-  // use catchError to display error - check
-
-  // check your email dialog ... !
-  // reset form on success/failure ... !
-
-  // simplify computed signals (no extra function) ...
-  // destroy subscriptions/signals ...
-
   // check!!!
-  private videoflix: Videoflix = inject(Videoflix);
   private auth: Authentication = inject(Authentication);
+
+  // clean code of registration-successful dialog ...
+  // think about error-toast width/max-width ...
+
+  readonly routerURL: string = 'sign-up';
 
   form!: FormGroup;
   email!: FormControl;
   password!: FormControl;
   confirmPassword!: FormControl;
-  passwordConfirmed: boolean = false;
 
-  changedPassword = signal('');
-  changedConfirmPassword = signal('');
-  isPasswordConfirmed = computed(() => this.isPasswordMatch());
+  private value: WritableSignal<string> = signal('');
+  private confirmValue: WritableSignal<string> = signal('');
+  private isPasswordMatch: Signal<boolean> = computed(
+    () => this.value() === this.confirmValue()
+  );
 
-  message: string = 'Registration failed. Please try again.';
+  isDialogHidden = signal(true);
 
-  // check!!!
-  preEmail: string = '';
-  isHidden = signal(true);
+  message: string = 'Please check your input and try again.';
+  isToastHidden = signal(true);
   timeoutId!: ReturnType<typeof setTimeout>;
 
   /**
-   * Creates a sign-up component.
+   * Initialize a sign-up component.
    */
-  constructor() {
-    effect(() => this.updatePasswordConfirmation());
-  }
-
-  /**
-   * Check password and confirm password for a match.
-   * @returns A boolean value.
-   */
-  isPasswordMatch() {
-    return this.changedPassword() === this.changedConfirmPassword();
-  }
-
-  /**
-   * Update the state of a password confirmation.
-   */
-  updatePasswordConfirmation() {
-    this.passwordConfirmed = this.isPasswordConfirmed();
-  }
-
   ngOnInit(): void {
-    this.videoflix.setRouterURL('sign-up');
-    // this.preEmail = this.videoflix.preEmail;
-    console.log('pre-email: ', this.videoflix.preEmail);
-
-    this.setFormControls();
+    this.setRouterURL();
     this.setForm();
-    this.subscribeChanges();
+    this.updateEmail();
+    this.subscribePasswords();
+  }
 
-    this.email.setValue(this.videoflix.preEmail);
+  /**
+   * Set a sign-up form.
+   */
+  setForm() {
+    this.setFormControls();
+    this.setFormGroup();
   }
 
   /**
@@ -125,19 +90,9 @@ export class SignUp implements OnInit {
   }
 
   /**
-   * Get a form control.
-   * @param value - The default value to set.
-   * @param validators - The validators to set.
-   * @returns The form control.
+   * Set a form group composed of email, password and confirm password control.
    */
-  getFormControl(value: string, validators: ValidatorFn[]) {
-    return new FormControl(value, validators);
-  }
-
-  /**
-   * Set a sign-up form.
-   */
-  setForm() {
+  setFormGroup() {
     this.form = this.fb.group({
       email: this.email,
       password: this.password,
@@ -146,11 +101,18 @@ export class SignUp implements OnInit {
   }
 
   /**
-   * Subscribe to value changes to update related signals.
+   * Update an email control with the cached email got from the startsite form.
    */
-  subscribeChanges() {
-    this.updateSignal(this.password, this.changedPassword);
-    this.updateSignal(this.confirmPassword, this.changedConfirmPassword);
+  updateEmail() {
+    this.email.setValue(this.videoflix.cachedEmail);
+  }
+
+  /**
+   * Subscribe to password changes to update related signals.
+   */
+  subscribePasswords() {
+    this.updateSignal(this.password, this.value);
+    this.updateSignal(this.confirmPassword, this.confirmValue);
   }
 
   /**
@@ -165,68 +127,85 @@ export class SignUp implements OnInit {
   }
 
   /**
+   * Check passwords for validity and match.
+   * @returns A boolean value.
+   */
+  isMatchError() {
+    return this.arePasswordsValid() && !this.isPasswordMatch();
+  }
+
+  /**
+   * Check password and confirm password for validity.
+   * @returns A boolean value.
+   */
+  arePasswordsValid() {
+    return this.password.valid && this.confirmPassword.valid;
+  }
+
+  /**
    * Check a form for invalidity.
    * @returns A boolean value.
    */
   isFormInvalid() {
-    return this.form.invalid || !this.passwordConfirmed;
+    return this.form.invalid || !this.isPasswordMatch();
   }
 
-  isMatchError() {
-    return (
-      this.password.valid &&
-      this.confirmPassword.valid &&
-      !this.passwordConfirmed
-    );
-  }
-
+  /**
+   * Clear timeout and hide error toast immediately.
+   */
   onToastHide() {
     clearTimeout(this.timeoutId);
-    this.isHidden.set(true);
+    this.isToastHidden.set(true);
   }
 
-  // use variables!!!
+  // finalize + rename onRegister() ...
   onRegister() {
     clearTimeout(this.timeoutId);
+    const payload = this.getPayload();
+    this.auth.registerUser(payload).subscribe({
+      next: (response) => this.openDialog(response),
+      error: () => this.showErrorToast(),
+    });
+  }
 
-    const payload = {
+  /**
+   * Gets a payload.
+   * @returns The payload.
+   */
+  private getPayload() {
+    return {
       email: this.email?.value,
       password: this.password?.value,
       repeated_password: this.confirmPassword?.value,
     };
+  }
 
-    // const payload = {
-    //   username: 'luigiSpukhaus',
-    //   email: 'spukhaus@mail.com',
-    //   password: 'Test123!',
-    //   repeated_password: 'Test123!',
-    // };
-
-    this.auth.registerUser(payload).subscribe({
-      next: (response) => {
-        const data = JSON.parse(response);
-        console.log('data: ', data);
-        console.log('token: ', data['token']);
-        console.log('email: ', data['email']);
-        console.log('user id: ', data['user_id']);
-
-        this.isHidden.set(true);
-        // console.log('response status: ', response.status);
-        // console.log('response body: ', response.body);
-
-        // Optional: Save token in localStorage
-        // localStorage.setItem('auth_token', response.token);
-      },
-      error: (error) => {
-        console.error('Registration failed', error);
-
-        this.isHidden.set(false);
-        this.timeoutId = setTimeout(() => {
-          // 3000 or 5000?
-          this.isHidden.set(true);
-        }, 4000);
-        // this.message = 'Registration failed. Please try again.';
-      },
+  // review and rename method ...
+  private openDialog(response: any) {
+    const data = JSON.parse(response);
+    console.log('data: ', data);
+    this.form.reset({
+      email: '',
+      password: '',
+      confirmPassword: '',
     });
+    this.isToastHidden.set(true);
+    this.isDialogHidden.set(false);
+  }
+
+  onClose() {
+    this.isDialogHidden.set(true);
+  }
+
+  onEventStop(event: Event) {
+    event.stopPropagation();
+  }
+
+  /**
+   * Show an error toast for four seconds.
+   */
+  private showErrorToast() {
+    this.isToastHidden.set(false);
+    this.timeoutId = setTimeout(() => this.isToastHidden.set(true), 4000);
   }
 }
