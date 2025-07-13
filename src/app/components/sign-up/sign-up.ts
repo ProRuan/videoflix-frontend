@@ -3,10 +3,8 @@ import {
   computed,
   effect,
   inject,
-  Input,
   OnInit,
   signal,
-  Signal,
   WritableSignal,
 } from '@angular/core';
 import { Header } from '../../shared/components/header/header';
@@ -15,7 +13,6 @@ import { Authentication } from '../../shared/services/authentication';
 import { Videoflix } from '../../shared/services/videoflix';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -24,10 +21,18 @@ import {
 } from '@angular/forms';
 import { InputValidation } from '../../shared/services/input-validation';
 import { EmailInput } from '../../shared/components/email-input/email-input';
+import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [ReactiveFormsModule, Header, EmailInput, PasswordInput, Footer],
+  imports: [
+    ReactiveFormsModule,
+    Header,
+    EmailInput,
+    PasswordInput,
+    Footer,
+    ErrorToast,
+  ],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })
@@ -39,37 +44,25 @@ export class SignUp implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private validation: InputValidation = inject(InputValidation);
 
+  // add error-toast component - in progress ...
+  // add error-toast-cta component (e. g. button for continue video progress) ... !
+
+  // check onRegister method ... !
+  // create abstract class BaseComponent ... ?
+
+  // https://angular.dev/guide/http/making-requests
+  // use http response: 'body' or 'response' (status, body) - check
+  // use catchError to display error - check
+
+  // check your email dialog ... !
+  // reset form on success/failure ... !
+
+  // simplify computed signals (no extra function) ...
+  // destroy subscriptions/signals ...
+
   // check!!!
   private videoflix: Videoflix = inject(Videoflix);
   private auth: Authentication = inject(Authentication);
-
-  // create EmailInputComponent ...
-  // create PasswordInputComponent ...
-  // replace hex with rgba values (from Figma) ...
-  // check image (bg) size ... !
-  // center elements by parents (only containers with simple elements) ...
-  //   --> startsite, log-in, ...
-
-  // build root component with basic services, variables and methods ... ?
-  // review startsite.ts (see sign-up.ts) ...
-
-  // rename password to passwordControl and so on ...
-  // do the same for signals ...
-  // rename InputValidation to InputValidators ...
-  // remove matchword validator ... ?
-
-  // destroy subscriptions ...
-  // move form tag for other components (form, inputs, buttons) ...
-
-  // update input validator and input validation!!
-  // error text with end dots!
-
-  // check font-family for inputs and buttons ... !
-  // mixin for button hover, active and disabled ...
-
-  // password input component
-  // fix error and match error ...
-  //   --> fix border-color and error text (0/2) ...
 
   form!: FormGroup;
   email!: FormControl;
@@ -81,9 +74,12 @@ export class SignUp implements OnInit {
   changedConfirmPassword = signal('');
   isPasswordConfirmed = computed(() => this.isPasswordMatch());
 
+  message: string = 'Registration failed. Please try again.';
+
   // check!!!
   preEmail: string = '';
-  message: string = '';
+  isHidden = signal(true);
+  timeoutId!: ReturnType<typeof setTimeout>;
 
   /**
    * Creates a sign-up component.
@@ -184,13 +180,19 @@ export class SignUp implements OnInit {
     );
   }
 
+  onToastHide() {
+    clearTimeout(this.timeoutId);
+    this.isHidden.set(true);
+  }
+
   // use variables!!!
   onRegister() {
+    clearTimeout(this.timeoutId);
+
     const payload = {
-      username: 'kirbyDreamland',
-      email: 'dreamland@mail.com',
-      password: 'Test123!',
-      repeated_password: 'Test123!',
+      email: this.email?.value,
+      password: this.password?.value,
+      repeated_password: this.confirmPassword?.value,
     };
 
     // const payload = {
@@ -202,16 +204,28 @@ export class SignUp implements OnInit {
 
     this.auth.registerUser(payload).subscribe({
       next: (response) => {
-        console.log('Token:', response.token);
-        console.log('User ID:', response.user_id);
-        this.message = `Welcome, ${response.username}!`;
+        const data = JSON.parse(response);
+        console.log('data: ', data);
+        console.log('token: ', data['token']);
+        console.log('email: ', data['email']);
+        console.log('user id: ', data['user_id']);
+
+        this.isHidden.set(true);
+        // console.log('response status: ', response.status);
+        // console.log('response body: ', response.body);
 
         // Optional: Save token in localStorage
         // localStorage.setItem('auth_token', response.token);
       },
       error: (error) => {
         console.error('Registration failed', error);
-        this.message = 'Registration failed. Please try again.';
+
+        this.isHidden.set(false);
+        this.timeoutId = setTimeout(() => {
+          // 3000 or 5000?
+          this.isHidden.set(true);
+        }, 4000);
+        // this.message = 'Registration failed. Please try again.';
       },
     });
   }

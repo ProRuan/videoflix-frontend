@@ -69,3 +69,7 @@ app-footer {
   @include font($fs: 15px, $lh: 20px);
   color: $error;
 }
+
+.toast {
+  @include position($pos: fixed, $l: 32px, $b: 32px);
+}

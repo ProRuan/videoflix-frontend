@@ -12,6 +12,23 @@ import { Authentication } from '../../shared/services/authentication';
 export class LogIn {
   private auth: Authentication = inject(Authentication);
 
+  // center elements by parents (only containers with simple elements) ...
+  //   --> startsite, log-in, ...
+
+  // build root component with basic services, variables and methods ... ?
+  // review startsite.ts (see sign-up.ts) --> abstract class ... ?
+
+  // destroy subscriptions ...
+  // move form tag for other components (form, inputs, buttons) ...
+
+  // update input validator and input validation!!
+  // error text with end dots!
+  // remove matchword validator ... ?
+
+  // check font-family for inputs and buttons ... !
+
+  // error toast idea (error_toast_20250712) ...
+
   message: string = '';
 
   onLogin() {

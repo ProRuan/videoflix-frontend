@@ -3,7 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 interface RegistrationPayload {
-  username: string;
   email: string;
   password: string;
   repeated_password: string;

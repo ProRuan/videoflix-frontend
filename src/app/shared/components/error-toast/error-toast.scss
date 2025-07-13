@@ -1,0 +1,58 @@
+@use "mixins" as *;
+
+$image: url("/images/toasts/close_small.png");
+
+.error-toast {
+  @include spacing($p: 24px 32px);
+  @include size($w: fit-content, $h: 80px);
+  @include flexbox($ai: center, $g: 16px);
+  border-radius: 20px;
+  background-color: $primBlue;
+  position: relative;
+  z-index: 10;
+  transition: transform 100ms ease-in-out;
+  transform: translateX(calc(-100% - 64px));
+}
+
+.shown {
+  transform: translateX(0);
+}
+
+.rectangle {
+  @include size($w: 22px, $h: 80px);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  border-radius: 20px 0 0 20px;
+  background-color: $error;
+  z-index: 1;
+}
+
+.icon {
+  @include image($h: 32px);
+}
+
+.message {
+  @include font($fs: 16px, $lh: 21px);
+  width: 372px;
+  color: $white;
+}
+
+.border {
+  @include size($w: 0, $h: 32px);
+  border-right: 1px solid $white;
+}
+
+.button {
+  @include border($b: 2px solid transparent, $br: 50%);
+  @include size($w: 24px, $h: 24px);
+  @include background($bg: $image, $size: auto 24px);
+  padding: 0;
+  transition: border-color 100ms ease-in-out;
+
+  &:hover {
+    border-color: $white;
+  }
+
+  &:active {
+    border-color: transparent;
+  }
+}
