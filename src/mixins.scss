@@ -1,6 +1,8 @@
 $dmSans: "DM Sans", Arial, Helvetica, sans-serif;
 
 $primBlue: #2e3edf;
+$hoverBlue: #323fc8;
+$activeBlue: #3540b1;
 
 $gray: #d3d3d3;
 $white: #ffffff;
@@ -15,8 +17,6 @@ $inputBG: rgba(28, 26, 32, 0.8);
 
 // think about naming for variables above ... !
 // think about naming, e. g. $variable-name ... !
-$grayscale-hover: 0.15;
-$grayscale-active: 0.3;
 
 @mixin background(
   $bg: none,

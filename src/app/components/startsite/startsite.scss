@@ -43,11 +43,11 @@ $background: linear-gradient(
   transition: filter 100ms ease-in-out;
 
   &:hover {
-    filter: grayscale($grayscale-hover);
+    background-color: $hoverBlue;
   }
 
   &:active {
-    filter: grayscale($grayscale-active);
+    background-color: $activeBlue;
   }
 
   &:disabled {
