@@ -17,7 +17,7 @@ import { InputValidation } from '../../shared/services/input-validation';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { BaseComponent } from '../../shared/models/base-component';
-import { SignUpSuccessfulDialog } from './sign-up-successful-dialog/sign-up-successful-dialog';
+import { SignUpSuccessDialog } from './sign-up-success-dialog/sign-up-success-dialog';
 
 @Component({
   selector: 'app-sign-up',
@@ -28,7 +28,7 @@ import { SignUpSuccessfulDialog } from './sign-up-successful-dialog/sign-up-succ
     PasswordInput,
     Footer,
     ErrorToast,
-    SignUpSuccessfulDialog,
+    SignUpSuccessDialog,
   ],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
@@ -43,10 +43,8 @@ export class SignUp extends BaseComponent implements OnInit {
   // check!!!
   private auth: Authentication = inject(Authentication);
 
-  // clean code of registration-successful dialog ...
-  // think about error-toast width/max-width ...
-
-  // rename app-sign-up-successfull-dialog ... ?
+  // clean code of app-sign-up-success-dialog ...
+  // clean code of sign-up ...
 
   readonly routerURL: string = 'sign-up';
 
@@ -221,7 +219,7 @@ export class SignUp extends BaseComponent implements OnInit {
 
   zoomOutDialog() {
     const target = this.element.nativeElement.querySelector(
-      'app-sign-up-successful-dialog'
+      'app-sign-up-success-dialog'
     );
     target.addEventListener('transitionend', () => this.close());
     this.zoomOut.set(true);

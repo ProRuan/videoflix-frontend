@@ -21,8 +21,8 @@
 </div>
 
 @if(!isDialogHidden()) {
-<app-sign-up-successful-dialog [zoomOut]="zoomOut()" class="dialog" [class.hidden]="zoomOut()" (click)="onClose()"
-    (close)="onClose()"></app-sign-up-successful-dialog>
+<app-sign-up-success-dialog [zoomOut]="zoomOut()" class="dialog" [class.hidden]="zoomOut()" (click)="onClose()"
+    (close)="onClose()"></app-sign-up-success-dialog>
 }
 
 @if(!isToastHidden()) {

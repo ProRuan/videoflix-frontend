@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-sign-up-successful-dialog',
+  selector: 'app-sign-up-success-dialog',
   imports: [],
-  templateUrl: './sign-up-successful-dialog.html',
-  styleUrl: './sign-up-successful-dialog.scss',
+  templateUrl: './sign-up-success-dialog.html',
+  styleUrl: './sign-up-success-dialog.scss',
 })
-export class SignUpSuccessfulDialog {
+export class SignUpSuccessDialog {
   @Input() zoomOut: boolean = true;
   @Output('close') close = new EventEmitter();
 
