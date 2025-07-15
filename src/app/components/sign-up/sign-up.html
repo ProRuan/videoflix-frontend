@@ -21,7 +21,7 @@
 </div>
 
 @if(!isDialogHidden()) {
-<app-sign-up-successful-dialog class="dialog" [class.hidden]="fadeOut()" (click)="onClose()"
+<app-sign-up-successful-dialog [zoomOut]="zoomOut()" class="dialog" [class.hidden]="zoomOut()" (click)="onClose()"
     (close)="onClose()"></app-sign-up-successful-dialog>
 }
 

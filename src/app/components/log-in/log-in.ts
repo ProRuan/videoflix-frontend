@@ -38,6 +38,8 @@ export class LogIn {
   // set private, readonly and so on (also for other components) ... !
   // move/delete interface Video ...
 
+  // set button type submit/button ... !
+
   message: string = '';
 
   onLogin() {

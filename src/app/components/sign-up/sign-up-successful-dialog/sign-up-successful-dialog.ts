@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-sign-up-successful-dialog',
@@ -7,6 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './sign-up-successful-dialog.scss',
 })
 export class SignUpSuccessfulDialog {
+  @Input() zoomOut: boolean = true;
   @Output('close') close = new EventEmitter();
 
   onEventStop(event: Event) {

@@ -45,11 +45,8 @@ export class SignUp extends BaseComponent implements OnInit {
 
   // clean code of registration-successful dialog ...
   // think about error-toast width/max-width ...
-  // set button type submit/button ... !
 
-  // fix sign-up-successful-dialog button "center" ...
-  // animate dialog-box as well ...
-  // choose button color gray-scaled instead of filter:grayscale ...
+  // rename app-sign-up-successfull-dialog ... ?
 
   readonly routerURL: string = 'sign-up';
 
@@ -74,7 +71,7 @@ export class SignUp extends BaseComponent implements OnInit {
   deleting = signal(false);
   element = inject(ElementRef);
 
-  fadeOut = signal(false);
+  zoomOut = signal(false);
 
   /**
    * Initialize a sign-up component.
@@ -219,20 +216,20 @@ export class SignUp extends BaseComponent implements OnInit {
   }
 
   onClose() {
-    this.fadeOutDialog();
+    this.zoomOutDialog();
   }
 
-  fadeOutDialog() {
+  zoomOutDialog() {
     const target = this.element.nativeElement.querySelector(
       'app-sign-up-successful-dialog'
     );
     target.addEventListener('transitionend', () => this.close());
-    this.fadeOut.set(true);
+    this.zoomOut.set(true);
   }
 
   close() {
     this.isDialogHidden.set(true);
-    this.fadeOut.set(false);
+    this.zoomOut.set(false);
   }
 
   onEventStop(event: Event) {

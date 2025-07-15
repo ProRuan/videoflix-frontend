@@ -1,8 +1,8 @@
 <header class="header">
     <div class="content">
-        <button class="home-button" [disabled]="isStartsite()" (click)="onHome()"></button>
+        <button class="home-button" type="button" [disabled]="isStartsite()" (click)="onHome()"></button>
         @if (notLogIn) {
-        <button class="log-button" (click)="onNavigate()">Log in</button>
+        <button class="log-button" type="button" (click)="onNavigate()">Log in</button>
         }
     </div>
 </header>

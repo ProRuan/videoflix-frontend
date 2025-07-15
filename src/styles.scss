@@ -80,7 +80,7 @@ app-footer {
   padding: 0;
   background-color: rgba(0, 0, 0, 0.85);
   // set ms!!!
-  transition: background-color 1000ms ease-in-out;
+  transition: background-color 125ms ease-in-out;
 
   @starting-style {
     background-color: transparent;
@@ -101,6 +101,18 @@ app-footer {
   background-color: rgba(27, 27, 34, 1);
   // background-color: $formBG;
   box-shadow: 0 0 8px 3px $white;
+  transform: scale(1);
+  transition: opacity 125ms ease-in-out, transform 125ms ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.zoom-out {
+  opacity: 0;
+  transform: scale(0.9);
 }
 
 .dialog-headline {
