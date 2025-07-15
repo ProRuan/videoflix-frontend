@@ -12,22 +12,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
  */
 export class ErrorToast {
   @Input() message: string = '';
-  @Input() hidden: boolean = true;
-
-  @Output('hide') toastHide = new EventEmitter();
+  @Output() close = new EventEmitter();
 
   /**
-   * Check an error toast for the shown state.
-   * @returns A boolean value.
+   * Close an error toast on click.
    */
-  isShown() {
-    return !this.hidden;
-  }
-
-  /**
-   * Hide an error toast on click.
-   */
-  onHide() {
-    this.toastHide.emit();
+  onClose() {
+    this.close.emit();
   }
 }

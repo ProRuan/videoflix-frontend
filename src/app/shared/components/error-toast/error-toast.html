@@ -1,7 +1,7 @@
-<div class="error-toast" [class.shown]="isShown()">
+<div class="error-toast">
     <div class="rectangle"></div>
     <img class="icon" src="/images/toasts/exclamation.png" alt="exclamation">
     <p class="message">{{ message }}</p>
     <div class="border"></div>
-    <button class="button" (click)="onHide()"></button>
+    <button class="button" (click)="onClose()"></button>
 </div>

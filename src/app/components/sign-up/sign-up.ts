@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  ElementRef,
   inject,
   OnInit,
   Signal,
@@ -16,6 +17,7 @@ import { InputValidation } from '../../shared/services/input-validation';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { BaseComponent } from '../../shared/models/base-component';
+import { SignUpSuccessfulDialog } from './sign-up-successful-dialog/sign-up-successful-dialog';
 
 @Component({
   selector: 'app-sign-up',
@@ -26,6 +28,7 @@ import { BaseComponent } from '../../shared/models/base-component';
     PasswordInput,
     Footer,
     ErrorToast,
+    SignUpSuccessfulDialog,
   ],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
@@ -42,6 +45,11 @@ export class SignUp extends BaseComponent implements OnInit {
 
   // clean code of registration-successful dialog ...
   // think about error-toast width/max-width ...
+  // set button type submit/button ... !
+
+  // fix sign-up-successful-dialog button "center" + "active" (0/2) ...
+  // animate dialog-box as well ...
+  // choose button color gray-scaled instead of filter:grayscale ...
 
   readonly routerURL: string = 'sign-up';
 
@@ -61,6 +69,12 @@ export class SignUp extends BaseComponent implements OnInit {
   message: string = 'Please check your input and try again.';
   isToastHidden = signal(true);
   timeoutId!: ReturnType<typeof setTimeout>;
+
+  // check!!!
+  deleting = signal(false);
+  element = inject(ElementRef);
+
+  fadeOut = signal(false);
 
   /**
    * Initialize a sign-up component.
@@ -151,11 +165,22 @@ export class SignUp extends BaseComponent implements OnInit {
   }
 
   /**
-   * Clear timeout and hide error toast immediately.
+   * Clear timeout and close error toast immediately.
    */
-  onToastHide() {
+  onToastClose() {
     clearTimeout(this.timeoutId);
+    this.slideOutToast();
+  }
+
+  slideOutToast() {
+    const target = this.element.nativeElement.querySelector('app-error-toast');
+    target.addEventListener('transitionend', () => this.hide());
+    this.deleting.set(true);
+  }
+
+  hide() {
     this.isToastHidden.set(true);
+    this.deleting.set(false);
   }
 
   // finalize + rename onRegister() ...
@@ -194,7 +219,20 @@ export class SignUp extends BaseComponent implements OnInit {
   }
 
   onClose() {
+    this.fadeOutDialog();
+  }
+
+  fadeOutDialog() {
+    const target = this.element.nativeElement.querySelector(
+      'app-sign-up-successful-dialog'
+    );
+    target.addEventListener('transitionend', () => this.close());
+    this.fadeOut.set(true);
+  }
+
+  close() {
     this.isDialogHidden.set(true);
+    this.fadeOut.set(false);
   }
 
   onEventStop(event: Event) {
@@ -206,6 +244,6 @@ export class SignUp extends BaseComponent implements OnInit {
    */
   private showErrorToast() {
     this.isToastHidden.set(false);
-    this.timeoutId = setTimeout(() => this.isToastHidden.set(true), 4000);
+    this.timeoutId = setTimeout(() => this.slideOutToast(), 4000);
   }
 }

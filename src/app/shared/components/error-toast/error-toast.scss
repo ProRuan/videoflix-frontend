@@ -10,12 +10,6 @@ $image: url("/images/toasts/close_small.png");
   background-color: $primBlue;
   position: relative;
   z-index: 10;
-  transition: transform 100ms ease-in-out;
-  transform: translateX(calc(-100% - 64px));
-}
-
-.shown {
-  transform: translateX(0);
 }
 
 .rectangle {

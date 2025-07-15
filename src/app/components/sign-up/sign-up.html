@@ -20,21 +20,12 @@
     <app-footer></app-footer>
 </div>
 
-<!-- move to own component?! -->
-<dialog class="dialog" [class.hidden]="isDialogHidden()" (click)="onClose()">
-    <div class="dialog-box" (click)="onEventStop($event)">
-        <h3 class="dialog-headline">Registration successful</h3>
-        <p class="dialog-text">
-            Thank you for registering!
-        </p>
-        <p class="dialog-text">
-            We’ve sent a confirmation email to your inbox.
-            Please click the activation link inside to unlock your account.
-        </p>
-        <div class="button-cont">
-            <button class="button" (click)="onClose()">Close</button>
-        </div>
-    </div>
-</dialog>
+@if(!isDialogHidden()) {
+<app-sign-up-successful-dialog class="dialog" [class.hidden]="fadeOut()" (click)="onClose()"
+    (close)="onClose()"></app-sign-up-successful-dialog>
+}
 
-<app-error-toast [message]="message" [hidden]="isToastHidden()" class="toast" (hide)="onToastHide()"></app-error-toast>
+@if(!isToastHidden()) {
+<app-error-toast [message]="message" class="toast" [class.deleting]="deleting()"
+    (close)="onToastClose()"></app-error-toast>
+}

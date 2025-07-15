@@ -79,10 +79,16 @@ app-footer {
   border: none;
   padding: 0;
   background-color: rgba(0, 0, 0, 0.85);
+  // set ms!!!
+  transition: background-color 1000ms ease-in-out;
 
-  &.hidden {
-    display: none;
+  @starting-style {
+    background-color: transparent;
   }
+}
+
+.hidden {
+  background-color: transparent;
 }
 
 // check padding
@@ -110,4 +116,15 @@ app-footer {
 
 .toast {
   @include position($pos: fixed, $l: 32px, $b: 32px);
+  transition: transform 100ms ease-in-out;
+  transform: translateX(0);
+
+  @starting-style {
+    transform: translateX(calc(-100% - 64px));
+  }
+}
+
+// check this!!
+.deleting {
+  transform: translateX(calc(-100% - 64px));
 }
