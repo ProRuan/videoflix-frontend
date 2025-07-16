@@ -15,11 +15,11 @@ import { InputErrors } from '../../ts/enums';
  */
 export class StartEmailInput extends BaseInput {
   possibleErrors: string[] = [
-    InputErrors.required,
-    InputErrors.forbidden,
-    InputErrors.minLength,
-    InputErrors.email,
-    InputErrors.maxLength,
+    InputErrors.Required,
+    InputErrors.Forbidden,
+    InputErrors.MinLength,
+    InputErrors.Email,
+    InputErrors.MaxLength,
   ];
 
   @Input() control!: AbstractControl | null;

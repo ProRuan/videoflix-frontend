@@ -1,21 +1,21 @@
-export enum Autocompletes {
-  newPassword = 'new-password',
-  currentPassword = 'current-password',
+export const enum Autocompletes {
+  NewPassword = 'new-password',
+  CurrentPassword = 'current-password',
 }
 
-export enum InputErrors {
-  required = 'required',
-  forbidden = 'forbidden',
-  minLength = 'minLength',
-  email = 'email',
-  upperCase = 'upperCase',
-  lowerCase = 'lowerCase',
-  digit = 'digit',
-  specialChar = 'specialChar',
-  maxLength = 'maxLength',
+export const enum InputErrors {
+  Required = 'required',
+  Forbidden = 'forbidden',
+  MinLength = 'minLength',
+  Email = 'email',
+  UpperCase = 'upperCase',
+  LowerCase = 'lowerCase',
+  Digit = 'digit',
+  SpecialChar = 'specialChar',
+  MaxLength = 'maxLength',
 }
 
-export enum Types {
-  text = 'text',
-  password = 'password',
+export const enum Types {
+  Text = 'text',
+  Password = 'password',
 }

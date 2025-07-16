@@ -16,22 +16,22 @@ import { Autocompletes, InputErrors, Types } from '../../ts/enums';
  */
 export class PasswordInput extends BaseInput {
   possibleErrors: string[] = [
-    InputErrors.required,
-    InputErrors.forbidden,
-    InputErrors.minLength,
-    InputErrors.upperCase,
-    InputErrors.lowerCase,
-    InputErrors.digit,
-    InputErrors.specialChar,
-    InputErrors.maxLength,
+    InputErrors.Required,
+    InputErrors.Forbidden,
+    InputErrors.MinLength,
+    InputErrors.UpperCase,
+    InputErrors.LowerCase,
+    InputErrors.Digit,
+    InputErrors.SpecialChar,
+    InputErrors.MaxLength,
   ];
 
   masked: boolean = true;
-  type = signal(Types.password);
+  type = signal(Types.Password);
 
   @Input() control!: AbstractControl | null;
   @Input() placeholder: string = 'Password';
-  @Input() autocomplete: string = Autocompletes.newPassword;
+  @Input() autocomplete: string = Autocompletes.NewPassword;
   @Input('error') matchError: boolean = false;
   @Input('errorDisplayed') matchErrorDisplayed: boolean = true;
 
@@ -68,7 +68,7 @@ export class PasswordInput extends BaseInput {
    * @returns The changed input type.
    */
   private getChangedType(value: string) {
-    return value === Types.password ? Types.text : Types.password;
+    return value === Types.Password ? Types.Text : Types.Password;
   }
 
   /**

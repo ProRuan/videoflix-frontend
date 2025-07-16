@@ -8,9 +8,10 @@ const SPECIAL_CHARS = '!@#$%^&*';
  * @returns The patterns for emails.
  */
 function getEmailPatterns() {
-  const email = getEmailPattern();
-  const forbidden = getEmailForbiddenPattern();
-  return { email, forbidden };
+  return {
+    email: getEmailPattern(),
+    forbidden: getEmailForbiddenPattern(),
+  };
 }
 
 /**
@@ -73,12 +74,13 @@ export const emailPatterns = getEmailPatterns();
  * @returns The password patterns.
  */
 function getPasswordPatterns() {
-  const digit = getLockaheadPattern(DIGITS);
-  const upperCase = getLockaheadPattern(UPPER_CASES);
-  const lowerCase = getLockaheadPattern(LOWER_CASES);
-  const specialChar = getLockaheadPattern(SPECIAL_CHARS);
-  const forbidden = getPasswordForbiddenPattern();
-  return { digit, upperCase, lowerCase, specialChar, forbidden };
+  return {
+    digit: getLockaheadPattern(DIGITS),
+    upperCase: getLockaheadPattern(UPPER_CASES),
+    lowerCase: getLockaheadPattern(LOWER_CASES),
+    specialChar: getLockaheadPattern(SPECIAL_CHARS),
+    forbidden: getPasswordForbiddenPattern(),
+  };
 }
 
 /**
