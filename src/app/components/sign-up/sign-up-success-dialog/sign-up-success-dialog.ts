@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PrimaryButton } from '../../../shared/components/primary-button/primary-button';
 
 @Component({
   selector: 'app-sign-up-success-dialog',
-  imports: [],
+  imports: [PrimaryButton],
   templateUrl: './sign-up-success-dialog.html',
   styleUrl: './sign-up-success-dialog.scss',
 })

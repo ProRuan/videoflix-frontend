@@ -52,7 +52,6 @@ $background: linear-gradient(
 
   &:disabled {
     background-color: $disabled;
-    filter: none;
     cursor: default;
   }
 }

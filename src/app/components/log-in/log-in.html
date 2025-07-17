@@ -1,31 +1,28 @@
 <div class="log-in">
-    <app-header [notLogIn]="false"></app-header>
+    <app-header [buttonDisplayed]="false"></app-header>
 
-    <section class="content">
-        <h2 class="title">Log in</h2>
+    <form [formGroup]="form" class="form" (ngSubmit)="onLogIn()">
+        <h2 class="headline-2">Log in</h2>
 
-        <div class="input-group">
-            <div class="input-cont">
-                <img class="icon" src="/images/inputs/email.png" alt="email.png">
-                <input class="input" type="text" placeholder="Email Address">
-            </div>
-            <div class="input-cont">
-                <img class="icon" src="/images/inputs/password.png" alt="password.png">
-                <input class="input pr-60" type="text" placeholder="Password">
-                <button class="button"></button>
-            </div>
+        <div class="column-32">
+            <app-email-input [control]="email" placeholder="Email address"></app-email-input>
+            <app-password-input [control]="password" placeholder="Password"></app-password-input>
         </div>
 
         <div class="button-link-cont">
-            <!-- on submit!!! -->
-            <button class="login-button" (click)="onLogin()">Log in</button>
-            <a class="forgot-password-link" href="">Forgot password?</a>
-            <div class="sign-up-group">
+            <app-primary-button text="Log in" type="submit" [disabled]="isFormInvalid()"></app-primary-button>
+            <a routerLink="/forgot-password" class="forgot-password-link">Forgot password?</a>
+            <div class="sign-up-info">
                 <span class="sign-up-text">New to Videoflix?</span>
-                <a class="sign-up-link" href="">Sign Up now</a>
+                <a routerLink="/sign-up" class="sign-up-link">Sign up now</a>
             </div>
         </div>
-    </section>
+    </form>
 
     <app-footer></app-footer>
 </div>
+
+@if(isToastOpened()) {
+<app-error-toast [message]="message" class="toast" [class.slide-out]="isSlideOutActive()"
+    (close)="onToastClose()"></app-error-toast>
+}

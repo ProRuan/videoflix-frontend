@@ -1,0 +1,23 @@
+@use "mixins" as *;
+
+.button {
+  @include border($b: none, $br: 40px);
+  @include spacing($p: 12px 24px);
+  @include size($w: fit-content, $h: 48px);
+  @include font($fw: 700);
+  @include colors($c: $white, $bgc: $primBlue);
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $hoverBlue;
+  }
+
+  &:active {
+    background-color: $activeBlue;
+  }
+
+  &:disabled {
+    background-color: $disabled;
+    cursor: default;
+  }
+}

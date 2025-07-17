@@ -1,10 +1,11 @@
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { PrimaryButton } from '../primary-button/primary-button';
 import { Videoflix } from '../../services/videoflix';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [PrimaryButton],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -16,7 +17,7 @@ export class Header {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
 
-  @Input() notLogIn: boolean = true;
+  @Input() buttonDisplayed: boolean = true;
 
   /**
    * Check a router url for the base href.

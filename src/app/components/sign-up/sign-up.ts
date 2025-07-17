@@ -17,6 +17,7 @@ import {
 import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
+import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
 import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { SignUpSuccessDialog } from './sign-up-success-dialog/sign-up-success-dialog';
@@ -37,6 +38,7 @@ import {
     Header,
     EmailInput,
     PasswordInput,
+    PrimaryButton,
     Footer,
     ErrorToast,
     SignUpSuccessDialog,
@@ -55,7 +57,7 @@ export class SignUp implements OnInit {
   private validation: InputValidation = inject(InputValidation);
   private auth: Authentication = inject(Authentication);
 
-  readonly routerURL: string = 'sign-up';
+  private readonly routerURL: string = 'sign-up';
 
   form!: FormGroup;
   email!: FormControl;
@@ -149,10 +151,10 @@ export class SignUp implements OnInit {
 
   /**
    * Register a user on submit.
-   * If successful, a success dialog will open.
-   * Otherwise, an error toast will be shown.
+   * If successful, a success dialog opens.
+   * Otherwise, an error toast is shown.
    */
-  onUserRegistration() {
+  onRegistration() {
     clearTimeout(this.timeoutId);
     const payload = this.getPayload();
     this.auth.registerUser(payload).subscribe({
@@ -218,7 +220,7 @@ export class SignUp implements OnInit {
   }
 
   /**
-   * Check a form for invalidity.
+   * Check a sign-up form for invalidity.
    * @returns A boolean value.
    */
   isFormInvalid() {

@@ -1,86 +1,184 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../shared/components/header/header';
+import { EmailInput } from '../../shared/components/email-input/email-input';
+import { PasswordInput } from '../../shared/components/password-input/password-input';
+import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
+import { ErrorToast } from '../../shared/components/error-toast/error-toast';
+import { Videoflix } from '../../shared/services/videoflix';
+import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
+import { LogInPayload } from '../../shared/interfaces/log-in-payload';
+import {
+  animateOnLeave,
+  getFormControl,
+  hideElement,
+} from '../../shared/ts/utils';
 
 @Component({
   selector: 'app-log-in',
-  imports: [Header, Footer],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    Header,
+    EmailInput,
+    PasswordInput,
+    PrimaryButton,
+    Footer,
+    ErrorToast,
+  ],
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
 })
-export class LogIn {
+
+/**
+ * Class representing a log-in component.
+ * @implements {OnInit}
+ */
+export class LogIn implements OnInit {
+  private elementRef: ElementRef = inject(ElementRef);
+  private fb: FormBuilder = inject(FormBuilder);
+  private router: Router = inject(Router);
+  private videoflix: Videoflix = inject(Videoflix);
+  private validation: InputValidation = inject(InputValidation);
   private auth: Authentication = inject(Authentication);
 
-  // current tasks
-  // -------------
-  // move dialog tag into the dialog component ... ?
-  // think about click, close and stop events ... !
+  private readonly routerUrl: string = 'log-in';
 
-  // https://angular.dev/guide/http/making-requests
+  form!: FormGroup;
+  email!: FormControl;
+  password!: FormControl;
 
-  // center elements by parents (only containers with simple elements) ...
-  //   --> startsite, log-in, ...
+  message: string = 'Please check your input and try again.';
+  isToastOpened: WritableSignal<boolean> = signal(false);
+  isSlideOutActive: WritableSignal<boolean> = signal(false);
+  timeoutId!: ReturnType<typeof setTimeout>;
 
-  // build root component with basic services, variables and methods ... ?
-  // review startsite.ts (see sign-up.ts) --> abstract class ... ?
+  /**
+   * Initialize a log-in component.
+   */
+  ngOnInit(): void {
+    this.setRouterURL();
+    this.setForm();
+  }
 
-  // destroy subscriptions ...
-  // move form tag for other components (form, inputs, buttons) ...
+  /**
+   * Set the current router URL.
+   */
+  private setRouterURL() {
+    this.videoflix.setRouterURL(this.routerUrl);
+  }
 
-  // update input validator and input validation!!
-  // error text with end dots!
-  // remove matchword validator ... ?
+  /**
+   * Set a log-in form.
+   */
+  private setForm() {
+    this.setFormControls();
+    this.setFormGroup();
+  }
 
-  // check font-family for inputs and buttons ... !
+  /**
+   * Set form controls for email and password.
+   */
+  private setFormControls() {
+    this.email = getFormControl('', this.validation.email);
+    this.password = getFormControl('', this.validation.password);
+  }
 
-  // simplify computed signals (no extra function) ...
-  // destroy subscriptions/signals ...
-
-  // error toast idea (error_toast_20250712) ...
-  // add error-toast-cta component (e. g. button for continue video progress) ... !
-
-  // set private, readonly and so on (also for other components) ... !
-  // move/delete interface Video ...
-
-  // set button type submit/button ... !
-
-  // Sign-Up
-  // -------
-  // clean global dialog styles ...
-
-  // create an abstract base dialog class ... ?
-
-  // delete cachedEmail on destroy ... !
-  // sign-up-success-dialog: log-in button ... ?
-
-  // backend: email-check endpoint for startsite and forgot-password ... !
-
-  // think about DOM service ... ?!
-  // unsubscribe subscriptions and signals (destroyUntil) ... !
-  // add return types of all functions ...
-
-  // do ReturnType documentation for the entire project ... !!!
-
-  message: string = '';
-
-  onLogin() {
-    const payload = {
-      username: 'luigiSpukhaus',
-      password: 'Test123!',
-    };
-
-    this.auth.loginUser(payload).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
-        this.message = 'Login successful!';
-        // optionally save token in localStorage:
-        // localStorage.setItem('authToken', response.token);
-      },
-      error: (error) => {
-        console.error('Login failed', error);
-        this.message = 'Login failed. Check username and password.';
-      },
+  /**
+   * Set a form group composed of email and password control.
+   */
+  private setFormGroup() {
+    this.form = this.fb.group({
+      email: this.email,
+      password: this.password,
     });
+  }
+
+  /**
+   * Log in a user on submit.
+   * If successful, the user is redirected to the video offer component.
+   * Otherwise, an error toast is shown.
+   */
+  onLogIn() {
+    clearTimeout(this.timeoutId);
+    const payload = this.getPayload();
+    this.auth.logInUser(payload).subscribe({
+      next: (response) => this.logInUser(response),
+      error: () => this.openErrorToast(),
+    });
+  }
+
+  /**
+   * Get a log-in payload.
+   * @returns The log-in payload.
+   */
+  private getPayload(): LogInPayload {
+    return {
+      email: this.email?.value,
+      password: this.password?.value,
+    };
+  }
+
+  /**
+   * Log-in a user after setting the auth token.
+   * @param response - The response of the API log-in endpoint.
+   */
+  private logInUser(response: any) {
+    this.videoflix.setAuthData(response);
+    this.router.navigateByUrl('video-offer');
+  }
+
+  /**
+   * Open an error toast for four seconds.
+   */
+  private openErrorToast() {
+    this.isToastOpened.set(true);
+    this.timeoutId = setTimeout(() => this.slideOutToast(), 4000);
+  }
+
+  /**
+   * Check a log-in form for invalidity.
+   * @returns A boolean value.
+   */
+  isFormInvalid() {
+    return this.form.invalid;
+  }
+
+  /**
+   * Close a toast on click.
+   */
+  onToastClose() {
+    clearTimeout(this.timeoutId);
+    this.slideOutToast();
+  }
+
+  /**
+   * Animate an toast with "slide out" when it leaves the HTML DOM.
+   */
+  private slideOutToast() {
+    animateOnLeave(this.elementRef, '.toast', () => this.hideToast());
+    this.isSlideOutActive.set(true);
+  }
+
+  /**
+   * Hide a toast by removing it from the HTML DOM.
+   */
+  private hideToast() {
+    hideElement(this.isToastOpened, this.isSlideOutActive);
   }
 }

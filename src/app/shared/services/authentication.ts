@@ -1,24 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-interface RegistrationPayload {
-  email: string;
-  password: string;
-  repeated_password: string;
-}
-
-interface LoginPayload {
-  username: string;
-  password: string;
-}
-
-interface AuthResponse {
-  token: string;
-  username: string;
-  email: string;
-  user_id: number;
-}
+import { RegistrationPayload } from '../interfaces/registration-payload';
+import { LogInPayload } from '../interfaces/log-in-payload';
+import { AuthResponse } from '../interfaces/auth-response';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +23,7 @@ export class Authentication {
     });
   }
 
-  loginUser(payload: LoginPayload): Observable<AuthResponse> {
+  logInUser(payload: LogInPayload): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<AuthResponse>(this.loginUrl, payload, { headers });
   }

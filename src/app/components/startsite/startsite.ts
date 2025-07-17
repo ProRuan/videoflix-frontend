@@ -29,7 +29,7 @@ export class Startsite implements OnInit {
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
 
-  readonly routerURL: string = '/';
+  private readonly routerURL: string = '/';
 
   form!: FormGroup;
   email!: FormControl;

@@ -1,7 +1,7 @@
 <div class="sign-up">
     <app-header></app-header>
 
-    <form [formGroup]="form" class="form" (ngSubmit)="onUserRegistration()">
+    <form [formGroup]="form" class="form" (ngSubmit)="onRegistration()">
         <h2 class="headline-2">Sign up</h2>
 
         <div class="column-32">
@@ -13,7 +13,7 @@
         </div>
 
         <div class="button-cont">
-            <button class="button" type="submit" [disabled]="isFormInvalid()">Get started</button>
+            <app-primary-button text="Get started" type="submit" [disabled]="isFormInvalid()"></app-primary-button>
         </div>
     </form>
 
