@@ -1,7 +1,7 @@
 <div class="sign-up">
     <app-header></app-header>
 
-    <form [formGroup]="form" class="form" (ngSubmit)="onRegister()">
+    <form [formGroup]="form" class="form" (ngSubmit)="onUserRegistration()">
         <h2 class="headline-2">Sign up</h2>
 
         <div class="column-32">
@@ -20,12 +20,12 @@
     <app-footer></app-footer>
 </div>
 
-@if(!isDialogHidden()) {
-<app-sign-up-success-dialog [zoomOut]="zoomOut()" class="dialog" [class.hidden]="zoomOut()" (click)="onClose()"
-    (close)="onClose()"></app-sign-up-success-dialog>
+@if(isDialogOpened()) {
+<app-sign-up-success-dialog [zoomOutActive]="isZoomOutActive()" class="dialog" [class.hidden]="isZoomOutActive()"
+    (click)="onDialogClose()" (close)="onDialogClose()"></app-sign-up-success-dialog>
 }
 
-@if(!isToastHidden()) {
-<app-error-toast [message]="message" class="toast" [class.deleting]="deleting()"
+@if(isToastOpened()) {
+<app-error-toast [message]="message" class="toast" [class.slide-out]="isSlideOutActive()"
     (close)="onToastClose()"></app-error-toast>
 }

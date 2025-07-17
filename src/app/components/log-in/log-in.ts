@@ -12,6 +12,11 @@ import { Authentication } from '../../shared/services/authentication';
 export class LogIn {
   private auth: Authentication = inject(Authentication);
 
+  // current tasks
+  // -------------
+  // move dialog tag into the dialog component ... ?
+  // think about click, close and stop events ... !
+
   // https://angular.dev/guide/http/making-requests
 
   // center elements by parents (only containers with simple elements) ...
@@ -39,6 +44,23 @@ export class LogIn {
   // move/delete interface Video ...
 
   // set button type submit/button ... !
+
+  // Sign-Up
+  // -------
+  // clean global dialog styles ...
+
+  // create an abstract base dialog class ... ?
+
+  // delete cachedEmail on destroy ... !
+  // sign-up-success-dialog: log-in button ... ?
+
+  // backend: email-check endpoint for startsite and forgot-password ... !
+
+  // think about DOM service ... ?!
+  // unsubscribe subscriptions and signals (destroyUntil) ... !
+  // add return types of all functions ...
+
+  // do ReturnType documentation for the entire project ... !!!
 
   message: string = '';
 

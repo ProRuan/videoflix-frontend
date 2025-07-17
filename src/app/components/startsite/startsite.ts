@@ -1,11 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { BaseComponent } from '../../shared/models/base-component';
 import { Header } from '../../shared/components/header/header';
 import { StartEmailInput } from '../../shared/components/start-email-input/start-email-input';
 import { Footer } from '../../shared/components/footer/footer';
+import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
+import { getFormControl } from '../../shared/ts/utils';
 
 @Component({
   selector: 'app-startsite',
@@ -17,8 +23,10 @@ import { InputValidation } from '../../shared/services/input-validation';
 /**
  * Class representing a startsite component.
  */
-export class Startsite extends BaseComponent implements OnInit {
+export class Startsite implements OnInit {
+  private fb: FormBuilder = inject(FormBuilder);
   private router: Router = inject(Router);
+  private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
 
   readonly routerURL: string = '/';
@@ -35,6 +43,13 @@ export class Startsite extends BaseComponent implements OnInit {
   }
 
   /**
+   * Set the current router URL.
+   */
+  private setRouterURL() {
+    this.videoflix.setRouterURL(this.routerURL);
+  }
+
+  /**
    * Set a form group with an email control.
    */
   private setForm() {
@@ -46,7 +61,7 @@ export class Startsite extends BaseComponent implements OnInit {
    * Set an email control with default value and validators.
    */
   private setEmailControl() {
-    this.email = this.getFormControl('', this.validation.email);
+    this.email = getFormControl('', this.validation.email);
   }
 
   /**
