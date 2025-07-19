@@ -29,8 +29,7 @@ export class ErrorToast {
    * Slide out an error toast on close.
    */
   onClose() {
-    this.toasts.clearTimeout();
-    this.toasts.slideOut(ToastIds.ErrorToast);
+    this.toasts.slideOutImmediately(ToastIds.ErrorToast);
   }
 
   /**

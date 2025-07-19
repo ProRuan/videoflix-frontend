@@ -24,6 +24,11 @@ export class ToastManager extends OverlayManager {
     }, 4000);
   }
 
+  slideOutImmediately(id: string) {
+    this.clearTimeout();
+    this.slideOut(id);
+  }
+
   clearTimeout() {
     clearTimeout(this.timeoutId);
   }

@@ -8,6 +8,8 @@ body {
   background-color: #141414;
 }
 
+// check for column-16 and others if necessary ... !
+
 h1,
 h2,
 h3,
@@ -36,6 +38,10 @@ app-footer {
   @include font($fs: 48px, $fw: 700, $lh: 62px);
   text-align: center;
   color: $white;
+}
+
+.column-16 {
+  @include flexbox($fd: column, $g: 16px);
 }
 
 .column-32 {

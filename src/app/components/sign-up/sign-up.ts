@@ -178,7 +178,7 @@ export class SignUp implements OnInit {
    */
   private openSuccessDialog() {
     this.resetForm();
-    this.toasts.slideOut(ToastIds.ErrorToast);
+    this.toasts.slideOutImmediately(ToastIds.ErrorToast);
     this.dialogs.open(DialogIds.SignUpSuccess);
   }
 

@@ -8,9 +8,11 @@ import { DialogIds } from '../ts/enums';
 export class DialogManager extends OverlayManager {
   protected openState = signal<Record<string, boolean>>({
     [DialogIds.SignUpSuccess]: false,
+    [DialogIds.ForgotPasswordSuccess]: false,
   });
   private zoomOutState = signal<Record<string, boolean>>({
     [DialogIds.SignUpSuccess]: false,
+    [DialogIds.ForgotPasswordSuccess]: false,
   });
 
   // expose getters

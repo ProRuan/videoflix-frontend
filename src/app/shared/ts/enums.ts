@@ -5,6 +5,7 @@ export const enum Autocompletes {
 
 export const enum DialogIds {
   SignUpSuccess = 'sign-up-success',
+  ForgotPasswordSuccess = 'forgot-password-success',
 }
 
 export const enum InputErrors {
