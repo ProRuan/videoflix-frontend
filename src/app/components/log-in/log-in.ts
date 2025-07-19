@@ -1,17 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  inject,
-  OnInit,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
@@ -22,12 +10,9 @@ import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
+import { ToastManager } from '../../shared/services/toast-manager';
 import { LogInPayload } from '../../shared/interfaces/log-in-payload';
-import {
-  animateOnLeave,
-  getFormControl,
-  hideElement,
-} from '../../shared/ts/utils';
+import { ToastIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-log-in',
@@ -50,23 +35,34 @@ import {
  * @implements {OnInit}
  */
 export class LogIn implements OnInit {
-  private elementRef: ElementRef = inject(ElementRef);
   private fb: FormBuilder = inject(FormBuilder);
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
   private auth: Authentication = inject(Authentication);
+  private toasts: ToastManager = inject(ToastManager);
 
   private readonly routerUrl: string = 'log-in';
 
   form!: FormGroup;
-  email!: FormControl;
-  password!: FormControl;
 
   message: string = 'Please check your input and try again.';
-  isToastOpened: WritableSignal<boolean> = signal(false);
-  isSlideOutActive: WritableSignal<boolean> = signal(false);
-  timeoutId!: ReturnType<typeof setTimeout>;
+
+  /**
+   * Get the email control of a log-in form.
+   * @returns The email control or null.
+   */
+  get email() {
+    return this.form.get('email');
+  }
+
+  /**
+   * Get the password control of a log-in form.
+   * @returns The password control or null.
+   */
+  get password() {
+    return this.form.get('password');
+  }
 
   /**
    * Initialize a log-in component.
@@ -87,25 +83,9 @@ export class LogIn implements OnInit {
    * Set a log-in form.
    */
   private setForm() {
-    this.setFormControls();
-    this.setFormGroup();
-  }
-
-  /**
-   * Set form controls for email and password.
-   */
-  private setFormControls() {
-    this.email = getFormControl('', this.validation.email);
-    this.password = getFormControl('', this.validation.password);
-  }
-
-  /**
-   * Set a form group composed of email and password control.
-   */
-  private setFormGroup() {
     this.form = this.fb.group({
-      email: this.email,
-      password: this.password,
+      email: ['', this.validation.email],
+      password: ['', this.validation.password],
     });
   }
 
@@ -115,7 +95,6 @@ export class LogIn implements OnInit {
    * Otherwise, an error toast is shown.
    */
   onLogIn() {
-    clearTimeout(this.timeoutId);
     const payload = this.getPayload();
     this.auth.logInUser(payload).subscribe({
       next: (response) => this.logInUser(response),
@@ -144,11 +123,10 @@ export class LogIn implements OnInit {
   }
 
   /**
-   * Open an error toast for four seconds.
+   * Open an error toast.
    */
   private openErrorToast() {
-    this.isToastOpened.set(true);
-    this.timeoutId = setTimeout(() => this.slideOutToast(), 4000);
+    this.toasts.open(ToastIds.ErrorToast);
   }
 
   /**
@@ -160,25 +138,10 @@ export class LogIn implements OnInit {
   }
 
   /**
-   * Close a toast on click.
+   * Check an error toast for its open state.
+   * @returns A boolean value.
    */
-  onToastClose() {
-    clearTimeout(this.timeoutId);
-    this.slideOutToast();
-  }
-
-  /**
-   * Animate an toast with "slide out" when it leaves the HTML DOM.
-   */
-  private slideOutToast() {
-    animateOnLeave(this.elementRef, '.toast', () => this.hideToast());
-    this.isSlideOutActive.set(true);
-  }
-
-  /**
-   * Hide a toast by removing it from the HTML DOM.
-   */
-  private hideToast() {
-    hideElement(this.isToastOpened, this.isSlideOutActive);
+  isToastOpen() {
+    return this.toasts.isOpen(ToastIds.ErrorToast);
   }
 }

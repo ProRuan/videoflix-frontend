@@ -20,12 +20,10 @@
     <app-footer></app-footer>
 </div>
 
-@if(isDialogOpened()) {
-<app-sign-up-success-dialog [zoomOutActive]="isZoomOutActive()" class="dialog" [class.hidden]="isZoomOutActive()"
-    (click)="onDialogClose()" (close)="onDialogClose()"></app-sign-up-success-dialog>
+@if(isDialogOpen()) {
+<app-sign-up-success-dialog></app-sign-up-success-dialog>
 }
 
-@if(isToastOpened()) {
-<app-error-toast [message]="message" class="toast" [class.slide-out]="isSlideOutActive()"
-    (close)="onToastClose()"></app-error-toast>
+@if(isToastOpen()) {
+<app-error-toast [message]="message"></app-error-toast>
 }

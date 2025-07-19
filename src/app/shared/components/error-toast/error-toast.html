@@ -1,4 +1,4 @@
-<div class="error-toast">
+<div class="error-toast" [class.slide-out]="slidingOut" (transitionend)="onHide()">
     <div class="rectangle"></div>
     <img class="icon" src="/images/toasts/exclamation.png" alt="exclamation">
     <p class="message">{{ message }}</p>

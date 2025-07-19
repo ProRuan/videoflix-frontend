@@ -3,6 +3,10 @@ export const enum Autocompletes {
   CurrentPassword = 'current-password',
 }
 
+export const enum DialogIds {
+  SignUpSuccess = 'sign-up-success',
+}
+
 export const enum InputErrors {
   Required = 'required',
   Forbidden = 'forbidden',
@@ -13,6 +17,10 @@ export const enum InputErrors {
   Digit = 'digit',
   SpecialChar = 'specialChar',
   MaxLength = 'maxLength',
+}
+
+export const enum ToastIds {
+  ErrorToast = 'error-toast',
 }
 
 export const enum Types {

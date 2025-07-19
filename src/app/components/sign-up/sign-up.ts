@@ -1,7 +1,6 @@
 import {
   Component,
   computed,
-  ElementRef,
   inject,
   OnInit,
   Signal,
@@ -9,8 +8,8 @@ import {
   WritableSignal,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -24,12 +23,10 @@ import { SignUpSuccessDialog } from './sign-up-success-dialog/sign-up-success-di
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
+import { DialogManager } from '../../shared/services/dialog-manager';
+import { ToastManager } from '../../shared/services/toast-manager';
 import { RegistrationPayload } from '../../shared/interfaces/registration-payload';
-import {
-  animateOnLeave,
-  getFormControl,
-  hideElement,
-} from '../../shared/ts/utils';
+import { DialogIds, ToastIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-sign-up',
@@ -51,18 +48,16 @@ import {
  * Class representing a sign-up component.
  */
 export class SignUp implements OnInit {
-  private elementRef: ElementRef = inject(ElementRef);
   private fb: FormBuilder = inject(FormBuilder);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
   private auth: Authentication = inject(Authentication);
+  private dialogs: DialogManager = inject(DialogManager);
+  private toasts: ToastManager = inject(ToastManager);
 
   private readonly routerURL: string = 'sign-up';
 
   form!: FormGroup;
-  email!: FormControl;
-  password!: FormControl;
-  confirmPassword!: FormControl;
 
   private value: WritableSignal<string> = signal('');
   private confirmValue: WritableSignal<string> = signal('');
@@ -70,13 +65,31 @@ export class SignUp implements OnInit {
     () => this.value() !== this.confirmValue()
   );
 
-  isDialogOpened: WritableSignal<boolean> = signal(false);
-  isZoomOutActive: WritableSignal<boolean> = signal(false);
-
   message: string = 'Please check your input and try again.';
-  isToastOpened: WritableSignal<boolean> = signal(false);
-  isSlideOutActive: WritableSignal<boolean> = signal(false);
-  timeoutId!: ReturnType<typeof setTimeout>;
+
+  /**
+   * Get the email control of a sign-up form.
+   * @returns The email control or null.
+   */
+  get email() {
+    return this.form.get('email');
+  }
+
+  /**
+   * Get the password control of a sign-up form.
+   * @returns The password control or null.
+   */
+  get password() {
+    return this.form.get('password');
+  }
+
+  /**
+   * Get the confirm-password control of a sign-up form.
+   * @returns The confirm-password control or null.
+   */
+  get confirmPassword() {
+    return this.form.get('confirmPassword');
+  }
 
   /**
    * Initialize a sign-up component.
@@ -99,27 +112,10 @@ export class SignUp implements OnInit {
    * Set a sign-up form.
    */
   private setForm() {
-    this.setFormControls();
-    this.setFormGroup();
-  }
-
-  /**
-   * Set form controls for email, password and confirm password.
-   */
-  private setFormControls() {
-    this.email = getFormControl('', this.validation.email);
-    this.password = getFormControl('', this.validation.password);
-    this.confirmPassword = getFormControl('', this.validation.password);
-  }
-
-  /**
-   * Set a form group composed of email, password and confirm password control.
-   */
-  private setFormGroup() {
     this.form = this.fb.group({
-      email: this.email,
-      password: this.password,
-      confirmPassword: this.confirmPassword,
+      email: ['', this.validation.email],
+      password: ['', this.validation.password],
+      confirmPassword: ['', this.validation.password],
     });
   }
 
@@ -127,7 +123,7 @@ export class SignUp implements OnInit {
    * Update an email control with the cached email provided by the startsite form.
    */
   private updateEmail() {
-    this.email.setValue(this.videoflix.cachedEmail);
+    this.email?.setValue(this.videoflix.cachedEmail);
   }
 
   /**
@@ -143,8 +139,11 @@ export class SignUp implements OnInit {
    * @param control - The form control to subscribe to.
    * @param signal - The signal to update.
    */
-  private updateSignal(control: FormControl, signal: WritableSignal<string>) {
-    control.valueChanges.subscribe({
+  private updateSignal(
+    control: AbstractControl | null,
+    signal: WritableSignal<string>
+  ) {
+    control?.valueChanges.subscribe({
       next: (value: string) => signal.set(value),
     });
   }
@@ -155,7 +154,6 @@ export class SignUp implements OnInit {
    * Otherwise, an error toast is shown.
    */
   onRegistration() {
-    clearTimeout(this.timeoutId);
     const payload = this.getPayload();
     this.auth.registerUser(payload).subscribe({
       next: () => this.openSuccessDialog(),
@@ -180,8 +178,8 @@ export class SignUp implements OnInit {
    */
   private openSuccessDialog() {
     this.resetForm();
-    this.isToastOpened.set(false);
-    this.isDialogOpened.set(true);
+    this.toasts.slideOut(ToastIds.ErrorToast);
+    this.dialogs.open(DialogIds.SignUpSuccess);
   }
 
   /**
@@ -196,11 +194,10 @@ export class SignUp implements OnInit {
   }
 
   /**
-   * Open an error toast for four seconds.
+   * Open an error toast.
    */
   private openErrorToast() {
-    this.isToastOpened.set(true);
-    this.timeoutId = setTimeout(() => this.slideOutToast(), 4000);
+    this.toasts.open(ToastIds.ErrorToast);
   }
 
   /**
@@ -216,7 +213,9 @@ export class SignUp implements OnInit {
    * @returns A boolean value.
    */
   private arePasswordsValid() {
-    return this.password.valid && this.confirmPassword.valid;
+    const passwordValid = this.password?.valid ?? false;
+    const confirmPasswordValid = this.confirmPassword?.valid ?? false;
+    return passwordValid && confirmPasswordValid;
   }
 
   /**
@@ -228,47 +227,18 @@ export class SignUp implements OnInit {
   }
 
   /**
-   * Close a dialog on click.
+   * Check a success dialog for its open state.
+   * @returns A boolean value.
    */
-  onDialogClose() {
-    this.zoomOutDialog();
+  isDialogOpen() {
+    return this.dialogs.isOpen(DialogIds.SignUpSuccess);
   }
 
   /**
-   * Animate a dialog with "zoom out" when it leaves the HTML DOM.
+   * Check an error toast for its open state.
+   * @returns A boolean value.
    */
-  private zoomOutDialog() {
-    animateOnLeave(this.elementRef, '.dialog', () => this.hideDialog());
-    this.isZoomOutActive.set(true);
-  }
-
-  /**
-   * Hide a dialog by removing it from the HTML DOM.
-   */
-  private hideDialog() {
-    hideElement(this.isDialogOpened, this.isZoomOutActive);
-  }
-
-  /**
-   * Close a toast on click.
-   */
-  onToastClose() {
-    clearTimeout(this.timeoutId);
-    this.slideOutToast();
-  }
-
-  /**
-   * Animate an toast with "slide out" when it leaves the HTML DOM.
-   */
-  private slideOutToast() {
-    animateOnLeave(this.elementRef, '.toast', () => this.hideToast());
-    this.isSlideOutActive.set(true);
-  }
-
-  /**
-   * Hide a toast by removing it from the HTML DOM.
-   */
-  private hideToast() {
-    hideElement(this.isToastOpened, this.isSlideOutActive);
+  isToastOpen() {
+    return this.toasts.isOpen(ToastIds.ErrorToast);
   }
 }

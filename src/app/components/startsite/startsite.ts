@@ -1,17 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Header } from '../../shared/components/header/header';
 import { StartEmailInput } from '../../shared/components/start-email-input/start-email-input';
 import { Footer } from '../../shared/components/footer/footer';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
-import { getFormControl } from '../../shared/ts/utils';
 
 @Component({
   selector: 'app-startsite',
@@ -32,7 +26,14 @@ export class Startsite implements OnInit {
   private readonly routerURL: string = '/';
 
   form!: FormGroup;
-  email!: FormControl;
+
+  /**
+   * Get the email control of a startsite form.
+   * @returns The email control or null.
+   */
+  get email() {
+    return this.form.get('email');
+  }
 
   /**
    * Initialize a startsite component.
@@ -50,26 +51,11 @@ export class Startsite implements OnInit {
   }
 
   /**
-   * Set a form group with an email control.
+   * Set a startsite form.
    */
   private setForm() {
-    this.setEmailControl();
-    this.setFormGroup();
-  }
-
-  /**
-   * Set an email control with default value and validators.
-   */
-  private setEmailControl() {
-    this.email = getFormControl('', this.validation.email);
-  }
-
-  /**
-   * Set a form group with an email control.
-   */
-  private setFormGroup() {
     this.form = this.fb.group({
-      email: this.email,
+      email: ['', this.validation.email],
     });
   }
 

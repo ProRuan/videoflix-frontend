@@ -1,13 +1,15 @@
-<div class="dialog-box" [class.zoom-out]="zoomOutActive" (click)="onEventStop($event)">
-    <h3 class="dialog-headline">Registration successful</h3>
-    <p class="dialog-text">
-        Thank you for registering!
-    </p>
-    <p class="dialog-text">
-        We’ve sent a confirmation email to your inbox.
-        Please click the activation link inside to unlock your account.
-    </p>
-    <div class="button-cont">
-        <app-primary-button text="Close" type="button" (click)="onClose()"></app-primary-button>
+<dialog class="dialog" [class.transparent]="zoomingOut" (click)="onClose()" (transitionend)="onHide()">
+    <div class="dialog-box" [class.zoom-out]="zoomingOut" (click)="onEventStop($event)">
+        <h3 class="dialog-headline">Registration successful</h3>
+        <p class="dialog-text">
+            Thank you for registering!
+        </p>
+        <p class="dialog-text">
+            We’ve sent a confirmation email to your inbox.
+            Please click the activation link inside to unlock your account.
+        </p>
+        <div class="button-cont">
+            <app-primary-button text="Close" type="button" (click)="onClose()"></app-primary-button>
+        </div>
     </div>
-</div>
+</dialog>

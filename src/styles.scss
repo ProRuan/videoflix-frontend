@@ -87,7 +87,7 @@ app-footer {
   }
 }
 
-.hidden {
+.transparent {
   background-color: transparent;
 }
 
@@ -126,17 +126,17 @@ app-footer {
   color: $white;
 }
 
-.toast {
-  @include position($pos: fixed, $l: 32px, $b: 32px);
-  transition: transform 100ms ease-in-out;
-  transform: translateX(0);
+// .toast {
+//   @include position($pos: fixed, $l: 32px, $b: 32px);
+//   transition: transform 100ms ease-in-out;
+//   transform: translateX(0);
 
-  @starting-style {
-    transform: translateX(calc(-100% - 64px));
-  }
-}
+//   @starting-style {
+//     transform: translateX(calc(-100% - 64px));
+//   }
+// }
 
 // check this!!
-.slide-out {
-  transform: translateX(calc(-100% - 64px));
-}
+// .slide-out {
+//   transform: translateX(calc(-100% - 64px));
+// }

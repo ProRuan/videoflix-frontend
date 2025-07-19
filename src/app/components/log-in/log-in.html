@@ -22,7 +22,6 @@
     <app-footer></app-footer>
 </div>
 
-@if(isToastOpened()) {
-<app-error-toast [message]="message" class="toast" [class.slide-out]="isSlideOutActive()"
-    (close)="onToastClose()"></app-error-toast>
+@if(isToastOpen()) {
+<app-error-toast [message]="message"></app-error-toast>
 }

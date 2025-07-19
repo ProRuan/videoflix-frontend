@@ -6,10 +6,20 @@ $image: url("/images/toasts/close_small.png");
   @include spacing($p: 24px 32px);
   @include size($w: fit-content, $h: 80px);
   @include flexbox($ai: center, $g: 16px);
+  @include position($pos: fixed, $l: 32px, $b: 32px);
   border-radius: 20px;
   background-color: $primBlue;
-  position: relative;
   z-index: 10;
+  transition: transform 100ms ease-in-out;
+  transform: translateX(0);
+
+  @starting-style {
+    transform: translateX(calc(-100% - 64px));
+  }
+
+  &.slide-out {
+    transform: translateX(calc(-100% - 64px));
+  }
 }
 
 .rectangle {
