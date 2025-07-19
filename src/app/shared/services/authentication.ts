@@ -6,6 +6,12 @@ import { LogInPayload } from '../interfaces/log-in-payload';
 import { AuthResponse } from '../interfaces/auth-response';
 import { ForgotPasswordPayload } from '../interfaces/forgot-password-payload';
 
+export interface ResetPasswordPayload {
+  token: string;
+  password: string;
+  repeated_password: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -16,6 +22,7 @@ export class Authentication {
   private registrationUrl = 'http://127.0.0.1:8000/api/registration/';
   private loginUrl = 'http://127.0.0.1:8000/api/login/';
   private forgotPasswordUrl = 'http://127.0.0.1:8000/api/forgot-password/';
+  private resetPasswordUrl = 'http://127.0.0.1:8000/api/reset-password/';
 
   registerUser(payload: RegistrationPayload): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -33,6 +40,13 @@ export class Authentication {
   requestPasswordReset(payload: ForgotPasswordPayload) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<AuthResponse>(this.forgotPasswordUrl, payload, {
+      headers,
+    });
+  }
+
+  updateUserPassword(payload: ResetPasswordPayload) {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<AuthResponse>(this.resetPasswordUrl, payload, {
       headers,
     });
   }
