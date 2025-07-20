@@ -1,29 +1,31 @@
-import {
-  Component,
-  computed,
-  inject,
-  OnInit,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Header } from '../../shared/components/header/header';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
+import { ResetPasswordSuccessDialog } from './reset-password-success-dialog/reset-password-success-dialog';
+import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
+import { FormValidator } from '../../shared/services/form-validator';
+import { DialogManager } from '../../shared/services/dialog-manager';
+import { ToastManager } from '../../shared/services/toast-manager';
+import { ResetPasswordPayload } from '../../shared/interfaces/reset-password-payload';
+import { DialogIds, ToastIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [ReactiveFormsModule, Header, PasswordInput, PrimaryButton, Footer],
+  imports: [
+    ReactiveFormsModule,
+    Header,
+    PasswordInput,
+    PrimaryButton,
+    Footer,
+    ResetPasswordSuccessDialog,
+    ErrorToast,
+  ],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })
@@ -35,23 +37,16 @@ export class ResetPassword implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
+  private validator: FormValidator = inject(FormValidator);
   private auth: Authentication = inject(Authentication);
-
-  // add success dialog ...
-  // add (global) error toast ...
-  // add FormValidator.passwordMismatch() - no signals or double logic ...
-
-  // no getters and helper methods --> use form in html instead ... ?
+  private dialogs: DialogManager = inject(DialogManager);
+  private toasts: ToastManager = inject(ToastManager);
 
   private readonly routerURL: string = 'reset-password';
 
   form!: FormGroup;
 
-  value: WritableSignal<string> = signal('');
-  confirmValue: WritableSignal<string> = signal('');
-  isPasswordMismatch: Signal<boolean> = computed(
-    () => this.value() !== this.confirmValue()
-  );
+  message: string = 'Please check your input and try again.';
 
   /**
    * Get the password control of a reset-password form.
@@ -70,12 +65,19 @@ export class ResetPassword implements OnInit {
   }
 
   /**
+   * Check a reset-password form for a password mismatch error.
+   * @returns A boolean value.
+   */
+  get matchError() {
+    return this.form.hasError('passwordMismatch');
+  }
+
+  /**
    * Initialize a reset-password component.
    */
   ngOnInit(): void {
     this.setRouterURL();
     this.setForm();
-    this.subscribePasswords();
   }
 
   /**
@@ -89,48 +91,33 @@ export class ResetPassword implements OnInit {
    * Set a reset-password form.
    */
   private setForm() {
-    this.form = this.fb.group({
-      password: ['', this.validation.password],
-      confirmPassword: ['', this.validation.password],
-    });
+    this.form = this.fb.group(
+      {
+        password: ['', this.validation.password],
+        confirmPassword: ['', this.validation.password],
+      },
+      { validators: this.validator.passwordMatch() }
+    );
   }
 
   /**
-   * Subscribe to password changes to update related signals.
+   * Reset password on submit.
+   * If successful, a success dialog opens.
+   * Otherwise, an error toast is shown.
    */
-  private subscribePasswords() {
-    this.updateSignal(this.password, this.value);
-    this.updateSignal(this.confirmPassword, this.confirmValue);
-  }
-
-  /**
-   * Update a signal when the related form control value changes.
-   * @param control - The form control to subscribe to.
-   * @param signal - The signal to update.
-   */
-  private updateSignal(
-    control: AbstractControl | null,
-    signal: WritableSignal<string>
-  ) {
-    control?.valueChanges.subscribe({
-      next: (value: string) => signal.set(value),
-    });
-  }
-
-  // think about name ... !
-  // add dialog ... ?
-  // add error toast ... !
   onPasswordReset() {
     const payload = this.getPayload();
     this.auth.updateUserPassword(payload).subscribe({
-      next: (response) => console.log('response: ', response),
-      error: () => console.log('error'),
+      next: () => this.openSuccessDialog(),
+      error: () => this.openErrorToast(),
     });
   }
 
-  // token must be a variable ... !
-  // use email instead of token ... !
-  private getPayload() {
+  /**
+   * Get a reset-password payload.
+   * @returns The reset-password payload.
+   */
+  private getPayload(): ResetPasswordPayload {
     return {
       token: 'be74f002e7c87632dd3ca97b37d4ed47d1db71b9',
       password: this.password?.value,
@@ -139,24 +126,52 @@ export class ResetPassword implements OnInit {
   }
 
   /**
-   * Check passwords for validity and match.
-   * @returns A boolean value.
+   * Open a success dialog.
    */
-  isMatchError() {
-    return this.arePasswordsValid() && this.isPasswordMismatch();
+  private openSuccessDialog() {
+    this.resetForm();
+    this.toasts.slideOutImmediately(ToastIds.ErrorToast);
+    this.dialogs.open(DialogIds.ResetPasswordSuccess);
   }
 
   /**
-   * Check password and confirm password for validity.
-   * @returns A boolean value.
+   * Reset a reset-password form.
    */
-  private arePasswordsValid() {
-    const passwordValid = this.password?.valid ?? false;
-    const confirmPasswordValid = this.confirmPassword?.valid ?? false;
-    return passwordValid && confirmPasswordValid;
+  private resetForm() {
+    this.form.reset({
+      password: '',
+      confirmPassword: '',
+    });
   }
 
+  /**
+   * Open an error toast.
+   */
+  private openErrorToast() {
+    this.toasts.open(ToastIds.ErrorToast);
+  }
+
+  /**
+   * Check a reset-password form for invalidity.
+   * @returns A boolean value.
+   */
   isFormInvalid() {
     return this.form.invalid;
+  }
+
+  /**
+   * Check a success dialog for its open state.
+   * @returns A boolean value.
+   */
+  isDialogOpen() {
+    return this.dialogs.isOpen(DialogIds.ResetPasswordSuccess);
+  }
+
+  /**
+   * Check an error toast for its open state.
+   * @returns A boolean value.
+   */
+  isToastOpen() {
+    return this.toasts.isOpen(ToastIds.ErrorToast);
   }
 }

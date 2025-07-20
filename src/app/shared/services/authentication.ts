@@ -5,12 +5,7 @@ import { RegistrationPayload } from '../interfaces/registration-payload';
 import { LogInPayload } from '../interfaces/log-in-payload';
 import { AuthResponse } from '../interfaces/auth-response';
 import { ForgotPasswordPayload } from '../interfaces/forgot-password-payload';
-
-export interface ResetPasswordPayload {
-  token: string;
-  password: string;
-  repeated_password: string;
-}
+import { ResetPasswordPayload } from '../interfaces/reset-password-payload';
 
 @Injectable({
   providedIn: 'root',

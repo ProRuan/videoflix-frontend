@@ -80,4 +80,7 @@ export class VideoOffer {
   // setAuthData() ... ?!
   // save auth data locally (token, email?, id?) (0/3) ... ?!
   // rename Authentication service to Authenticator ... !
+
+  // reset-password: payload token must be variable ... !
+  //   --> use email instead of token ... !
 }
