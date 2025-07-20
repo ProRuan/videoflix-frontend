@@ -4,7 +4,6 @@ import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
-import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
 import { DialogManager } from '../../shared/services/dialog-manager';
@@ -24,13 +23,10 @@ import { DialogIds, ToastIds } from '../../shared/ts/enums';
  */
 export class ForgotPassword implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
-  private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
   private auth: Authentication = inject(Authentication);
   private dialogs: DialogManager = inject(DialogManager);
   private toasts: ToastManager = inject(ToastManager);
-
-  private readonly routerURL: string = 'forgot-password';
 
   form!: FormGroup;
 
@@ -46,16 +42,8 @@ export class ForgotPassword implements OnInit {
    * Initialize a forgot-password component.
    */
   ngOnInit(): void {
-    this.setRouterURL();
     this.setForm();
     this.setDialogConfig();
-  }
-
-  /**
-   * Set the current router URL.
-   */
-  private setRouterURL() {
-    this.videoflix.setRouterURL(this.routerURL);
   }
 
   /**

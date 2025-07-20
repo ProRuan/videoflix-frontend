@@ -23,8 +23,6 @@ export class Startsite implements OnInit {
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
 
-  private readonly routerURL: string = '/';
-
   form!: FormGroup;
 
   /**
@@ -39,15 +37,7 @@ export class Startsite implements OnInit {
    * Initialize a startsite component.
    */
   ngOnInit(): void {
-    this.setRouterURL();
     this.setForm();
-  }
-
-  /**
-   * Set the current router URL.
-   */
-  private setRouterURL() {
-    this.videoflix.setRouterURL(this.routerURL);
   }
 
   /**

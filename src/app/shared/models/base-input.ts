@@ -1,4 +1,4 @@
-import { ElementRef, signal } from '@angular/core';
+import { ElementRef } from '@angular/core';
 import { AbstractControl, ControlValueAccessor } from '@angular/forms';
 
 /**
@@ -6,7 +6,6 @@ import { AbstractControl, ControlValueAccessor } from '@angular/forms';
  */
 export abstract class BaseInput implements ControlValueAccessor {
   error: string = '';
-  isError = signal(false);
 
   abstract get possibleErrors(): string[];
   abstract get control(): AbstractControl | null;
@@ -44,14 +43,6 @@ export abstract class BaseInput implements ControlValueAccessor {
    * Check a control value for possible errors.
    */
   validateValue() {
-    this.updateError();
-    this.updateErrorState();
-  }
-
-  /**
-   * Update an input error.
-   */
-  updateError() {
     this.error = '';
     for (const error of this.possibleErrors) {
       if (this.hasError(error)) {
@@ -80,11 +71,11 @@ export abstract class BaseInput implements ControlValueAccessor {
   }
 
   /**
-   * Update the error state of an input.
+   * Check an input for an error.
+   * @returns A boolean value.
    */
-  updateErrorState() {
-    const value = this.error ? true : false;
-    this.isError.set(value);
+  isError() {
+    return this.error ? true : false;
   }
 
   /**

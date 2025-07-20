@@ -40,8 +40,6 @@ export class LogIn implements OnInit {
   private auth: Authentication = inject(Authentication);
   private toasts: ToastManager = inject(ToastManager);
 
-  private readonly routerUrl: string = 'log-in';
-
   form!: FormGroup;
 
   /**
@@ -64,15 +62,7 @@ export class LogIn implements OnInit {
    * Initialize a log-in component.
    */
   ngOnInit(): void {
-    this.setRouterURL();
     this.setForm();
-  }
-
-  /**
-   * Set the current router URL.
-   */
-  private setRouterURL() {
-    this.videoflix.setRouterURL(this.routerUrl);
   }
 
   /**

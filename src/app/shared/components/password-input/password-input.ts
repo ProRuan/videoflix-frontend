@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { BaseInput } from '../../models/base-input';
 import { Autocompletes, InputErrors, Types } from '../../ts/enums';
@@ -27,7 +27,6 @@ export class PasswordInput extends BaseInput {
   ];
 
   masked: boolean = true;
-  type = signal(Types.Password);
 
   @Input() control!: AbstractControl | null;
   @Input() placeholder: string = 'Password';
@@ -54,25 +53,22 @@ export class PasswordInput extends BaseInput {
   }
 
   /**
+   * Get the type of a password input.
+   * @returns The type of the password input.
+   */
+  getType() {
+    return this.masked ? Types.Password : Types.Text;
+  }
+
+  /**
    * Toggle a password mask on click.
    */
   onMaskToggle() {
-    const changedType = this.getChangedType(this.type());
-    this.type.set(changedType);
     this.masked = !this.masked;
   }
 
   /**
-   * Get a changed input type.
-   * @param value - The current input type.
-   * @returns The changed input type.
-   */
-  private getChangedType(value: string) {
-    return value === Types.Password ? Types.Text : Types.Password;
-  }
-
-  /**
-   * Check a password input for validation or match error.
+   * Check a password input for validation error or match error.
    * @returns A boolean value.
    */
   isPasswordError() {

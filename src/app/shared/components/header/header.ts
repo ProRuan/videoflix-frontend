@@ -23,8 +23,8 @@ export class Header {
    * Check a router url for the base href.
    * @returns A boolean value.
    */
-  isStartsite() {
-    return this.videoflix.isStartsite();
+  isHome() {
+    return this.videoflix.isHome();
   }
 
   /**

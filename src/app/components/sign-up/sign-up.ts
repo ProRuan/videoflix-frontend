@@ -40,8 +40,6 @@ export class SignUp implements OnInit {
   private dialogs: DialogManager = inject(DialogManager);
   private toasts: ToastManager = inject(ToastManager);
 
-  private readonly routerURL: string = 'sign-up';
-
   form!: FormGroup;
 
   /**
@@ -79,17 +77,9 @@ export class SignUp implements OnInit {
    * Initialize a sign-up component.
    */
   ngOnInit(): void {
-    this.setRouterURL();
     this.setForm();
     this.updateEmail();
     this.setDialogConfig();
-  }
-
-  /**
-   * Set the current router URL.
-   */
-  private setRouterURL() {
-    this.videoflix.setRouterURL(this.routerURL);
   }
 
   /**

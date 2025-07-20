@@ -4,7 +4,6 @@ import { Header } from '../../shared/components/header/header';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
-import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
 import { FormValidator } from '../../shared/services/form-validator';
@@ -25,14 +24,11 @@ import { DialogIds, ToastIds } from '../../shared/ts/enums';
  */
 export class ResetPassword implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
-  private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
   private validator: FormValidator = inject(FormValidator);
   private auth: Authentication = inject(Authentication);
   private dialogs: DialogManager = inject(DialogManager);
   private toasts: ToastManager = inject(ToastManager);
-
-  private readonly routerURL: string = 'reset-password';
 
   form!: FormGroup;
 
@@ -64,16 +60,8 @@ export class ResetPassword implements OnInit {
    * Initialize a reset-password component.
    */
   ngOnInit(): void {
-    this.setRouterURL();
     this.setForm();
     this.setDialogConfig();
-  }
-
-  /**
-   * Set the current router URL.
-   */
-  private setRouterURL() {
-    this.videoflix.setRouterURL(this.routerURL);
   }
 
   /**
