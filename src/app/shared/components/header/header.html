@@ -1,7 +1,7 @@
 <header class="header">
     <div class="content">
         <button class="home-button" type="button" [disabled]="isStartsite()" (click)="onHome()"></button>
-        @if (buttonDisplayed) {
+        @if (complete) {
         <app-primary-button text="Log in" type="button" [disabled]="false" (click)="onNavigate()"></app-primary-button>
         }
     </div>

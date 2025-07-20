@@ -1,1 +1,9 @@
 <router-outlet></router-outlet>
+
+@if(isDialogOpen()) {
+<app-success-dialog [config]="getConfig()"></app-success-dialog>
+}
+
+@if(isToastOpen()) {
+<app-error-toast [message]="getMessage()"></app-error-toast>
+}

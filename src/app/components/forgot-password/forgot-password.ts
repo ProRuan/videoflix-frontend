@@ -4,8 +4,6 @@ import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
-import { ForgotPasswordSuccessDialog } from './forgot-password-success-dialog/forgot-password-success-dialog';
-import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
@@ -16,15 +14,7 @@ import { DialogIds, ToastIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-forgot-password',
-  imports: [
-    ReactiveFormsModule,
-    Header,
-    EmailInput,
-    PrimaryButton,
-    Footer,
-    ForgotPasswordSuccessDialog,
-    ErrorToast,
-  ],
+  imports: [ReactiveFormsModule, Header, EmailInput, PrimaryButton, Footer],
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.scss',
 })
@@ -44,8 +34,6 @@ export class ForgotPassword implements OnInit {
 
   form!: FormGroup;
 
-  message: string = 'Please check your input and try again.';
-
   /**
    * Get the email control of a forgot-password form.
    * @returns The email control or null.
@@ -60,6 +48,7 @@ export class ForgotPassword implements OnInit {
   ngOnInit(): void {
     this.setRouterURL();
     this.setForm();
+    this.setDialogConfig();
   }
 
   /**
@@ -79,17 +68,23 @@ export class ForgotPassword implements OnInit {
   }
 
   /**
+   * Set the configuration of a success dialog.
+   */
+  private setDialogConfig() {
+    this.dialogs.setConfig(DialogIds.ForgotPasswordSuccess);
+  }
+
+  /**
    * Send a password-reset email on submit.
    * If successful, an email is sent.
    * Otherwise, an error toast is shown.
    */
-  onSend() {
+  onEmailSend() {
     const payload = this.getPayload();
     this.auth.requestPasswordReset(payload).subscribe({
       next: () => this.openSuccessDialog(),
       error: () => this.openErrorToast(),
     });
-    console.log('Send me an password-reset email.');
   }
 
   /**
@@ -108,7 +103,7 @@ export class ForgotPassword implements OnInit {
   private openSuccessDialog() {
     this.resetForm();
     this.toasts.slideOutImmediately(ToastIds.ErrorToast);
-    this.dialogs.open(DialogIds.ForgotPasswordSuccess);
+    this.dialogs.open(DialogIds.SuccessDialog);
   }
 
   /**
@@ -133,21 +128,5 @@ export class ForgotPassword implements OnInit {
    */
   isFormInvalid() {
     return this.form.invalid;
-  }
-
-  /**
-   * Check a dialog for its open state.
-   * @returns A boolean value.
-   */
-  isDialogOpen() {
-    return this.dialogs.isOpen(DialogIds.ForgotPasswordSuccess);
-  }
-
-  /**
-   * Check an error toast for its open state.
-   * @returns A boolean value.
-   */
-  isToastOpen() {
-    return this.toasts.isOpen(ToastIds.ErrorToast);
   }
 }

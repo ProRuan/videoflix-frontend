@@ -15,6 +15,9 @@ export class ToastManager extends OverlayManager {
   });
   private timeoutId!: ReturnType<typeof setTimeout>;
 
+  // local messages necessary ... ?
+  message: string = 'Please check your input and try again.';
+
   override open(id: string) {
     this.openState.update((s) => ({ ...s, [id]: true }));
     this.clearTimeout();

@@ -6,7 +6,6 @@ import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
-import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
@@ -24,7 +23,6 @@ import { ToastIds } from '../../shared/ts/enums';
     PasswordInput,
     PrimaryButton,
     Footer,
-    ErrorToast,
   ],
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
@@ -45,8 +43,6 @@ export class LogIn implements OnInit {
   private readonly routerUrl: string = 'log-in';
 
   form!: FormGroup;
-
-  message: string = 'Please check your input and try again.';
 
   /**
    * Get the email control of a log-in form.
@@ -115,7 +111,7 @@ export class LogIn implements OnInit {
 
   /**
    * Log-in a user after setting the auth token.
-   * @param response - The response of the API log-in endpoint.
+   * @param response The response of the API log-in endpoint.
    */
   private logInUser(response: any) {
     this.videoflix.setAuthData(response);
@@ -135,13 +131,5 @@ export class LogIn implements OnInit {
    */
   isFormInvalid() {
     return this.form.invalid;
-  }
-
-  /**
-   * Check an error toast for its open state.
-   * @returns A boolean value.
-   */
-  isToastOpen() {
-    return this.toasts.isOpen(ToastIds.ErrorToast);
   }
 }

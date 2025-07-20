@@ -1,5 +1,5 @@
 <div class="log-in">
-    <app-header [buttonDisplayed]="false"></app-header>
+    <app-header [complete]="false"></app-header>
 
     <form [formGroup]="form" class="form" (ngSubmit)="onLogIn()">
         <h2 class="headline-2">Log in</h2>
@@ -21,7 +21,3 @@
 
     <app-footer></app-footer>
 </div>
-
-@if(isToastOpen()) {
-<app-error-toast [message]="message"></app-error-toast>
-}

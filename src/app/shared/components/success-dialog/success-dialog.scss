@@ -1,0 +1,7 @@
+@use "mixins" as *;
+
+// move in or move out styles ... ?!
+
+.button-cont {
+  @include flexbox($jc: space-evenly);
+}

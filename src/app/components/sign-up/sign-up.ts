@@ -1,27 +1,13 @@
-import {
-  Component,
-  computed,
-  inject,
-  OnInit,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
-import { ErrorToast } from '../../shared/components/error-toast/error-toast';
-import { SignUpSuccessDialog } from './sign-up-success-dialog/sign-up-success-dialog';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
+import { FormValidator } from '../../shared/services/form-validator';
 import { Authentication } from '../../shared/services/authentication';
 import { DialogManager } from '../../shared/services/dialog-manager';
 import { ToastManager } from '../../shared/services/toast-manager';
@@ -37,8 +23,6 @@ import { DialogIds, ToastIds } from '../../shared/ts/enums';
     PasswordInput,
     PrimaryButton,
     Footer,
-    ErrorToast,
-    SignUpSuccessDialog,
   ],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
@@ -51,6 +35,7 @@ export class SignUp implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
+  private validator: FormValidator = inject(FormValidator);
   private auth: Authentication = inject(Authentication);
   private dialogs: DialogManager = inject(DialogManager);
   private toasts: ToastManager = inject(ToastManager);
@@ -58,14 +43,6 @@ export class SignUp implements OnInit {
   private readonly routerURL: string = 'sign-up';
 
   form!: FormGroup;
-
-  private value: WritableSignal<string> = signal('');
-  private confirmValue: WritableSignal<string> = signal('');
-  private isPasswordMismatch: Signal<boolean> = computed(
-    () => this.value() !== this.confirmValue()
-  );
-
-  message: string = 'Please check your input and try again.';
 
   /**
    * Get the email control of a sign-up form.
@@ -92,13 +69,20 @@ export class SignUp implements OnInit {
   }
 
   /**
+   * Get a possible error caused by a password mismatch.
+   */
+  get matchError() {
+    return this.form.hasError('passwordMismatch');
+  }
+
+  /**
    * Initialize a sign-up component.
    */
   ngOnInit(): void {
     this.setRouterURL();
     this.setForm();
     this.updateEmail();
-    this.subscribePasswords();
+    this.setDialogConfig();
   }
 
   /**
@@ -112,40 +96,28 @@ export class SignUp implements OnInit {
    * Set a sign-up form.
    */
   private setForm() {
-    this.form = this.fb.group({
-      email: ['', this.validation.email],
-      password: ['', this.validation.password],
-      confirmPassword: ['', this.validation.password],
-    });
+    this.form = this.fb.group(
+      {
+        email: ['', this.validation.email],
+        password: ['', this.validation.password],
+        confirmPassword: ['', this.validation.password],
+      },
+      { validators: [this.validator.passwordMatch()] }
+    );
   }
 
   /**
-   * Update an email control with the cached email provided by the startsite form.
+   * Update an email control with the cached email from the startsite form.
    */
   private updateEmail() {
     this.email?.setValue(this.videoflix.cachedEmail);
   }
 
   /**
-   * Subscribe to password changes to update related signals.
+   * Set the dialog configuration of a success dialog.
    */
-  private subscribePasswords() {
-    this.updateSignal(this.password, this.value);
-    this.updateSignal(this.confirmPassword, this.confirmValue);
-  }
-
-  /**
-   * Update a signal when the related form control value changes.
-   * @param control - The form control to subscribe to.
-   * @param signal - The signal to update.
-   */
-  private updateSignal(
-    control: AbstractControl | null,
-    signal: WritableSignal<string>
-  ) {
-    control?.valueChanges.subscribe({
-      next: (value: string) => signal.set(value),
-    });
+  private setDialogConfig() {
+    this.dialogs.setConfig(DialogIds.SignUpSuccess);
   }
 
   /**
@@ -179,7 +151,7 @@ export class SignUp implements OnInit {
   private openSuccessDialog() {
     this.resetForm();
     this.toasts.slideOutImmediately(ToastIds.ErrorToast);
-    this.dialogs.open(DialogIds.SignUpSuccess);
+    this.dialogs.open(DialogIds.SuccessDialog);
   }
 
   /**
@@ -201,44 +173,10 @@ export class SignUp implements OnInit {
   }
 
   /**
-   * Check passwords for validity and match.
-   * @returns A boolean value.
-   */
-  isMatchError() {
-    return this.arePasswordsValid() && this.isPasswordMismatch();
-  }
-
-  /**
-   * Check password and confirm password for validity.
-   * @returns A boolean value.
-   */
-  private arePasswordsValid() {
-    const passwordValid = this.password?.valid ?? false;
-    const confirmPasswordValid = this.confirmPassword?.valid ?? false;
-    return passwordValid && confirmPasswordValid;
-  }
-
-  /**
    * Check a sign-up form for invalidity.
    * @returns A boolean value.
    */
   isFormInvalid() {
-    return this.form.invalid || this.isPasswordMismatch();
-  }
-
-  /**
-   * Check a success dialog for its open state.
-   * @returns A boolean value.
-   */
-  isDialogOpen() {
-    return this.dialogs.isOpen(DialogIds.SignUpSuccess);
-  }
-
-  /**
-   * Check an error toast for its open state.
-   * @returns A boolean value.
-   */
-  isToastOpen() {
-    return this.toasts.isOpen(ToastIds.ErrorToast);
+    return this.form.invalid;
   }
 }

@@ -4,8 +4,6 @@ import { Header } from '../../shared/components/header/header';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
-import { ResetPasswordSuccessDialog } from './reset-password-success-dialog/reset-password-success-dialog';
-import { ErrorToast } from '../../shared/components/error-toast/error-toast';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
@@ -17,15 +15,7 @@ import { DialogIds, ToastIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [
-    ReactiveFormsModule,
-    Header,
-    PasswordInput,
-    PrimaryButton,
-    Footer,
-    ResetPasswordSuccessDialog,
-    ErrorToast,
-  ],
+  imports: [ReactiveFormsModule, Header, PasswordInput, PrimaryButton, Footer],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })
@@ -46,8 +36,6 @@ export class ResetPassword implements OnInit {
 
   form!: FormGroup;
 
-  message: string = 'Please check your input and try again.';
-
   /**
    * Get the password control of a reset-password form.
    * @returns The password control or null.
@@ -65,7 +53,7 @@ export class ResetPassword implements OnInit {
   }
 
   /**
-   * Check a reset-password form for a password mismatch error.
+   * Get a possible error caused by a password mismatch.
    * @returns A boolean value.
    */
   get matchError() {
@@ -78,6 +66,7 @@ export class ResetPassword implements OnInit {
   ngOnInit(): void {
     this.setRouterURL();
     this.setForm();
+    this.setDialogConfig();
   }
 
   /**
@@ -96,8 +85,15 @@ export class ResetPassword implements OnInit {
         password: ['', this.validation.password],
         confirmPassword: ['', this.validation.password],
       },
-      { validators: this.validator.passwordMatch() }
+      { validators: [this.validator.passwordMatch()] }
     );
+  }
+
+  /**
+   * Set the dialog configuration of a success dialog.
+   */
+  private setDialogConfig() {
+    this.dialogs.setConfig(DialogIds.ResetPasswordSuccess);
   }
 
   /**
@@ -131,7 +127,7 @@ export class ResetPassword implements OnInit {
   private openSuccessDialog() {
     this.resetForm();
     this.toasts.slideOutImmediately(ToastIds.ErrorToast);
-    this.dialogs.open(DialogIds.ResetPasswordSuccess);
+    this.dialogs.open(DialogIds.SuccessDialog);
   }
 
   /**
@@ -157,21 +153,5 @@ export class ResetPassword implements OnInit {
    */
   isFormInvalid() {
     return this.form.invalid;
-  }
-
-  /**
-   * Check a success dialog for its open state.
-   * @returns A boolean value.
-   */
-  isDialogOpen() {
-    return this.dialogs.isOpen(DialogIds.ResetPasswordSuccess);
-  }
-
-  /**
-   * Check an error toast for its open state.
-   * @returns A boolean value.
-   */
-  isToastOpen() {
-    return this.toasts.isOpen(ToastIds.ErrorToast);
   }
 }

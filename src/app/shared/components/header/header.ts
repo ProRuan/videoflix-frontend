@@ -17,7 +17,7 @@ export class Header {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
 
-  @Input() buttonDisplayed: boolean = true;
+  @Input() complete: boolean = true;
 
   /**
    * Check a router url for the base href.

@@ -1,14 +1,14 @@
 <dialog class="dialog" [class.transparent]="zoomingOut" (click)="onClose()" (transitionend)="onHide()">
+
     <div class="dialog-box" [class.zoom-out]="zoomingOut" (click)="onEventStop($event)">
-        <h3 class="dialog-headline">Password Reset Successful</h3>
-        <p class="dialog-text">
-            Your password has been updated.
-        </p>
-        <p class="dialog-text">
-            You can now use your new password to log in.
-        </p>
+        <h3 class="dialog-headline">{{ config.title }}</h3>
+        @for(message of config.messages; track message) {
+        <p class="dialog-text">{{ message }}</p>
+        }
         <div class="button-cont">
             <app-primary-button text="Close" type="button" (click)="onClose()"></app-primary-button>
+            <app-primary-button text="Log in" type="button" (click)="onRedirect()"></app-primary-button>
         </div>
     </div>
+
 </dialog>
