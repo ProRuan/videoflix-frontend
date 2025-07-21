@@ -10,7 +10,7 @@ import { FormValidator } from '../../shared/services/form-validator';
 import { DialogManager } from '../../shared/services/dialog-manager';
 import { ToastManager } from '../../shared/services/toast-manager';
 import { ResetPasswordPayload } from '../../shared/interfaces/reset-password-payload';
-import { DialogIds, ToastIds } from '../../shared/ts/enums';
+import { DialogIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-reset-password',
@@ -61,7 +61,6 @@ export class ResetPassword implements OnInit {
    */
   ngOnInit(): void {
     this.setForm();
-    this.setDialogConfig();
   }
 
   /**
@@ -75,13 +74,6 @@ export class ResetPassword implements OnInit {
       },
       { validators: [this.validator.passwordMatch()] }
     );
-  }
-
-  /**
-   * Set the dialog configuration of a success dialog.
-   */
-  private setDialogConfig() {
-    this.dialogs.setConfig(DialogIds.ResetPasswordSuccess);
   }
 
   /**
@@ -114,8 +106,8 @@ export class ResetPassword implements OnInit {
    */
   private openSuccessDialog() {
     this.resetForm();
-    this.toasts.slideOutImmediately(ToastIds.ErrorToast);
-    this.dialogs.open(DialogIds.SuccessDialog);
+    this.toasts.slideOutImmediately();
+    this.dialogs.openSuccessDialog(DialogIds.ResetPasswordSuccess);
   }
 
   /**
@@ -132,7 +124,7 @@ export class ResetPassword implements OnInit {
    * Open an error toast.
    */
   private openErrorToast() {
-    this.toasts.open(ToastIds.ErrorToast);
+    this.toasts.openErrorToast();
   }
 
   /**

@@ -22,14 +22,14 @@ export class ErrorToast {
    * @returns A boolean value.
    */
   get slidingOut() {
-    return this.toasts.isSlidingOut(ToastIds.ErrorToast);
+    return this.toasts.isSlidingOut(ToastIds.Error);
   }
 
   /**
    * Slide out an error toast on close.
    */
   onClose() {
-    this.toasts.slideOutImmediately(ToastIds.ErrorToast);
+    this.toasts.slideOutImmediately();
   }
 
   /**
@@ -37,7 +37,8 @@ export class ErrorToast {
    */
   onHide() {
     if (this.slidingOut) {
-      this.toasts.hide(ToastIds.ErrorToast);
+      this.toasts.hide();
+      // this.toasts.hide(ToastIds.ErrorToast);
     }
   }
 }

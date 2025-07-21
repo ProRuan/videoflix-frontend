@@ -11,7 +11,6 @@ import { InputValidation } from '../../shared/services/input-validation';
 import { Authentication } from '../../shared/services/authentication';
 import { ToastManager } from '../../shared/services/toast-manager';
 import { LogInPayload } from '../../shared/interfaces/log-in-payload';
-import { ToastIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-log-in',
@@ -112,7 +111,7 @@ export class LogIn implements OnInit {
    * Open an error toast.
    */
   private openErrorToast() {
-    this.toasts.open(ToastIds.ErrorToast);
+    this.toasts.openErrorToast();
   }
 
   /**

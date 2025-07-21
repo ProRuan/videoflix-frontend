@@ -12,7 +12,7 @@ import { Authentication } from '../../shared/services/authentication';
 import { DialogManager } from '../../shared/services/dialog-manager';
 import { ToastManager } from '../../shared/services/toast-manager';
 import { RegistrationPayload } from '../../shared/interfaces/registration-payload';
-import { DialogIds, ToastIds } from '../../shared/ts/enums';
+import { DialogIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-sign-up',
@@ -79,7 +79,6 @@ export class SignUp implements OnInit {
   ngOnInit(): void {
     this.setForm();
     this.updateEmail();
-    this.setDialogConfig();
   }
 
   /**
@@ -101,13 +100,6 @@ export class SignUp implements OnInit {
    */
   private updateEmail() {
     this.email?.setValue(this.videoflix.cachedEmail);
-  }
-
-  /**
-   * Set the dialog configuration of a success dialog.
-   */
-  private setDialogConfig() {
-    this.dialogs.setConfig(DialogIds.SignUpSuccess);
   }
 
   /**
@@ -140,8 +132,8 @@ export class SignUp implements OnInit {
    */
   private openSuccessDialog() {
     this.resetForm();
-    this.toasts.slideOutImmediately(ToastIds.ErrorToast);
-    this.dialogs.open(DialogIds.SuccessDialog);
+    this.toasts.slideOutImmediately();
+    this.dialogs.openSuccessDialog(DialogIds.SignUpSuccess);
   }
 
   /**
@@ -159,7 +151,7 @@ export class SignUp implements OnInit {
    * Open an error toast.
    */
   private openErrorToast() {
-    this.toasts.open(ToastIds.ErrorToast);
+    this.toasts.openErrorToast();
   }
 
   /**

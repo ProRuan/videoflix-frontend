@@ -1,52 +1,69 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, signal, WritableSignal } from '@angular/core';
 import { OverlayManager } from '../models/overlay-manager';
 import { ToastIds } from '../ts/enums';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ToastManager extends OverlayManager {
-  protected override openState: WritableSignal<Record<string, boolean>> =
-    signal({
-      [ToastIds.ErrorToast]: false,
-    });
-  private slideOutState = signal<Record<string, boolean>>({
-    [ToastIds.ErrorToast]: false,
-  });
+export class ToastManager {
+  private activeToast: WritableSignal<ToastIds> = signal(ToastIds.None);
+  // think about name ...
+  private hasSlideOut = signal(false);
+
+  // OverlayManager, separated services or one common service ... ?
+
+  // must config a signal ... ?!
+  // try to use computed and work with two ids (SuccessDialog, ForgotPasswortSuccess) ... !
+
+  // // local messages necessary ... ?
+  message: string = 'Please check your input and try again.';
   private timeoutId!: ReturnType<typeof setTimeout>;
 
-  // local messages necessary ... ?
-  message: string = 'Please check your input and try again.';
+  /**
+   * Check a dialog for its open state.
+   * @param id - The dialog id.
+   * @returns A boolean value.
+   */
+  isOpen(id: ToastIds) {
+    return this.activeToast() === id;
+  }
 
-  override open(id: string) {
-    this.openState.update((s) => ({ ...s, [id]: true }));
+  isSlidingOut(id: ToastIds) {
+    return this.activeToast() === id && this.hasSlideOut();
+  }
+
+  open(id: ToastIds) {
+    // this.config = this.configurations[id];
+    // this.hasZoomedOut.set(false);
+    this.activeToast.set(id);
+  }
+
+  openErrorToast() {
+    this.activeToast.set(ToastIds.Error);
     this.clearTimeout();
     this.timeoutId = setTimeout(() => {
-      this.slideOut(ToastIds.ErrorToast);
-      console.log('open and timeout');
+      this.hasSlideOut.set(true);
+      console.log('timeout');
     }, 4000);
   }
 
-  slideOutImmediately(id: string) {
+  slideOutCurrent() {
+    this.hasSlideOut.set(true);
+  }
+
+  // call it close ... ?
+  hide() {
+    this.activeToast.set(ToastIds.None);
+    this.hasSlideOut.set(false);
+  }
+
+  slideOutImmediately() {
     this.clearTimeout();
-    this.slideOut(id);
+    this.hasSlideOut.set(true);
+    // this.slideOut(id);
   }
 
   clearTimeout() {
     clearTimeout(this.timeoutId);
-  }
-
-  isSlidingOut(id: string) {
-    return this.slideOutState()[id] ?? false;
-  }
-
-  slideOut(id: string) {
-    this.slideOutState.update((s) => ({ ...s, [id]: true }));
-  }
-
-  // ask for explanation of update here ... !
-  hide(id: string): void {
-    this.openState.update((s) => ({ ...s, [id]: false }));
-    this.slideOutState.update((s) => ({ ...s, [id]: false }));
   }
 }

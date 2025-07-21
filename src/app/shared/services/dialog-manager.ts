@@ -1,22 +1,41 @@
-import { Injectable, signal } from '@angular/core';
-import { OverlayManager } from '../models/overlay-manager';
-import { DialogIds } from '../ts/enums';
+import { computed, Injectable, signal, WritableSignal } from '@angular/core';
 import { SuccessDialogConfig } from '../interfaces/success-dialog-config';
+import { DialogIds } from '../ts/enums';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DialogManager extends OverlayManager {
-  protected openState = signal<Record<string, boolean>>({
-    [DialogIds.SignUpSuccess]: false,
-    [DialogIds.ForgotPasswordSuccess]: false,
-  });
-  private zoomOutState = signal<Record<string, boolean>>({
-    [DialogIds.SignUpSuccess]: false,
-    [DialogIds.ForgotPasswordSuccess]: false,
-  });
 
-  config!: SuccessDialogConfig;
+/**
+ * Class representing a dialog manager service.
+ */
+export class DialogManager {
+  private activeDialog: WritableSignal<DialogIds> = signal(DialogIds.None);
+  // think about name ...
+  private hasZoomedOut = signal(false);
+  private configId = signal(DialogIds.None);
+
+  configSignal = computed(() => this.configurations[this.configId()]);
+
+  // must config a signal ... ?!
+  // try to use computed and work with two ids (SuccessDialog, ForgotPasswortSuccess) ... !
+
+  get config() {
+    return this.configSignal();
+  }
+
+  /**
+   * Check a dialog for its open state.
+   * @param id - The dialog id.
+   * @returns A boolean value.
+   */
+  isOpen(id: DialogIds) {
+    return this.activeDialog() === id;
+  }
+
+  isZoomingOut(id: DialogIds) {
+    return this.activeDialog() === id && this.hasZoomedOut();
+  }
 
   configurations: { [key: string]: SuccessDialogConfig } = {
     [DialogIds.SignUpSuccess]: {
@@ -43,31 +62,25 @@ export class DialogManager extends OverlayManager {
     },
   };
 
-  // config: SuccessDialogConfig = {
-  //   title: 'Registration successful',
-  //   messages: [
-  //     'Thank you for registering!',
-  //     `We’ve sent a confirmation email to your inbox.
-  //             Please click the activation link inside to unlock your account.`,
-  //   ],
-  // };
-
-  // expose getters
-
-  setConfig(id: string) {
-    this.config = this.configurations[id];
+  open(id: DialogIds) {
+    // this.config = this.configurations[id];
+    // this.hasZoomedOut.set(false);
+    this.activeDialog.set(id);
   }
 
-  isZoomingOut(id: string) {
-    return this.zoomOutState()[id] ?? false;
+  openSuccessDialog(id: DialogIds) {
+    this.configId.set(id);
+    // this.configSignal();
+    this.activeDialog.set(DialogIds.Success);
   }
 
-  zoomOut(id: string) {
-    this.zoomOutState.update((s) => ({ ...s, [id]: true }));
+  zoomOutCurrent() {
+    this.hasZoomedOut.set(true);
   }
 
-  hide(id: string) {
-    this.openState.update((s) => ({ ...s, [id]: false }));
-    this.zoomOutState.update((s) => ({ ...s, [id]: false }));
+  // call it close ... ?
+  hide() {
+    this.activeDialog.set(DialogIds.None);
+    this.hasZoomedOut.set(false);
   }
 }

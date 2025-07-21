@@ -19,8 +19,11 @@ export class SuccessDialog {
   private router: Router = inject(Router);
   private dialogs: DialogManager = inject(DialogManager);
 
-  @Input() config!: SuccessDialogConfig;
   @Input() zoomingOut = false;
+
+  get config() {
+    return this.dialogs.config;
+  }
 
   /**
    * Close a dialog with a zoom-out animation.
@@ -35,7 +38,8 @@ export class SuccessDialog {
   onHide() {
     if (this.zoomingOut) {
       this.zoomingOut = false;
-      this.dialogs.hide(DialogIds.SuccessDialog);
+      this.dialogs.hide();
+      // this.dialogs.hide(DialogIds.SuccessDialog);
     }
   }
 
@@ -49,7 +53,8 @@ export class SuccessDialog {
 
   onRedirect() {
     this.router.navigateByUrl('log-in');
-    this.dialogs.hide(DialogIds.SuccessDialog);
+    this.dialogs.hide();
+    // this.dialogs.hide(DialogIds.SuccessDialog);
 
     // called twice?!
     console.log('log in');

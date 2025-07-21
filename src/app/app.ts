@@ -19,26 +19,31 @@ export class App {
   // dialogs (3/3) ...
   // error-toasts (4/7) ...
 
-  // signals check ...
+  // signals check (Dialog/Toast/OverlayManager) (0/3) ...
   // enums for components, inputs/controls and form-validators (0/3) ...
   // secondary button ...
+  // double code of the 5 form compoents (0/5) ...
+  // think about dialog background opacity and dialog box box-shadow ...
 
   // finalize success dialog ...
 
   // think about FormValidator naming and code (class/service, structure) ...
 
+  // disabled submit buttons during submission logic ... !!!
+
   protected title = 'videoflix-frontend';
 
   isDialogOpen() {
-    return this.dialogs.isOpen(DialogIds.SuccessDialog);
+    return this.dialogs.isOpen(DialogIds.Success);
   }
 
-  getConfig() {
-    return this.dialogs.config;
-  }
+  // getConfig() {
+  //   const config = this.dialogs.config();
+  //   return config !== null ? config : { title: '', messages: ['', ''] };
+  // }
 
   isToastOpen() {
-    return this.toasts.isOpen(ToastIds.ErrorToast);
+    return this.toasts.isOpen(ToastIds.Error);
   }
 
   getMessage() {

@@ -9,7 +9,7 @@ import { Authentication } from '../../shared/services/authentication';
 import { DialogManager } from '../../shared/services/dialog-manager';
 import { ToastManager } from '../../shared/services/toast-manager';
 import { ForgotPasswordPayload } from '../../shared/interfaces/forgot-password-payload';
-import { DialogIds, ToastIds } from '../../shared/ts/enums';
+import { DialogIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-forgot-password',
@@ -43,7 +43,6 @@ export class ForgotPassword implements OnInit {
    */
   ngOnInit(): void {
     this.setForm();
-    this.setDialogConfig();
   }
 
   /**
@@ -53,13 +52,6 @@ export class ForgotPassword implements OnInit {
     this.form = this.fb.group({
       email: ['', this.validation.email],
     });
-  }
-
-  /**
-   * Set the configuration of a success dialog.
-   */
-  private setDialogConfig() {
-    this.dialogs.setConfig(DialogIds.ForgotPasswordSuccess);
   }
 
   /**
@@ -90,8 +82,8 @@ export class ForgotPassword implements OnInit {
    */
   private openSuccessDialog() {
     this.resetForm();
-    this.toasts.slideOutImmediately(ToastIds.ErrorToast);
-    this.dialogs.open(DialogIds.SuccessDialog);
+    this.toasts.slideOutImmediately();
+    this.dialogs.openSuccessDialog(DialogIds.ForgotPasswordSuccess);
   }
 
   /**
@@ -107,7 +99,7 @@ export class ForgotPassword implements OnInit {
    * Open an error toast.
    */
   private openErrorToast() {
-    this.toasts.open(ToastIds.ErrorToast);
+    this.toasts.openErrorToast();
   }
 
   /**
