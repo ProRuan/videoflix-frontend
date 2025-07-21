@@ -1,16 +1,52 @@
-import { WritableSignal } from '@angular/core';
+import { signal, WritableSignal } from '@angular/core';
 
-export abstract class OverlayManager {
-  protected abstract openState: WritableSignal<Record<string, boolean>>;
+/**
+ * Class representing an overlay manager.
+ *
+ * It provides base logic for overlay elements such as dialogs or toasts.
+ */
+export class OverlayManager {
+  protected activeElement: WritableSignal<string> = signal('');
+  protected hasCloseStyle: WritableSignal<boolean> = signal(false);
 
-  isOpen(id: string) {
-    return this.openState()[id] ?? false;
-  }
-
+  /**
+   * Open an overlay element.
+   * @param id - The overlay element id.
+   */
   open(id: string) {
-    this.openState.update((s) => ({ ...s, [id]: true }));
+    this.hasCloseStyle.set(false);
+    this.activeElement.set(id);
   }
 
-  // rename hide to close ... ?
-  abstract hide(id: string): void;
+  /**
+   * Check an overlay element for its open state.
+   * @param id - The overlay element id.
+   * @returns A boolean value.
+   */
+  isOpen(id: string) {
+    return this.activeElement() === id;
+  }
+
+  /**
+   * Start closing an overlay element by enabling the close style.
+   */
+  startClosing() {
+    this.hasCloseStyle.set(true);
+  }
+
+  /**
+   * Check if an overlay element is closing.
+   * @param id - The overlay element id.
+   * @returns A boolean value.
+   */
+  isClosing(id: string) {
+    return this.activeElement() === id && this.hasCloseStyle();
+  }
+
+  /**
+   * Close an overlay element.
+   */
+  close() {
+    this.activeElement.set('');
+  }
 }

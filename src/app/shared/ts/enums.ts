@@ -7,7 +7,6 @@ export const enum Autocompletes {
 // add InputIds ... ?
 
 export const enum DialogIds {
-  None = '',
   Success = 'success-dialog',
   SignUpSuccess = 'sign-up-success-dialog',
   ForgotPasswordSuccess = 'forgot-password-success-dialog',
@@ -27,7 +26,6 @@ export const enum InputErrors {
 }
 
 export const enum ToastIds {
-  None = '',
   Error = 'error-toast',
 }
 

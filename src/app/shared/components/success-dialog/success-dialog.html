@@ -1,12 +1,12 @@
-<dialog class="dialog" [class.transparent]="zoomingOut" (click)="onClose()" (transitionend)="onHide()">
+<dialog class="dialog" [class.transparent]="closing" (click)="onCloseStart()" (transitionend)="onCloseEnd()">
 
-    <div class="dialog-box" [class.zoom-out]="zoomingOut" (click)="onEventStop($event)">
+    <div class="dialog-box" [class.zoom-out]="closing" (click)="onEventStop($event)">
         <h3 class="dialog-headline">{{ config.title }}</h3>
         @for(message of config.messages; track message) {
         <p class="dialog-text">{{ message }}</p>
         }
         <div class="button-cont">
-            <app-primary-button text="Close" type="button" (click)="onClose()"></app-primary-button>
+            <app-primary-button text="Close" type="button" (click)="onCloseStart()"></app-primary-button>
             <app-primary-button text="Log in" type="button" (click)="onRedirect()"></app-primary-button>
         </div>
     </div>

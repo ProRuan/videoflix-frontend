@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ToastManager } from '../../services/toast-manager';
 import { ToastIds } from '../../ts/enums';
 
@@ -15,30 +15,35 @@ import { ToastIds } from '../../ts/enums';
 export class ErrorToast {
   private toasts: ToastManager = inject(ToastManager);
 
-  @Input() message: string = '';
-
   /**
-   * Get the sliding-out state of an error toast.
+   * Get the closing state of an error toast.
    * @returns A boolean value.
    */
-  get slidingOut() {
-    return this.toasts.isSlidingOut(ToastIds.Error);
+  get closing() {
+    return this.toasts.isClosing(ToastIds.Error);
   }
 
   /**
-   * Slide out an error toast on close.
+   * Get the message of an error toast.
+   * @return The message of the error toast.
    */
-  onClose() {
+  get message() {
+    return this.toasts.message;
+  }
+
+  /**
+   * Start closing an error toast on click.
+   */
+  onCloseStart() {
     this.toasts.slideOutImmediately();
   }
 
   /**
-   * Hide an error toast by removing it from the HTML DOM.
+   * Remove an error toast from the HTML DOM on transition end.
    */
-  onHide() {
-    if (this.slidingOut) {
-      this.toasts.hide();
-      // this.toasts.hide(ToastIds.ErrorToast);
+  onCloseEnd() {
+    if (this.closing) {
+      this.toasts.close();
     }
   }
 }

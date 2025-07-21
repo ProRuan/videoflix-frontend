@@ -1,7 +1,7 @@
-<div class="error-toast" [class.slide-out]="slidingOut" (transitionend)="onHide()">
+<div class="error-toast" [class.slide-out]="closing" (transitionend)="onCloseEnd()">
     <div class="rectangle"></div>
     <img class="icon" src="/images/toasts/exclamation.png" alt="exclamation">
     <p class="message">{{ message }}</p>
     <div class="border"></div>
-    <button class="button" type="button" (click)="onClose()"></button>
+    <button class="button" type="button" (click)="onCloseStart()"></button>
 </div>

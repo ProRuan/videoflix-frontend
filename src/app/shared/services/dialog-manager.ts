@@ -1,4 +1,11 @@
-import { computed, Injectable, signal, WritableSignal } from '@angular/core';
+import {
+  computed,
+  Injectable,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import { OverlayManager } from '../models/overlay-manager';
 import { SuccessDialogConfig } from '../interfaces/success-dialog-config';
 import { DialogIds } from '../ts/enums';
 
@@ -9,37 +16,15 @@ import { DialogIds } from '../ts/enums';
 /**
  * Class representing a dialog manager service.
  */
-export class DialogManager {
-  private activeDialog: WritableSignal<DialogIds> = signal(DialogIds.None);
-  // think about name ...
-  private hasZoomedOut = signal(false);
-  private configId = signal(DialogIds.None);
+export class DialogManager extends OverlayManager {
+  private configId: WritableSignal<string> = signal('');
+  private currentConfig: Signal<SuccessDialogConfig> = computed(
+    () => this.configData[this.configId()]
+  );
 
-  configSignal = computed(() => this.configurations[this.configId()]);
-
-  // must config a signal ... ?!
-  // try to use computed and work with two ids (SuccessDialog, ForgotPasswortSuccess) ... !
-
-  get config() {
-    return this.configSignal();
-  }
-
-  /**
-   * Check a dialog for its open state.
-   * @param id - The dialog id.
-   * @returns A boolean value.
-   */
-  isOpen(id: DialogIds) {
-    return this.activeDialog() === id;
-  }
-
-  isZoomingOut(id: DialogIds) {
-    return this.activeDialog() === id && this.hasZoomedOut();
-  }
-
-  configurations: { [key: string]: SuccessDialogConfig } = {
+  private readonly configData: Record<string, SuccessDialogConfig> = {
     [DialogIds.SignUpSuccess]: {
-      title: 'Registration successful',
+      title: 'Registration Successful',
       messages: [
         'Thank you for registering!',
         `We’ve sent a confirmation email to your inbox.
@@ -62,25 +47,20 @@ export class DialogManager {
     },
   };
 
-  open(id: DialogIds) {
-    // this.config = this.configurations[id];
-    // this.hasZoomedOut.set(false);
-    this.activeDialog.set(id);
+  /**
+   * Get the current dialog configuration.
+   * @returns The current dialog configuration.
+   */
+  get config() {
+    return this.currentConfig();
   }
 
+  /**
+   * Open a success dialog.
+   * @param id - The success dialog id.
+   */
   openSuccessDialog(id: DialogIds) {
     this.configId.set(id);
-    // this.configSignal();
-    this.activeDialog.set(DialogIds.Success);
-  }
-
-  zoomOutCurrent() {
-    this.hasZoomedOut.set(true);
-  }
-
-  // call it close ... ?
-  hide() {
-    this.activeDialog.set(DialogIds.None);
-    this.hasZoomedOut.set(false);
+    this.open(DialogIds.Success);
   }
 }

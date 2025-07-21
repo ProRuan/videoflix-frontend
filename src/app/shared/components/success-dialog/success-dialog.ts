@@ -1,8 +1,7 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimaryButton } from '../../../shared/components/primary-button/primary-button';
 import { DialogManager } from '../../../shared/services/dialog-manager';
-import { SuccessDialogConfig } from '../../interfaces/success-dialog-config';
 import { DialogIds } from '../../ts/enums';
 
 @Component({
@@ -19,27 +18,35 @@ export class SuccessDialog {
   private router: Router = inject(Router);
   private dialogs: DialogManager = inject(DialogManager);
 
-  @Input() zoomingOut = false;
+  /**
+   * Get the closing state of a success dialog.
+   * @return A boolean value.
+   */
+  get closing() {
+    return this.dialogs.isClosing(DialogIds.Success);
+  }
 
+  /**
+   * Get the configuration of a success dialog.
+   * @returns The configuration of the success dialog.
+   */
   get config() {
     return this.dialogs.config;
   }
 
   /**
-   * Close a dialog with a zoom-out animation.
+   * Start closing a success dialog on click.
    */
-  onClose() {
-    this.zoomingOut = true;
+  onCloseStart() {
+    this.dialogs.startClosing();
   }
 
   /**
-   * Hide a dialog by removing it from the HTML DOM.
+   * Remove a success dialog from the HTML DOM on transtion end.
    */
-  onHide() {
-    if (this.zoomingOut) {
-      this.zoomingOut = false;
-      this.dialogs.hide();
-      // this.dialogs.hide(DialogIds.SuccessDialog);
+  onCloseEnd() {
+    if (this.closing) {
+      this.dialogs.close();
     }
   }
 
@@ -51,12 +58,11 @@ export class SuccessDialog {
     event.stopPropagation();
   }
 
+  /**
+   * Redirect a user to the log-in component.
+   */
   onRedirect() {
+    this.dialogs.close();
     this.router.navigateByUrl('log-in');
-    this.dialogs.hide();
-    // this.dialogs.hide(DialogIds.SuccessDialog);
-
-    // called twice?!
-    console.log('log in');
   }
 }
