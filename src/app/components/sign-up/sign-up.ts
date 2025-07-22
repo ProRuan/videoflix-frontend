@@ -1,16 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
+import { AuthForm } from '../../shared/models/auth-form';
 import { Videoflix } from '../../shared/services/videoflix';
-import { InputValidation } from '../../shared/services/input-validation';
-import { FormValidator } from '../../shared/services/form-validator';
-import { Authentication } from '../../shared/services/authentication';
-import { DialogManager } from '../../shared/services/dialog-manager';
-import { ToastManager } from '../../shared/services/toast-manager';
 import { RegistrationPayload } from '../../shared/interfaces/registration-payload';
 import { DialogIds } from '../../shared/ts/enums';
 
@@ -30,53 +26,18 @@ import { DialogIds } from '../../shared/ts/enums';
 
 /**
  * Class representing a sign-up component.
+ * @extends AuthForm
+ * @implements {OnInit}
  */
-export class SignUp implements OnInit {
-  private fb: FormBuilder = inject(FormBuilder);
+export class SignUp extends AuthForm implements OnInit {
   private videoflix: Videoflix = inject(Videoflix);
-  private validation: InputValidation = inject(InputValidation);
-  private validator: FormValidator = inject(FormValidator);
-  private auth: Authentication = inject(Authentication);
-  private dialogs: DialogManager = inject(DialogManager);
-  private toasts: ToastManager = inject(ToastManager);
 
   form!: FormGroup;
 
   /**
-   * Get the email control of a sign-up form.
-   * @returns The email control or null.
-   */
-  get email() {
-    return this.form.get('email');
-  }
-
-  /**
-   * Get the password control of a sign-up form.
-   * @returns The password control or null.
-   */
-  get password() {
-    return this.form.get('password');
-  }
-
-  /**
-   * Get the confirm-password control of a sign-up form.
-   * @returns The confirm-password control or null.
-   */
-  get confirmPassword() {
-    return this.form.get('confirmPassword');
-  }
-
-  /**
-   * Get a possible error caused by a password mismatch.
-   */
-  get matchError() {
-    return this.form.hasError('passwordMismatch');
-  }
-
-  /**
    * Initialize a sign-up component.
    */
-  ngOnInit(): void {
+  ngOnInit() {
     this.setForm();
     this.updateEmail();
   }
@@ -84,19 +45,22 @@ export class SignUp implements OnInit {
   /**
    * Set a sign-up form.
    */
-  private setForm() {
+  protected setForm() {
     this.form = this.fb.group(
       {
         email: ['', this.validation.email],
         password: ['', this.validation.password],
         confirmPassword: ['', this.validation.password],
       },
-      { validators: [this.validator.passwordMatch()] }
+      {
+        validators: [this.validator.passwordMatch()],
+      }
     );
   }
 
   /**
-   * Update an email control with the cached email from the startsite form.
+   * Update an email control with the cached value
+   * provided by the startsite form.
    */
   private updateEmail() {
     this.email?.setValue(this.videoflix.cachedEmail);
@@ -108,18 +72,17 @@ export class SignUp implements OnInit {
    * Otherwise, an error toast is shown.
    */
   onRegistration() {
-    const payload = this.getPayload();
-    this.auth.registerUser(payload).subscribe({
-      next: () => this.openSuccessDialog(),
-      error: () => this.openErrorToast(),
-    });
+    if (this.isFormValid()) {
+      const payload = this.getPayload();
+      this.performRequest(() => this.auth.registerUser(payload));
+    }
   }
 
   /**
    * Get a registration payload.
    * @returns The registration payload.
    */
-  private getPayload(): RegistrationPayload {
+  protected getPayload(): RegistrationPayload {
     return {
       email: this.email?.value,
       password: this.password?.value,
@@ -128,37 +91,9 @@ export class SignUp implements OnInit {
   }
 
   /**
-   * Open a success dialog.
+   * Open a success dialog upon a successful user registration.
    */
-  private openSuccessDialog() {
-    this.resetForm();
-    this.toasts.slideOutImmediately();
-    this.dialogs.openSuccessDialog(DialogIds.SignUpSuccess);
-  }
-
-  /**
-   * Reset a sign-up form.
-   */
-  private resetForm() {
-    this.form.reset({
-      email: '',
-      password: '',
-      confirmPassword: '',
-    });
-  }
-
-  /**
-   * Open an error toast.
-   */
-  private openErrorToast() {
-    this.toasts.openErrorToast();
-  }
-
-  /**
-   * Check a sign-up form for invalidity.
-   * @returns A boolean value.
-   */
-  isFormInvalid() {
-    return this.form.invalid;
+  protected handleSuccess(): void {
+    this.showSuccessDialog(DialogIds.SignUpSuccess);
   }
 }

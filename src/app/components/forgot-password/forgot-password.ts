@@ -1,13 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
-import { InputValidation } from '../../shared/services/input-validation';
-import { Authentication } from '../../shared/services/authentication';
-import { DialogManager } from '../../shared/services/dialog-manager';
-import { ToastManager } from '../../shared/services/toast-manager';
+import { AuthForm } from '../../shared/models/auth-form';
 import { ForgotPasswordPayload } from '../../shared/interfaces/forgot-password-payload';
 import { DialogIds } from '../../shared/ts/enums';
 
@@ -20,23 +17,11 @@ import { DialogIds } from '../../shared/ts/enums';
 
 /**
  * Class representing a forgot-password component.
+ * @extends AuthForm
+ * @implements {OnInit}
  */
-export class ForgotPassword implements OnInit {
-  private fb: FormBuilder = inject(FormBuilder);
-  private validation: InputValidation = inject(InputValidation);
-  private auth: Authentication = inject(Authentication);
-  private dialogs: DialogManager = inject(DialogManager);
-  private toasts: ToastManager = inject(ToastManager);
-
+export class ForgotPassword extends AuthForm implements OnInit {
   form!: FormGroup;
-
-  /**
-   * Get the email control of a forgot-password form.
-   * @returns The email control or null.
-   */
-  get email() {
-    return this.form.get('email');
-  }
 
   /**
    * Initialize a forgot-password component.
@@ -48,7 +33,7 @@ export class ForgotPassword implements OnInit {
   /**
    * Set a forgot-password form.
    */
-  private setForm() {
+  protected setForm() {
     this.form = this.fb.group({
       email: ['', this.validation.email],
     });
@@ -60,53 +45,26 @@ export class ForgotPassword implements OnInit {
    * Otherwise, an error toast is shown.
    */
   onEmailSend() {
-    const payload = this.getPayload();
-    this.auth.requestPasswordReset(payload).subscribe({
-      next: () => this.openSuccessDialog(),
-      error: () => this.openErrorToast(),
-    });
+    if (this.isFormValid()) {
+      const payload = this.getPayload();
+      this.performRequest(() => this.auth.requestPasswordReset(payload));
+    }
   }
 
   /**
    * Get a forgot-password payload.
    * @returns The forgot-password payload.
    */
-  private getPayload(): ForgotPasswordPayload {
+  protected getPayload(): ForgotPasswordPayload {
     return {
       email: this.email?.value,
     };
   }
 
   /**
-   * Open a success dialog.
+   * Open a success dialog upon a successful password reset request.
    */
-  private openSuccessDialog() {
-    this.resetForm();
-    this.toasts.slideOutImmediately();
-    this.dialogs.openSuccessDialog(DialogIds.ForgotPasswordSuccess);
-  }
-
-  /**
-   * Reset a forgot-password form.
-   */
-  private resetForm() {
-    this.form.reset({
-      email: '',
-    });
-  }
-
-  /**
-   * Open an error toast.
-   */
-  private openErrorToast() {
-    this.toasts.openErrorToast();
-  }
-
-  /**
-   * Check a forgot-password form for invalidity.
-   * @returns A boolean value.
-   */
-  isFormInvalid() {
-    return this.form.invalid;
+  protected handleSuccess(): void {
+    this.showSuccessDialog(DialogIds.ForgotPasswordSuccess);
   }
 }

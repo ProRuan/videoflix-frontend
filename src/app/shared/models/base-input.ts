@@ -83,6 +83,6 @@ export abstract class BaseInput implements ControlValueAccessor {
    * @returns A boolean value.
    */
   isInputFilled() {
-    return this.control?.value.length > 0;
+    return this.control?.value?.length > 0;
   }
 }

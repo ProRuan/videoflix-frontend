@@ -25,7 +25,7 @@ export class InputValidatorKit {
    */
   protected getRequiredError(control: Control) {
     const error = this.requiredError;
-    return control.value.trim() ? null : error;
+    return control?.value?.trim() ? null : error;
   }
 
   /**
@@ -47,7 +47,7 @@ export class InputValidatorKit {
    * @returns A boolean value.
    */
   protected isTooShort(control: Control, minLength: number) {
-    return control.value.length < minLength;
+    return control?.value?.length < minLength;
   }
 
   /**
@@ -78,7 +78,7 @@ export class InputValidatorKit {
    * @returns A boolean value.
    */
   protected isTooLong(control: Control, maxLength: Number) {
-    return control.value.length > maxLength;
+    return control?.value?.length > maxLength;
   }
 
   /**
