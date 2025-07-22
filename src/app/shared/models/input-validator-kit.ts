@@ -1,6 +1,6 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-type Control = AbstractControl;
+type Control = AbstractControl | null;
 
 /**
  * Class providing basic functions for input validators.
@@ -109,7 +109,7 @@ export class InputValidatorKit {
    */
   protected getRejectionError(control: Control, key: string, pattern: RegExp) {
     const error = this.getError(key, pattern, control);
-    return error.pattern.test(control.value) ? error.value : null;
+    return error.pattern.test(control?.value) ? error.value : null;
   }
 
   /**
@@ -175,6 +175,6 @@ export class InputValidatorKit {
    */
   protected getAcceptionError(control: Control, key: string, pattern: RegExp) {
     const error = this.getError(key, pattern);
-    return pattern.test(control.value) ? null : error.value;
+    return pattern.test(control?.value) ? null : error.value;
   }
 }

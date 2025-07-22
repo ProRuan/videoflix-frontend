@@ -3,9 +3,6 @@ export const enum Autocompletes {
   CurrentPassword = 'current-password',
 }
 
-// add ComponentIds ... ?
-// add InputIds ... ?
-
 export const enum DialogIds {
   Success = 'success-dialog',
   SignUpSuccess = 'sign-up-success-dialog',

@@ -1,7 +1,7 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { InputValidatorKit } from './input-validator-kit';
 
-type Control = AbstractControl;
+type Control = AbstractControl | null;
 
 /**
  * Class providing validator functions for an input validation.

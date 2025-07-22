@@ -21,12 +21,6 @@ export class App {
   // dialogs (3/3) ...
   // error-toasts (4/7) ...
 
-  // enums for components, inputs/controls and form-validators (0/3) ...
-  // secondary button ...
-  // double code of the 5 form compoents (4/5) ...
-  //   --> startsite ...
-  // think about dialog background opacity and dialog box box-shadow ...
-
   // finalize success dialog ...
 
   // auth form: think about "matchError" --> "mismatched" ... ?!
@@ -34,6 +28,34 @@ export class App {
   // think about FormValidator naming and code (class/service, structure) ...
 
   // disabled submit buttons during submission logic ... !!!
+
+  // Important tasks for later
+  // -------------------------
+  // 1. startsite: implement AuthForm and email-check (backend) ...
+  // 2. rebuild project with file schematics ... !!!
+
+  // 3. secondary button style + fix blinking styles (0/2):
+  // .button {
+  //   @include border($b: none, $br: 40px);
+  //   @include spacing($p: 12px 24px);
+  //   @include size($w: fit-content, $h: 48px);
+  //   @include font($fw: 700);
+  //   @include colors($c: $primBlue, $bgc: $white);
+  //   transition: color 100ms ease-in-out, background-color 100ms ease-in-out;
+
+  //   &:hover {
+  //     @include colors($c: $white, $bgc: $hoverBlue);
+  //   }
+
+  //   &:active {
+  //     @include colors($c: $white, $bgc: $activeBlue);
+  //   }
+
+  //   &:disabled {
+  //     background-color: $disabled;
+  //     cursor: default;
+  //   }
+  // }
 
   protected title = 'videoflix-frontend';
 

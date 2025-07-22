@@ -84,6 +84,7 @@ export class LogIn extends AuthForm implements OnInit {
    * @param response The auth response.
    */
   protected handleSuccess(response: AuthResponse): void {
+    this.toasts.close();
     this.videoflix.setAuthData(response);
     this.router.navigateByUrl('video-offer');
   }
