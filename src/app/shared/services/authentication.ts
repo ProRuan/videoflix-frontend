@@ -32,14 +32,14 @@ export class Authentication {
     return this.http.post<AuthResponse>(this.loginUrl, payload, { headers });
   }
 
-  requestPasswordReset(payload: ForgotPasswordPayload) {
+  resetPassword(payload: ForgotPasswordPayload) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<AuthResponse>(this.forgotPasswordUrl, payload, {
       headers,
     });
   }
 
-  updateUserPassword(payload: ResetPasswordPayload) {
+  updatePassword(payload: ResetPasswordPayload) {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<AuthResponse>(this.resetPasswordUrl, payload, {
       headers,

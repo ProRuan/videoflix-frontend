@@ -1,35 +1,26 @@
 import { Directive, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Authentication } from '../../shared/services/authentication';
+import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { DialogManager } from '../../shared/services/dialog-manager';
 import { ToastManager } from '../../shared/services/toast-manager';
 import { DialogIds } from '../../shared/ts/enums';
-import { InputValidation } from '../services/input-validation';
-import { FormValidator } from '../services/form-validator';
-import { Observable } from 'rxjs';
 
 @Directive()
+/**
+ * Abstract class representing an auth form.
+ */
 export abstract class AuthForm {
-  protected fb = inject(FormBuilder);
-  protected validation: InputValidation = inject(InputValidation);
-  protected validator: FormValidator = inject(FormValidator);
-  protected auth = inject(Authentication);
-  protected dialogs = inject(DialogManager);
-  protected toasts = inject(ToastManager);
-
-  // appled for sign-up, log-in, forgot-password (3/5) ...
+  protected dialogs: DialogManager = inject(DialogManager);
+  protected toasts: ToastManager = inject(ToastManager);
 
   abstract form: FormGroup;
 
   protected abstract setForm(): void;
-
-  /** Convert the raw form value into the payload your API expects */
   protected abstract getPayload(): any;
-
   protected abstract handleSuccess(value?: any): void;
 
   /**
-   * Get the email control of a sign-up form.
+   * Get the email control of a form.
    * @returns The email control or null.
    */
   get email() {
@@ -37,7 +28,7 @@ export abstract class AuthForm {
   }
 
   /**
-   * Get the password control of a sign-up form.
+   * Get the password control of a form.
    * @returns The password control or null.
    */
   get password() {
@@ -45,7 +36,7 @@ export abstract class AuthForm {
   }
 
   /**
-   * Get the confirm-password control of a sign-up form.
+   * Get the confirm-password control of a form.
    * @returns The confirm-password control or null.
    */
   get confirmPassword() {
@@ -54,30 +45,38 @@ export abstract class AuthForm {
 
   /**
    * Get a possible error caused by a password mismatch.
+   * @returns A boolean value.
    */
   get matchError() {
     return this.form.hasError('passwordMismatch');
   }
 
-  protected performRequest(fn: () => Observable<any>) {
-    fn().subscribe({
+  /**
+   * Perform a request depending on the provided request method.
+   * @param request - The request method.
+   */
+  protected performRequest(request: () => Observable<any>) {
+    request().subscribe({
       next: (value) => this.handleSuccess(value),
       error: () => this.handleError(),
     });
   }
 
-  protected showSuccessDialog(id: DialogIds) {
-    this.form.reset();
-    this.toasts.slideOutImmediately();
-    this.dialogs.openSuccessDialog(id);
-  }
-
+  /**
+   * Show an error toast upon a failed request.
+   */
   protected handleError() {
     this.toasts.openErrorToast();
   }
 
-  isFormValid() {
-    return this.form.valid;
+  /**
+   * Show a success dialog.
+   * @param id - The success dialog id.
+   */
+  protected showSuccessDialog(id: DialogIds) {
+    this.form.reset();
+    this.toasts.slideOutImmediately();
+    this.dialogs.openSuccessDialog(id);
   }
 
   /**

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Header } from '../../shared/components/header/header';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
@@ -7,6 +7,9 @@ import { PrimaryButton } from '../../shared/components/primary-button/primary-bu
 import { Footer } from '../../shared/components/footer/footer';
 import { AuthForm } from '../../shared/models/auth-form';
 import { Videoflix } from '../../shared/services/videoflix';
+import { InputValidation } from '../../shared/services/input-validation';
+import { FormValidator } from '../../shared/services/form-validator';
+import { Authentication } from '../../shared/services/authentication';
 import { RegistrationPayload } from '../../shared/interfaces/registration-payload';
 import { DialogIds } from '../../shared/ts/enums';
 
@@ -30,7 +33,11 @@ import { DialogIds } from '../../shared/ts/enums';
  * @implements {OnInit}
  */
 export class SignUp extends AuthForm implements OnInit {
+  private fb: FormBuilder = inject(FormBuilder);
   private videoflix: Videoflix = inject(Videoflix);
+  private validation: InputValidation = inject(InputValidation);
+  private validator: FormValidator = inject(FormValidator);
+  private auth: Authentication = inject(Authentication);
 
   form!: FormGroup;
 
@@ -67,15 +74,12 @@ export class SignUp extends AuthForm implements OnInit {
   }
 
   /**
-   * Register a user on submit.
-   * If successful, a success dialog opens.
-   * Otherwise, an error toast is shown.
+   * Perform a user registration on submit.
    */
   onRegistration() {
-    if (this.isFormValid()) {
-      const payload = this.getPayload();
-      this.performRequest(() => this.auth.registerUser(payload));
-    }
+    if (this.isFormInvalid()) return;
+    const payload = this.getPayload();
+    this.performRequest(() => this.auth.registerUser(payload));
   }
 
   /**
@@ -91,7 +95,7 @@ export class SignUp extends AuthForm implements OnInit {
   }
 
   /**
-   * Open a success dialog upon a successful user registration.
+   * Show a success dialog upon a successful user registration.
    */
   protected handleSuccess(): void {
     this.showSuccessDialog(DialogIds.SignUpSuccess);

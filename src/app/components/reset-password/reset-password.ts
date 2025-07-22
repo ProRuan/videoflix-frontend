@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Header } from '../../shared/components/header/header';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
 import { AuthForm } from '../../shared/models/auth-form';
+import { InputValidation } from '../../shared/services/input-validation';
+import { FormValidator } from '../../shared/services/form-validator';
+import { Authentication } from '../../shared/services/authentication';
 import { ResetPasswordPayload } from '../../shared/interfaces/reset-password-payload';
 import { DialogIds } from '../../shared/ts/enums';
 
@@ -21,6 +24,11 @@ import { DialogIds } from '../../shared/ts/enums';
  * @implements {OnInit}
  */
 export class ResetPassword extends AuthForm implements OnInit {
+  private fb: FormBuilder = inject(FormBuilder);
+  private validation: InputValidation = inject(InputValidation);
+  private validator: FormValidator = inject(FormValidator);
+  private auth: Authentication = inject(Authentication);
+
   form!: FormGroup;
 
   /**
@@ -44,13 +52,12 @@ export class ResetPassword extends AuthForm implements OnInit {
   }
 
   /**
-   * Reset password on submit.
-   * If successful, a success dialog opens.
-   * Otherwise, an error toast is shown.
+   * Perform an update-password request on submit.
    */
-  onPasswordReset() {
+  onPasswordUpdate() {
+    if (this.isFormInvalid()) return;
     const payload = this.getPayload();
-    this.performRequest(() => this.auth.updateUserPassword(payload));
+    this.performRequest(() => this.auth.updatePassword(payload));
   }
 
   /**
