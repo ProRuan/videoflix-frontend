@@ -18,6 +18,9 @@ export class Authentication {
   private loginUrl = 'http://127.0.0.1:8000/api/login/';
   private forgotPasswordUrl = 'http://127.0.0.1:8000/api/forgot-password/';
   private resetPasswordUrl = 'http://127.0.0.1:8000/api/reset-password/';
+  private videoOfferUrl = 'http://127.0.0.1:8000/api/videos/';
+  // parameter videoId ... !
+  private videoDetailUrl = 'http://127.0.0.1:8000/api/videos/2/';
 
   registerUser(payload: RegistrationPayload): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -44,5 +47,21 @@ export class Authentication {
     return this.http.post<AuthResponse>(this.resetPasswordUrl, payload, {
       headers,
     });
+  }
+
+  loadVideoOffer() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Token 5c7bca16673bd00e5a2eb98a65d609474121ce5e',
+    });
+    return this.http.get<any>(this.videoOfferUrl, { headers });
+  }
+
+  loadVideoDetail() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Token 5c7bca16673bd00e5a2eb98a65d609474121ce5e',
+    });
+    return this.http.get<any>(this.videoDetailUrl, { headers });
   }
 }
