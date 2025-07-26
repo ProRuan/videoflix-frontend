@@ -1,29 +1,38 @@
-<section #videoPlayer class="video-player" (click)="onDelayedPlay()" (dblclick)="onFullScreen()">
-    <div class="player-header" (click)="onEventStop($event)" (dblclick)="onEventStop($event)">
-        <button #arrowBack class="button arrow-back"></button>
+<section #videoPlayer class="video-player" (click)="onPlayToggleLate()" (dblclick)="onFullScreen()">
+    <div class="player-header" [class.player-header-hidden]="playerHeaderHidden()" (click)="onEventStop($event)"
+        (dblclick)="onEventStop($event)">
+        <button #arrowBack class="button arrow-back" (click)="onBack()"></button>
         <span class="info-text">Optimizing video for your screen 40%</span>
         <div class="logo-cont">
             <img src="images/logo/logo.png" alt="videoflix logo" class="logo">
         </div>
     </div>
 
-    <video #video class="video" src="Kristallbruch.mp4" type="video/mp4"></video>
 
-    <div class="player-bar" (click)="onEventStop($event)" (dblclick)="onEventStop($event)">
+    <div class="video-cont" [class.full-size]="isFullscreen()">
+        <video #video class="video video-js" src="Kristallbruch.mp4" type="video/mp4"></video>
+    </div>
+
+    <div class="player-bar" [class.player-bar-hidden]="playerBarHidden()" (click)="onEventStop($event)"
+        (dblclick)="onEventStop($event)">
         <div class="progress-cont">
-            <div #progressBar class="progress-bar" (click)="onCurrentTimeSet($event)"
+            <div class="progress-time">{{ remainingTime() }}</div>
+            <div #progressBar class="progress-bar-cont" (click)="onCurrentTimeSet($event)"
                 (mousedown)="onDragStartCurrentTime($event)" (dragstart)="onDragPreventCurrentTime($event)">
-                <div class="progress-bar-fill" [style.width.%]="video.currentTime / video.duration * 100"></div>
-                <div class="progress-handle" [style.left.%]="video.currentTime / video.duration * 100"></div>
+                <div class="progress-bar">
+                    <div class="progress-bar-buffer" [style.width.%]="currentBufferPercentage()"></div>
+                    <div class="progress-bar-fill" [style.width.%]="currentTime() / duration() * 100"></div>
+                    <div class="progress-handle" [style.left.%]="currentTime() / duration() * 100"></div>
+                </div>
             </div>
-            <div class="progress-time">{{ currentTime }}</div>
+            <div class="progress-time">{{ displayedCurrentTime() }}</div>
         </div>
 
         <div class="control-bar">
             <div class="button-group">
-                <button class="button play" (click)="onPlay()"></button>
-                <button class="button backward" (click)="onBackward()"></button>
-                <button class="button forward" (click)="onForward()"></button>
+                <button class="button play" (click)="onPlayToggle()"></button>
+                <button class="button backward" (click)="onBackwardSkip()"></button>
+                <button class="button forward" (click)="onForwardSkip()"></button>
                 <div class="volume-container">
                     <button class="button volume" (click)="onMuteToggle()"></button>
                     <div #volumeBar class="volume-bar" (click)="onVolumeSet($event)" (mousedown)="onDragStart($event)"
@@ -39,8 +48,6 @@
                 <div class="speed-container">
                     <button #speed class="button speed"></button>
                     <div class="speed-button-group">
-                        <button class="speed-button" [disabled]="isSpeed(0.25)"
-                            (click)="onSpeedSelect(0.25)">0.25</button>
                         <button class="speed-button" [disabled]="isSpeed(0.5)" (click)="onSpeedSelect(0.5)">0.5</button>
                         <button class="speed-button" [disabled]="isSpeed(0.75)"
                             (click)="onSpeedSelect(0.75)">0.75</button>
@@ -48,8 +55,6 @@
                         <button class="speed-button" [disabled]="isSpeed(1.25)"
                             (click)="onSpeedSelect(1.25)">1.25</button>
                         <button class="speed-button" [disabled]="isSpeed(1.5)" (click)="onSpeedSelect(1.5)">1.5</button>
-                        <button class="speed-button" [disabled]="isSpeed(1.75)"
-                            (click)="onSpeedSelect(1.75)">1.75</button>
                         <button class="speed-button" [disabled]="isSpeed(2)" (click)="onSpeedSelect(2)">2</button>
                     </div>
                 </div>

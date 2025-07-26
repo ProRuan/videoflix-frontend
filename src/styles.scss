@@ -1,5 +1,7 @@
 @use "mixins" as *;
 
+@import "video.js/dist/video-js.css";
+
 body {
   @include font();
   margin: 0;

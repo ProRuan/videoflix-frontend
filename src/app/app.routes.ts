@@ -9,6 +9,12 @@ import { VideoPlayer } from './components/video-player/video-player';
 import { Imprint } from './components/imprint/imprint';
 import { PrivacyPolicy } from './components/privacy-policy/privacy-policy';
 
+// reset-password with user token ... ?
+// video-offer with user token ... !
+// video-player with user token ... !
+
+// user router guard ... ?!
+
 export const routes: Routes = [
   { path: '', component: Startsite },
   { path: 'log-in', component: LogIn },

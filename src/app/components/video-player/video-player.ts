@@ -1,12 +1,29 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import videojs from 'video.js';
+import Player from 'video.js/dist/types/player';
+import { VideoPlayerBase } from '../../shared/models/video-player-base';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-player',
   imports: [],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
+  host: {
+    '(document:mousemove)': 'onMouseMove($event)',
+    '(document:mouseup)': 'stopDrag()',
+  },
 })
-export class VideoPlayer {
+export class VideoPlayer extends VideoPlayerBase {
+  private router: Router = inject(Router);
+
   // remove test video from public folder ...
   // improve progress bar and currentTime ...
   //   --> save values in backend ... ?
@@ -18,7 +35,31 @@ export class VideoPlayer {
   // click delay only on video-container (not on buttons) ...
   //   --> button must react without delay ... !
 
-  currentTime: number = 0;
+  playerHeaderHidden = signal(false);
+  playerBarHidden = signal(false);
+  hiddenTimeoutId!: ReturnType<typeof setTimeout>;
+  lastTimeLock: number = Date.now();
+
+  // fix progress bar height, transition and colors ...
+  // fix bar box-shadows ...
+  // fix full screen (theater mode) ...
+
+  // fix loading behavior ...
+
+  player!: Player;
+  options = {
+    controls: false,
+    autoplay: false,
+    preload: 'auto',
+    techOrder: ['html5'],
+    sources: [
+      {
+        src: 'out.m3u8',
+        type: 'application/x-mpegURL',
+      },
+    ],
+  };
+
   playing: boolean = false;
   volume: number = 0.5;
   draggingCurrentTime: boolean = false;
@@ -26,20 +67,39 @@ export class VideoPlayer {
   wasPlayingBeforeDrag: boolean = false;
   playbackrate: number = 1;
   fullScreenEnabled: boolean = false;
-  clickTimeout: any = null;
+  isFullscreen = signal(false);
 
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
   @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
 
-  @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
     if (this.draggingCurrentTime) this.updateCurrentTime(event);
     if (this.dragging) this.updateVolume(event);
+
+    // activate
+    // --------
+    // if (this.lastTimeLock < Date.now()) {
+    //   console.log('mouse move');
+    //   this.lastTimeLock = Date.now() + 100;
+
+    //   if (this.playerHeaderHidden()) {
+    //     clearTimeout(this.hiddenTimeoutId);
+    //     this.playerHeaderHidden.set(false);
+    //     this.playerBarHidden.set(false);
+    //     this.hiddenTimeoutId = setTimeout(() => {
+    //       this.playerHeaderHidden.set(true);
+    //       this.playerBarHidden.set(true);
+    //     }, 3000);
+    //   }
+    // }
   }
 
-  @HostListener('document:mouseup')
+  onBack() {
+    this.router.navigateByUrl('video-offer');
+  }
+
   stopDrag() {
     this.draggingCurrentTime = false;
     if (this.wasPlayingBeforeDrag) {
@@ -50,12 +110,17 @@ export class VideoPlayer {
   }
 
   ngAfterViewInit() {
-    console.log('video: ', this.video.nativeElement);
-    console.log('video current time: ', this.video.nativeElement.currentTime);
-
-    setTimeout(() => {
-      console.log('video current time: ', this.video.nativeElement.currentTime);
-    }, 3000);
+    this.player = videojs(this.video.nativeElement, this.options);
+    this.player.ready(() => {
+      console.log('player ready');
+    });
+    this.player.on('loadedmetadata', () => {
+      const duration = this.player.duration();
+      if (duration) {
+        this.duration.set(duration);
+      }
+      this.setCurrentBufferInterval();
+    });
   }
 
   onEventStop(event: Event) {
@@ -71,15 +136,12 @@ export class VideoPlayer {
     const bar = this.progressBar.nativeElement;
     const rect = bar.getBoundingClientRect();
     const x = event.clientX - rect.left;
-    this.currentTime = Math.max(
-      0,
-      Math.min(40, Math.floor((x / rect.width) * 40))
-    );
+    this.currentTime.set(Math.max(0, Math.min(40, (x / rect.width) * 40)));
     console.log('currentTime: ', this.currentTime);
 
     // Sync with actual video element
     const videoElement = this.video.nativeElement;
-    if (videoElement) videoElement.currentTime = this.currentTime;
+    if (videoElement) videoElement.currentTime = this.currentTime();
   }
 
   onDragStartCurrentTime(event: MouseEvent) {
@@ -95,38 +157,31 @@ export class VideoPlayer {
     event.preventDefault();
   }
 
-  onDelayedPlay() {
-    if (this.clickTimeout) return;
-
-    this.clickTimeout = setTimeout(() => {
-      this.play();
-    }, 250);
+  /**
+   * Toggle between play and pause after a delay on click.
+   */
+  onPlayToggleLate() {
+    this.togglePlayLate();
   }
 
-  play() {
-    this.clickTimeout = null;
-    const videoElement = this.video.nativeElement;
-    videoElement.paused ? videoElement.play() : videoElement.pause();
+  /**
+   * Toggle between play and pause on click.
+   */
+  onPlayToggle() {
+    this.clearClickTimeout();
+    this.togglePlay();
   }
 
-  onPlay() {
-    clearTimeout(this.clickTimeout);
-    this.play();
+  onBackwardSkip() {
+    this.skipBackward();
   }
 
-  onBackward() {
-    this.video.nativeElement.currentTime -= 10;
-  }
-
-  onForward() {
-    this.video.nativeElement.currentTime += 10;
+  onForwardSkip() {
+    this.skipForward();
   }
 
   onMuteToggle() {
-    const videoElement = this.video.nativeElement;
-    if (videoElement) {
-      videoElement.muted = !videoElement.muted;
-    }
+    this.toggleMute();
   }
 
   onVolumeSet(event: MouseEvent) {
@@ -140,9 +195,7 @@ export class VideoPlayer {
     const percentage = Math.max(0, Math.min(1, x / rect.width));
     this.volume = percentage;
 
-    // Sync with actual video element
-    const videoElement = this.video.nativeElement;
-    if (videoElement) videoElement.volume = this.volume;
+    this.setVolume(this.volume);
   }
 
   onDragStart(event: MouseEvent) {
@@ -157,7 +210,7 @@ export class VideoPlayer {
 
   onSpeedSelect(value: number) {
     this.playbackrate = value;
-    this.video.nativeElement.playbackRate = value;
+    this.setPlaybackRate(value);
   }
 
   isSpeed(value: number) {
@@ -167,22 +220,22 @@ export class VideoPlayer {
   // onFullscreen() for button and onFullscreenDelayed() for video-container!!
   onFullScreen() {
     clearTimeout(this.clickTimeout);
-    this.clickTimeout = null;
+    // this.clickTimeout = null;
+
+    // const fullScreenEnabled = this.player.isFullscreen();
+    // if (fullScreenEnabled) {
+    //   this.player.exitFullscreen();
+    // } else {
+    //   this.player.requestFullscreen();
+    // }
 
     const videoPlayerElement = this.videoPlayer.nativeElement;
     if (!document.fullscreenElement) {
       videoPlayerElement?.requestFullscreen?.();
+      this.isFullscreen.set(true);
     } else {
       document.exitFullscreen?.();
+      this.isFullscreen.set(false);
     }
-    // if (this.fullScreenEnabled) {
-    //   this.videoPlayer.nativeElement.style.width = '640px';
-    //   this.videoPlayer.nativeElement.style.height = '360px';
-    //   this.fullScreenEnabled = false;
-    // } else {
-    //   this.videoPlayer.nativeElement.style.width = '100%';
-    //   this.videoPlayer.nativeElement.style.height = '100vh';
-    //   this.fullScreenEnabled = true;
-    // }
   }
 }
