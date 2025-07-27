@@ -20,7 +20,7 @@
   box-sizing: border-box;
   padding: 96px 64px;
   width: 100%;
-//   height: calc(100vh - 108px);
+  //   height: calc(100vh - 108px);
   //   width: 520px;
   //   background: rgba(27, 27, 34, 0.85);
 }
@@ -76,6 +76,10 @@
 
 .genre-cont {
   @include flexbox($g: 16px);
+}
+
+.thumbnail-new {
+  @include image($w: 213.33px, $h: 120px);
 }
 
 .thumbnail {

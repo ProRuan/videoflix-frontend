@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Header } from '../../shared/components/header/header';
 import { Footer } from '../../shared/components/footer/footer';
 import { Videoflix } from '../../shared/services/videoflix';
+import { Video } from '../../shared/models/video';
+import { Authentication } from '../../shared/services/authentication';
 
 @Component({
   selector: 'app-video-offer',
@@ -9,8 +11,9 @@ import { Videoflix } from '../../shared/services/videoflix';
   templateUrl: './video-offer.html',
   styleUrl: './video-offer.scss',
 })
-export class VideoOffer {
+export class VideoOffer implements OnInit {
   private videoflix: Videoflix = inject(Videoflix);
+  private auth: Authentication = inject(Authentication);
 
   // use FormValidator.passwordMatch() instead of signals ... !!!
 
@@ -83,4 +86,72 @@ export class VideoOffer {
 
   // reset-password: payload token must be variable ... !
   //   --> use email instead of token ... !
+
+  videos: Video[] = [];
+  genres: string[] = [];
+  videosByGenre: { genre: string; videos: Video[] }[] = [];
+  // videosByGenre: Record<string, Video[]> = {};
+
+  // testing
+  firstVideo: Video = new Video();
+
+  // backend sorts by genre, -created_at and by title ...
+  // backend creates an object { [key: string]: Video[] } ...
+  // frontend simply renders videos ...
+  ngOnInit() {
+    this.auth.loadVideoOffer().subscribe({
+      next: (value) => this.setVideos(value),
+      error: (error) => console.log('loading error'),
+    });
+  }
+
+  setVideos(videos: Video[]) {
+    videos.forEach((video) => {
+      this.videos.push(new Video(video));
+    });
+    // this.videos = [...videos];
+    console.log('videos: ', this.videos);
+    // testing
+    this.firstVideo.set(videos[0]);
+
+    // move
+    this.setGenres();
+    this.mapVideos();
+  }
+
+  setGenres() {
+    for (const video of this.videos) {
+      const genre = video.genre;
+      if (this.genres.includes(genre)) continue;
+      this.genres.push(genre);
+    }
+    this.genres = [...this.genres.sort()];
+    console.log('genres: ', this.genres);
+  }
+
+  mapVideos() {
+    const videos = [...this.videos];
+    const library: Video[][] = [];
+    this.genres.forEach((genre, i) => {
+      const videoGenre = videos.filter((v) => v.genre === genre);
+      const videoGenreUnsorted = [...videoGenre];
+      const videoGenreSorted = [
+        ...videoGenreUnsorted.sort((a: Video, b: Video) => {
+          const dateA = new Date(a.createdAt).getTime();
+          const dateB = new Date(b.createdAt).getTime();
+          return dateA - dateB;
+        }),
+      ];
+      library.push(videoGenreSorted);
+    });
+    console.log('library: ', library);
+
+    for (let i = 0; i < this.genres.length; i++) {
+      const genre = this.genres[i];
+      const lib = library[i];
+      this.videosByGenre.push({ genre: genre, videos: lib });
+      // this.videosByGenre[genre] = lib;
+    }
+    console.log('videos by genre: ', this.videosByGenre);
+  }
 }

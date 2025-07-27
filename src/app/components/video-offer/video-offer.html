@@ -22,14 +22,27 @@
                 <h3 class="genre-title">New on Videoflix</h3>
 
                 <div class="genre-cont">
-                    <img class="thumbnail" src=" http://127.0.0.1:8000/media/videos/mighty_magic_thumbnail.jpg" alt="">
+                    <div class="thumbnail"></div>
                     <div class="thumbnail"></div>
                     <div class="thumbnail"></div>
                     <div class="thumbnail"></div>
                     <div class="thumbnail"></div>
                 </div>
             </div>
+            <!-- use @empty -->
+            @for (vg of videosByGenre; track vg) {
             <div class="genre">
+                <h3 class="genre-title">{{ vg.genre }}</h3>
+
+                <div class="genre-cont">
+                    @for (v of vg.videos; track v) {
+                    <!-- replace img with video ... -->
+                    <img [src]="v.thumbnailImage" alt="thumb" class="thumbnail-new">
+                    }
+                </div>
+            </div>
+            }
+            <!-- <div class="genre">
                 <h3 class="genre-title">Pilgrimage</h3>
 
                 <div class="genre-cont">
@@ -39,8 +52,8 @@
                     <div class="thumbnail"></div>
                     <div class="thumbnail"></div>
                 </div>
-            </div>
-            <div class="genre">
+            </div> -->
+            <!-- <div class="genre">
                 <h3 class="genre-title">Dance</h3>
 
                 <div class="genre-cont">
@@ -50,8 +63,8 @@
                     <div class="thumbnail"></div>
                     <div class="thumbnail"></div>
                 </div>
-            </div>
-            <div class="genre">
+            </div> -->
+            <!-- <div class="genre">
                 <h3 class="genre-title">Epic</h3>
 
                 <div class="genre-cont">
@@ -61,7 +74,7 @@
                     <div class="thumbnail"></div>
                     <div class="thumbnail"></div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 
