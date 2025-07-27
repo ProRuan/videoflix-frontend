@@ -1,44 +1,65 @@
 @use "mixins" as *;
 
+$background: linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0.8) -27.44%,
+  rgba(0, 0, 0, 0.44) 44.23%,
+  rgba(0, 0, 0, 0.8) 100%
+);
+
+// header and footer or content shadow ... !!!
+
 .video-offer {
+  @include background($bg: $background);
   @include flexbox($fd: column, $jc: space-between, $ai: center);
   min-height: 100vh;
-  background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.8) -27.44%,
-      rgba(0, 0, 0, 0.44) 44.23%,
-      rgba(0, 0, 0, 0.8) 100%
-    ),
-    url("http://127.0.0.1:8000/media/videos/mighty_magic_thumbnail.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
-.content {
-  @include flexbox($fd: column, $g: 96px);
-  box-sizing: border-box;
-  padding: 96px 64px;
-  width: 100%;
-  //   height: calc(100vh - 108px);
-  //   width: 520px;
-  //   background: rgba(27, 27, 34, 0.85);
+// move
+.header {
+  @include position($pos: fixed, $l: 0, $t: 0);
+  z-index: 1;
 }
+
+.atf-video {
+  @include size($w: 100%, $h: auto);
+  @include position($pos: absolute, $l: 0, $t: 0);
+}
+
+// padding-bottom ...
+.atf {
+  @include spacing($p: 170px 96px 0 96px);
+  @include size($w: 100%, $h: calc(100vh - 104px));
+}
+
+// .content {
+//   @include size($w: 100%, $h: calc(100vh - 212px));
+// }
 
 .video-info {
   @include flexbox($fd: column, $g: 32px);
   width: 440px;
+  position: relative;
+  z-index: 1;
+
+  // testing
+  padding: 43px 56px;
+  border-radius: 48px;
+
+  background-color: rgba(27, 27, 34, 0.85);
+  // pass
+  // background-color: rgba(27, 27, 34, 0.75);
+  // pass not completely
+  // background-color: rgba(27, 27, 34, 0.65);
 }
 
-// double code!!!
 .title {
-  @include font($fs: 88px, $fw: 700);
-  padding: 13px 0;
+  @include font($fs: 88px, $fw: 700, $lh: 115px);
   color: $white;
 }
 
 .description {
-  @include font($fs: 16px, $lh: 136%);
+  @include font($fs: 16px, $lh: 21px);
   color: $white;
 }
 
@@ -60,8 +81,9 @@
 }
 
 .library {
+  @include spacing($p: 0 96px);
   @include flexbox($fd: column, $g: 48px);
-  padding: 0 96px;
+  width: 100%;
 }
 
 .genre {
@@ -69,8 +91,7 @@
 }
 
 .genre-title {
-  @include font($fs: 22px, $fw: 700);
-  padding: 3px 0;
+  @include font($fs: 22px, $fw: 700, $lh: 29px);
   color: $white;
 }
 
@@ -79,12 +100,12 @@
 }
 
 .thumbnail-new {
-  @include image($w: 213.33px, $h: 120px);
+  @include image($w: 213px, $h: 120px);
 }
 
 .thumbnail {
-  @include image($w: 213.33px, $h: 120px);
-  min-width: 213.33px;
+  @include image($w: 213px, $h: 120px);
+  min-width: 213px;
   // only for testing!
   background-color: lightblue;
 }

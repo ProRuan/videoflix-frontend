@@ -1,1 +1,4 @@
-<button class="button" [type]="type" [disabled]="disabled" (click)="onAction()">{{ text }}</button>
+<button class="button" [type]="type" [disabled]="disabled" (click)="onAction()">
+    <img *ngIf="icon" [src]="getSrc()" [alt]="icon" class="icon">
+    <span class="text">{{ text }}</span>
+</button>

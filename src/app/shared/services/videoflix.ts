@@ -30,4 +30,12 @@ export class Videoflix {
   setAuthData(response: AuthResponse) {
     this.user.setAuthData(response);
   }
+
+  isVideoOffer() {
+    return this.currentUrl() === '/video-offer';
+  }
+
+  logOut() {
+    this.user.reset();
+  }
 }

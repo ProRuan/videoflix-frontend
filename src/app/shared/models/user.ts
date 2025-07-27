@@ -17,4 +17,10 @@ export class User {
     this.email = response.email;
     this.id = response.user_id;
   }
+
+  reset() {
+    this.token = '';
+    this.email = '';
+    this.id = 0;
+  }
 }

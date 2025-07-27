@@ -4,6 +4,7 @@ import { Footer } from '../../shared/components/footer/footer';
 import { Videoflix } from '../../shared/services/videoflix';
 import { Video } from '../../shared/models/video';
 import { Authentication } from '../../shared/services/authentication';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-offer',
@@ -12,6 +13,7 @@ import { Authentication } from '../../shared/services/authentication';
   styleUrl: './video-offer.scss',
 })
 export class VideoOffer implements OnInit {
+  private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
   private auth: Authentication = inject(Authentication);
 
@@ -95,9 +97,13 @@ export class VideoOffer implements OnInit {
   // testing
   firstVideo: Video = new Video();
 
+  // log out user (via backend) ... ?!
+  // set token by cookie service and/or session storage ...
+
   // backend sorts by genre, -created_at and by title ...
   // backend creates an object { [key: string]: Video[] } ...
   // frontend simply renders videos ...
+  // prepare error toast ...
   ngOnInit() {
     this.auth.loadVideoOffer().subscribe({
       next: (value) => this.setVideos(value),
@@ -153,5 +159,9 @@ export class VideoOffer implements OnInit {
       // this.videosByGenre[genre] = lib;
     }
     console.log('videos by genre: ', this.videosByGenre);
+  }
+
+  onPlay() {
+    this.router.navigateByUrl('video-player');
   }
 }

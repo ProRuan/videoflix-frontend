@@ -1,7 +1,12 @@
 <div class="video-offer">
-    <app-header></app-header>
+    <app-header class="header"></app-header>
 
-    <section class="content">
+    <!-- think about linear-gradient -->
+    <!-- think about header shadow?! -->
+    <section class="atf">
+        <video class="atf-video" src="Kristallbruch_preview.mp4" [autoplay]="true" [loop]="true" [muted]="true"
+            type="video/mp4"></video>
+
         <div class="video-info">
             <h1 class="title">Mighty Magic</h1>
 
@@ -13,36 +18,39 @@
 
             <button class="button">
                 <img class="button-icon" src="images/buttons/play_arrow.png" alt="chevron_right.png">
-                <span class="button-text">Play</span>
+                <span class="button-text" (click)="onPlay()">Play</span>
             </button>
         </div>
+    </section>
 
-        <div class="library">
-            <div class="genre">
-                <h3 class="genre-title">New on Videoflix</h3>
+    <!-- think about section overlap -->
+    <!-- think about right shadow rectangle -->
+    <section class="library">
+        <div class="genre">
+            <h3 class="genre-title">New on Videoflix</h3>
 
-                <div class="genre-cont">
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                </div>
+            <div class="genre-cont">
+                <div class="thumbnail"></div>
+                <div class="thumbnail"></div>
+                <div class="thumbnail"></div>
+                <div class="thumbnail"></div>
+                <div class="thumbnail"></div>
             </div>
-            <!-- use @empty -->
-            @for (vg of videosByGenre; track vg) {
-            <div class="genre">
-                <h3 class="genre-title">{{ vg.genre }}</h3>
+        </div>
+        <!-- use @empty -->
+        @for (vg of videosByGenre; track vg) {
+        <div class="genre">
+            <h3 class="genre-title">{{ vg.genre }}</h3>
 
-                <div class="genre-cont">
-                    @for (v of vg.videos; track v) {
-                    <!-- replace img with video ... -->
-                    <img [src]="v.thumbnailImage" alt="thumb" class="thumbnail-new">
-                    }
-                </div>
+            <div class="genre-cont">
+                @for (v of vg.videos; track v) {
+                <!-- replace img with video ... -->
+                <img [src]="v.thumbnailImage" alt="thumb" class="thumbnail-new">
+                }
             </div>
-            }
-            <!-- <div class="genre">
+        </div>
+        }
+        <!-- <div class="genre">
                 <h3 class="genre-title">Pilgrimage</h3>
 
                 <div class="genre-cont">
@@ -53,7 +61,7 @@
                     <div class="thumbnail"></div>
                 </div>
             </div> -->
-            <!-- <div class="genre">
+        <!-- <div class="genre">
                 <h3 class="genre-title">Dance</h3>
 
                 <div class="genre-cont">
@@ -64,7 +72,7 @@
                     <div class="thumbnail"></div>
                 </div>
             </div> -->
-            <!-- <div class="genre">
+        <!-- <div class="genre">
                 <h3 class="genre-title">Epic</h3>
 
                 <div class="genre-cont">
@@ -75,14 +83,8 @@
                     <div class="thumbnail"></div>
                 </div>
             </div> -->
-        </div>
     </section>
 
-    <!-- <section class="content">
-        <h2 class="title">Mighty Magic</h2>
-
-        <img class="img" src="http://127.0.0.1:8000/media/videos/mighty_magic_thumbnail.jpg" alt="">
-    </section> -->
-
+    <!-- think about footer overlap -->
     <app-footer></app-footer>
 </div>

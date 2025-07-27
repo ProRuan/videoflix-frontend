@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Videoflix } from '../../services/videoflix';
 
 @Component({
   selector: 'app-footer',
@@ -11,4 +12,14 @@ import { RouterLink } from '@angular/router';
 /**
  * Class representing a footer component.
  */
-export class Footer {}
+export class Footer {
+  private videoflix: Videoflix = inject(Videoflix);
+
+  /**
+   * Check the current component for being the video offer component.
+   * @returns A boolean value.
+   */
+  isVideoOffer() {
+    return this.videoflix.isVideoOffer();
+  }
+}

@@ -13,6 +13,10 @@ $logo: url("/images/logo/logo.png");
   height: 108px;
 }
 
+.logo {
+  @include image($w: auto, $h: 48px);
+}
+
 .home-button {
   @include size($w: 201px, $h: 32px);
   @include background($bg: $logo, $size: auto 32px);
