@@ -4,6 +4,11 @@
   @include flexbox($jc: center, $ai: center);
 }
 
+.slim {
+  height: 52px;
+  align-items: flex-end;
+}
+
 .content {
   @include spacing($p: 10px 96px);
   @include width($w: 100%, $max: 1440px);
@@ -12,12 +17,14 @@
 }
 
 .dark {
+  min-height: 104px;
   justify-content: flex-end;
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0.9) 50%
   );
+  z-index: 1;
 }
 
 .link-group {

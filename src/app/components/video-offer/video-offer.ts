@@ -5,10 +5,11 @@ import { Videoflix } from '../../shared/services/videoflix';
 import { Video } from '../../shared/models/video';
 import { Authentication } from '../../shared/services/authentication';
 import { Router } from '@angular/router';
+import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 
 @Component({
   selector: 'app-video-offer',
-  imports: [Header, Footer],
+  imports: [Header, PrimaryButton, Footer],
   templateUrl: './video-offer.html',
   styleUrl: './video-offer.scss',
 })
@@ -88,6 +89,8 @@ export class VideoOffer implements OnInit {
 
   // reset-password: payload token must be variable ... !
   //   --> use email instead of token ... !
+
+  // use main tag ... !
 
   videos: Video[] = [];
   genres: string[] = [];

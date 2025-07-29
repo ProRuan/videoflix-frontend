@@ -17,24 +17,39 @@ $background: linear-gradient(
 
 // move
 .header {
-  @include position($pos: fixed, $l: 0, $t: 0);
+  @include position($pos: absolute, $l: 0, $t: 0);
   z-index: 1;
 }
+
+// padding-bottom ...
+.atf {
+  @include spacing($p: 28px 96px 0 96px);
+  // @include spacing($p: 170px 96px 0 96px);
+  @include size($w: 100%, $h: 594px);
+  // @include size($w: 100%, $h: calc(100vh - 104px));
+  @include flexbox($ai: center);
+}
+
+// .content {
+//   @include size($w: 100%, $h: calc(100vh - 212px));
+// }
 
 .atf-video {
   @include size($w: 100%, $h: auto);
   @include position($pos: absolute, $l: 0, $t: 0);
 }
 
-// padding-bottom ...
-.atf {
-  @include spacing($p: 170px 96px 0 96px);
-  @include size($w: 100%, $h: calc(100vh - 104px));
+.video-shadow {
+  @include size($w: 100%);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 20, 0.6) 0%,
+    rgba(20, 20, 20, 0) 50%,
+    #141414 100%
+  );
 }
-
-// .content {
-//   @include size($w: 100%, $h: calc(100vh - 212px));
-// }
 
 .video-info {
   @include flexbox($fd: column, $g: 32px);
@@ -43,18 +58,16 @@ $background: linear-gradient(
   z-index: 1;
 
   // testing
-  padding: 43px 56px;
-  border-radius: 48px;
+  // padding: 43px 56px;
+  // border-radius: 48px;
 
-  background-color: rgba(27, 27, 34, 0.85);
   // pass
-  // background-color: rgba(27, 27, 34, 0.75);
-  // pass not completely
-  // background-color: rgba(27, 27, 34, 0.65);
+  // background-color: rgba(27, 27, 34, 0.7);
 }
 
 .title {
-  @include font($fs: 88px, $fw: 700, $lh: 115px);
+  @include font($fs: 64px, $fw: 700, $lh: 84px);
+  // @include font($fs: 88px, $fw: 700, $lh: 115px);
   color: $white;
 }
 
@@ -63,27 +76,13 @@ $background: linear-gradient(
   color: $white;
 }
 
-.button {
-  @include border($b: none, $br: 40px);
-  @include size($w: fit-content, $h: 48px);
-  @include colors($c: $white, $bgc: $primBlue);
-  @include flexbox($jc: center, $ai: center, $g: 4px);
-  padding: 12px 24px;
-  font-family: $dmSans;
-}
-
-.button-text {
-  @include font($fs: 18px, $fw: 700);
-}
-
-.button-icon {
-  @include image($h: 24px);
-}
-
+// overflow-x:auto or flex-wrap?!
 .library {
   @include spacing($p: 0 96px);
   @include flexbox($fd: column, $g: 48px);
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .genre {
@@ -95,6 +94,8 @@ $background: linear-gradient(
   color: $white;
 }
 
+// horizontal scrollbar (hidden)?
+// scroll buttons?
 .genre-cont {
   @include flexbox($g: 16px);
 }
@@ -110,6 +111,12 @@ $background: linear-gradient(
   background-color: lightblue;
 }
 
-.img {
-  @include image($w: auto, $h: auto);
+.rectangle {
+  @include size($w: 200px, $h: calc(100% - 45px));
+  @include position($pos: absolute, $r: 0, $b: 0);
+  background: linear-gradient(
+    88.67deg,
+    rgba(20, 20, 20, 0) 1.13%,
+    #141414 48.04%
+  );
 }

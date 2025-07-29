@@ -1,11 +1,11 @@
 <div class="video-offer">
     <app-header class="header"></app-header>
 
-    <!-- think about linear-gradient -->
-    <!-- think about header shadow?! -->
+    <!-- use main tag as container -->
     <section class="atf">
         <video class="atf-video" src="Kristallbruch_preview.mp4" [autoplay]="true" [loop]="true" [muted]="true"
             type="video/mp4"></video>
+        <div class="video-shadow"></div>
 
         <div class="video-info">
             <h1 class="title">Mighty Magic</h1>
@@ -16,15 +16,10 @@
                 truth.
             </p>
 
-            <button class="button">
-                <img class="button-icon" src="images/buttons/play_arrow.png" alt="chevron_right.png">
-                <span class="button-text" (click)="onPlay()">Play</span>
-            </button>
+            <app-primary-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-primary-button>
         </div>
     </section>
 
-    <!-- think about section overlap -->
-    <!-- think about right shadow rectangle -->
     <section class="library">
         <div class="genre">
             <h3 class="genre-title">New on Videoflix</h3>
@@ -50,41 +45,9 @@
             </div>
         </div>
         }
-        <!-- <div class="genre">
-                <h3 class="genre-title">Pilgrimage</h3>
 
-                <div class="genre-cont">
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                </div>
-            </div> -->
-        <!-- <div class="genre">
-                <h3 class="genre-title">Dance</h3>
-
-                <div class="genre-cont">
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                </div>
-            </div> -->
-        <!-- <div class="genre">
-                <h3 class="genre-title">Epic</h3>
-
-                <div class="genre-cont">
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                    <div class="thumbnail"></div>
-                </div>
-            </div> -->
+        <div class="rectangle"></div>
     </section>
 
-    <!-- think about footer overlap -->
     <app-footer></app-footer>
 </div>

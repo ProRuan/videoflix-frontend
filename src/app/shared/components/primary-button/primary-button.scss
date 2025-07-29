@@ -1,5 +1,9 @@
 @use "mixins" as *;
 
+:host {
+  width: fit-content;
+}
+
 .button {
   @include border($b: none, $br: 40px);
   @include spacing($p: 12px 24px);

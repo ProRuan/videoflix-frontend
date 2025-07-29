@@ -14,6 +14,7 @@ import { PrivacyPolicy } from './components/privacy-policy/privacy-policy';
 // video-player with user token ... !
 
 // user router guard ... ?!
+// use router resolver ... ?
 
 export const routes: Routes = [
   { path: '', component: Startsite },
