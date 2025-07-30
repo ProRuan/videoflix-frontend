@@ -3,13 +3,20 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Header } from '../../shared/components/header/header';
 import { StartEmailInput } from '../../shared/components/start-email-input/start-email-input';
+import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
 import { Footer } from '../../shared/components/footer/footer';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 
 @Component({
   selector: 'app-startsite',
-  imports: [ReactiveFormsModule, Header, StartEmailInput, Footer],
+  imports: [
+    ReactiveFormsModule,
+    Header,
+    StartEmailInput,
+    PrimaryButton,
+    Footer,
+  ],
   templateUrl: './startsite.html',
   styleUrl: './startsite.scss',
 })

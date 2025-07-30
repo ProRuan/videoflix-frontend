@@ -16,6 +16,7 @@ export class PrimaryButton {
   @Input() type: string = 'button';
   @Input() disabled: boolean = false;
   @Input() icon?: string;
+  @Input() reverse?: boolean;
 
   @Output('click') clickEvent = new EventEmitter<void>();
 

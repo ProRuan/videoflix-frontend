@@ -1,22 +1,22 @@
 @use "mixins" as *;
 
-$background: linear-gradient(
-    180deg,
-    #000000 -19.89%,
-    rgba(0, 0, 0, 0.55) 40.46%,
-    #000000 100%
-  ),
-  url("/images/backgrounds/startsite_bg.jpg");
+$gradient: linear-gradient(
+  180deg,
+  #000000 -19.89%,
+  rgba(0, 0, 0, 0.55) 40.46%,
+  #000000 100%
+);
+$image: url("/images/backgrounds/startsite_bg.jpg");
+$background: $gradient, $image;
 
-.startsite {
+:host {
   @include background($bg: $background);
-  @include flexbox($fd: column, $jc: space-between, $ai: center);
+  @include flexbox($fd: column);
   min-height: 100vh;
 }
 
 .content {
   @include flexbox($fd: column, $ai: center, $g: 32px);
-  width: fit-content;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -32,34 +32,4 @@ $background: linear-gradient(
 
 .form {
   @include flexbox($g: 16px);
-}
-
-.button {
-  @include border($b: none, $br: 40px);
-  @include colors($c: $white, $bgc: $primBlue);
-  @include flexbox($jc: center, $ai: center, $g: 4px);
-  padding: 12px 24px;
-  height: 48px;
-  transition: filter 100ms ease-in-out;
-
-  &:hover {
-    background-color: $hoverBlue;
-  }
-
-  &:active {
-    background-color: $activeBlue;
-  }
-
-  &:disabled {
-    background-color: $disabled;
-    cursor: default;
-  }
-}
-
-.button-text {
-  @include font($fw: 700);
-}
-
-.button-icon {
-  @include image($h: 24px);
 }

@@ -1,19 +1,17 @@
-<div class="startsite">
-    <app-header></app-header>
+<app-header></app-header>
 
-    <section class="content">
+<main class="auth-main">
+    <div class="content">
         <div class="title-text-cont">
             <h2 class="headline-2">Movies, TV shows, and more</h2>
             <p class="text">Enter your email to create or restart your subscription.</p>
         </div>
         <form [formGroup]="form" class="form" (ngSubmit)="onSignUp()">
             <app-start-email-input [control]="email"></app-start-email-input>
-            <button class="button" type="submit" [disabled]="isFormInvalid()">
-                <span class="button-text">Sign up</span>
-                <img class="button-icon" src="images/buttons/chevron_right.png" alt="chevron right">
-            </button>
+            <app-primary-button icon="chevron_right" text="Sign up" type="submit" [disabled]="isFormInvalid()"
+                [reverse]="true"></app-primary-button>
         </form>
-    </section>
+    </div>
+</main>
 
-    <app-footer></app-footer>
-</div>
+<app-footer></app-footer>

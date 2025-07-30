@@ -13,6 +13,17 @@ $disabled: #5e5e5e;
 $formBG: rgba(27, 27, 34, 0.85);
 $inputBG: rgba(28, 26, 32, 0.8);
 
+$auth-gradient: linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0.8) -27.44%,
+  rgba(0, 0, 0, 0.44) 44.23%,
+  rgba(0, 0, 0, 0.8) 100%
+);
+$auth-image: url("/images/backgrounds/log_in_bg.jpg");
+
+// add other z-indices like this (search)
+$z-header: 10;
+
 // add move variables if needed ... !
 
 // think about naming for variables above ... !

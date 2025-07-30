@@ -1,13 +1,11 @@
 <header class="header">
-    <div class="content">
-        @if (isVideoOffer()) {
-        <img class="logo" src="images/logo/logo_square.png" alt="logo">
-        <app-primary-button icon="logout" text="Log out" type="button" [disabled]="false"
-            (click)="onLogOut()"></app-primary-button>
-        } @else {
-        <button class="home-button" type="button" [disabled]="isHome()" (click)="onHome()"></button>
-        <app-primary-button *ngIf="complete" text="Log in" type="button" [disabled]="false"
-            (click)="onNavigate()"></app-primary-button>
-        }
-    </div>
+    @if (isVideoOffer()) {
+    <img class="logo" src="images/logo/logo_square.png" alt="logo">
+    <app-primary-button icon="logout" text="Log out" type="button" [disabled]="false"
+        (click)="onLogOut()"></app-primary-button>
+    } @else {
+    <button class="home-button" type="button" [disabled]="isHome()" (click)="onHome()"></button>
+    <app-primary-button *ngIf="complete" text="Log in" type="button" [disabled]="false"
+        (click)="onNavigate()"></app-primary-button>
+    }
 </header>

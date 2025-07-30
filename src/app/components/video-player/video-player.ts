@@ -35,6 +35,19 @@ export class VideoPlayer extends VideoPlayerBase {
   // click delay only on video-container (not on buttons) ...
   //   --> button must react without delay ... !
 
+  // replace calc values with variables ...
+  // use flex-1 instead of calc() ... !
+  // use host instead of collecting div ... !
+  // use host in header and footer ...
+
+  // check footer host (still necessary) ... ?
+  // check all components for nested scss classes ... !
+
+  // rebuild project and use new (auth) folder structure (project ideas) ...
+  // review style classes for base - modifiers and selectors ...
+
+  // make mixins with mixins (e. g. auth host mixin) ...
+
   playerHeaderHidden = signal(false);
   playerBarHidden = signal(false);
   hiddenTimeoutId!: ReturnType<typeof setTimeout>;

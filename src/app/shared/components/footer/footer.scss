@@ -1,21 +1,33 @@
 @use "mixins" as *;
 
-.footer {
+// work with position:absolute and library with padding ... ?!
+
+// double code?!
+// :host {
+//   @include position($pos: absolute, $l: 0, $b: 0);
+//   z-index: $z-header;
+//   width: 100%;
+// }
+
+:host {
   @include flexbox($jc: center, $ai: center);
+
+  // rename?!
+  &.slim {
+    width: 100%;
+    height: 52px;
+    align-items: flex-end;
+  }
 }
 
-.slim {
-  height: 52px;
-  align-items: flex-end;
-}
-
-.content {
+.footer {
   @include spacing($p: 10px 96px);
-  @include width($w: 100%, $max: 1440px);
+  @include width($w: 100%);
   @include flexbox($jc: center, $ai: center);
   height: 104px;
 }
 
+// rename?!
 .dark {
   min-height: 104px;
   justify-content: flex-end;
@@ -38,5 +50,12 @@
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+// use variable for big-screen-padding
+@media (min-width: 1441px) {
+  .footer {
+    padding: 10px calc(50% - 624px);
   }
 }

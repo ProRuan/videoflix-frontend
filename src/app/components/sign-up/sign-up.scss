@@ -1,25 +1,12 @@
 @use "mixins" as *;
 
-$background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.8) -27.44%,
-    rgba(0, 0, 0, 0.44) 44.23%,
-    rgba(0, 0, 0, 0.8) 100%
-  ),
-  url("/images/backgrounds/sign_up_bg.jpg");
+$image: url("/images/backgrounds/sign_up_bg.jpg");
+$background: $auth-gradient, $image;
 
-.sign-up {
+:host {
   @include background($bg: $background);
-  @include flexbox($fd: column, $jc: space-between, $ai: center);
+  @include flexbox($fd: column);
   min-height: 100vh;
-}
-
-.form {
-  @include spacing($p: 43px 56px);
-  @include flexbox($fd: column, $jc: center, $g: 32px);
-  border-radius: 48px;
-  width: 520px;
-  background-color: $formBG;
 }
 
 .button-cont {

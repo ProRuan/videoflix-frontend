@@ -1,33 +1,21 @@
 @use "mixins" as *;
 
-$background: linear-gradient(
-  180deg,
-  rgba(0, 0, 0, 0.8) -27.44%,
-  rgba(0, 0, 0, 0.44) 44.23%,
-  rgba(0, 0, 0, 0.8) 100%
-);
-
-// header and footer or content shadow ... !!!
-
+// header and footer for all components pos:absolute?!
+// use main instead of section where possible!
+// use :host instad of .component!
+// set footer height:108px for startsite and so on!
 .video-offer {
-  @include background($bg: $background);
   @include flexbox($fd: column, $jc: space-between, $ai: center);
   min-height: 100vh;
 }
 
-// move
-.header {
-  @include position($pos: absolute, $l: 0, $t: 0);
-  z-index: 1;
-}
-
-// padding-bottom ...
+// padding-bottom and footer
 .atf {
   @include spacing($p: 28px 96px 0 96px);
-  // @include spacing($p: 170px 96px 0 96px);
   @include size($w: 100%, $h: 594px);
-  // @include size($w: 100%, $h: calc(100vh - 104px));
   @include flexbox($ai: center);
+  min-height: 594px;
+  flex: 1;
 }
 
 // .content {

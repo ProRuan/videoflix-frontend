@@ -1,7 +1,7 @@
-<div class="log-in">
-    <app-header [complete]="false"></app-header>
+<app-header [complete]="false"></app-header>
 
-    <form [formGroup]="form" class="form" (ngSubmit)="onLogIn()">
+<main class="auth-main">
+    <form [formGroup]="form" class="auth-form" (ngSubmit)="onLogIn()">
         <h2 class="headline-2">Log in</h2>
 
         <div class="column-32">
@@ -18,6 +18,6 @@
             </div>
         </div>
     </form>
+</main>
 
-    <app-footer></app-footer>
-</div>
+<app-footer></app-footer>

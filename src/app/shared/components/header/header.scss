@@ -2,13 +2,19 @@
 
 $logo: url("/images/logo/logo.png");
 
-.header {
-  @include flexbox($jc: center, $ai: center);
+:host {
+  @include flexbox($jc: center);
+
+  &.absolute {
+    @include position($pos: absolute, $l: 0, $t: 0);
+    z-index: $z-header;
+    width: 100%;
+  }
 }
 
-.content {
+.header {
   @include spacing($p: 10px 96px);
-  @include width($w: 100%, $max: 1440px);
+  @include width($w: 100%);
   @include flexbox($jc: space-between, $ai: center);
   height: 108px;
 }
@@ -35,5 +41,11 @@ $logo: url("/images/logo/logo.png");
   &:disabled {
     filter: none;
     cursor: default;
+  }
+}
+
+@media (min-width: 1441px) {
+  .header {
+    padding: 10px calc(50% - 624px);
   }
 }

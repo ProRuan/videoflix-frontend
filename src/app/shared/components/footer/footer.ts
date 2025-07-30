@@ -7,6 +7,10 @@ import { Videoflix } from '../../services/videoflix';
   imports: [RouterLink],
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
+  host: {
+    class: 'host',
+    '[class.slim]': 'isVideoOffer()',
+  },
 })
 
 /**

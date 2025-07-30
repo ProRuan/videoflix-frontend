@@ -13,6 +13,10 @@
   @include flexbox($jc: center, $ai: center, $g: 4px);
   transition: background-color 100ms ease-in-out;
 
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+
   &:hover {
     background-color: $hoverBlue;
   }
