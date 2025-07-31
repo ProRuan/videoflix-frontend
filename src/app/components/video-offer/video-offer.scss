@@ -1,80 +1,80 @@
 @use "mixins" as *;
 
-// header and footer for all components pos:absolute?!
-// use main instead of section where possible!
-// use :host instad of .component!
-// set footer height:108px for startsite and so on!
-.video-offer {
-  @include flexbox($fd: column, $jc: space-between, $ai: center);
+$preview-gradient: linear-gradient(
+  180deg,
+  rgba(20, 20, 20, 0.6) 0%,
+  rgba(20, 20, 20, 0) 50%,
+  $prim-dark 100%
+);
+$library-gradient: linear-gradient(
+  88.67deg,
+  rgba(20, 20, 20, 0) 1.13%,
+  $prim-dark 48.04%
+);
+
+:host {
+  @include flexbox($fd: column);
   min-height: 100vh;
+  position: relative;
 }
 
-// padding-bottom and footer
-.atf {
-  @include spacing($p: 28px 96px 0 96px);
-  @include size($w: 100%, $h: 594px);
-  @include flexbox($ai: center);
-  min-height: 594px;
+.main {
+  @include flexbox($fd: column);
+  width: 100%;
   flex: 1;
 }
 
-// .content {
-//   @include size($w: 100%, $h: calc(100vh - 212px));
-// }
-
-.atf-video {
-  @include size($w: 100%, $h: auto);
+.preview {
   @include position($pos: absolute, $l: 0, $t: 0);
-}
-
-.video-shadow {
-  @include size($w: 100%);
-  @include position($pos: absolute, $l: 0, $t: 0);
+  width: 100%;
   aspect-ratio: 16 / 9;
-  background: linear-gradient(
-    180deg,
-    rgba(20, 20, 20, 0.6) 0%,
-    rgba(20, 20, 20, 0) 50%,
-    #141414 100%
-  );
+  display: flex;
+  z-index: 0;
 }
 
-.video-info {
-  @include flexbox($fd: column, $g: 32px);
-  width: 440px;
-  position: relative;
-  z-index: 1;
-
-  // testing
-  // padding: 43px 56px;
-  // border-radius: 48px;
-
-  // pass
-  // background-color: rgba(27, 27, 34, 0.7);
-}
-
-.title {
-  @include font($fs: 64px, $fw: 700, $lh: 84px);
-  // @include font($fs: 88px, $fw: 700, $lh: 115px);
-  color: $white;
-}
-
-.description {
-  @include font($fs: 16px, $lh: 21px);
-  color: $white;
-}
-
-// overflow-x:auto or flex-wrap?!
-.library {
-  @include spacing($p: 0 96px);
-  @include flexbox($fd: column, $g: 48px);
+.video-shadow-cont {
   width: 100%;
   position: relative;
+}
+
+.video {
+  width: 100%;
+}
+
+.shadow {
+  @include position($pos: absolute, $l: 0, $t: 0);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: $preview-gradient;
+}
+
+.preview-info {
+  @include spacing($p: 62px 96px 52px 96px);
+  width: 100%;
+  min-height: 486px;
+  display: flex;
+  flex: 1;
   z-index: 1;
 }
 
-.genre {
-  @include flexbox($fd: column, $g: 16px);
+.info-title {
+  @include font($fs: 88px, $fw: 700, $lh: 115px);
+  color: $white;
+}
+
+.info-description {
+  @include font($fs: 16px, $lh: 21px);
+  max-width: 440px;
+  color: $white;
+}
+
+.library {
+  @include spacing($p: 52px 96px);
+  @include flexbox($fd: column, $g: 48px);
+  width: 100%;
+  flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .genre-title {
@@ -82,29 +82,16 @@
   color: $white;
 }
 
-// horizontal scrollbar (hidden)?
-// scroll buttons?
-.genre-cont {
-  @include flexbox($g: 16px);
-}
-
-.thumbnail-new {
-  @include image($w: 213px, $h: 120px);
-}
-
 .thumbnail {
   @include image($w: 213px, $h: 120px);
-  min-width: 213px;
-  // only for testing!
-  background-color: lightblue;
 }
 
-.rectangle {
-  @include size($w: 200px, $h: calc(100% - 45px));
-  @include position($pos: absolute, $r: 0, $b: 0);
-  background: linear-gradient(
-    88.67deg,
-    rgba(20, 20, 20, 0) 1.13%,
-    #141414 48.04%
-  );
+.empty-text {
+  color: $white;
+}
+
+.library-shadow {
+  @include size($w: 200px, $h: calc(100% - 149px));
+  @include position($pos: absolute, $r: 0, $b: 52px);
+  background: $library-gradient;
 }

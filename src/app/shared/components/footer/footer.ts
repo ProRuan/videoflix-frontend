@@ -9,7 +9,7 @@ import { Videoflix } from '../../services/videoflix';
   styleUrl: './footer.scss',
   host: {
     class: 'host',
-    '[class.slim]': 'isVideoOffer()',
+    '[class.pos-absolute]': 'isVideoOffer()',
   },
 })
 

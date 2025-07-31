@@ -9,10 +9,6 @@ import { Videoflix } from '../../services/videoflix';
   imports: [CommonModule, PrimaryButton],
   templateUrl: './header.html',
   styleUrl: './header.scss',
-  host: {
-    class: 'host',
-    '[class.absolute]': 'isVideoOffer()',
-  },
 })
 
 /**

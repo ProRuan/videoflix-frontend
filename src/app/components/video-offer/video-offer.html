@@ -1,57 +1,45 @@
-<div class="video-offer">
-    <app-header></app-header>
+<app-header></app-header>
 
-    <!-- rebuild angular project -->
-    <!-- use new (auth) folder structure (project ideas) and auth-layer component -->
-    <!-- use angular schematics -->
+<main class="main">
+    <section class="preview">
+        <div class="video-shadow-cont">
+            <video class="video" [autoplay]="true" [loop]="true" [muted]="true">
+                <source src="Kristallbruch_preview.mp4" type="video/mp4">
+            </video>
+            <div class="shadow"></div>
+        </div>
+    </section>
 
-    <!-- use main tag as container -->
-    <section class="atf">
-        <video class="atf-video" src="Kristallbruch_preview.mp4" [autoplay]="true" [loop]="true" [muted]="true"
-            type="video/mp4"></video>
-        <div class="video-shadow"></div>
-
-        <div class="video-info">
-            <h1 class="title">Mighty Magic</h1>
-
-            <p class="description">
+    <section class="preview-info">
+        <div class="column-32">
+            <h1 class="info-title">Mighty Magic</h1>
+            <p class="info-description">
                 In a high-security prison, a wrongly convicted man formulates a meticulous plan to break out and prove
                 his innocence. He must navigate a web of alliances and betrayals to reclaim his freedom and expose the
                 truth.
             </p>
-
             <app-primary-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-primary-button>
         </div>
     </section>
 
     <section class="library">
-        <div class="genre">
-            <h3 class="genre-title">New on Videoflix</h3>
-
-            <div class="genre-cont">
-                <div class="thumbnail"></div>
-                <div class="thumbnail"></div>
-                <div class="thumbnail"></div>
-                <div class="thumbnail"></div>
-                <div class="thumbnail"></div>
-            </div>
-        </div>
-        <!-- use @empty -->
         @for (vg of videosByGenre; track vg) {
-        <div class="genre">
+        <div class="column-16">
             <h3 class="genre-title">{{ vg.genre }}</h3>
-
-            <div class="genre-cont">
+            <div class="row-16">
                 @for (v of vg.videos; track v) {
-                <!-- replace img with video ... -->
-                <img [src]="v.thumbnailImage" alt="thumb" class="thumbnail-new">
+                <img [src]="v.thumbnailImage" alt="thumb" class="thumbnail">
                 }
             </div>
         </div>
+        } @empty {
+        <div class="empty-text">
+            <p>Sorry, there’s nothing to watch here right now.</p>
+            <p>Try refreshing the page or come back later!</p>
+        </div>
         }
-
-        <div class="rectangle"></div>
+        <div class="library-shadow"></div>
     </section>
+</main>
 
-    <app-footer></app-footer>
-</div>
+<app-footer></app-footer>

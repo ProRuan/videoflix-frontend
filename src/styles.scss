@@ -7,7 +7,7 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: $dmSans;
-  background-color: #141414;
+  background-color: $prim-dark;
 }
 
 // check for column-16 and others if necessary ... !
@@ -34,6 +34,10 @@ button {
   @include font($fs: 48px, $fw: 700, $lh: 62px);
   text-align: center;
   color: $white;
+}
+
+.row-16 {
+  @include flexbox($g: 16px);
 }
 
 .column-16 {

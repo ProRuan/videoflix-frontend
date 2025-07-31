@@ -4,19 +4,14 @@ $logo: url("/images/logo/logo.png");
 
 :host {
   @include flexbox($jc: center);
-
-  &.absolute {
-    @include position($pos: absolute, $l: 0, $t: 0);
-    z-index: $z-header;
-    width: 100%;
-  }
+  width: 100%;
+  z-index: $z-header;
 }
 
 .header {
   @include spacing($p: 10px 96px);
-  @include width($w: 100%);
+  @include size($w: 100%, $h: 108px);
   @include flexbox($jc: space-between, $ai: center);
-  height: 108px;
 }
 
 .logo {

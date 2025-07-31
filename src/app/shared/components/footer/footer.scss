@@ -1,42 +1,30 @@
 @use "mixins" as *;
 
-// work with position:absolute and library with padding ... ?!
-
-// double code?!
-// :host {
-//   @include position($pos: absolute, $l: 0, $b: 0);
-//   z-index: $z-header;
-//   width: 100%;
-// }
+$footer-gradient: linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0.9) 50%
+);
 
 :host {
   @include flexbox($jc: center, $ai: center);
 
-  // rename?!
-  &.slim {
+  &.pos-absolute {
+    @include position($pos: absolute, $l: 0, $b: 0);
     width: 100%;
-    height: 52px;
-    align-items: flex-end;
+    z-index: $z-header;
   }
 }
 
 .footer {
   @include spacing($p: 10px 96px);
-  @include width($w: 100%);
+  @include size($w: 100%, $h: 104px);
   @include flexbox($jc: center, $ai: center);
-  height: 104px;
-}
 
-// rename?!
-.dark {
-  min-height: 104px;
-  justify-content: flex-end;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.9) 50%
-  );
-  z-index: 1;
+  &.dark {
+    background: $footer-gradient;
+    justify-content: flex-end;
+  }
 }
 
 .link-group {
@@ -53,7 +41,6 @@
   }
 }
 
-// use variable for big-screen-padding
 @media (min-width: 1441px) {
   .footer {
     padding: 10px calc(50% - 624px);
