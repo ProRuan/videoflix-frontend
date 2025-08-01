@@ -1,23 +1,29 @@
-import { Directive, inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Directive, inject, OnInit } from '@angular/core';
+import { AbstractControlOptions, FormBuilder, FormGroup } from '@angular/forms';
 import { DialogManager } from '../../shared/services/dialog-manager';
 import { ToastManager } from '../../shared/services/toast-manager';
 import { DialogIds } from '../../shared/ts/enums';
+import { FormGroupControls } from '../interfaces/form-group-controls';
 
 @Directive()
 /**
  * Abstract class representing an auth form.
  */
-export abstract class AuthForm {
+export abstract class AuthForm implements OnInit {
+  private fb: FormBuilder = inject(FormBuilder);
+
   protected dialogs: DialogManager = inject(DialogManager);
   protected toasts: ToastManager = inject(ToastManager);
 
-  abstract form: FormGroup;
+  // clean this class ...
+  // group properties ...
+  // think about private and protected ...
 
-  protected abstract setForm(): void;
-  protected abstract getPayload(): any;
-  protected abstract handleSuccess(value?: any): void;
+  form!: FormGroup;
+
+  protected options?: AbstractControlOptions | null;
+
+  protected abstract controls: FormGroupControls;
 
   /**
    * Get the email control of a form.
@@ -51,15 +57,30 @@ export abstract class AuthForm {
     return this.form.hasError('passwordMismatch');
   }
 
-  /**
-   * Perform a request depending on the provided request method.
-   * @param request - The request method.
-   */
-  protected performRequest(request: () => Observable<any>) {
-    request().subscribe({
-      next: (value) => this.handleSuccess(value),
-      error: () => this.handleError(),
-    });
+  ngOnInit(): void {
+    this.setForm();
+  }
+
+  protected setForm() {
+    this.form = this.getForm();
+  }
+
+  protected getForm() {
+    return this.fb.group(this.controls, this.options);
+  }
+
+  getPayload() {
+    const formData: Record<string, string> = this.form?.value;
+    const payload: Record<string, string> = {};
+    for (const [key, value] of Object.entries(formData)) {
+      if (key === 'confirmPassword') {
+        payload['repeated_password'] = value;
+      } else {
+        payload[key] = value;
+      }
+    }
+    console.log('payload: ', payload);
+    return payload;
   }
 
   /**

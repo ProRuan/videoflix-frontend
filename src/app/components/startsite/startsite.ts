@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Header } from '../../shared/components/header/header';
 import { StartEmailInput } from '../../shared/components/start-email-input/start-email-input';
@@ -7,6 +7,9 @@ import { PrimaryButton } from '../../shared/components/primary-button/primary-bu
 import { Footer } from '../../shared/components/footer/footer';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
+import { Authentication } from '../../shared/services/authentication';
+import { AuthForm } from '../../shared/models/auth-form';
+import { FormGroupControls } from '../../shared/interfaces/form-group-controls';
 
 @Component({
   selector: 'app-startsite',
@@ -23,52 +26,40 @@ import { InputValidation } from '../../shared/services/input-validation';
 
 /**
  * Class representing a startsite component.
+ * @extends AuthForm
  */
-export class Startsite implements OnInit {
-  private fb: FormBuilder = inject(FormBuilder);
+export class Startsite extends AuthForm {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
+  private auth: Authentication = inject(Authentication);
 
-  form!: FormGroup;
-
-  /**
-   * Get the email control of a startsite form.
-   * @returns The email control or null.
-   */
-  get email() {
-    return this.form.get('email');
-  }
+  protected controls: FormGroupControls = {
+    email: ['', this.validation.email],
+  };
 
   /**
-   * Initialize a startsite component.
+   * Perform an email check on submit before redirecting to the sign-up component.
+   *
+   * If successful, cache the email and redirect to the sign-up component.
+   *
+   * Otherwise, show an error toast.
    */
-  ngOnInit(): void {
-    this.setForm();
-  }
-
-  /**
-   * Set a startsite form.
-   */
-  private setForm() {
-    this.form = this.fb.group({
-      email: ['', this.validation.email],
+  onSignUp() {
+    if (this.isFormInvalid()) return;
+    const payload = this.getPayload();
+    this.auth.checkEmail(payload).subscribe({
+      next: () => this.handleSuccess(),
+      error: () => this.handleError(),
     });
   }
 
   /**
-   * Reserve a validated email and redirect to the sign-up component.
+   * Cache the email and redirect to the sign-up component.
    */
-  onSignUp() {
+  private handleSuccess() {
+    this.toasts.close();
     this.videoflix.cachedEmail = this.email?.value;
-    this.router.navigateByUrl('sign-up');
-  }
-
-  /**
-   * Check a form for invalidity.
-   * @returns A boolean value.
-   */
-  isFormInvalid() {
-    return this.form.invalid;
+    this.router.navigateByUrl('/sign-up');
   }
 }
