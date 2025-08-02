@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { BaseInput } from '../../models/base-input';
+import { InputBase } from '../../directives/input-base';
 import { Autocompletes, InputErrors, Types } from '../../ts/enums';
 
 @Component({
@@ -13,9 +12,9 @@ import { Autocompletes, InputErrors, Types } from '../../ts/enums';
 
 /**
  * Class representing a password input component.
- * @extends BaseInput
+ * @extends InputBase
  */
-export class PasswordInput extends BaseInput {
+export class PasswordInput extends InputBase {
   possibleErrors: string[] = [
     InputErrors.Required,
     InputErrors.Forbidden,
@@ -29,10 +28,8 @@ export class PasswordInput extends BaseInput {
 
   masked: boolean = true;
 
-  @Input() control!: AbstractControl | null;
   @Input() placeholder: string = 'Password';
   @Input() autocomplete: string = Autocompletes.NewPassword;
-  @Input() errorsVisible: boolean = true;
   @Input('error') matchError: boolean = false;
   @Input('errorDisplayed') matchErrorDisplayed: boolean = true;
 

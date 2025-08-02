@@ -19,6 +19,8 @@ export abstract class AuthForm implements OnInit {
   // group properties ...
   // think about private and protected ...
 
+  // move this to folder directives ... !
+
   form!: FormGroup;
 
   protected options?: AbstractControlOptions | null;

@@ -1,7 +1,5 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { BaseInput } from '../../models/base-input';
-import { InputErrors } from '../../ts/enums';
+import { Component } from '@angular/core';
+import { EmailInputBase } from '../../directives/email-input-base';
 
 @Component({
   selector: 'app-email-input',
@@ -12,20 +10,6 @@ import { InputErrors } from '../../ts/enums';
 
 /**
  * Class representing an email input component.
- * @extends BaseInput
+ * @extends EmailInputBase
  */
-export class EmailInput extends BaseInput {
-  possibleErrors: string[] = [
-    InputErrors.Required,
-    InputErrors.Forbidden,
-    InputErrors.MinLength,
-    InputErrors.Email,
-    InputErrors.MaxLength,
-  ];
-
-  @Input() control!: AbstractControl | null;
-  @Input() placeholder: string = 'Email address';
-  @Input() errorsVisible: boolean = true;
-
-  @ViewChild('email') input!: ElementRef<HTMLInputElement>;
-}
+export class EmailInput extends EmailInputBase {}

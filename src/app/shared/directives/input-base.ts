@@ -1,16 +1,23 @@
-import { ElementRef } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import { AbstractControl, ControlValueAccessor } from '@angular/forms';
 
 /**
- * Abstract class representing a base input.
+ * Abstract class representing an input base directive.
+ *
+ * Provides common properties and methods for input validation.
+ *
+ * @extends InputBase
+ *
+ * @implements {ControlValueAccessor}
  */
-export abstract class BaseInput implements ControlValueAccessor {
+@Directive()
+export abstract class InputBase implements ControlValueAccessor {
   error: string = '';
 
-  abstract errorsVisible: boolean;
+  @Input() control: AbstractControl | null = null;
+  @Input() errorsVisible: boolean = true;
 
   abstract get possibleErrors(): string[];
-  abstract get control(): AbstractControl | null;
   abstract get input(): ElementRef<HTMLInputElement>;
 
   /**
