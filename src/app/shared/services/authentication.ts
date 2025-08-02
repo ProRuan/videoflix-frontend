@@ -3,6 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthResponse } from '../interfaces/auth-response';
 
+// think about this ...
+type StringMap = Record<string, string>;
+
+// improve this ...
+export interface EmailCheckResponse {
+  response: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,68 +20,88 @@ export class Authentication {
   // clean this class ...
   // improve URLs and methods ...
 
-  // adjust URL!!!
-  private emailCheckUrl = 'http://127.0.0.1:8000/api/email-check/';
-  private registrationUrl = 'http://127.0.0.1:8000/api/registration/';
-  private loginUrl = 'http://127.0.0.1:8000/api/login/';
-  private forgotPasswordUrl = 'http://127.0.0.1:8000/api/forgot-password/';
-  private resetPasswordUrl = 'http://127.0.0.1:8000/api/reset-password/';
-  private videoOfferUrl = 'http://127.0.0.1:8000/api/videos/';
-  // parameter videoId ... !
-  private videoDetailUrl = 'http://127.0.0.1:8000/api/videos/2/';
+  // think about interfaces, e. g. check-email { response: ok } ...
+  // replace any type ...
+  // check AuthResponse ...
 
-  checkEmail(payload: Record<string, string>) {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<{ status: string }>(this.emailCheckUrl, payload, {
-      headers,
-    });
+  // apply this pattern "repeated_password" --> "repeatedPassword" for video object ... ?!
+
+  // call it AuthenticationService or Authenticator ...
+  // simplify method names ...
+  //   e. g. logIn, register, getVideos, getVideoById ...
+  //   e. g. requestPasswordReset, confirmPasswordReset ...
+  // avoid any - use interfaces: RegistrationResponse, VideoSummary, VideoDetail ...
+
+  // call it payload, body or credentials ...
+  // replace StringMap with single parameters ... ?
+  // normalize Json keys (snake --> camel) ...
+  // use environment for base url ...
+
+  private readonly baseURL = 'http://127.0.0.1:8000/api/';
+
+  // use encodeURIComponent ... !
+  getURL(...segments: string[]) {
+    return this.baseURL + segments.join('/') + '/';
   }
 
-  registerUser(payload: Record<string, string>): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(this.registrationUrl, payload, {
-      headers,
-      responseType: 'text' as 'json',
-    });
+  getOptions(tokenProvided: boolean = false) {
+    return { headers: this.getHeaders(tokenProvided) };
   }
 
-  logInUser(payload: Record<string, string>): Observable<AuthResponse> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<AuthResponse>(this.loginUrl, payload, { headers });
+  // HttpInterceptor ... ?
+  getHeaders(tokenProvided: boolean = false) {
+    if (tokenProvided) {
+      return new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'Token 5c7bca16673bd00e5a2eb98a65d609474121ce5e',
+      });
+    } else {
+      return new HttpHeaders({ 'Content-Type': 'application/json' });
+    }
   }
 
-  resetPassword(payload: Record<string, string>) {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<AuthResponse>(this.forgotPasswordUrl, payload, {
-      headers,
-    });
+  checkEmail(payload: StringMap) {
+    const url = this.getURL('email-check');
+    const options = this.getOptions();
+    return this.http.post<EmailCheckResponse>(url, payload, options);
+  }
+
+  registerUser(payload: StringMap) {
+    const url = this.getURL('registration');
+    const options = this.getOptions();
+    return this.http.post<any>(url, payload, options);
+  }
+
+  logInUser(payload: StringMap): Observable<AuthResponse> {
+    const url = this.getURL('login');
+    const options = this.getOptions();
+    return this.http.post<AuthResponse>(url, payload, options);
+  }
+
+  resetPassword(payload: StringMap) {
+    const url = this.getURL('forgot-password');
+    const options = this.getOptions();
+    return this.http.post<AuthResponse>(url, payload, options);
   }
 
   // token must be variable!
-  updatePassword(payload: Record<string, string>) {
+  // think about payload!
+  updatePassword(payload: StringMap) {
     payload['token'] = '5c7bca16673bd00e5a2eb98a65d609474121ce5e';
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Token 5c7bca16673bd00e5a2eb98a65d609474121ce5e',
-    });
-    return this.http.post<AuthResponse>(this.resetPasswordUrl, payload, {
-      headers,
-    });
+    const url = this.getURL('reset-password');
+    const options = this.getOptions(true);
+    return this.http.post<AuthResponse>(url, payload, options);
   }
 
   loadVideoOffer() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Token 5c7bca16673bd00e5a2eb98a65d609474121ce5e',
-    });
-    return this.http.get<any>(this.videoOfferUrl, { headers });
+    const url = this.getURL('videos');
+    const options = this.getOptions(true);
+    return this.http.get<any>(url, options);
   }
 
-  loadVideoDetail() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Token 5c7bca16673bd00e5a2eb98a65d609474121ce5e',
-    });
-    return this.http.get<any>(this.videoDetailUrl, { headers });
+  loadVideoDetail(id: number) {
+    const url = this.getURL('videos', String(id));
+    const options = this.getOptions(true);
+    return this.http.get<any>(url, options);
   }
 }

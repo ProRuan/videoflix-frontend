@@ -6,6 +6,7 @@ import { Video } from '../../shared/models/video';
 import { Authentication } from '../../shared/services/authentication';
 import { Router } from '@angular/router';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
+import { VideoData } from '../../shared/interfaces/video-data';
 
 @Component({
   selector: 'app-video-offer',
@@ -24,7 +25,7 @@ export class VideoOffer implements OnInit {
   // videosByGenre: Record<string, Video[]> = {};
 
   // testing
-  firstVideo: Video = new Video();
+  // firstVideo: Video = new Video();
 
   // prepare error toast ...
   ngOnInit() {
@@ -34,14 +35,14 @@ export class VideoOffer implements OnInit {
     });
   }
 
-  setVideos(videos: Video[]) {
-    videos.forEach((video) => {
-      this.videos.push(new Video(video));
+  setVideos(data: VideoData[]) {
+    data.forEach((d) => {
+      this.videos.push(new Video(d));
     });
     // this.videos = [...videos];
     console.log('videos: ', this.videos);
     // testing
-    this.firstVideo.set(videos[0]);
+    // this.firstVideo.set(videos[0]);
 
     // move
     this.setGenres();

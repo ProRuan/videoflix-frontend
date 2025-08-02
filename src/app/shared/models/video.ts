@@ -1,21 +1,26 @@
+import { VideoData } from '../interfaces/video-data';
+
+/**
+ * Class representing a video.
+ */
 export class Video {
-  id: number = 0;
-  title: string = '';
-  genre: string = '';
-  thumbnailImage: string = '';
-  spriteSheet: string = '';
-  createdAt: string = '';
+  readonly id: number;
+  readonly title: string;
+  readonly genre: string;
+  readonly thumbnailImage: string;
+  readonly spriteSheet: string;
+  readonly createdAt: string;
 
-  constructor(data?: any) {
-    this.set(data);
-  }
-
-  set(data?: any) {
-    this.id = data?.id;
-    this.title = data?.title;
-    this.genre = data?.genre;
-    this.thumbnailImage = data?.thumbnail_image;
-    this.spriteSheet = data?.sprite_sheet;
-    this.createdAt = data?.created_at;
+  /**
+   * Creates a video.
+   * @param data - The video data.
+   */
+  constructor(data: VideoData) {
+    this.id = data.id;
+    this.title = data.title;
+    this.genre = data.genre;
+    this.thumbnailImage = data.thumbnail_image;
+    this.spriteSheet = data.sprite_sheet;
+    this.createdAt = data.created_at;
   }
 }
