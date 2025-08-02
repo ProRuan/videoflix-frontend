@@ -1,7 +1,7 @@
 <div class="input-error-cont">
     <div class="pos-relative">
         <img class="input-icon" src="/images/inputs/email.png" alt="email">
-        <input #email [value]="control?.value" name="email" class="input" [class.invalid]="error" type="email"
+        <input #email [value]="control?.value" name="email" class="input" [class.invalid]="isError()" type="email"
             [placeholder]="placeholder" autocomplete="email" (input)="onInput()">
     </div>
 

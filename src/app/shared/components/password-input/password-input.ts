@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { BaseInput } from '../../models/base-input';
@@ -5,7 +6,7 @@ import { Autocompletes, InputErrors, Types } from '../../ts/enums';
 
 @Component({
   selector: 'app-password-input',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './password-input.html',
   styleUrl: './password-input.scss',
 })
@@ -31,6 +32,7 @@ export class PasswordInput extends BaseInput {
   @Input() control!: AbstractControl | null;
   @Input() placeholder: string = 'Password';
   @Input() autocomplete: string = Autocompletes.NewPassword;
+  @Input() errorsVisible: boolean = true;
   @Input('error') matchError: boolean = false;
   @Input('errorDisplayed') matchErrorDisplayed: boolean = true;
 
@@ -49,7 +51,7 @@ export class PasswordInput extends BaseInput {
    * @returns A boolean value.
    */
   isInvalid() {
-    return this.error || this.matchError;
+    return this.isError() || this.matchError;
   }
 
   /**

@@ -23,6 +23,7 @@ export class StartEmailInput extends BaseInput {
   ];
 
   @Input() control!: AbstractControl | null;
+  @Input() errorsVisible: boolean = true;
 
   @ViewChild('email') input!: ElementRef<HTMLInputElement>;
 }

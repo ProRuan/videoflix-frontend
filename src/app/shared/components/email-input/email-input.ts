@@ -25,6 +25,7 @@ export class EmailInput extends BaseInput {
 
   @Input() control!: AbstractControl | null;
   @Input() placeholder: string = 'Email address';
+  @Input() errorsVisible: boolean = true;
 
   @ViewChild('email') input!: ElementRef<HTMLInputElement>;
 }

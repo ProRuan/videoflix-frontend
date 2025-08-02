@@ -7,6 +7,8 @@ import { AbstractControl, ControlValueAccessor } from '@angular/forms';
 export abstract class BaseInput implements ControlValueAccessor {
   error: string = '';
 
+  abstract errorsVisible: boolean;
+
   abstract get possibleErrors(): string[];
   abstract get control(): AbstractControl | null;
   abstract get input(): ElementRef<HTMLInputElement>;
@@ -75,7 +77,7 @@ export abstract class BaseInput implements ControlValueAccessor {
    * @returns A boolean value.
    */
   isError() {
-    return this.error ? true : false;
+    return this.errorsVisible && !!this.error;
   }
 
   /**

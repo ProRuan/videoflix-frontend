@@ -5,8 +5,9 @@
         <h2 class="headline-2">Log in</h2>
 
         <div class="column-32">
-            <app-email-input [control]="email" placeholder="Email address"></app-email-input>
-            <app-password-input [control]="password" placeholder="Password"></app-password-input>
+            <app-email-input [control]="email" [errorsVisible]="false" placeholder="Email address"></app-email-input>
+            <app-password-input [control]="password" [errorsVisible]="false"
+                placeholder="Password"></app-password-input>
         </div>
 
         <div class="button-link-cont">
