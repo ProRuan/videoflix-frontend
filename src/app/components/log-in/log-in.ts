@@ -1,7 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../shared/components/header/header';
+import { LoadingBar } from '../../shared/components/loading-bar/loading-bar';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
@@ -9,16 +11,17 @@ import { Footer } from '../../shared/components/footer/footer';
 import { AuthForm } from '../../shared/models/auth-form';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
-import { Authentication } from '../../shared/services/authentication';
 import { AuthResponse } from '../../shared/interfaces/auth-response';
 import { FormGroupControls } from '../../shared/interfaces/form-group-controls';
 
 @Component({
   selector: 'app-log-in',
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     RouterLink,
     Header,
+    LoadingBar,
     EmailInput,
     PasswordInput,
     PrimaryButton,
@@ -36,7 +39,6 @@ export class LogIn extends AuthForm {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
-  private auth: Authentication = inject(Authentication);
 
   protected controls: FormGroupControls = {
     email: ['', this.validation.email],
@@ -51,12 +53,7 @@ export class LogIn extends AuthForm {
    * Otherwise, show an error toast.
    */
   onLogIn() {
-    if (this.isFormInvalid()) return;
-    const payload = this.getPayload();
-    this.auth.logInUser(payload).subscribe({
-      next: (response) => this.handleSuccess(response),
-      error: () => this.handleError(),
-    });
+    this.performRequest('logInUser', this.handleSuccess.bind(this));
   }
 
   /**

@@ -40,16 +40,16 @@ export class Authentication {
   private readonly baseURL = 'http://127.0.0.1:8000/api/';
 
   // use encodeURIComponent ... !
-  getURL(...segments: string[]) {
+  private getURL(...segments: string[]) {
     return this.baseURL + segments.join('/') + '/';
   }
 
-  getOptions(tokenProvided: boolean = false) {
+  private getOptions(tokenProvided: boolean = false) {
     return { headers: this.getHeaders(tokenProvided) };
   }
 
   // HttpInterceptor ... ?
-  getHeaders(tokenProvided: boolean = false) {
+  private getHeaders(tokenProvided: boolean = false) {
     if (tokenProvided) {
       return new HttpHeaders({
         'Content-Type': 'application/json',
@@ -93,15 +93,15 @@ export class Authentication {
     return this.http.post<AuthResponse>(url, payload, options);
   }
 
-  loadVideoOffer() {
-    const url = this.getURL('videos');
-    const options = this.getOptions(true);
-    return this.http.get<any>(url, options);
-  }
+  // loadVideoOffer() {
+  //   const url = this.getURL('videos');
+  //   const options = this.getOptions(true);
+  //   return this.http.get<any>(url, options);
+  // }
 
-  loadVideoDetail(id: number) {
-    const url = this.getURL('videos', String(id));
-    const options = this.getOptions(true);
-    return this.http.get<any>(url, options);
-  }
+  // loadVideoDetail(id: number) {
+  //   const url = this.getURL('videos', String(id));
+  //   const options = this.getOptions(true);
+  //   return this.http.get<any>(url, options);
+  // }
 }

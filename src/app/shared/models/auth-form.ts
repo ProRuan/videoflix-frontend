@@ -1,9 +1,24 @@
-import { Directive, inject, OnInit } from '@angular/core';
+import {
+  Directive,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup } from '@angular/forms';
+import { finalize } from 'rxjs';
+import { Authentication } from '../services/authentication';
 import { DialogManager } from '../../shared/services/dialog-manager';
 import { ToastManager } from '../../shared/services/toast-manager';
-import { DialogIds } from '../../shared/ts/enums';
 import { FormGroupControls } from '../interfaces/form-group-controls';
+import { DialogIds } from '../../shared/ts/enums';
+
+// type MethodNames<T> = {
+//   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never
+// }[keyof T];
+// type RequestMethod = MethodNames<Authentication>;
+
+type RequestMethod = keyof Authentication;
 
 @Directive()
 /**
@@ -11,6 +26,7 @@ import { FormGroupControls } from '../interfaces/form-group-controls';
  */
 export abstract class AuthForm implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
+  private auth: Authentication = inject(Authentication);
 
   protected dialogs: DialogManager = inject(DialogManager);
   protected toasts: ToastManager = inject(ToastManager);
@@ -19,13 +35,16 @@ export abstract class AuthForm implements OnInit {
   // group properties ...
   // think about private and protected ...
 
-  // move this to folder directives ... !
+  // rename this to AuthBase and move it to folder directives ... !
 
   form!: FormGroup;
 
   protected options?: AbstractControlOptions | null;
 
   protected abstract controls: FormGroupControls;
+
+  // set to false
+  isLoading: WritableSignal<boolean> = signal(false);
 
   /**
    * Get the email control of a form.
@@ -107,6 +126,18 @@ export abstract class AuthForm implements OnInit {
    * @returns A boolean value.
    */
   isFormInvalid() {
-    return this.form.invalid;
+    return this.form.invalid || this.isLoading();
+  }
+
+  performRequest<T>(method: RequestMethod, handleSuccess: (value: T) => void) {
+    if (this.isFormInvalid()) return;
+    this.isLoading.set(true);
+    const payload = this.getPayload();
+    this.auth[method](payload)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (value) => handleSuccess(value),
+        error: () => this.handleError(),
+      });
   }
 }

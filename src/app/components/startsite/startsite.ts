@@ -7,7 +7,6 @@ import { PrimaryButton } from '../../shared/components/primary-button/primary-bu
 import { Footer } from '../../shared/components/footer/footer';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
-import { Authentication } from '../../shared/services/authentication';
 import { AuthForm } from '../../shared/models/auth-form';
 import { FormGroupControls } from '../../shared/interfaces/form-group-controls';
 
@@ -32,7 +31,6 @@ export class Startsite extends AuthForm {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
-  private auth: Authentication = inject(Authentication);
 
   protected controls: FormGroupControls = {
     email: ['', this.validation.email],
@@ -46,12 +44,7 @@ export class Startsite extends AuthForm {
    * Otherwise, show an error toast.
    */
   onSignUp() {
-    if (this.isFormInvalid()) return;
-    const payload = this.getPayload();
-    this.auth.checkEmail(payload).subscribe({
-      next: () => this.handleSuccess(),
-      error: () => this.handleError(),
-    });
+    this.performRequest('checkEmail', () => this.handleSuccess());
   }
 
   /**

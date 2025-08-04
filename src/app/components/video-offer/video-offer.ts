@@ -29,10 +29,10 @@ export class VideoOffer implements OnInit {
 
   // prepare error toast ...
   ngOnInit() {
-    this.auth.loadVideoOffer().subscribe({
-      next: (value) => this.setVideos(value),
-      error: (error) => console.log('loading error'),
-    });
+    // this.auth.loadVideoOffer().subscribe({
+    //   next: (value) => this.setVideos(value),
+    //   error: (error) => console.log('loading error'),
+    // });
   }
 
   setVideos(data: VideoData[]) {

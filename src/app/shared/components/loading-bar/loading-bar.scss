@@ -1,0 +1,27 @@
+@use "mixins" as *;
+
+:host {
+  @include spacing($p: 0 56px);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  width: 100%;
+}
+
+.track {
+  height: 4px;
+  overflow: hidden;
+}
+
+.indicator {
+  @include size($w: 33%, $h: 100%);
+  background-color: $primBlue;
+  animation: slide 1s ease-in-out infinite;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}

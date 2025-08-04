@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 import { Header } from '../../shared/components/header/header';
+import { LoadingBar } from '../../shared/components/loading-bar/loading-bar';
 import { EmailInput } from '../../shared/components/email-input/email-input';
 import { PasswordInput } from '../../shared/components/password-input/password-input';
 import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
@@ -9,15 +11,16 @@ import { AuthForm } from '../../shared/models/auth-form';
 import { Videoflix } from '../../shared/services/videoflix';
 import { InputValidation } from '../../shared/services/input-validation';
 import { FormValidator } from '../../shared/services/form-validator';
-import { Authentication } from '../../shared/services/authentication';
 import { FormGroupControls } from '../../shared/interfaces/form-group-controls';
 import { DialogIds } from '../../shared/ts/enums';
 
 @Component({
   selector: 'app-sign-up',
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     Header,
+    LoadingBar,
     EmailInput,
     PasswordInput,
     PrimaryButton,
@@ -36,7 +39,6 @@ export class SignUp extends AuthForm implements OnInit {
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
   private validator: FormValidator = inject(FormValidator);
-  private auth: Authentication = inject(Authentication);
 
   protected controls: FormGroupControls = {
     email: ['', this.validation.email],
@@ -72,12 +74,7 @@ export class SignUp extends AuthForm implements OnInit {
    * Otherwise, show an error toast.
    */
   onRegistration() {
-    if (this.isFormInvalid()) return;
-    const payload = this.getPayload();
-    this.auth.registerUser(payload).subscribe({
-      next: () => this.handleSuccess(),
-      error: () => this.handleError(),
-    });
+    this.performRequest('registerUser', () => this.handleSuccess());
   }
 
   /**
