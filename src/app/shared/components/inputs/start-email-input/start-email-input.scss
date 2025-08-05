@@ -1,0 +1,23 @@
+@use "mixins" as *;
+
+.input {
+  @include border($b: 1px solid $white, $br: 40px);
+  @include spacing($p: 12px 24px);
+  @include size($w: 360px, $h: 48px);
+  @include font();
+  @include colors($c: $white, $bgc: $inputBG);
+  min-height: 48px;
+  transition: border-color 100ms ease-in-out;
+
+  &::placeholder {
+    color: $white;
+  }
+
+  &:focus-within {
+    border-color: $primBlue;
+  }
+
+  &.invalid {
+    border-color: $error;
+  }
+}

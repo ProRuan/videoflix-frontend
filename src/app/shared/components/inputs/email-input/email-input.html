@@ -1,0 +1,14 @@
+<div class="input-error-cont">
+    <div class="pos-relative">
+        <img class="input-icon" src="/images/inputs/email.png" alt="email">
+        <input #email [value]="control?.value" name="email" class="input" [class.invalid]="isError()" type="email"
+            [placeholder]="placeholder" autocomplete="email" (input)="onInput()">
+    </div>
+
+    @if(isError()) {
+    <div class="error-cont">
+        <img src="images/inputs/warning.png" alt="warning">
+        <span class="error">{{ error }}</span>
+    </div>
+    }
+</div>
