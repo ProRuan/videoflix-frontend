@@ -1,0 +1,12 @@
+@use "mixins" as *;
+
+:host {
+  @include background();
+  @include flexbox($fd: column);
+  min-height: 100vh;
+}
+
+main {
+  @include flexbox($fd: column);
+  flex: 1;
+}

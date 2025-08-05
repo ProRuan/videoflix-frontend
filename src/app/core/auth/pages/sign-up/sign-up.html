@@ -1,0 +1,17 @@
+<form [formGroup]="form" class="auth-form" (ngSubmit)="onRegistration()">
+    <app-loading-bar *ngIf="isLoading()"></app-loading-bar>
+
+    <h2 class="headline-2">Sign up</h2>
+
+    <div class="column-32">
+        <app-email-input [control]="email" placeholder="Email address"></app-email-input>
+        <app-password-input [control]="password" placeholder="Enter a password" [error]="matchError"
+            [errorDisplayed]="false"></app-password-input>
+        <app-password-input [control]="confirmPassword" placeholder="Confirm password" [error]="matchError"
+            [errorDisplayed]="true"></app-password-input>
+    </div>
+
+    <div class="button-cont">
+        <app-primary-button text="Get started" type="submit" [disabled]="isFormInvalid()"></app-primary-button>
+    </div>
+</form>

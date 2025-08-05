@@ -1,0 +1,42 @@
+@use "mixins" as *;
+
+:host {
+  @include flexbox($jc: center, $ai: center);
+  flex: 1;
+}
+
+.button-link-cont {
+  @include flexbox($fd: column, $ai: center, $g: 16px);
+}
+
+.forgot-password-link {
+  @include font($fw: 500);
+  width: fit-content;
+  text-align: center;
+  text-decoration: none;
+  color: $white;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.sign-up-info {
+  @include size($w: fit-content, $h: 23px);
+  @include flexbox($jc: center, $ai: center, $g: 16px);
+}
+
+.sign-up-text {
+  @include font($fw: 500);
+  color: $gray;
+}
+
+.sign-up-link {
+  @include font($fw: 700);
+  text-decoration: none;
+  color: $white;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

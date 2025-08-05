@@ -1,13 +1,40 @@
 import { Routes } from '@angular/router';
-import { Startsite } from './components/startsite/startsite';
-import { LogIn } from './components/log-in/log-in';
-import { SignUp } from './components/sign-up/sign-up';
-import { ForgotPassword } from './components/forgot-password/forgot-password';
-import { ResetPassword } from './components/reset-password/reset-password';
+import {
+  Startsite,
+  SignUp,
+  LogIn,
+  ForgotPassword,
+  ResetPassword,
+} from './core/auth/pages';
 import { VideoOffer } from './components/video-offer/video-offer';
 import { VideoPlayer } from './components/video-player/video-player';
 import { Imprint } from './components/imprint/imprint';
 import { PrivacyPolicy } from './components/privacy-policy/privacy-policy';
+import { CoreLayout } from './core/layout/core-layout/core-layout';
+
+// improve/move this
+// avoid { bg: startsite } and so on at the route
+const bg = {
+  startsite: `linear-gradient(
+  180deg,
+  #000000 -19.89%,
+  rgba(0, 0, 0, 0.55) 40.46%,
+  #000000 100%
+  ),
+  url('/images/backgrounds/startsite_bg.jpg')`,
+  signUp: `linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0.8) -27.44%,
+  rgba(0, 0, 0, 0.44) 44.23%,
+  rgba(0, 0, 0, 0.8) 100%
+  ), url('/images/backgrounds/sign_up_bg.jpg')`,
+  logIn: `linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0.8) -27.44%,
+  rgba(0, 0, 0, 0.44) 44.23%,
+  rgba(0, 0, 0, 0.8) 100%
+  ), url('/images/backgrounds/log_in_bg.jpg')`,
+};
 
 // reset-password with user token ... ?
 // video-offer with user token ... !
@@ -15,13 +42,29 @@ import { PrivacyPolicy } from './components/privacy-policy/privacy-policy';
 
 // user router guard ... ?!
 // use router resolver ... ?
+// use (http) interceptor ... ?
 
 export const routes: Routes = [
-  { path: '', component: Startsite },
-  { path: 'log-in', component: LogIn },
-  { path: 'sign-up', component: SignUp },
-  { path: 'forgot-password', component: ForgotPassword },
-  { path: 'reset-password', component: ResetPassword },
+  {
+    path: '',
+    component: CoreLayout,
+    children: [
+      { path: '', component: Startsite, data: { bg: bg.startsite } },
+      { path: 'sign-up', component: SignUp, data: { bg: bg.signUp } },
+      { path: 'log-in', component: LogIn, data: { bg: bg.logIn } },
+      {
+        path: 'forgot-password',
+        component: ForgotPassword,
+        data: { bg: bg.logIn },
+      },
+      {
+        path: 'reset-password',
+        component: ResetPassword,
+        data: { bg: bg.logIn },
+      },
+    ],
+  },
+
   { path: 'video-offer', component: VideoOffer },
   { path: 'video-player', component: VideoPlayer },
   { path: 'imprint', component: Imprint },

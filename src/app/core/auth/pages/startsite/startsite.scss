@@ -1,0 +1,26 @@
+@use "mixins" as *;
+
+:host {
+  @include flexbox($jc: center, $ai: center);
+  flex: 1;
+}
+
+.content {
+  @include flexbox($fd: column, $ai: center, $g: 32px);
+  width: fit-content;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.title-text-cont {
+  @include flexbox($fd: column, $ai: center, $g: 24px);
+}
+
+.text {
+  @include font();
+  text-align: center;
+  color: $white;
+}
+
+.form {
+  @include flexbox($g: 16px);
+}

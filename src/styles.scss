@@ -147,6 +147,8 @@ button {
 //   transform: translateX(calc(-100% - 64px));
 // }
 
+// move global style to this style sheet
+// use index.ts for imports
 .auth-main {
   @include flexbox($jc: center, $ai: center);
   width: 100%;
