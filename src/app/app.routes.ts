@@ -8,11 +8,9 @@ import {
   ResetPassword,
 } from './core/auth';
 import { Imprint, PrivacyPolicy } from './core/static';
-// from features/pages ...
-import { VideoOffer } from './components/video-offer/video-offer';
-import { VideoPlayer } from './components/video-player/video-player';
-// complete them ...
-// import { Imprint, PrivacyPolicy } from './core/static/pages';
+import { VideoOffer, VideoPlayer } from './features/video';
+
+// generate imprint and privacy policy ...
 
 // improve/move this
 // avoid { bg: startsite } and so on at the route

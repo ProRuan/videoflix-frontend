@@ -1,5 +1,5 @@
 import { Video } from './video';
-import { PlayableVideoData } from '../interfaces/playable-video-data';
+import { PlayableVideoData } from '../interfaces';
 
 /**
  * Class representing a playable video.

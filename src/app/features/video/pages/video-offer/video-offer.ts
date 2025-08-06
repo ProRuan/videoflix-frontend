@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Header, Footer } from '../../core/layout';
-import { Videoflix } from '../../shared/services/videoflix';
-import { Video } from '../../shared/models/video';
-import { Authentication } from '../../shared/services/authentication';
+import { Header, Footer } from '../../../../core/layout';
+import { Videoflix } from '../../../../shared/services/videoflix';
+import { Video } from '../../models';
+import { Authentication } from '../../../../shared/services/authentication';
 import { Router } from '@angular/router';
-import { PrimaryButton } from '../../shared/components/primary-button/primary-button';
-import { VideoData } from '../../shared/interfaces/video-data';
+import { PrimaryButton } from '../../../../shared/components/primary-button/primary-button';
+import { VideoData } from '../../interfaces';
 
 @Component({
   selector: 'app-video-offer',

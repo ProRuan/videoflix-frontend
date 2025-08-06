@@ -1,4 +1,4 @@
-import { VideoData } from '../interfaces/video-data';
+import { VideoData } from '../interfaces';
 
 /**
  * Class representing a video.
