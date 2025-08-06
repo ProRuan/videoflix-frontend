@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
-import { LoadingBar } from '../../../../shared/components/loading-bar/loading-bar';
-import { EmailInput, PasswordInput } from '../../../../shared/components';
-import { PrimaryButton } from '../../../../shared/components/primary-button/primary-button';
+
+import { EmailInput, PasswordInput } from '@shared/components/inputs';
+import { LoadingBar } from '@shared/components/loaders';
+import { PrimaryButton } from '@shared/components/buttons';
+
 import { AuthForm } from '../../../../shared/models/auth-form';
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { InputValidation } from '../../../../shared/services/input-validation';

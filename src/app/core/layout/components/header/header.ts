@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { PrimaryButton } from '../../../../shared/components/primary-button/primary-button';
+
+import { PrimaryButton } from '@shared/components/buttons';
+
 import { Videoflix } from '../../../../shared/services/videoflix';
 
 /**

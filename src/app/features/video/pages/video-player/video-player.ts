@@ -5,10 +5,10 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
 import { VideoPlayerBase } from '../../../../shared/models/video-player-base';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-player',

@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { SuccessDialog } from './shared/components/success-dialog/success-dialog';
-import { ErrorToast } from './shared/components/error-toast/error-toast';
+
+import { SuccessDialog } from '@shared/components/dialogs';
+import { ErrorToast } from '@shared/components/toasts';
+
 import { DialogManager } from './shared/services/dialog-manager';
 import { ToastManager } from './shared/services/toast-manager';
 import { DialogIds, ToastIds } from './shared/ts/enums';
