@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { PasswordInputBase } from '@shared/directives/inputs';
+import { PasswordInputBase } from '@shared/directives';
 
 /**
  * Class representing a password input component.

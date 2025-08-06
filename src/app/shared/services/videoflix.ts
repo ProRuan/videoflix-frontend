@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthResponse } from '../interfaces/auth-response';
-import { User } from '../models/user';
+import { User } from '@core/models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs';
 

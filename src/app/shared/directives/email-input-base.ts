@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, ViewChild } from '@angular/core';
 import { InputBase } from './input-base';
-import { InputErrors } from '../../ts/enums';
+import { InputErrors } from 'shared/ts/enums';
 
 /**
  * Class representing an email input base directive.

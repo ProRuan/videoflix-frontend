@@ -1,4 +1,4 @@
-import { AuthResponse } from '../interfaces/auth-response';
+import { AuthResponse } from 'shared/interfaces/auth-response';
 
 /**
  * Class representing a user.

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EmailInputBase } from '@shared/directives/inputs';
+import { EmailInputBase } from '@shared/directives';
 
 /**
  * Class representing an email input component for the startsite.

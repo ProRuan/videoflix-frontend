@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, ViewChild } from '@angular/core';
 import { InputBase } from './input-base';
-import { Autocompletes, InputErrors, Types } from '../../ts/enums';
+import { Autocompletes, InputErrors, Types } from 'shared/ts/enums';
 
 /**
  * Class representing a password input base directive.

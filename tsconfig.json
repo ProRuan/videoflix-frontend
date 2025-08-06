@@ -25,6 +25,12 @@
       "@core/layout/*": [
         "core/layout/*"
       ],
+      "@core/models": [
+        "core/models"
+      ],
+      "@core/models/*": [
+        "core/models/*"
+      ],
       "@core/static/*": [
         "core/static/*"
       ],
@@ -33,6 +39,9 @@
       ],
       "@shared/components/*": [
         "shared/components/*"
+      ],
+      "@shared/directives": [
+        "shared/directives"
       ],
       "@shared/directives/*": [
         "shared/directives/*"
