@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StartEmailInput } from '../../../../shared/components/start-email-input/start-email-input';
+import { StartEmailInput } from '../../../../shared/components';
 import { PrimaryButton } from '../../../../shared/components/primary-button/primary-button';
 import { AuthForm } from '../../../../shared/models/auth-form';
 import { Videoflix } from '../../../../shared/services/videoflix';

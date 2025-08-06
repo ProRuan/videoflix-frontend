@@ -1,19 +1,22 @@
 import { Routes } from '@angular/router';
+import { CoreLayout } from './core/layout';
 import {
   Startsite,
   SignUp,
   LogIn,
   ForgotPassword,
   ResetPassword,
-} from './core/auth/pages';
+} from './core/auth';
+import { Imprint, PrivacyPolicy } from './core/static';
+// from features/pages ...
 import { VideoOffer } from './components/video-offer/video-offer';
 import { VideoPlayer } from './components/video-player/video-player';
-import { Imprint } from './components/imprint/imprint';
-import { PrivacyPolicy } from './components/privacy-policy/privacy-policy';
-import { CoreLayout } from './core/layout/core-layout/core-layout';
+// complete them ...
+// import { Imprint, PrivacyPolicy } from './core/static/pages';
 
 // improve/move this
 // avoid { bg: startsite } and so on at the route
+
 const bg = {
   startsite: `linear-gradient(
   180deg,
@@ -62,11 +65,11 @@ export const routes: Routes = [
         component: ResetPassword,
         data: { bg: bg.logIn },
       },
+      { path: 'imprint', component: Imprint },
+      { path: 'privacy-policy', component: PrivacyPolicy },
     ],
   },
 
   { path: 'video-offer', component: VideoOffer },
   { path: 'video-player', component: VideoPlayer },
-  { path: 'imprint', component: Imprint },
-  { path: 'privacy-policy', component: PrivacyPolicy },
 ];

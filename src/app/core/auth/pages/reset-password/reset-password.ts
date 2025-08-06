@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 import { LoadingBar } from '../../../../shared/components/loading-bar/loading-bar';
-import { PasswordInput } from '../../../../shared/components/password-input/password-input';
+import { PasswordInput } from '../../../../shared/components';
 import { PrimaryButton } from '../../../../shared/components/primary-button/primary-button';
 import { AuthForm } from '../../../../shared/models/auth-form';
 import { InputValidation } from '../../../../shared/services/input-validation';

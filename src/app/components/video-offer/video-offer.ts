@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Header } from '../../shared/components/header/header';
-import { Footer } from '../../shared/components/footer/footer';
+import { Header, Footer } from '../../core/layout';
 import { Videoflix } from '../../shared/services/videoflix';
 import { Video } from '../../shared/models/video';
 import { Authentication } from '../../shared/services/authentication';
