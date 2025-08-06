@@ -2,17 +2,18 @@ import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { AuthFormBase } from '@core/auth/directives';
+
 import { PrimaryButton } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
 
-import { AuthForm } from '../../../../shared/models/auth-form';
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { InputValidation } from '../../../../shared/services/input-validation';
 import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 
 /**
  * Class representing a startsite component.
- * @extends AuthForm
+ * @extends AuthFormBase
  */
 @Component({
   selector: 'app-startsite',
@@ -20,7 +21,7 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
   templateUrl: './startsite.html',
   styleUrl: './startsite.scss',
 })
-export class Startsite extends AuthForm {
+export class Startsite extends AuthFormBase {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);

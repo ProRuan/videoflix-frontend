@@ -2,18 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { AuthFormBase } from '@core/auth/directives';
+
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
 
-import { AuthForm } from '../../../../shared/models/auth-form';
 import { InputValidation } from '../../../../shared/services/input-validation';
 import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 import { DialogIds } from '../../../../shared/ts/enums';
 
 /**
  * Class representing a forgot-password component.
- * @extends AuthForm
+ * @extends AuthFormBase
  */
 @Component({
   selector: 'app-forgot-password',
@@ -27,7 +28,7 @@ import { DialogIds } from '../../../../shared/ts/enums';
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.scss',
 })
-export class ForgotPassword extends AuthForm {
+export class ForgotPassword extends AuthFormBase {
   private validation: InputValidation = inject(InputValidation);
 
   protected override controls: FormGroupControls = {

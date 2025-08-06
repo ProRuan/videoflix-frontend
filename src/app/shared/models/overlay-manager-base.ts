@@ -1,11 +1,11 @@
 import { signal, WritableSignal } from '@angular/core';
 
 /**
- * Class representing an overlay manager.
+ * Class representing an overlay manager base.
  *
  * It provides base logic for overlay elements such as dialogs or toasts.
  */
-export class OverlayManager {
+export class OverlayManagerBase {
   protected activeElement: WritableSignal<string> = signal('');
   protected hasCloseStyle: WritableSignal<boolean> = signal(false);
 

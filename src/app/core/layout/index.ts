@@ -1,2 +1,1 @@
-export * from './core-layout';
-export * from './components/';
+export * from './core-layout/core-layout';

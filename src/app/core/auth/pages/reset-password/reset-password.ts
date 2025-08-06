@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
+import { AuthFormBase } from '@core/auth/directives';
+
 import { PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
 
-import { AuthForm } from '../../../../shared/models/auth-form';
 import { InputValidation } from '../../../../shared/services/input-validation';
 import { FormValidator } from '../../../../shared/services/form-validator';
 import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
@@ -14,7 +15,7 @@ import { DialogIds } from '../../../../shared/ts/enums';
 
 /**
  * Class representing a reset-password component.
- * @extends AuthForm
+ * @extends AuthFormBase
  */
 @Component({
   selector: 'app-reset-password',
@@ -28,7 +29,7 @@ import { DialogIds } from '../../../../shared/ts/enums';
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })
-export class ResetPassword extends AuthForm {
+export class ResetPassword extends AuthFormBase {
   private validation: InputValidation = inject(InputValidation);
   private validator: FormValidator = inject(FormValidator);
 

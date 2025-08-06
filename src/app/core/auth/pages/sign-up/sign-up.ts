@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
+import { AuthFormBase } from '@core/auth/directives';
+
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
 
-import { AuthForm } from '../../../../shared/models/auth-form';
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { InputValidation } from '../../../../shared/services/input-validation';
 import { FormValidator } from '../../../../shared/services/form-validator';
@@ -15,7 +16,7 @@ import { DialogIds } from '../../../../shared/ts/enums';
 
 /**
  * Class representing a sign-up component.
- * @extends AuthForm
+ * @extends AuthFormBase
  * @implements {OnInit}
  */
 @Component({
@@ -31,7 +32,7 @@ import { DialogIds } from '../../../../shared/ts/enums';
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })
-export class SignUp extends AuthForm implements OnInit {
+export class SignUp extends AuthFormBase implements OnInit {
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);
   private validator: FormValidator = inject(FormValidator);

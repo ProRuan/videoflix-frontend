@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Header, Footer } from '@core/layout/components';
+
 import { PrimaryButton } from '@shared/components/buttons';
 
 // edit
-import { Header, Footer } from '../../../../core/layout';
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { Video } from '../../models';
 import { Authentication } from '../../../../shared/services/authentication';

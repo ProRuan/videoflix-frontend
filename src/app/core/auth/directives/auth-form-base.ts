@@ -7,11 +7,11 @@ import {
 } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { Authentication } from '../services/authentication';
-import { DialogManager } from '../../shared/services/dialog-manager';
-import { ToastManager } from '../../shared/services/toast-manager';
-import { FormGroupControls } from '../interfaces/form-group-controls';
-import { DialogIds } from '../../shared/ts/enums';
+import { Authentication } from 'shared/services/authentication';
+import { DialogManager } from 'shared/services/dialog-manager';
+import { ToastManager } from 'shared/services/toast-manager';
+import { FormGroupControls } from 'shared/interfaces/form-group-controls';
+import { DialogIds } from 'shared/ts/enums';
 
 // type MethodNames<T> = {
 //   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never
@@ -24,7 +24,7 @@ type RequestMethod = keyof Authentication;
 /**
  * Abstract class representing an auth form.
  */
-export abstract class AuthForm implements OnInit {
+export abstract class AuthFormBase implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private auth: Authentication = inject(Authentication);
 

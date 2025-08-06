@@ -20,7 +20,7 @@
         "core/auth/*"
       ],
       "@core/layout": [
-        "core/layout/core-layout"
+        "core/layout"
       ],
       "@core/layout/*": [
         "core/layout/*"
@@ -36,6 +36,12 @@
       ],
       "@shared/directives/*": [
         "shared/directives/*"
+      ],
+      "@shared/models": [
+        "shared/models"
+      ],
+      "@shared/models/*": [
+        "shared/models/*"
       ]
     }
   },

@@ -5,7 +5,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { OverlayManager } from '../models/overlay-manager';
+import { OverlayManagerBase } from '@shared/models';
 import { SuccessDialogConfig } from '../interfaces/success-dialog-config';
 import { DialogIds } from '../ts/enums';
 
@@ -15,8 +15,9 @@ import { DialogIds } from '../ts/enums';
 
 /**
  * Class representing a dialog manager service.
+ * @extends OverlayManagerBase
  */
-export class DialogManager extends OverlayManager {
+export class DialogManager extends OverlayManagerBase {
   private configId: WritableSignal<string> = signal('');
   private currentConfig: Signal<SuccessDialogConfig> = computed(
     () => this.configData[this.configId()]

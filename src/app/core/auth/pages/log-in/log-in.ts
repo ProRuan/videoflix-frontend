@@ -3,11 +3,12 @@ import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
+import { AuthFormBase } from '@core/auth/directives';
+
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
 
-import { AuthForm } from '../../../../shared/models/auth-form';
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { InputValidation } from '../../../../shared/services/input-validation';
 import { AuthResponse } from '../../../../shared/interfaces/auth-response';
@@ -15,7 +16,7 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
 
 /**
  * Class representing a log-in component.
- * @extends AuthForm
+ * @extends AuthFormBase
  */
 @Component({
   selector: 'app-log-in',
@@ -31,7 +32,7 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
 })
-export class LogIn extends AuthForm {
+export class LogIn extends AuthFormBase {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
   private validation: InputValidation = inject(InputValidation);

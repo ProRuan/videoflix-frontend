@@ -8,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
-import { VideoPlayerBase } from '../../../../shared/models/video-player-base';
+import { VideoPlayerBase } from '@features/video/models';
 
 @Component({
   selector: 'app-video-player',

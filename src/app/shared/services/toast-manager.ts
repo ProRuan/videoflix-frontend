@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { OverlayManager } from '../models/overlay-manager';
+import { OverlayManagerBase } from '@shared/models';
 import { ToastIds } from '../ts/enums';
 
 @Injectable({
@@ -8,8 +8,9 @@ import { ToastIds } from '../ts/enums';
 
 /**
  * Class representing a toast manager service.
+ * @extends OverlayManagerBase
  */
-export class ToastManager extends OverlayManager {
+export class ToastManager extends OverlayManagerBase {
   message: string = 'Please check your input and try again.';
   private timeoutId!: ReturnType<typeof setTimeout>;
 
