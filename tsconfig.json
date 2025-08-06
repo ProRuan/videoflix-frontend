@@ -14,10 +14,28 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
-    "baseUrl": "src",
+    "baseUrl": "src/app",
     "paths": {
+      "@core/auth/*": [
+        "core/auth/*"
+      ],
+      "@core/layout": [
+        "core/layout/core-layout"
+      ],
+      "@core/layout/*": [
+        "core/layout/*"
+      ],
+      "@core/static/*": [
+        "core/static/*"
+      ],
+      "@features/video/*": [
+        "features/video/*"
+      ],
       "@shared/components/*": [
-        "app/shared/components/*"
+        "shared/components/*"
+      ],
+      "@shared/directives/*": [
+        "shared/directives/*"
       ]
     }
   },

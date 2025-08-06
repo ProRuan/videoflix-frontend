@@ -1,14 +1,15 @@
 import { Routes } from '@angular/router';
-import { CoreLayout } from './core/layout';
+
+import { CoreLayout } from '@core/layout';
 import {
   Startsite,
   SignUp,
   LogIn,
   ForgotPassword,
   ResetPassword,
-} from './core/auth';
-import { Imprint, PrivacyPolicy } from './core/static';
-import { VideoOffer, VideoPlayer } from './features/video';
+} from '@core/auth/pages';
+import { Imprint, PrivacyPolicy } from '@core/static/pages';
+import { VideoOffer, VideoPlayer } from '@features/video/pages';
 
 // generate imprint and privacy policy ...
 
