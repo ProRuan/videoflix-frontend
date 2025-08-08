@@ -71,11 +71,11 @@ export abstract class AuthFormBase implements OnInit {
   }
 
   /**
-   * Get a possible error caused by a password mismatch.
-   * @returns A boolean value.
+   * Get a possible password match error.
+   * @returns The password match error or undefined.
    */
-  get matchError() {
-    return this.form.hasError('passwordMismatch');
+  get matchError(): string | undefined {
+    return this.form.getError('passwordMismatch');
   }
 
   ngOnInit(): void {

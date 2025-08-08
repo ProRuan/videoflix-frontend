@@ -26,10 +26,18 @@ export class PasswordInputBase extends InputBase {
 
   @Input() placeholder: string = 'Password';
   @Input() autocomplete: string = Autocompletes.NewPassword;
-  @Input('error') matchError: boolean = false;
+  @Input('error') matchError?: string;
   @Input('errorDisplayed') matchErrorDisplayed: boolean = true;
 
   @ViewChild('password') input!: ElementRef<HTMLInputElement>;
+
+  /**
+   * Get a password error caused by control or match error.
+   * @returns The password error.
+   */
+  get passwordError() {
+    return this.matchError ? this.matchError : this.error;
+  }
 
   /**
    * Check a password input for the masked state.
@@ -44,7 +52,7 @@ export class PasswordInputBase extends InputBase {
    * @returns A boolean value.
    */
   isInvalid() {
-    return this.isError() || this.matchError;
+    return this.isError() || !!this.matchError;
   }
 
   /**
@@ -75,6 +83,6 @@ export class PasswordInputBase extends InputBase {
    * @returns A boolean value.
    */
   isMatchError() {
-    return this.matchError && this.matchErrorDisplayed;
+    return !!this.matchError && this.matchErrorDisplayed;
   }
 }
