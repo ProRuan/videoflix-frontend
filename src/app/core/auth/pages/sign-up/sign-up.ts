@@ -7,10 +7,9 @@ import { AuthFormBase } from '@core/auth/directives';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
+import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
-import { InputValidation } from '../../../../shared/services/input-validation';
-import { FormValidator } from '../../../../shared/services/form-validator';
 import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 import { DialogIds } from '../../../../shared/ts/enums';
 
@@ -34,17 +33,15 @@ import { DialogIds } from '../../../../shared/ts/enums';
 })
 export class SignUp extends AuthFormBase implements OnInit {
   private videoflix: Videoflix = inject(Videoflix);
-  private validation: InputValidation = inject(InputValidation);
-  private validator: FormValidator = inject(FormValidator);
 
   protected controls: FormGroupControls = {
-    email: ['', this.validation.email],
-    password: ['', this.validation.password],
-    confirmPassword: ['', this.validation.password],
+    email: ['', FormValidator.emailValidators],
+    password: ['', FormValidator.passwordValidators],
+    confirmPassword: ['', FormValidator.passwordValidators],
   };
 
   protected override options: AbstractControlOptions | null = {
-    validators: [this.validator.passwordMatch()],
+    validators: FormValidator.formValidators,
   };
 
   /**

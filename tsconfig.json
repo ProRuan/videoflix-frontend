@@ -51,6 +51,9 @@
       ],
       "@shared/models/*": [
         "shared/models/*"
+      ],
+      "@shared/modules/*": [
+        "shared/modules/*"
       ]
     }
   },

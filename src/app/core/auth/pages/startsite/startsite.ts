@@ -6,9 +6,9 @@ import { AuthFormBase } from '@core/auth/directives';
 
 import { PrimaryButton } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
+import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
-import { InputValidation } from '../../../../shared/services/input-validation';
 import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 
 /**
@@ -24,10 +24,9 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
 export class Startsite extends AuthFormBase {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
-  private validation: InputValidation = inject(InputValidation);
 
   protected controls: FormGroupControls = {
-    email: ['', this.validation.email],
+    email: ['', FormValidator.emailValidators],
   };
 
   /**

@@ -8,9 +8,9 @@ import { AuthFormBase } from '@core/auth/directives';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
+import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
-import { InputValidation } from '../../../../shared/services/input-validation';
 import { AuthResponse } from '../../../../shared/interfaces/auth-response';
 import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 
@@ -35,11 +35,10 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
 export class LogIn extends AuthFormBase {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
-  private validation: InputValidation = inject(InputValidation);
 
   protected controls: FormGroupControls = {
-    email: ['', this.validation.email],
-    password: ['', this.validation.password],
+    email: ['', FormValidator.emailValidators],
+    password: ['', FormValidator.passwordValidators],
   };
 
   /**

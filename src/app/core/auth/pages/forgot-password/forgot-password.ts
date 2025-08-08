@@ -7,8 +7,8 @@ import { AuthFormBase } from '@core/auth/directives';
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
+import { FormValidator } from '@shared/modules/form-validation';
 
-import { InputValidation } from '../../../../shared/services/input-validation';
 import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 import { DialogIds } from '../../../../shared/ts/enums';
 
@@ -29,10 +29,8 @@ import { DialogIds } from '../../../../shared/ts/enums';
   styleUrl: './forgot-password.scss',
 })
 export class ForgotPassword extends AuthFormBase {
-  private validation: InputValidation = inject(InputValidation);
-
   protected override controls: FormGroupControls = {
-    email: ['', this.validation.email],
+    email: ['', FormValidator.emailValidators],
   };
 
   /**
