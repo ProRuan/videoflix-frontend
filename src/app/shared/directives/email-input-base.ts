@@ -11,7 +11,7 @@ import { InputErrors } from 'shared/ts/enums';
  */
 @Directive()
 export abstract class EmailInputBase extends InputBase {
-  possibleErrors: string[] = [
+  possibleErrorKeys: string[] = [
     InputErrors.Required,
     InputErrors.Forbidden,
     InputErrors.MinLength,

@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { formGroupErrorMessages } from '../constants/error-messages/form-group-error-messages';
+import { formGroupErrorMessages } from '../constants';
 
 const messages = formGroupErrorMessages;
 
@@ -33,6 +33,6 @@ export class FormGroupValidators {
   static passwordMatch: ValidatorFn = (control: AbstractControl) => {
     const fn = FormGroupValidators.matchControls('password', 'confirmPassword');
     const errors = fn(control);
-    return errors ? { passwordMismatch: messages.passwordMismatch } : null;
+    return errors ? { passwordMismatch: true } : null;
   };
 }

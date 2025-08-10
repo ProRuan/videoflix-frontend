@@ -5,7 +5,7 @@ const lowercasePatternString = `(?=.*[${lowercases}])`;
 const digitPatternString = `(?=.*[${digits}])`;
 const specialCharPatternString = `(?=.*[${specials}])`;
 
-export const passwordForbiddenPatternString = `[^${letters}${digits}${specials}]`;
+const passwordForbiddenPatternString = `[^${letters}${digits}${specials}]`;
 
 export const passwordPatterns = {
   uppercase: new RegExp(uppercasePatternString),

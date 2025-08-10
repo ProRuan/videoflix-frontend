@@ -1,13 +1,13 @@
-export const formControlErrorMessages = {
+import { FormControlErrorMessages } from '../../interfaces';
+
+export const formControlErrorMessages: FormControlErrorMessages = {
   required: 'This field is required.',
-  forbiddenChars: (chars: string) =>
-    `The following characters are not allowed: ${chars}`,
-  minLength: (value: number) => `Please enter ${value} character more.`,
-  email: 'Please enter a valid email address.',
-  password: 'Password does not meet complexity requirements.',
-  uppercase: 'At least one uppercase letter is required.',
-  lowercase: 'At least one lowercase letter is required.',
-  digit: 'At least one digit is required.',
-  specialChar: 'At least one special character is required.',
-  maxLength: (value: number) => `Please delete ${value} characters.`,
+  forbidden: (value: string) => `Exclude the following character(s): ${value}`,
+  minLength: (value: string) => `Enter ${value} character(s) more.`,
+  email: 'Enter a valid email address.',
+  uppercase: 'Include at least one uppercase letter.',
+  lowercase: 'Include at least one lowercase letter.',
+  digit: 'Include at least one digit.',
+  specialChar: 'Include at least one special character.',
+  maxLength: (value: string) => `Remove ${value} character(s).`,
 };

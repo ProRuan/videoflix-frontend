@@ -1,5 +1,7 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { AbstractControl, ControlValueAccessor } from '@angular/forms';
+import { formControlErrorMessages } from '@shared/modules/form-validation';
+import { StringOrStringFunction } from '@shared/modules/form-validation/types/types';
 
 /**
  * Abstract class representing an input base directive.
@@ -19,13 +21,16 @@ export abstract class InputBase implements ControlValueAccessor {
 
   // review CommonModule and *ngIf ...
   // comments: ValidatorFn that checks a control for ...
-  // speparate errors and error messages ...
-  // review error messages ...
+
+  // improve error message plural ...
+  // check and rename enums ...
+
+  // check form validation module ...
 
   @Input() control: AbstractControl | null = null;
   @Input() errorsVisible: boolean = true;
 
-  abstract get possibleErrors(): string[];
+  abstract get possibleErrorKeys(): string[];
   abstract get input(): ElementRef<HTMLInputElement>;
 
   /**
@@ -61,12 +66,25 @@ export abstract class InputBase implements ControlValueAccessor {
    */
   validateValue() {
     this.error = '';
-    for (const error of this.possibleErrors) {
-      if (this.hasError(error)) {
-        this.error = this.getError(error);
-        break;
-      }
+    for (const key of this.possibleErrorKeys) {
+      if (!this.hasError(key)) continue;
+      this.error = this.getErrorMessage(key);
+      break;
     }
+  }
+
+  getErrorMessage(key: string) {
+    const error: StringOrStringFunction = formControlErrorMessages[key];
+    if (typeof error === 'function') {
+      const param = this.getErrorParameter(key);
+      return error(param);
+    } else {
+      return error;
+    }
+  }
+
+  getErrorParameter(key: string) {
+    return this.getError(key).toString();
   }
 
   /**
@@ -83,7 +101,7 @@ export abstract class InputBase implements ControlValueAccessor {
    * @param error - The error key.
    * @returns The error value.
    */
-  getError(error: string): string {
+  getError(error: string): string | number | boolean {
     return this.control?.getError(error);
   }
 

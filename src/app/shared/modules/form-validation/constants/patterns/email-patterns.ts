@@ -4,9 +4,9 @@ const username = `[${letters}${digits}._%+-]+`;
 const domain = `[${letters}${digits}.-]+`;
 const tld = `[${letters}]{2,}`;
 
-export const emailPatternString = `^${username}@${domain}\\.${tld}$`;
+const emailPatternString = `^${username}@${domain}\\.${tld}$`;
 
-export const emailForbiddenPatternString = `[^${letters}${digits}._%+-@]`;
+const emailForbiddenPatternString = `[^${letters}${digits}._%+-@]`;
 
 export const emailPatterns = {
   email: new RegExp(emailPatternString),

@@ -12,6 +12,7 @@ import { DialogManager } from 'shared/services/dialog-manager';
 import { ToastManager } from 'shared/services/toast-manager';
 import { FormGroupControls } from 'shared/interfaces/form-group-controls';
 import { DialogIds } from 'shared/ts/enums';
+import { formGroupErrorMessages } from '@shared/modules/form-validation';
 
 // type MethodNames<T> = {
 //   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never
@@ -70,12 +71,10 @@ export abstract class AuthFormBase implements OnInit {
     return this.form.get('confirmPassword');
   }
 
-  /**
-   * Get a possible password match error.
-   * @returns The password match error or undefined.
-   */
-  get matchError(): string | undefined {
-    return this.form.getError('passwordMismatch');
+  getMatchError() {
+    const key = 'passwordMismatch';
+    const error = this.form.getError(key);
+    return error ? formGroupErrorMessages[key] : undefined;
   }
 
   ngOnInit(): void {

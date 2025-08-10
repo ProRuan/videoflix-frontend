@@ -1,11 +1,5 @@
 import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
-import {
-  emailPatterns,
-  formControlErrorMessages,
-  passwordPatterns,
-} from '../constants';
-
-const messages = formControlErrorMessages;
+import { emailPatterns, passwordPatterns } from '../constants';
 
 /**
  * Class representing form control validators.
@@ -18,7 +12,7 @@ export class FormControlValidators {
    */
   static required: ValidatorFn = (control: AbstractControl) => {
     const errors = Validators.required(control);
-    return errors ? { required: messages.required } : null;
+    return errors ? { required: true } : null;
   };
 
   /**
@@ -34,7 +28,7 @@ export class FormControlValidators {
       const actualLength = errors?.['minlength']?.actualLength;
       const requiredLength = errors?.['minlength']?.requiredLength;
       const missingChars = requiredLength - actualLength;
-      return errors ? { minLength: messages.minLength(missingChars) } : null;
+      return errors ? { minLength: missingChars } : null;
     };
   }
 
@@ -51,7 +45,7 @@ export class FormControlValidators {
       const actualLength = errors?.['maxlength']?.actualLength;
       const requiredLength = errors?.['maxlength']?.requiredLength;
       const overflowChars = actualLength - requiredLength;
-      return errors ? { maxLength: messages.maxLength(overflowChars) } : null;
+      return errors ? { maxLength: overflowChars } : null;
     };
   }
 
@@ -72,7 +66,7 @@ export class FormControlValidators {
         let set = new Set(result);
         console.log('set: ', set);
         let forbiddenChars = [...set].join(', ');
-        return { forbidden: messages.forbiddenChars(forbiddenChars) };
+        return { forbidden: forbiddenChars };
       } else {
         return null;
       }
@@ -87,7 +81,7 @@ export class FormControlValidators {
   static email: ValidatorFn = (control: AbstractControl) => {
     const fn = Validators.pattern(emailPatterns.email);
     const errors = fn(control);
-    return errors ? { email: messages.email } : null;
+    return errors ? { email: true } : null;
   };
 
   /**
@@ -98,7 +92,7 @@ export class FormControlValidators {
   static hasUppercase: ValidatorFn = (control: AbstractControl) => {
     const fn = Validators.pattern(passwordPatterns.uppercase);
     const errors = fn(control);
-    return errors ? { uppercase: messages.uppercase } : null;
+    return errors ? { uppercase: true } : null;
   };
 
   /**
@@ -109,7 +103,7 @@ export class FormControlValidators {
   static hasLowercase: ValidatorFn = (control: AbstractControl) => {
     const fn = Validators.pattern(passwordPatterns.lowercase);
     const errors = fn(control);
-    return errors ? { lowercase: messages.lowercase } : null;
+    return errors ? { lowercase: true } : null;
   };
 
   /**
@@ -120,7 +114,7 @@ export class FormControlValidators {
   static hasDigit: ValidatorFn = (control: AbstractControl) => {
     const fn = Validators.pattern(passwordPatterns.digit);
     const errors = fn(control);
-    return errors ? { digit: messages.digit } : null;
+    return errors ? { digit: true } : null;
   };
 
   /**
@@ -131,6 +125,6 @@ export class FormControlValidators {
   static hasSpecialChar: ValidatorFn = (control: AbstractControl) => {
     const fn = Validators.pattern(passwordPatterns.specialChar);
     const errors = fn(control);
-    return errors ? { specialChar: messages.specialChar } : null;
+    return errors ? { specialChar: true } : null;
   };
 }
