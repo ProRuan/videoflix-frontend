@@ -1,4 +1,6 @@
 <button class="button" [class.reverse]="reverse" [type]="type" [disabled]="disabled" (click)="onAction()">
-    <img *ngIf="icon" [src]="getSrc()" [alt]="icon" class="icon">
+    @if (icon) {
+    <img [src]="getSrc()" [alt]="icon" class="icon">
+    }
     <span class="text">{{ text }}</span>
 </button>

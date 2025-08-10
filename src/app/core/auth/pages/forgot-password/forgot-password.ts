@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -18,13 +17,7 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
  */
 @Component({
   selector: 'app-forgot-password',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    LoadingBar,
-    EmailInput,
-    PrimaryButton,
-  ],
+  imports: [ReactiveFormsModule, LoadingBar, EmailInput, PrimaryButton],
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.scss',
 })

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -11,7 +10,7 @@ import { Videoflix } from '../../../../shared/services/videoflix';
  */
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, PrimaryButton],
+  imports: [PrimaryButton],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

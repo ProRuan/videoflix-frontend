@@ -1,5 +1,7 @@
 <form [formGroup]="form" class="auth-form" (ngSubmit)="onRegistration()">
-    <app-loading-bar *ngIf="isLoading()"></app-loading-bar>
+    @if (isLoading()) {
+    <app-loading-bar></app-loading-bar>
+    }
 
     <h2 class="headline-2">Sign up</h2>
 

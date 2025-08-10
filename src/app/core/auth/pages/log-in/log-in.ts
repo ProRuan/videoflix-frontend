@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -21,7 +20,6 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
 @Component({
   selector: 'app-log-in',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     RouterLink,
     LoadingBar,

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,13 +17,7 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
  */
 @Component({
   selector: 'app-reset-password',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    LoadingBar,
-    PasswordInput,
-    PrimaryButton,
-  ],
+  imports: [ReactiveFormsModule, LoadingBar, PasswordInput, PrimaryButton],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })

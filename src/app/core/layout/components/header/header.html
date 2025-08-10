@@ -5,7 +5,8 @@
         (click)="onLogOut()"></app-primary-button>
     } @else {
     <button class="home-button" type="button" [disabled]="isHome()" (click)="onHome()"></button>
-    <app-primary-button *ngIf="complete" text="Log in" type="button" [disabled]="false"
-        (click)="onNavigate()"></app-primary-button>
+    @if (complete) {
+    <app-primary-button text="Log in" type="button" [disabled]="false" (click)="onNavigate()"></app-primary-button>
+    }
     }
 </header>

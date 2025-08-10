@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
@@ -21,7 +20,6 @@ import { FormGroupControls } from '../../../../shared/interfaces/form-group-cont
 @Component({
   selector: 'app-sign-up',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     LoadingBar,
     EmailInput,

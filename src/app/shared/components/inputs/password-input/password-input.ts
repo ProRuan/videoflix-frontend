@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { PasswordInputBase } from '@shared/directives';
 
@@ -8,7 +7,7 @@ import { PasswordInputBase } from '@shared/directives';
  */
 @Component({
   selector: 'app-password-input',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './password-input.html',
   styleUrl: './password-input.scss',
 })
