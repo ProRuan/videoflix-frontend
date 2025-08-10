@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { PrimaryButton } from '../../buttons';
+
+import { DialogIds } from '@shared/constants';
+import { PrimaryButton } from '@shared/components/buttons';
 import { DialogManager } from '../../../services/dialog-manager';
-import { DialogIds } from '../../../ts/enums';
 
 @Component({
   selector: 'app-success-dialog',

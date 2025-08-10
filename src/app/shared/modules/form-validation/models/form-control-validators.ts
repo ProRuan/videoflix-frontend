@@ -5,6 +5,13 @@ import { emailPatterns, passwordPatterns } from '../constants';
  * Class representing form control validators.
  */
 export class FormControlValidators {
+  // set input maxLength ...
+
+  // review CommonModule and *ngIf ...
+  // comments: ValidatorFn that checks a control for ...
+
+  // check form validation module ...
+
   /**
    * Checks a control value for being non-empty.
    * @returns Validation errors if the control value is empty,

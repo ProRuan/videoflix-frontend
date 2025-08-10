@@ -1,6 +1,12 @@
 import { Directive, ElementRef, Input, ViewChild } from '@angular/core';
+
+import {
+  FormControlErrors as ControlErrors,
+  InputAutocompletes as Autocompletes,
+  InputTypes as Types,
+} from '@shared/constants';
+
 import { InputBase } from './input-base';
-import { Autocompletes, InputErrors, Types } from 'shared/ts/enums';
 
 /**
  * Class representing a password input base directive.
@@ -12,14 +18,14 @@ import { Autocompletes, InputErrors, Types } from 'shared/ts/enums';
 @Directive()
 export class PasswordInputBase extends InputBase {
   possibleErrorKeys: string[] = [
-    InputErrors.Required,
-    InputErrors.Forbidden,
-    InputErrors.MinLength,
-    InputErrors.UpperCase,
-    InputErrors.LowerCase,
-    InputErrors.Digit,
-    InputErrors.SpecialChar,
-    InputErrors.MaxLength,
+    ControlErrors.Required,
+    ControlErrors.Forbidden,
+    ControlErrors.MinLength,
+    ControlErrors.Uppercase,
+    ControlErrors.Lowercase,
+    ControlErrors.Digit,
+    ControlErrors.SpecialChar,
+    ControlErrors.MaxLength,
   ];
 
   masked: boolean = true;

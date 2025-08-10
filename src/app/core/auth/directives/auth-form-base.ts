@@ -11,7 +11,8 @@ import { Authentication } from 'shared/services/authentication';
 import { DialogManager } from 'shared/services/dialog-manager';
 import { ToastManager } from 'shared/services/toast-manager';
 import { FormGroupControls } from 'shared/interfaces/form-group-controls';
-import { DialogIds } from 'shared/ts/enums';
+
+import { DialogIds } from '@shared/constants';
 import { formGroupErrorMessages } from '@shared/modules/form-validation';
 
 // type MethodNames<T> = {

@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, ViewChild } from '@angular/core';
 import { InputBase } from './input-base';
-import { InputErrors } from 'shared/ts/enums';
+import { FormControlErrors as ControlErrors } from '@shared/constants';
 
 /**
  * Class representing an email input base directive.
@@ -12,11 +12,11 @@ import { InputErrors } from 'shared/ts/enums';
 @Directive()
 export abstract class EmailInputBase extends InputBase {
   possibleErrorKeys: string[] = [
-    InputErrors.Required,
-    InputErrors.Forbidden,
-    InputErrors.MinLength,
-    InputErrors.Email,
-    InputErrors.MaxLength,
+    ControlErrors.Required,
+    ControlErrors.Forbidden,
+    ControlErrors.MinLength,
+    ControlErrors.Email,
+    ControlErrors.MaxLength,
   ];
 
   @Input() placeholder: string = 'Email address';

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
+
+import { ToastIds } from '@shared/constants';
 import { ToastManager } from '../../../services/toast-manager';
-import { ToastIds } from '../../../ts/enums';
 
 @Component({
   selector: 'app-error-toast',

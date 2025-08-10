@@ -40,6 +40,12 @@
       "@shared/components/*": [
         "shared/components/*"
       ],
+      "@shared/constants": [
+        "shared/constants"
+      ],
+       "@shared/constants/*": [
+        "shared/constants/*"
+      ],
       "@shared/directives": [
         "shared/directives"
       ],

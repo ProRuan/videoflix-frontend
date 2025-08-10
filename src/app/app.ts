@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+import { DialogIds, ToastIds } from '@shared/constants';
 import { SuccessDialog } from '@shared/components/dialogs';
 import { ErrorToast } from '@shared/components/toasts';
 
 import { DialogManager } from './shared/services/dialog-manager';
 import { ToastManager } from './shared/services/toast-manager';
-import { DialogIds, ToastIds } from './shared/ts/enums';
 
 @Component({
   selector: 'app-root',

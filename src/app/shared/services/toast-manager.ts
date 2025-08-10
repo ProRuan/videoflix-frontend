@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+
+import { ToastIds } from '@shared/constants';
 import { OverlayManagerBase } from '@shared/models';
-import { ToastIds } from '../ts/enums';
 
 @Injectable({
   providedIn: 'root',

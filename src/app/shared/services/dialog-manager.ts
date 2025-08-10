@@ -5,9 +5,11 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
+
+import { DialogIds } from '@shared/constants';
 import { OverlayManagerBase } from '@shared/models';
+
 import { SuccessDialogConfig } from '../interfaces/success-dialog-config';
-import { DialogIds } from '../ts/enums';
 
 @Injectable({
   providedIn: 'root',
