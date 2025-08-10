@@ -1,7 +1,12 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { AbstractControl, ControlValueAccessor } from '@angular/forms';
-import { formControlErrorMessages } from '@shared/modules/form-validation';
-import { StringOrStringFunction } from '@shared/modules/form-validation/types/types';
+
+import {
+  ErrorMessageParams,
+  formControlErrorMessages,
+} from '@shared/modules/form-validation';
+
+const errorMessages = formControlErrorMessages;
 
 /**
  * Abstract class representing an input base directive.
@@ -15,17 +20,6 @@ import { StringOrStringFunction } from '@shared/modules/form-validation/types/ty
 @Directive()
 export abstract class InputBase implements ControlValueAccessor {
   error: string = '';
-
-  // think about (local) enums ...
-  // set input maxLength ...
-
-  // review CommonModule and *ngIf ...
-  // comments: ValidatorFn that checks a control for ...
-
-  // improve error message plural ...
-  // check and rename enums ...
-
-  // check form validation module ...
 
   @Input() control: AbstractControl | null = null;
   @Input() errorsVisible: boolean = true;
@@ -73,20 +67,6 @@ export abstract class InputBase implements ControlValueAccessor {
     }
   }
 
-  getErrorMessage(key: string) {
-    const error: StringOrStringFunction = formControlErrorMessages[key];
-    if (typeof error === 'function') {
-      const param = this.getErrorParameter(key);
-      return error(param);
-    } else {
-      return error;
-    }
-  }
-
-  getErrorParameter(key: string) {
-    return this.getError(key).toString();
-  }
-
   /**
    * Check a control for a specified error.
    * @param error - The error key to be checked.
@@ -97,11 +77,35 @@ export abstract class InputBase implements ControlValueAccessor {
   }
 
   /**
+   * Get an error message.
+   * @param key - The error key.
+   * @returns The error message.
+   */
+  getErrorMessage(key: string) {
+    const error = errorMessages[key];
+    if (typeof error === 'function') {
+      const params = this.getErrorMessageParams(key);
+      return error(params.value, params.number);
+    } else {
+      return error;
+    }
+  }
+
+  /**
+   * Get error message parameters.
+   * @param key - The error key.
+   * @returns The error message parameters.
+   */
+  getErrorMessageParams(key: string): ErrorMessageParams {
+    return this.getError(key);
+  }
+
+  /**
    * Get a specified error from a control.
    * @param error - The error key.
    * @returns The error value.
    */
-  getError(error: string): string | number | boolean {
+  getError(error: string) {
     return this.control?.getError(error);
   }
 

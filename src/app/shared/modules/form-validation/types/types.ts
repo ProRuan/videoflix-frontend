@@ -1,1 +1,5 @@
-export type StringOrStringFunction = string | { (value: string): string };
+export type StringFunction = { (value: string, number: number): string };
+
+export type StringOrStringFunction = string | StringFunction;
+
+export type ErrorMessageParams = { value: string; number: number };

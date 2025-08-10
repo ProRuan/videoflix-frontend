@@ -1,4 +1,4 @@
-import { StringOrStringFunction } from "../types"; 
+import { StringFunction, StringOrStringFunction } from '../types';
 
 /**
  * Interface representing form control error messages.
@@ -6,12 +6,12 @@ import { StringOrStringFunction } from "../types";
 export interface FormControlErrorMessages {
   [key: string]: StringOrStringFunction;
   required: string;
-  forbidden: (value: string) => string;
-  minLength: (value: string) => string;
+  forbidden: StringFunction;
+  minLength: StringFunction;
   email: string;
   uppercase: string;
   lowercase: string;
   digit: string;
   specialChar: string;
-  maxLength: (value: string) => string;
+  maxLength: StringFunction;
 }

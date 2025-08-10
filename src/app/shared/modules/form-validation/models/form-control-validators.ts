@@ -27,8 +27,10 @@ export class FormControlValidators {
       const errors = fn(control);
       const actualLength = errors?.['minlength']?.actualLength;
       const requiredLength = errors?.['minlength']?.requiredLength;
-      const missingChars = requiredLength - actualLength;
-      return errors ? { minLength: missingChars } : null;
+      const diff = requiredLength - actualLength;
+      return errors
+        ? { minLength: { value: diff.toString(), number: diff } }
+        : null;
     };
   }
 
@@ -44,8 +46,10 @@ export class FormControlValidators {
       const errors = fn(control);
       const actualLength = errors?.['maxlength']?.actualLength;
       const requiredLength = errors?.['maxlength']?.requiredLength;
-      const overflowChars = actualLength - requiredLength;
-      return errors ? { maxLength: overflowChars } : null;
+      const diff = actualLength - requiredLength;
+      return errors
+        ? { maxLength: { value: diff.toString(), number: diff } }
+        : null;
     };
   }
 
@@ -65,8 +69,8 @@ export class FormControlValidators {
         console.log('result: ', result);
         let set = new Set(result);
         console.log('set: ', set);
-        let forbiddenChars = [...set].join(', ');
-        return { forbidden: forbiddenChars };
+        let chars = [...set];
+        return { forbidden: { value: chars.join(', '), number: chars.length } };
       } else {
         return null;
       }
