@@ -1,6 +1,5 @@
-export const digits = '0-9';
-export const uppercases = 'A-ZÀ-Ÿ';
-export const lowercases = 'a-zà-ÿß';
-export const specials = '!@#$%^&*';
+export const DIGITS = '0-9';
+export const UPPERCASES = 'A-ZÀ-Ÿ';
+export const LOWERCASES = 'a-zà-ÿß';
 
-export const letters = uppercases + lowercases;
+export const LETTERS = UPPERCASES + LOWERCASES;

@@ -1,6 +1,6 @@
 <div class="input-error-cont">
     <input #email [value]="control?.value" name="email" class="input" [class.invalid]="error" type="email"
-        [placeholder]="placeholder" (input)="onInput()">
+        [placeholder]="placeholder" maxlength="128" (input)="onInput()">
     @if(isError()) {
     <div class="error-cont">
         <img src="images/inputs/warning.png" alt="warning">

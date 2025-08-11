@@ -1,12 +1,12 @@
-import { digits, letters } from './chars';
+import { DIGITS, LETTERS } from './chars';
 
-const username = `[${letters}${digits}._%+-]+`;
-const domain = `[${letters}${digits}.-]+`;
-const tld = `[${letters}]{2,}`;
+const username = `[${LETTERS}${DIGITS}._%+-]+`;
+const domain = `[${LETTERS}${DIGITS}.-]+`;
+const tld = `[${LETTERS}]{2,}`;
 
 const emailPatternString = `^${username}@${domain}\\.${tld}$`;
 
-const emailForbiddenPatternString = `[^${letters}${digits}._%+-@]`;
+const emailForbiddenPatternString = `[^${LETTERS}${DIGITS}._%+-@]`;
 
 export const emailPatterns = {
   email: new RegExp(emailPatternString),

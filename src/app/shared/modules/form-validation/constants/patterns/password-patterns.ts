@@ -1,11 +1,13 @@
-import { digits, letters, lowercases, specials, uppercases } from './chars';
+import { DIGITS, LETTERS, LOWERCASES, UPPERCASES } from './chars';
 
-const uppercasePatternString = `(?=.*[${uppercases}])`;
-const lowercasePatternString = `(?=.*[${lowercases}])`;
-const digitPatternString = `(?=.*[${digits}])`;
-const specialCharPatternString = `(?=.*[${specials}])`;
+export const SPECIALS = '!@#$%^&*';
 
-const passwordForbiddenPatternString = `[^${letters}${digits}${specials}]`;
+const uppercasePatternString = `(?=.*[${UPPERCASES}])`;
+const lowercasePatternString = `(?=.*[${LOWERCASES}])`;
+const digitPatternString = `(?=.*[${DIGITS}])`;
+const specialCharPatternString = `(?=.*[${SPECIALS}])`;
+
+const passwordForbiddenPatternString = `[^${LETTERS}${DIGITS}${SPECIALS}]`;
 
 export const passwordPatterns = {
   uppercase: new RegExp(uppercasePatternString),

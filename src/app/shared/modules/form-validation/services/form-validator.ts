@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
 
 import { emailPatterns, passwordPatterns } from '../constants';
-import { FormControlValidators, FormGroupValidators } from '../models';
+import {
+  FormControlValidators as ControlValidators,
+  FormGroupValidators as GroupValidators,
+} from '../models';
 
 /**
  * Class representing a form validator service.
@@ -10,25 +13,25 @@ import { FormControlValidators, FormGroupValidators } from '../models';
 @Injectable({ providedIn: 'root' })
 export class FormValidator {
   static readonly emailValidators: ValidatorFn[] = [
-    FormControlValidators.required,
-    FormControlValidators.forbidden(emailPatterns.forbidden),
-    FormControlValidators.minLength(6),
-    FormControlValidators.email,
-    FormControlValidators.maxLength(128),
+    ControlValidators.required,
+    ControlValidators.forbidden(emailPatterns.forbidden),
+    ControlValidators.minLength(6),
+    ControlValidators.email,
+    ControlValidators.maxLength(127),
   ];
 
   static readonly passwordValidators: ValidatorFn[] = [
-    FormControlValidators.required,
-    FormControlValidators.forbidden(passwordPatterns.forbidden),
-    FormControlValidators.minLength(8),
-    FormControlValidators.hasUppercase,
-    FormControlValidators.hasLowercase,
-    FormControlValidators.hasDigit,
-    FormControlValidators.hasSpecialChar,
-    FormControlValidators.maxLength(128),
+    ControlValidators.required,
+    ControlValidators.forbidden(passwordPatterns.forbidden),
+    ControlValidators.minLength(8),
+    ControlValidators.hasUppercase,
+    ControlValidators.hasLowercase,
+    ControlValidators.hasDigit,
+    ControlValidators.hasSpecialChar,
+    ControlValidators.maxLength(127),
   ];
 
   static readonly formValidators: ValidatorFn[] = [
-    FormGroupValidators.passwordMatch,
+    GroupValidators.passwordMatch,
   ];
 }
