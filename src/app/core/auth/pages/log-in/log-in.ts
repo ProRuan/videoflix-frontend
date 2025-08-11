@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
+import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
 
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -10,8 +11,6 @@ import { PrimaryButton } from '@shared/components/buttons';
 import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
-import { AuthResponse } from '../../../../shared/interfaces/auth-response';
-import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 
 /**
  * Class representing a log-in component.

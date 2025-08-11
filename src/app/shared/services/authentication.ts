@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+
 import { Observable } from 'rxjs';
-import { AuthResponse } from '../interfaces/auth-response';
+
+import { AuthResponse } from '@core/auth/interfaces';
 
 // think about this ...
 type StringMap = Record<string, string>;

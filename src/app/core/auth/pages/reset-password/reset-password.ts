@@ -9,7 +9,7 @@ import { LoadingBar } from '@shared/components/loaders';
 import { PrimaryButton } from '@shared/components/buttons';
 import { FormValidator } from '@shared/modules/form-validation';
 
-import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
+import { FormGroupControls } from '@core/auth/interfaces';
 
 /**
  * Class representing a reset-password component.

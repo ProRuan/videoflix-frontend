@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@core/auth/directives';
+import { FormGroupControls } from '@core/auth/interfaces';
 
 import { DialogIds } from '@shared/constants';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
@@ -10,7 +11,6 @@ import { PrimaryButton } from '@shared/components/buttons';
 import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
-import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 
 /**
  * Class representing a sign-up component.

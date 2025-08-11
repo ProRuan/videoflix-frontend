@@ -6,10 +6,10 @@ import {
   WritableSignal,
 } from '@angular/core';
 
+import { SuccessDialogConfig } from '@core/auth/interfaces';
+
 import { DialogIds } from '@shared/constants';
 import { OverlayManagerBase } from '@shared/models';
-
-import { SuccessDialogConfig } from '../interfaces/success-dialog-config';
 
 @Injectable({
   providedIn: 'root',

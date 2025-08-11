@@ -10,10 +10,11 @@ import { finalize } from 'rxjs';
 import { Authentication } from 'shared/services/authentication';
 import { DialogManager } from 'shared/services/dialog-manager';
 import { ToastManager } from 'shared/services/toast-manager';
-import { FormGroupControls } from 'shared/interfaces/form-group-controls';
 
 import { DialogIds } from '@shared/constants';
 import { formGroupErrorMessages } from '@shared/modules/form-validation';
+
+import { FormGroupControls } from '../interfaces';
 
 // type MethodNames<T> = {
 //   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never

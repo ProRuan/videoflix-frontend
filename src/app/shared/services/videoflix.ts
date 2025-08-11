@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { AuthResponse } from '../interfaces/auth-response';
-import { User } from '@core/models';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router } from '@angular/router';
+
 import { filter, map, startWith } from 'rxjs';
+
+import { AuthResponse } from '@core/auth/interfaces';
+import { User } from '@core/models';
 
 @Injectable({
   providedIn: 'root',

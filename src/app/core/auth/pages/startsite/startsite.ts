@@ -3,13 +3,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
+import { FormGroupControls } from '@core/auth/interfaces';
 
 import { PrimaryButton } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
 import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
-import { FormGroupControls } from '../../../../shared/interfaces/form-group-controls';
 
 /**
  * Class representing a startsite component.
