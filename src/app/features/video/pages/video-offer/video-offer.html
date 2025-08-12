@@ -23,7 +23,7 @@
     </section>
 
     <section class="library">
-        @for (vg of videosByGenre; track vg) {
+        @for (vg of videosByGenre(); track vg) {
         <div class="column-16">
             <h3 class="genre-title">{{ vg.genre }}</h3>
             <div class="row-16">

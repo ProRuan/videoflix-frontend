@@ -60,7 +60,13 @@
       ],
       "@shared/modules/*": [
         "shared/modules/*"
-      ]
+      ],
+      "@shared/services": [
+        "shared/services"
+      ],
+      "@shared/services/*": [
+        "shared/services/*"
+      ],
     }
   },
   "angularCompilerOptions": {

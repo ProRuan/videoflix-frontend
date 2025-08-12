@@ -9,7 +9,8 @@ import {
 import { SuccessDialogConfig } from '@core/auth/interfaces';
 
 import { DialogIds } from '@shared/constants';
-import { OverlayManagerBase } from '@shared/models';
+
+import { OverlayManagerBase } from './overlay-manager-base';
 
 @Injectable({
   providedIn: 'root',

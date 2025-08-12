@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Header, Footer } from '@core/layout/components';
@@ -8,8 +14,8 @@ import { PrimaryButton } from '@shared/components/buttons';
 // edit
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { Video } from '../../models';
-import { Authentication } from '../../../../shared/services/authentication';
 import { VideoData } from '../../interfaces';
+import { VideoStore } from '@features/video/services';
 
 @Component({
   selector: 'app-video-offer',
@@ -20,11 +26,15 @@ import { VideoData } from '../../interfaces';
 export class VideoOffer implements OnInit {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
-  private auth: Authentication = inject(Authentication);
+  private vs: VideoStore = inject(VideoStore);
 
-  videos: Video[] = [];
+  videos: WritableSignal<Video[]> = signal([]);
+  // videos: Video[] = [];
   genres: string[] = [];
-  videosByGenre: { genre: string; videos: Video[] }[] = [];
+  // videosByGenre: { genre: string; videos: Video[] }[] = [];
+  videosByGenre: WritableSignal<{ genre: string; videos: Video[] }[]> = signal(
+    []
+  );
   // videosByGenre: Record<string, Video[]> = {};
 
   // testing
@@ -32,6 +42,10 @@ export class VideoOffer implements OnInit {
 
   // prepare error toast ...
   ngOnInit() {
+    this.vs.listVideos().subscribe({
+      next: (value) => this.setVideos(value),
+      error: (error) => console.log('loading error'),
+    });
     // this.auth.loadVideoOffer().subscribe({
     //   next: (value) => this.setVideos(value),
     //   error: (error) => console.log('loading error'),
@@ -39,11 +53,13 @@ export class VideoOffer implements OnInit {
   }
 
   setVideos(data: VideoData[]) {
+    const videos: Video[] = [];
     data.forEach((d) => {
-      this.videos.push(new Video(d));
+      videos.push(new Video(d));
     });
     // this.videos = [...videos];
-    console.log('videos: ', this.videos);
+    this.videos.set([...videos]);
+    console.log('videos: ', this.videos());
     // testing
     // this.firstVideo.set(videos[0]);
 
@@ -53,7 +69,7 @@ export class VideoOffer implements OnInit {
   }
 
   setGenres() {
-    for (const video of this.videos) {
+    for (const video of this.videos()) {
       const genre = video.genre;
       if (this.genres.includes(genre)) continue;
       this.genres.push(genre);
@@ -63,7 +79,7 @@ export class VideoOffer implements OnInit {
   }
 
   mapVideos() {
-    const videos = [...this.videos];
+    const videos = [...this.videos()];
     const library: Video[][] = [];
     this.genres.forEach((genre, i) => {
       const videoGenre = videos.filter((v) => v.genre === genre);
@@ -79,13 +95,17 @@ export class VideoOffer implements OnInit {
     });
     console.log('library: ', library);
 
+    const videosByGenre: { genre: string; videos: Video[] }[] = [];
     for (let i = 0; i < this.genres.length; i++) {
       const genre = this.genres[i];
       const lib = library[i];
-      this.videosByGenre.push({ genre: genre, videos: lib });
+      videosByGenre.push({ genre: genre, videos: lib });
+
       // this.videosByGenre[genre] = lib;
     }
-    console.log('videos by genre: ', this.videosByGenre);
+
+    this.videosByGenre.set([...videosByGenre]);
+    console.log('videos by genre: ', this.videosByGenre());
   }
 
   onPlay() {

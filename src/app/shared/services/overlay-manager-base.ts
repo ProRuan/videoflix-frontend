@@ -1,10 +1,11 @@
-import { signal, WritableSignal } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
 /**
- * Class representing an overlay manager base.
+ * Class representing an overlay manager base service.
  *
- * It provides base logic for overlay elements such as dialogs or toasts.
+ * It provides logic for overlay elements such as dialogs or toasts.
  */
+@Injectable()
 export class OverlayManagerBase {
   protected activeElement: WritableSignal<string> = signal('');
   protected hasCloseStyle: WritableSignal<boolean> = signal(false);
