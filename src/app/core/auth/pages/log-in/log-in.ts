@@ -3,11 +3,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
-
+import {
+  AuthResponse,
+  FormGroupControls,
+  LoginPayload,
+} from '@core/auth/interfaces';
+import { Authenticator } from '@core/auth/services';
+import { PrimaryButton } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { PrimaryButton } from '@shared/components/buttons';
 import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
@@ -31,12 +35,24 @@ import { Videoflix } from '../../../../shared/services/videoflix';
 })
 export class LogIn extends AuthFormBase {
   private router: Router = inject(Router);
+  private auth: Authenticator = inject(Authenticator);
   private videoflix: Videoflix = inject(Videoflix);
 
   protected controls: FormGroupControls = {
     email: ['', FormValidator.emailValidators],
     password: ['', FormValidator.passwordValidators],
   };
+
+  /**
+   * Get a login payload.
+   * @returns The login payload.
+   */
+  get payload(): LoginPayload {
+    return {
+      email: this.email?.value,
+      password: this.password?.value,
+    };
+  }
 
   /**
    * Perform a user log-in on submit.
@@ -46,7 +62,10 @@ export class LogIn extends AuthFormBase {
    * Otherwise, show an error toast.
    */
   onLogIn() {
-    this.performRequest('logInUser', this.handleSuccess.bind(this));
+    this.performRequest({
+      request$: (payload: LoginPayload) => this.auth.logIn(payload),
+      onSuccess: (response) => this.handleSuccess(response),
+    });
   }
 
   /**

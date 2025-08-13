@@ -6,20 +6,34 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup } from '@angular/forms';
-import { finalize } from 'rxjs';
-import { Authentication } from 'shared/services/authentication';
+import { finalize, Observable } from 'rxjs';
+import {
+  Authentication,
+  EmailCheckResponse,
+} from 'shared/services/authentication';
 import { DialogManager } from 'shared/services/dialog-manager';
 import { ToastManager } from 'shared/services/toast-manager';
 
 import { DialogIds } from '@shared/constants';
 import { formGroupErrorMessages } from '@shared/modules/form-validation';
 
-import { FormGroupControls } from '../interfaces';
+import {
+  AuthResponse,
+  EmailPayload,
+  FormGroupControls,
+  LoginPayload,
+  RegistrationPayload,
+  ResetPasswordPayload,
+} from '../interfaces';
+import { Authenticator } from '../services/authenticator';
+import { ResponseType } from '@shared/services/api-base';
 
 // type MethodNames<T> = {
 //   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never
 // }[keyof T];
 // type RequestMethod = MethodNames<Authentication>;
+
+type ResponseTypes = AuthResponse | EmailCheckResponse;
 
 type RequestMethod = keyof Authentication;
 
@@ -29,7 +43,8 @@ type RequestMethod = keyof Authentication;
  */
 export abstract class AuthFormBase implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
-  private auth: Authentication = inject(Authentication);
+  // move to pages ...
+  // protected auth: Authenticator = inject(Authenticator);
 
   protected dialogs: DialogManager = inject(DialogManager);
   protected toasts: ToastManager = inject(ToastManager);
@@ -40,6 +55,8 @@ export abstract class AuthFormBase implements OnInit {
 
   // rename this to AuthBase and move it to folder directives ... !
 
+  // pipe(finalize(() => this.isLoading.set(true))) ... !
+
   form!: FormGroup;
 
   protected options?: AbstractControlOptions | null;
@@ -48,6 +65,9 @@ export abstract class AuthFormBase implements OnInit {
 
   // set to false
   isLoading: WritableSignal<boolean> = signal(false);
+
+  // use getPayload() instead ... ?
+  abstract get payload(): any;
 
   /**
    * Get the email control of a form.
@@ -91,18 +111,43 @@ export abstract class AuthFormBase implements OnInit {
     return this.fb.group(this.controls, this.options);
   }
 
-  getPayload() {
-    const formData: Record<string, string> = this.form?.value;
-    const payload: Record<string, string> = {};
-    for (const [key, value] of Object.entries(formData)) {
-      if (key === 'confirmPassword') {
-        payload['repeated_password'] = value;
-      } else {
-        payload[key] = value;
-      }
+  // performRequest<T>(
+  //   request: (payload: T) => Observable<ResponseType<T>>,
+  //   handleSuccess: (response: ResponseType<T>) => void
+  // ) {
+  //   if (this.isFormInvalid()) return;
+  //   this.isLoading.set(true);
+  //   request(this.payload)
+  //     .pipe(finalize(() => this.isLoading.set(false)))
+  //     .subscribe({
+  //       next: (response: ResponseType<T>) => handleSuccess(response),
+  //       error: () => this.handleError(),
+  //     });
+  // }
+
+  // rename options to config or separate method and options ...
+  performRequest<T, U extends ResponseType<T>>(options: {
+    request$: (payload: T) => Observable<U>;
+    onSuccess: (response: U) => void;
+  }) {
+    if (this.isFormInvalid()) return;
+    this.isLoading.set(true);
+    this._performRequest(options.request$, {
+      next: (response: U) => options.onSuccess(response),
+      error: () => this.handleError(),
+    });
+  }
+
+  _performRequest<T, U extends ResponseType<T>>(
+    request$: (payload: T) => Observable<U>,
+    options: {
+      next: (response: U) => void;
+      error: () => void;
     }
-    console.log('payload: ', payload);
-    return payload;
+  ) {
+    request$(this.payload)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe(options);
   }
 
   /**
@@ -128,17 +173,5 @@ export abstract class AuthFormBase implements OnInit {
    */
   isFormInvalid() {
     return this.form.invalid || this.isLoading();
-  }
-
-  performRequest<T>(method: RequestMethod, handleSuccess: (value: T) => void) {
-    if (this.isFormInvalid()) return;
-    this.isLoading.set(true);
-    const payload = this.getPayload();
-    this.auth[method](payload)
-      .pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe({
-        next: (value) => handleSuccess(value),
-        error: () => this.handleError(),
-      });
   }
 }

@@ -2,12 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls } from '@core/auth/interfaces';
-
-import { DialogIds } from '@shared/constants';
+import { FormGroupControls, RegistrationPayload } from '@core/auth/interfaces';
+import { Authenticator } from '@core/auth/services';
+import { PrimaryButton } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { PrimaryButton } from '@shared/components/buttons';
+import { DialogIds } from '@shared/constants';
 import { FormValidator } from '@shared/modules/form-validation';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
@@ -30,6 +30,7 @@ import { Videoflix } from '../../../../shared/services/videoflix';
   styleUrl: './sign-up.scss',
 })
 export class SignUp extends AuthFormBase implements OnInit {
+  private auth: Authenticator = inject(Authenticator);
   private videoflix: Videoflix = inject(Videoflix);
 
   protected controls: FormGroupControls = {
@@ -41,6 +42,18 @@ export class SignUp extends AuthFormBase implements OnInit {
   protected override options: AbstractControlOptions | null = {
     validators: FormValidator.formValidators,
   };
+
+  /**
+   * Get a registration payload.
+   * @returns The registration payload.
+   */
+  get payload(): RegistrationPayload {
+    return {
+      email: this.email?.value,
+      password: this.password?.value,
+      repeated_password: this.confirmPassword?.value,
+    };
+  }
 
   /**
    * Initialize a sign-up component.
@@ -66,7 +79,10 @@ export class SignUp extends AuthFormBase implements OnInit {
    * Otherwise, show an error toast.
    */
   onRegistration() {
-    this.performRequest('registerUser', () => this.handleSuccess());
+    this.performRequest({
+      request$: (payload: RegistrationPayload) => this.auth.register(payload),
+      onSuccess: () => this.handleSuccess(),
+    });
   }
 
   /**

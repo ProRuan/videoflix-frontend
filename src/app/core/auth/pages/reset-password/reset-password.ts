@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@core/auth/directives';
-
-import { DialogIds } from '@shared/constants';
+import { FormGroupControls, ResetPasswordPayload } from '@core/auth/interfaces';
+import { Authenticator } from '@core/auth/services';
+import { PrimaryButton } from '@shared/components/buttons';
 import { PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { PrimaryButton } from '@shared/components/buttons';
+import { DialogIds } from '@shared/constants';
 import { FormValidator } from '@shared/modules/form-validation';
-
-import { FormGroupControls } from '@core/auth/interfaces';
 
 /**
  * Class representing a reset-password component.
@@ -22,6 +21,8 @@ import { FormGroupControls } from '@core/auth/interfaces';
   styleUrl: './reset-password.scss',
 })
 export class ResetPassword extends AuthFormBase {
+  private auth: Authenticator = inject(Authenticator);
+
   protected controls: FormGroupControls = {
     password: ['', FormValidator.passwordValidators],
     confirmPassword: ['', FormValidator.passwordValidators],
@@ -32,6 +33,17 @@ export class ResetPassword extends AuthFormBase {
   };
 
   /**
+   * Get a reset-password payload.
+   * @returns The reset-password payload.
+   */
+  get payload(): ResetPasswordPayload {
+    return {
+      password: this.password?.value,
+      repeated_password: this.confirmPassword?.value,
+    };
+  }
+
+  /**
    * Perform an update-password request on submit.
    *
    * If successful, open a success dialog with further information.
@@ -39,7 +51,11 @@ export class ResetPassword extends AuthFormBase {
    * Otherwise, show an error toast.
    */
   onPasswordUpdate() {
-    this.performRequest('updatePassword', () => this.handleSuccess());
+    this.performRequest({
+      request$: (payload: ResetPasswordPayload) =>
+        this.auth.updatePassword(payload),
+      onSuccess: () => this.handleSuccess(),
+    });
   }
 
   /**

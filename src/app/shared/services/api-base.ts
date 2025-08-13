@@ -17,7 +17,8 @@ type Endpoints =
   | 'reset-password'
   | 'videos';
 
-type ResponseType<T> = T extends
+// move + rename to xResponse ...
+export type ResponseType<T> = T extends
   | RegistrationPayload
   | LoginPayload
   | ResetPasswordPayload

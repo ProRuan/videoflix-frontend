@@ -17,25 +17,26 @@ export class Authenticator extends ApiBase {
   // move services to right folders ...
 
   checkEmail(payload: EmailPayload) {
-    this.post('email-check', payload);
+    return this.post('email-check', payload);
   }
 
   register(payload: RegistrationPayload) {
-    this.post('registration', payload);
+    return this.post('registration', payload);
   }
 
   logIn(payload: LoginPayload) {
-    this.post('login', payload);
+    return this.post('login', payload);
   }
 
   resetPassword(payload: EmailPayload) {
-    this.post('forgot-password', payload);
+    return this.post('forgot-password', payload);
   }
 
+  // reset-password payload: token or email is missing for status code 200 ...
   // token must be variable!
   // think about payload!
   updatePassword(payload: ResetPasswordPayload) {
-    this.post('reset-password', payload, true);
+    return this.post('reset-password', payload, true);
   }
 
   // naming

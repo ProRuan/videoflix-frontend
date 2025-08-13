@@ -3,8 +3,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls } from '@core/auth/interfaces';
-
+import { EmailPayload, FormGroupControls } from '@core/auth/interfaces';
+import { Authenticator } from '@core/auth/services';
 import { PrimaryButton } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
 import { FormValidator } from '@shared/modules/form-validation';
@@ -23,11 +23,20 @@ import { Videoflix } from '../../../../shared/services/videoflix';
 })
 export class Startsite extends AuthFormBase {
   private router: Router = inject(Router);
+  private auth: Authenticator = inject(Authenticator);
   private videoflix: Videoflix = inject(Videoflix);
 
   protected controls: FormGroupControls = {
     email: ['', FormValidator.emailValidators],
   };
+
+  /**
+   * Get an email payload.
+   * @returns The email payload.
+   */
+  get payload(): EmailPayload {
+    return { email: this.email?.value };
+  }
 
   /**
    * Perform an email check on submit before redirecting to the sign-up component.
@@ -37,7 +46,10 @@ export class Startsite extends AuthFormBase {
    * Otherwise, show an error toast.
    */
   onSignUp() {
-    this.performRequest('checkEmail', () => this.handleSuccess());
+    this.performRequest({
+      request$: (payload: EmailPayload) => this.auth.checkEmail(payload),
+      onSuccess: () => this.handleSuccess(),
+    });
   }
 
   /**
