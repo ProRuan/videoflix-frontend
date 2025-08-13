@@ -22,8 +22,8 @@ import {
   EmailPayload,
   FormGroupControls,
   LoginPayload,
+  PasswordPayload,
   RegistrationPayload,
-  ResetPasswordPayload,
 } from '../interfaces';
 import { Authenticator } from '../services/authenticator';
 import { ResponseType } from '@shared/services/api-base';
@@ -35,7 +35,31 @@ import { ResponseType } from '@shared/services/api-base';
 
 type ResponseTypes = AuthResponse | EmailCheckResponse;
 
-type RequestMethod = keyof Authentication;
+type RequestMethod =
+  | 'checkEmail'
+  | 'logIn'
+  | 'register'
+  | 'resetPassword'
+  | 'updatePassword';
+// type RequestMethod = keyof Authenticator;
+
+// edit
+type TPayload<T> = T extends 'checkEmail'
+  ? EmailPayload
+  : T extends 'logIn'
+  ? LoginPayload
+  : T extends 'register'
+  ? RegistrationPayload
+  : unknown;
+
+// edit
+type TResponse<T> = T extends 'checkEmail'
+  ? EmailCheckResponse
+  : T extends 'logIn'
+  ? AuthResponse
+  : T extends 'register'
+  ? AuthResponse
+  : unknown;
 
 @Directive()
 /**
@@ -43,6 +67,7 @@ type RequestMethod = keyof Authentication;
  */
 export abstract class AuthFormBase implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
+  private as: Authenticator = inject(Authenticator);
   // move to pages ...
   // protected auth: Authenticator = inject(Authenticator);
 
@@ -57,6 +82,13 @@ export abstract class AuthFormBase implements OnInit {
 
   // pipe(finalize(() => this.isLoading.set(true))) ... !
 
+  // Final quick checklist
+  // ---------------------
+  // Use onSuccess/onError for callback names (clear and idiomatic).
+  // Make callbacks optional and still call handleError as a fallback.
+  // Return the Subscription for control/testing.
+  // Use take(1) by default and provide takeOnce to opt out.
+
   form!: FormGroup;
 
   protected options?: AbstractControlOptions | null;
@@ -65,9 +97,6 @@ export abstract class AuthFormBase implements OnInit {
 
   // set to false
   isLoading: WritableSignal<boolean> = signal(false);
-
-  // use getPayload() instead ... ?
-  abstract get payload(): any;
 
   /**
    * Get the email control of a form.
@@ -125,29 +154,35 @@ export abstract class AuthFormBase implements OnInit {
   //     });
   // }
 
-  // rename options to config or separate method and options ...
-  performRequest<T, U extends ResponseType<T>>(options: {
-    request$: (payload: T) => Observable<U>;
-    onSuccess: (response: U) => void;
-  }) {
+  performRequest<T extends RequestMethod>(
+    key: T,
+    next: (response: TResponse<T>) => void
+  ) {
     if (this.isFormInvalid()) return;
     this.isLoading.set(true);
-    this._performRequest(options.request$, {
-      next: (response: U) => options.onSuccess(response),
-      error: () => this.handleError(),
-    });
+    const payload = this.getPayload<T>();
+    const request = this.getMethod(key);
+    request(payload)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (value: TResponse<T>) => next(value),
+        error: () => this.handleError(),
+      });
   }
 
-  _performRequest<T, U extends ResponseType<T>>(
-    request$: (payload: T) => Observable<U>,
-    options: {
-      next: (response: U) => void;
-      error: () => void;
+  getPayload<T>(): TPayload<T> {
+    const payload = this.form?.value;
+    if (Object.keys(payload).includes('confirmPassword')) {
+      payload.repeated_password = payload.confirmPassword;
+      delete payload.confirmPassword;
     }
-  ) {
-    request$(this.payload)
-      .pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe(options);
+    return payload;
+  }
+
+  getMethod<T extends keyof Authenticator>(
+    key: T
+  ): (payload: TPayload<T>) => Observable<TResponse<T>> {
+    return (payload: TPayload<T>) => this.as[key](payload);
   }
 
   /**

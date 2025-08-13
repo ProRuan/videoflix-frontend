@@ -3,8 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import {
   AuthResponse,
   LoginPayload,
+  PasswordPayload,
   RegistrationPayload,
-  ResetPasswordPayload,
 } from '@core/auth/interfaces';
 import { EmailPayload } from '@core/auth/interfaces';
 import { EmailCheckResponse } from './authentication';
@@ -21,7 +21,7 @@ type Endpoints =
 export type ResponseType<T> = T extends
   | RegistrationPayload
   | LoginPayload
-  | ResetPasswordPayload
+  | PasswordPayload
   ? AuthResponse
   : T extends EmailPayload
   ? EmailCheckResponse

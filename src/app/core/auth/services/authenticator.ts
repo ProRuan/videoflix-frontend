@@ -4,14 +4,15 @@ import { ApiBase } from '@shared/services/api-base';
 import {
   EmailPayload,
   LoginPayload,
+  PasswordPayload,
   RegistrationPayload,
-  ResetPasswordPayload,
 } from '@core/auth/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Authenticator extends ApiBase {
+  [key: string]: any;
   // get method names ...
   // add video-store and video-progress-store ...
   // move services to right folders ...
@@ -35,7 +36,7 @@ export class Authenticator extends ApiBase {
   // reset-password payload: token or email is missing for status code 200 ...
   // token must be variable!
   // think about payload!
-  updatePassword(payload: ResetPasswordPayload) {
+  updatePassword(payload: PasswordPayload) {
     return this.post('reset-password', payload, true);
   }
 

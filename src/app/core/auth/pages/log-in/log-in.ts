@@ -3,12 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
-import {
-  AuthResponse,
-  FormGroupControls,
-  LoginPayload,
-} from '@core/auth/interfaces';
-import { Authenticator } from '@core/auth/services';
+import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
 import { PrimaryButton } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -35,7 +30,6 @@ import { Videoflix } from '../../../../shared/services/videoflix';
 })
 export class LogIn extends AuthFormBase {
   private router: Router = inject(Router);
-  private auth: Authenticator = inject(Authenticator);
   private videoflix: Videoflix = inject(Videoflix);
 
   protected controls: FormGroupControls = {
@@ -44,32 +38,17 @@ export class LogIn extends AuthFormBase {
   };
 
   /**
-   * Get a login payload.
-   * @returns The login payload.
-   */
-  get payload(): LoginPayload {
-    return {
-      email: this.email?.value,
-      password: this.password?.value,
-    };
-  }
-
-  /**
    * Perform a user log-in on submit.
    *
-   * If successful, redirect to the video offer component.
-   *
-   * Otherwise, show an error toast.
+   * Redirects to the video offer page on success;
+   * shows an error toast on error.
    */
   onLogIn() {
-    this.performRequest({
-      request$: (payload: LoginPayload) => this.auth.logIn(payload),
-      onSuccess: (response) => this.handleSuccess(response),
-    });
+    this.performRequest('logIn', (r: AuthResponse) => this.handleSuccess(r));
   }
 
   /**
-   * Set the auth token and redirect to the video offer component.
+   * Set the auth token and redirect to the video offer page.
    * @param response The auth response.
    */
   private handleSuccess(response: AuthResponse) {

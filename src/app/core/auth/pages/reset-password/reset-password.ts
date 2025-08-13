@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls, ResetPasswordPayload } from '@core/auth/interfaces';
-import { Authenticator } from '@core/auth/services';
+import { FormGroupControls } from '@core/auth/interfaces';
 import { PrimaryButton } from '@shared/components/buttons';
 import { PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -21,8 +20,6 @@ import { FormValidator } from '@shared/modules/form-validation';
   styleUrl: './reset-password.scss',
 })
 export class ResetPassword extends AuthFormBase {
-  private auth: Authenticator = inject(Authenticator);
-
   protected controls: FormGroupControls = {
     password: ['', FormValidator.passwordValidators],
     confirmPassword: ['', FormValidator.passwordValidators],
@@ -33,29 +30,13 @@ export class ResetPassword extends AuthFormBase {
   };
 
   /**
-   * Get a reset-password payload.
-   * @returns The reset-password payload.
-   */
-  get payload(): ResetPasswordPayload {
-    return {
-      password: this.password?.value,
-      repeated_password: this.confirmPassword?.value,
-    };
-  }
-
-  /**
    * Perform an update-password request on submit.
    *
-   * If successful, open a success dialog with further information.
-   *
-   * Otherwise, show an error toast.
+   * Opens a success dialog with further information on success;
+   * shows an error toast on error.
    */
   onPasswordUpdate() {
-    this.performRequest({
-      request$: (payload: ResetPasswordPayload) =>
-        this.auth.updatePassword(payload),
-      onSuccess: () => this.handleSuccess(),
-    });
+    this.performRequest('updatePassword', () => this.handleSuccess());
   }
 
   /**

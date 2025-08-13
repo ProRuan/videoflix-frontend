@@ -2,8 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls, RegistrationPayload } from '@core/auth/interfaces';
-import { Authenticator } from '@core/auth/services';
+import { FormGroupControls } from '@core/auth/interfaces';
 import { PrimaryButton } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -30,7 +29,6 @@ import { Videoflix } from '../../../../shared/services/videoflix';
   styleUrl: './sign-up.scss',
 })
 export class SignUp extends AuthFormBase implements OnInit {
-  private auth: Authenticator = inject(Authenticator);
   private videoflix: Videoflix = inject(Videoflix);
 
   protected controls: FormGroupControls = {
@@ -42,18 +40,6 @@ export class SignUp extends AuthFormBase implements OnInit {
   protected override options: AbstractControlOptions | null = {
     validators: FormValidator.formValidators,
   };
-
-  /**
-   * Get a registration payload.
-   * @returns The registration payload.
-   */
-  get payload(): RegistrationPayload {
-    return {
-      email: this.email?.value,
-      password: this.password?.value,
-      repeated_password: this.confirmPassword?.value,
-    };
-  }
 
   /**
    * Initialize a sign-up component.
@@ -74,15 +60,11 @@ export class SignUp extends AuthFormBase implements OnInit {
   /**
    * Perform a user registration on submit.
    *
-   * If successful, open a success dialog with further information.
-   *
-   * Otherwise, show an error toast.
+   * Opens a success dialog with further information on success;
+   * shows an error toast on error.
    */
   onRegistration() {
-    this.performRequest({
-      request$: (payload: RegistrationPayload) => this.auth.register(payload),
-      onSuccess: () => this.handleSuccess(),
-    });
+    this.performRequest('register', () => this.handleSuccess());
   }
 
   /**
