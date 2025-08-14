@@ -6,96 +6,34 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup } from '@angular/forms';
+
 import { finalize, Observable } from 'rxjs';
-import {
-  Authentication,
-  EmailCheckResponse,
-} from 'shared/services/authentication';
-import { DialogManager } from 'shared/services/dialog-manager';
-import { ToastManager } from 'shared/services/toast-manager';
 
 import { DialogIds } from '@shared/constants';
 import { formGroupErrorMessages } from '@shared/modules/form-validation';
+import { DialogManager, ToastManager } from '@shared/services';
 
-import {
-  AuthResponse,
-  EmailPayload,
-  FormGroupControls,
-  LoginPayload,
-  PasswordPayload,
-  RegistrationPayload,
-} from '../interfaces';
-import { Authenticator } from '../services/authenticator';
-import { ResponseType } from '@shared/services/api-base';
+import { FormGroupControls } from '../interfaces';
+import { Authenticator } from '../services';
+import { PayloadOf, RequestMethod, ResponseOf } from '../types';
 
-// type MethodNames<T> = {
-//   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never
-// }[keyof T];
-// type RequestMethod = MethodNames<Authentication>;
-
-type ResponseTypes = AuthResponse | EmailCheckResponse;
-
-type RequestMethod =
-  | 'checkEmail'
-  | 'logIn'
-  | 'register'
-  | 'resetPassword'
-  | 'updatePassword';
-// type RequestMethod = keyof Authenticator;
-
-// edit
-type TPayload<T> = T extends 'checkEmail'
-  ? EmailPayload
-  : T extends 'logIn'
-  ? LoginPayload
-  : T extends 'register'
-  ? RegistrationPayload
-  : unknown;
-
-// edit
-type TResponse<T> = T extends 'checkEmail'
-  ? EmailCheckResponse
-  : T extends 'logIn'
-  ? AuthResponse
-  : T extends 'register'
-  ? AuthResponse
-  : unknown;
-
-@Directive()
 /**
- * Abstract class representing an auth form.
+ * Abstract class representing an auth form base.
+ *
+ * Provides common properties and methods related to authentication forms.
+ *
+ * @implements {OnInit}
  */
+@Directive()
 export abstract class AuthFormBase implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
-  private as: Authenticator = inject(Authenticator);
-  // move to pages ...
-  // protected auth: Authenticator = inject(Authenticator);
-
+  private auth: Authenticator = inject(Authenticator);
   protected dialogs: DialogManager = inject(DialogManager);
   protected toasts: ToastManager = inject(ToastManager);
 
-  // clean this class ...
-  // group properties ...
-  // think about private and protected ...
-
-  // rename this to AuthBase and move it to folder directives ... !
-
-  // pipe(finalize(() => this.isLoading.set(true))) ... !
-
-  // Final quick checklist
-  // ---------------------
-  // Use onSuccess/onError for callback names (clear and idiomatic).
-  // Make callbacks optional and still call handleError as a fallback.
-  // Return the Subscription for control/testing.
-  // Use take(1) by default and provide takeOnce to opt out.
-
   form!: FormGroup;
-
-  protected options?: AbstractControlOptions | null;
-
   protected abstract controls: FormGroupControls;
-
-  // set to false
+  protected options?: AbstractControlOptions | null;
   isLoading: WritableSignal<boolean> = signal(false);
 
   /**
@@ -122,67 +60,81 @@ export abstract class AuthFormBase implements OnInit {
     return this.form.get('confirmPassword');
   }
 
-  getMatchError() {
-    const key = 'passwordMismatch';
-    const error = this.form.getError(key);
-    return error ? formGroupErrorMessages[key] : undefined;
-  }
-
+  /**
+   * Initializes an auth form base.
+   */
   ngOnInit(): void {
     this.setForm();
   }
 
+  /**
+   * Set a form.
+   */
   protected setForm() {
     this.form = this.getForm();
   }
 
+  /**
+   * Get a form.
+   * @returns The form.
+   */
   protected getForm() {
     return this.fb.group(this.controls, this.options);
   }
 
-  // performRequest<T>(
-  //   request: (payload: T) => Observable<ResponseType<T>>,
-  //   handleSuccess: (response: ResponseType<T>) => void
-  // ) {
-  //   if (this.isFormInvalid()) return;
-  //   this.isLoading.set(true);
-  //   request(this.payload)
-  //     .pipe(finalize(() => this.isLoading.set(false)))
-  //     .subscribe({
-  //       next: (response: ResponseType<T>) => handleSuccess(response),
-  //       error: () => this.handleError(),
-  //     });
-  // }
-
-  performRequest<T extends RequestMethod>(
+  /**
+   * Perform a API request.
+   *
+   * Calls a provided method on success;
+   * shows an error toast on error.
+   *
+   * @param key - The request method key.
+   * @param onSuccess - The method to be called on success.
+   */
+  protected performRequest<T extends RequestMethod>(
     key: T,
-    next: (response: TResponse<T>) => void
+    onSuccess: (response: ResponseOf<T>) => void
   ) {
     if (this.isFormInvalid()) return;
     this.isLoading.set(true);
-    const payload = this.getPayload<T>();
-    const request = this.getMethod(key);
-    request(payload)
-      .pipe(finalize(() => this.isLoading.set(false)))
-      .subscribe({
-        next: (value: TResponse<T>) => next(value),
-        error: () => this.handleError(),
-      });
+    const request$ = this.getRequest$<T>(key);
+    request$.pipe(finalize(() => this.isLoading.set(false))).subscribe({
+      next: (value: ResponseOf<T>) => onSuccess(value),
+      error: () => this.handleError(),
+    });
   }
 
-  getPayload<T>(): TPayload<T> {
+  /**
+   * Check a sign-up form for invalidity.
+   * @returns A boolean value.
+   */
+  isFormInvalid() {
+    return this.form.invalid || this.isLoading();
+  }
+
+  /**
+   * Get a request observable with a specified response type.
+   * @param key - The request method key of the authenticator.
+   * @returns The request observable with the specified response type.
+   */
+  private getRequest$<T extends RequestMethod>(
+    key: keyof Authenticator
+  ): Observable<ResponseOf<T>> {
+    const payload = this.getPayload<T>();
+    return this.auth[key](payload);
+  }
+
+  /**
+   * Get a payload for an API request.
+   * @returns The payload for the API request.
+   */
+  private getPayload<T extends RequestMethod>(): PayloadOf<T> {
     const payload = this.form?.value;
     if (Object.keys(payload).includes('confirmPassword')) {
       payload.repeated_password = payload.confirmPassword;
       delete payload.confirmPassword;
     }
     return payload;
-  }
-
-  getMethod<T extends keyof Authenticator>(
-    key: T
-  ): (payload: TPayload<T>) => Observable<TResponse<T>> {
-    return (payload: TPayload<T>) => this.as[key](payload);
   }
 
   /**
@@ -193,6 +145,16 @@ export abstract class AuthFormBase implements OnInit {
   }
 
   /**
+   * Get a password match error.
+   * @returns The password match error or undefined.
+   */
+  getMatchError() {
+    const key = 'passwordMismatch';
+    const error = this.form.getError(key);
+    return error ? formGroupErrorMessages[key] : undefined;
+  }
+
+  /**
    * Show a success dialog.
    * @param id - The success dialog id.
    */
@@ -200,13 +162,5 @@ export abstract class AuthFormBase implements OnInit {
     this.form.reset();
     this.toasts.slideOutImmediately();
     this.dialogs.openSuccessDialog(id);
-  }
-
-  /**
-   * Check a sign-up form for invalidity.
-   * @returns A boolean value.
-   */
-  isFormInvalid() {
-    return this.form.invalid || this.isLoading();
   }
 }
