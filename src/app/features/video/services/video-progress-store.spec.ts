@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Authentication } from './authentication';
+import { VideoProgressStore } from './video-progress-store';
 
-describe('Authentication', () => {
-  let service: Authentication;
+describe('VideoProgressStore', () => {
+  let service: VideoProgressStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Authentication);
+    service = TestBed.inject(VideoProgressStore);
   });
 
   it('should be created', () => {

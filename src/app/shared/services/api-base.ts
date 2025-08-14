@@ -2,12 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
   AuthResponse,
+  EmailResponse,
   LoginPayload,
   PasswordPayload,
   RegistrationPayload,
 } from '@core/auth/interfaces';
 import { EmailPayload } from '@core/auth/interfaces';
-import { EmailCheckResponse } from './authentication';
 
 type Endpoints =
   | 'email-check'
@@ -17,22 +17,25 @@ type Endpoints =
   | 'reset-password'
   | 'videos';
 
-// move + rename to xResponse ...
-export type ResponseType<T> = T extends
-  | RegistrationPayload
+type ResponseOf<T> = T extends
   | LoginPayload
   | PasswordPayload
+  | RegistrationPayload
   ? AuthResponse
   : T extends EmailPayload
-  ? EmailCheckResponse
-  : unknown;
+  ? EmailResponse
+  : never;
 
+/**
+ * Class representing an API base service.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class ApiBase {
   private http: HttpClient = inject(HttpClient);
 
+  // work with environments dev/prod ... ?
   private readonly baseURL = 'http://127.0.0.1:8000/api/';
 
   // use encodeURIComponent ... !
@@ -59,7 +62,7 @@ export class ApiBase {
   post<T>(endpoint: Endpoints, payload: T, tokenProvided: boolean = false) {
     const url = this.getURL(endpoint);
     const options = this.getOptions(tokenProvided);
-    return this.http.post<ResponseType<T>>(url, payload, options);
+    return this.http.post<ResponseOf<T>>(url, payload, options);
   }
 
   get(endpoint: Endpoints, id?: number) {
@@ -68,7 +71,7 @@ export class ApiBase {
     return this.http.get<any>(url, options);
   }
 
-  getDetailURL(endpoint: Endpoints, id?: number) {
+  private getDetailURL(endpoint: Endpoints, id?: number) {
     if (id) {
       return this.getURL(endpoint, id.toString());
     } else {

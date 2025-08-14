@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ApiBase } from '@shared/services/api-base';
 
 import {
   EmailPayload,
@@ -7,49 +6,60 @@ import {
   PasswordPayload,
   RegistrationPayload,
 } from '@core/auth/interfaces';
+import { ApiBase } from '@shared/services';
 
+/**
+ * Class representing an authenticator service.
+ * @extends ApiBase
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class Authenticator extends ApiBase {
   [key: string]: any;
-  // get method names ...
-  // add video-store and video-progress-store ...
-  // move services to right folders ...
 
+  /**
+   * Request an email-check from the API.
+   * @param payload - The email payload.
+   * @returns An observable with the type EmailResponse.
+   */
   checkEmail(payload: EmailPayload) {
     return this.post('email-check', payload);
   }
 
+  /**
+   * Request a registration from the API.
+   * @param payload - The registration payload.
+   * @returns An observable with the type AuthResponse.
+   */
   register(payload: RegistrationPayload) {
     return this.post('registration', payload);
   }
 
+  /**
+   * Request a login from the API.
+   * @param payload - The login payload.
+   * @returns An observable with the type AuthResponse.
+   */
   logIn(payload: LoginPayload) {
     return this.post('login', payload);
   }
 
+  /**
+   * Request a password reset from the API.
+   * @param payload - The email payload.
+   * @returns An observable with the type EmailResponse.
+   */
   resetPassword(payload: EmailPayload) {
     return this.post('forgot-password', payload);
   }
 
-  // reset-password payload: token or email is missing for status code 200 ...
-  // token must be variable!
-  // think about payload!
+  /**
+   * Request a password update from the API.
+   * @param payload - The password payload.
+   * @returns An observable with the type AuthResponse.
+   */
   updatePassword(payload: PasswordPayload) {
     return this.post('reset-password', payload, true);
   }
-
-  // naming
-  // video-store ... !
-  // video-progress-store ... !
-
-  // video-servcie
-  // -------------
-  // listVideos
-  // getVideo
-
-  // video-progress-service
-  // ----------------------
-  // get, add, update, delete
 }
