@@ -36,6 +36,12 @@ export abstract class AuthFormBase implements OnInit {
   protected options?: AbstractControlOptions | null;
   isLoading: WritableSignal<boolean> = signal(false);
 
+  private readonly requestMethodError = [
+    'Request method undefined.',
+    'Please implement the interface AuthRequests on the Authenticator service,',
+    'and add the missing request method.',
+  ].join(' ');
+
   /**
    * Get the email control of a form.
    * @returns The email control or null.
@@ -121,7 +127,12 @@ export abstract class AuthFormBase implements OnInit {
     key: keyof Authenticator
   ): Observable<ResponseOf<T>> {
     const payload = this.getPayload<T>();
-    return this.auth[key](payload);
+    const request$ = this.auth[key]?.(payload);
+    if (typeof request$ === 'undefined') {
+      this.isLoading.set(false);
+      throw new Error(this.requestMethodError);
+    }
+    return request$;
   }
 
   /**

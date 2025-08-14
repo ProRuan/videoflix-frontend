@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
+  AuthRequests,
   EmailPayload,
   LoginPayload,
   PasswordPayload,
@@ -11,11 +12,12 @@ import { ApiBase } from '@shared/services';
 /**
  * Class representing an authenticator service.
  * @extends ApiBase
+ * @implements {AuthRequests}
  */
 @Injectable({
   providedIn: 'root',
 })
-export class Authenticator extends ApiBase {
+export class Authenticator extends ApiBase implements AuthRequests {
   [key: string]: any;
 
   /**
