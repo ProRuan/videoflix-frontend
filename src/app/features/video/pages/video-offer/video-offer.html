@@ -23,12 +23,12 @@
     </section>
 
     <section class="library">
-        @for (vg of videosByGenre(); track vg) {
+        @for (group of library(); track group.genre) {
         <div class="column-16">
-            <h3 class="genre-title">{{ vg.genre }}</h3>
+            <h3 class="genre-title">{{ group.genre }}</h3>
             <div class="row-16">
-                @for (v of vg.videos; track v) {
-                <img [src]="v.thumbnailImage" alt="thumb" class="thumbnail">
+                @for (video of group.videos; track video) {
+                <img [src]="video.thumbnailImage" alt="thumb" class="thumbnail">
                 }
             </div>
         </div>

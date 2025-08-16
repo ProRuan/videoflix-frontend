@@ -8,15 +8,14 @@ import {
 import { Router } from '@angular/router';
 
 import { Header, Footer } from '@core/layout/components';
-
+import { VideoGroup, VideoGroupData } from '@features/video/interfaces';
+import { Video } from '@features/video/models';
+import { VideoStore } from '@features/video/services';
 import { PrimaryButton } from '@shared/components/buttons';
 
-// edit
-import { Videoflix } from '../../../../shared/services/videoflix';
-import { Video } from '../../models';
-import { VideoData } from '../../interfaces';
-import { VideoStore } from '@features/video/services';
-
+/**
+ * Class representing a video offer component.
+ */
 @Component({
   selector: 'app-video-offer',
   imports: [Header, PrimaryButton, Footer],
@@ -25,90 +24,38 @@ import { VideoStore } from '@features/video/services';
 })
 export class VideoOffer implements OnInit {
   private router: Router = inject(Router);
-  private videoflix: Videoflix = inject(Videoflix);
   private vs: VideoStore = inject(VideoStore);
 
-  videos: WritableSignal<Video[]> = signal([]);
-  // videos: Video[] = [];
-  genres: string[] = [];
-  // videosByGenre: { genre: string; videos: Video[] }[] = [];
-  videosByGenre: WritableSignal<{ genre: string; videos: Video[] }[]> = signal(
-    []
-  );
-  // videosByGenre: Record<string, Video[]> = {};
+  // select preview video randomly ...
+  // add select video logic ...
+  // prepare error toast ...
 
-  // testing
-  // firstVideo: Video = new Video();
+  libraryData: WritableSignal<VideoGroupData[]> = signal([]);
+  library: WritableSignal<VideoGroup[]> = signal([]);
 
   // prepare error toast ...
   ngOnInit() {
     this.vs.listVideos().subscribe({
-      next: (value) => this.setVideos(value),
-      error: (error) => console.log('loading error'),
+      next: (value) => this.setVideoLibrary(value),
+      error: (error) => console.log('error: ', error),
     });
-    // this.auth.loadVideoOffer().subscribe({
-    //   next: (value) => this.setVideos(value),
-    //   error: (error) => console.log('loading error'),
-    // });
   }
 
-  setVideos(data: VideoData[]) {
-    const videos: Video[] = [];
-    data.forEach((d) => {
-      videos.push(new Video(d));
-    });
-    // this.videos = [...videos];
-    this.videos.set([...videos]);
-    console.log('videos: ', this.videos());
-    // testing
-    // this.firstVideo.set(videos[0]);
-
-    // move
-    this.setGenres();
-    this.mapVideos();
-  }
-
-  setGenres() {
-    for (const video of this.videos()) {
-      const genre = video.genre;
-      if (this.genres.includes(genre)) continue;
-      this.genres.push(genre);
+  setVideoLibrary(libraryData: VideoGroupData[]) {
+    this.libraryData.set([...libraryData]);
+    console.log('video genre groups: ', this.libraryData());
+    const lib: VideoGroup[] = [];
+    for (let g of this.libraryData()) {
+      const videoData = g.videos;
+      const videos = videoData.map((v) => new Video(v));
+      const group = { genre: g.genre, videos: videos };
+      lib.push(group);
     }
-    this.genres = [...this.genres.sort()];
-    console.log('genres: ', this.genres);
-  }
-
-  mapVideos() {
-    const videos = [...this.videos()];
-    const library: Video[][] = [];
-    this.genres.forEach((genre, i) => {
-      const videoGenre = videos.filter((v) => v.genre === genre);
-      const videoGenreUnsorted = [...videoGenre];
-      const videoGenreSorted = [
-        ...videoGenreUnsorted.sort((a: Video, b: Video) => {
-          const dateA = new Date(a.createdAt).getTime();
-          const dateB = new Date(b.createdAt).getTime();
-          return dateA - dateB;
-        }),
-      ];
-      library.push(videoGenreSorted);
-    });
-    console.log('library: ', library);
-
-    const videosByGenre: { genre: string; videos: Video[] }[] = [];
-    for (let i = 0; i < this.genres.length; i++) {
-      const genre = this.genres[i];
-      const lib = library[i];
-      videosByGenre.push({ genre: genre, videos: lib });
-
-      // this.videosByGenre[genre] = lib;
-    }
-
-    this.videosByGenre.set([...videosByGenre]);
-    console.log('videos by genre: ', this.videosByGenre());
+    this.library.set([...lib]);
+    console.log('converted video genre groups: ', this.library());
   }
 
   onPlay() {
-    this.router.navigateByUrl('video-player');
+    this.router.navigateByUrl('/video-player');
   }
 }

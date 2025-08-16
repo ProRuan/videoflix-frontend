@@ -1,2 +1,4 @@
-export * from './video-data';
 export * from './playable-video-data';
+export * from './video-data';
+export * from './video-group';
+export * from './video-group-data';
