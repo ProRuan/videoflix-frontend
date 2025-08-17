@@ -1,3 +1,4 @@
+import { AvailableResolutions } from './available-resolutions';
 import { VideoData } from './video-data';
 
 /**
@@ -9,5 +10,5 @@ export interface PlayableVideoData extends VideoData {
   video_file: string;
   hls_playlist: string;
   duration: number;
-  available_resolutions: string[];
+  available_resolutions: AvailableResolutions;
 }

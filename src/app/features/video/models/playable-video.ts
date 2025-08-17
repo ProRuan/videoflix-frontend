@@ -1,5 +1,5 @@
 import { Video } from './video';
-import { PlayableVideoData } from '../interfaces';
+import { AvailableResolutions, PlayableVideoData } from '../interfaces';
 
 /**
  * Class representing a playable video.
@@ -10,7 +10,7 @@ export class PlayableVideo extends Video {
   readonly videoFile: string;
   readonly hlsPlaylist: string;
   readonly duration: number;
-  readonly availableResolutions: string[];
+  readonly availableResolutions: AvailableResolutions;
 
   /**
    * Creates a playable video.

@@ -10,6 +10,8 @@ import {
 } from '@core/auth/pages';
 import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { VideoOffer, VideoPlayer } from '@features/video/pages';
+import { VideoPlayerResolver } from '@features/video/services/video-player-resolver';
+import { videoPlayerGuard } from '@features/video/guards/video-player-guard';
 
 // generate imprint and privacy policy ...
 
@@ -46,6 +48,8 @@ const bg = {
 // use router resolver ... ?
 // use (http) interceptor ... ?
 
+// improve concept of video player guard + resolver ...
+
 export const routes: Routes = [
   {
     path: '',
@@ -70,5 +74,10 @@ export const routes: Routes = [
   },
 
   { path: 'video-offer', component: VideoOffer },
-  { path: 'video-player', component: VideoPlayer },
+  {
+    path: 'video-player/:id',
+    component: VideoPlayer,
+    canActivate: [videoPlayerGuard],
+    resolve: { playableVideoData: VideoPlayerResolver },
+  },
 ];

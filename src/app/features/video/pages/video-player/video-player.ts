@@ -4,11 +4,14 @@ import {
   inject,
   signal,
   ViewChild,
+  WritableSignal,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
-import { VideoPlayerBase } from '@features/video/models';
+import { PlayableVideo, VideoPlayerBase } from '@features/video/models';
+import { VideoStore } from '@features/video/services';
+import { PlayableVideoData } from '@features/video/interfaces';
 
 @Component({
   selector: 'app-video-player',
@@ -21,7 +24,9 @@ import { VideoPlayerBase } from '@features/video/models';
   },
 })
 export class VideoPlayer extends VideoPlayerBase {
+  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
+  private vs: VideoStore = inject(VideoStore);
 
   playerHeaderHidden = signal(false);
   playerBarHidden = signal(false);
@@ -47,6 +52,8 @@ export class VideoPlayer extends VideoPlayerBase {
       },
     ],
   };
+
+  playableVideo!: PlayableVideo;
 
   playing: boolean = false;
   volume: number = 0.5;
@@ -97,10 +104,46 @@ export class VideoPlayer extends VideoPlayerBase {
     this.wasPlayingBeforeDrag = false;
   }
 
+  // id must be provided by video-offer component ...
+  // use route resolver ...
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ playableVideoData }) => {
+      this.setPlayableVideo(playableVideoData);
+    });
+    // this.vs.retrieveVideo(1).subscribe({
+    //   next: (videoData) => this.setPlayableVideo(videoData),
+    //   error: (error) => console.log('error: ', error),
+    // });
+  }
+
+  setPlayableVideo(videoData: PlayableVideoData) {
+    console.log('video data: ', videoData);
+    this.playableVideo = new PlayableVideo(videoData);
+    console.log('video: ', this.playableVideo.title);
+    console.log(
+      'video resolutions: ',
+      this.playableVideo.availableResolutions['120p']
+    );
+
+    this.options = {
+      controls: false,
+      autoplay: false,
+      preload: 'auto',
+      techOrder: ['html5'],
+      sources: [
+        {
+          src: this.playableVideo.availableResolutions['720p'],
+          type: 'application/x-mpegURL',
+        },
+      ],
+    };
+  }
+
   ngAfterViewInit() {
     this.player = videojs(this.video.nativeElement, this.options);
     this.player.ready(() => {
       console.log('player ready');
+      console.log('player src: ', this.player.currentSource());
     });
     this.player.on('loadedmetadata', () => {
       const duration = this.player.duration();
@@ -108,7 +151,17 @@ export class VideoPlayer extends VideoPlayerBase {
         this.duration.set(duration);
       }
       this.setCurrentBufferInterval();
+      console.log('player src: ', this.player.currentSource());
     });
+
+    // setTimeout(() => {
+    //   console.log('player src: ', this.player.currentSource());
+    //   this.player.src({
+    //     src: this.playableVideo?.availableResolutions?.['720p'],
+    //     type: 'application/x-mpegURL',
+    //   });
+    //   console.log('player src: ', this.player.currentSource());
+    // }, 1000);
   }
 
   onEventStop(event: Event) {
