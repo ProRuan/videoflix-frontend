@@ -52,7 +52,7 @@ export class ApiBase {
     if (tokenProvided) {
       return new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: 'Token 5c7bca16673bd00e5a2eb98a65d609474121ce5e',
+        Authorization: 'Token 9ee3333b4d97ad47b453f072bf457d765641ef0d',
       });
     } else {
       return new HttpHeaders({ 'Content-Type': 'application/json' });

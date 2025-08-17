@@ -7,6 +7,7 @@ export class Video {
   readonly id: number;
   readonly title: string;
   readonly genre: string;
+  readonly previewClip: string;
   readonly thumbnailImage: string;
   readonly spriteSheet: string;
   readonly createdAt: string;
@@ -19,6 +20,7 @@ export class Video {
     this.id = data.id;
     this.title = data.title;
     this.genre = data.genre;
+    this.previewClip = data.preview_clip;
     this.thumbnailImage = data.thumbnail_image;
     this.spriteSheet = data.sprite_sheet;
     this.createdAt = data.created_at;

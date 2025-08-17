@@ -9,7 +9,6 @@ export class PlayableVideo extends Video {
   readonly description: string;
   readonly videoFile: string;
   readonly hlsPlaylist: string;
-  readonly previewClip: string;
   readonly duration: number;
   readonly availableResolutions: string[];
 
@@ -22,7 +21,6 @@ export class PlayableVideo extends Video {
     this.description = data.description;
     this.videoFile = data.video_file;
     this.hlsPlaylist = data.hls_playlist;
-    this.previewClip = data.preview_clip;
     this.duration = data.duration;
     this.availableResolutions = data.available_resolutions;
   }

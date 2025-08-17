@@ -8,7 +8,6 @@ export interface PlayableVideoData extends VideoData {
   description: string;
   video_file: string;
   hls_playlist: string;
-  preview_clip: string;
   duration: number;
   available_resolutions: string[];
 }
