@@ -15,6 +15,7 @@ type Endpoints =
   | 'login'
   | 'forgot-password'
   | 'reset-password'
+  | 'token/check'
   | 'videos';
 
 type ResponseOf<T> = T extends
@@ -47,12 +48,13 @@ export class ApiBase {
     return { headers: this.getHeaders(tokenProvided) };
   }
 
+  // in use ... ?
   // HttpInterceptor ... ?
   private getHeaders(tokenProvided: boolean = false) {
     if (tokenProvided) {
       return new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: 'Token 9ee3333b4d97ad47b453f072bf457d765641ef0d',
+        Authorization: 'Token f33e82a05fb53c3c3aa50a5c8f659e6fa24b23c0',
       });
     } else {
       return new HttpHeaders({ 'Content-Type': 'application/json' });

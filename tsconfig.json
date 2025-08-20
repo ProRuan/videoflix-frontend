@@ -19,6 +19,9 @@
       "@core/auth/*": [
         "core/auth/*"
       ],
+       "@core/errors/*": [
+        "core/errors/*"
+      ],
       "@core/layout": [
         "core/layout"
       ],

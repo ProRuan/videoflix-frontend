@@ -6,6 +6,7 @@ import {
   LoginPayload,
   PasswordPayload,
   RegistrationPayload,
+  TokenPayload,
 } from '@core/auth/interfaces';
 import { ApiBase } from '@shared/services';
 
@@ -62,6 +63,10 @@ export class Authenticator extends ApiBase implements AuthRequests {
    * @returns An observable with the type AuthResponse.
    */
   updatePassword(payload: PasswordPayload) {
-    return this.post('reset-password', payload, true);
+    return this.post('reset-password', payload);
+  }
+
+  checkToken(payload: TokenPayload) {
+    return this.post('token/check', payload);
   }
 }

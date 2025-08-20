@@ -1,0 +1,17 @@
+@use "mixins" as *;
+
+:host {
+  @include flexbox();
+  flex: 1;
+}
+
+.content {
+  @include spacing($p: 48px 96px);
+  @include flexbox($fd: column);
+  width: 100%;
+}
+
+.message {
+  @include font();
+  color: $white;
+}

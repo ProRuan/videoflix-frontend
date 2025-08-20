@@ -12,6 +12,12 @@ import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { VideoOffer, VideoPlayer } from '@features/video/pages';
 import { VideoPlayerResolver } from '@features/video/services/video-player-resolver';
 import { videoPlayerGuard } from '@features/video/guards/video-player-guard';
+import { tokenGuard } from '@core/auth/guards';
+import { TokenResolver } from '@core/auth/resolvers';
+import { TokenError } from 'core/errors/pages/token-error/token-error';
+import { PageNotFound } from 'core/errors/pages/page-not-found/page-not-found';
+import { tokenErrorGuard } from 'core/errors/guards/token-error-guard';
+import { TokenErrorResolver } from '@core/errors/resolvers';
 
 // generate imprint and privacy policy ...
 
@@ -50,6 +56,8 @@ const bg = {
 
 // improve concept of video player guard + resolver ...
 
+// error layout, e. g. /errors/token/:error ... ?
+
 export const routes: Routes = [
   {
     path: '',
@@ -64,12 +72,21 @@ export const routes: Routes = [
         data: { bg: bg.logIn },
       },
       {
-        path: 'reset-password',
+        path: 'reset-password/:token',
         component: ResetPassword,
+        canActivate: [tokenGuard],
+        resolve: { response: TokenResolver },
         data: { bg: bg.logIn },
       },
       { path: 'imprint', component: Imprint },
       { path: 'privacy-policy', component: PrivacyPolicy },
+      {
+        path: 'token/:error',
+        component: TokenError,
+        canActivate: [tokenErrorGuard],
+        resolve: { error: TokenErrorResolver },
+      },
+      { path: 'page-not-found', component: PageNotFound },
     ],
   },
 

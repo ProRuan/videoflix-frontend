@@ -36,6 +36,11 @@ button {
   color: $white;
 }
 
+.headline-error {
+  @include font($fs: 32px, $fw: 700, $lh: 42px);
+  color: $error;
+}
+
 .row-16 {
   @include flexbox($g: 16px);
 }
@@ -162,4 +167,8 @@ button {
   width: 520px;
   background-color: $formBG;
   position: relative;
+}
+
+.c-white {
+  color: $white;
 }

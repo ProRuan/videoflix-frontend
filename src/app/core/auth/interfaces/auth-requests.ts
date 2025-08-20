@@ -5,8 +5,9 @@ import {
   LoginPayload,
   PasswordPayload,
   RegistrationPayload,
+  TokenPayload,
 } from './payloads';
-import { AuthResponse, EmailResponse } from './responses';
+import { AuthResponse, EmailResponse, TokenCheckResponse } from './responses';
 
 /**
  * Interface representing authentication requests.
@@ -17,4 +18,5 @@ export interface AuthRequests {
   register(payload: RegistrationPayload): Observable<AuthResponse>;
   resetPassword(payload: EmailPayload): Observable<EmailResponse>;
   updatePassword(payload: PasswordPayload): Observable<AuthResponse>;
+  checkToken(payload: TokenPayload): Observable<TokenCheckResponse>;
 }
