@@ -2,7 +2,6 @@ export const enum DialogIds {
   Success = 'success-dialog',
   SignUpSuccess = 'sign-up-success-dialog',
   ForgotPasswordSuccess = 'forgot-password-success-dialog',
-  ResetPasswordSuccess = 'reset-password-success-dialog',
 }
 
 export const enum InputAutocompletes {

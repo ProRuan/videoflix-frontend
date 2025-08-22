@@ -8,16 +8,17 @@ import {
   ForgotPassword,
   ResetPassword,
 } from '@core/auth/pages';
+import { PageNotFound } from '@core/errors/pages';
 import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { VideoOffer, VideoPlayer } from '@features/video/pages';
+
+// sort # index.ts
 import { VideoPlayerResolver } from '@features/video/services/video-player-resolver';
 import { videoPlayerGuard } from '@features/video/guards/video-player-guard';
 import { tokenGuard } from '@core/auth/guards';
 import { TokenResolver } from '@core/auth/resolvers';
-import { TokenError } from 'core/errors/pages/token-error/token-error';
-import { PageNotFound } from 'core/errors/pages/page-not-found/page-not-found';
-import { tokenErrorGuard } from 'core/errors/guards/token-error-guard';
-import { TokenErrorResolver } from '@core/errors/resolvers';
+import { ResetPasswordError } from '@core/auth/pages/reset-password/reset-password-error/reset-password-error';
+import { ResetPasswordSuccess } from '@core/auth/pages/reset-password/reset-password-success/reset-password-success';
 
 // generate imprint and privacy policy ...
 
@@ -72,6 +73,16 @@ export const routes: Routes = [
         data: { bg: bg.logIn },
       },
       {
+        path: 'reset-password/error',
+        component: ResetPasswordError,
+        data: { bg: bg.logIn },
+      },
+      {
+        path: 'reset-password/success',
+        component: ResetPasswordSuccess,
+        data: { bg: bg.logIn },
+      },
+      {
         path: 'reset-password/:token',
         component: ResetPassword,
         canActivate: [tokenGuard],
@@ -80,12 +91,6 @@ export const routes: Routes = [
       },
       { path: 'imprint', component: Imprint },
       { path: 'privacy-policy', component: PrivacyPolicy },
-      {
-        path: 'token/:error',
-        component: TokenError,
-        canActivate: [tokenErrorGuard],
-        resolve: { error: TokenErrorResolver },
-      },
       { path: 'page-not-found', component: PageNotFound },
     ],
   },

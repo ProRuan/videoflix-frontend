@@ -12,6 +12,11 @@ import {
  */
 @Injectable({ providedIn: 'root' })
 export class FormValidator {
+  static readonly tokenValidators: ValidatorFn[] = [
+    ControlValidators.required,
+    ControlValidators.token,
+  ];
+
   static readonly emailValidators: ValidatorFn[] = [
     ControlValidators.required,
     ControlValidators.forbidden(emailPatterns.forbidden),

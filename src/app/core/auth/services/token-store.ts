@@ -7,7 +7,7 @@ import {
 
 import { catchError, Observable, of } from 'rxjs';
 
-import { tokenErrorData } from '@core/errors/constants';
+import { tokenPatterns } from '@shared/modules/form-validation';
 
 import { TokenCheckResponse } from '../interfaces';
 import { Authenticator } from './authenticator';
@@ -22,7 +22,7 @@ export class TokenStore {
   private router: Router = inject(Router);
   private auth: Authenticator = inject(Authenticator);
 
-  private readonly pattern = /^[0-9a-f]{40}$/i;
+  private readonly pattern = tokenPatterns.token;
 
   /**
    * Perform a token check.
@@ -60,27 +60,6 @@ export class TokenStore {
   }
 
   /**
-   * Perform a token error check.
-   * @param route - The ActivatedRouteSnapshot.
-   * @param segments - The URL segments.
-   * @returns True or a URL tree.
-   */
-  hasTokenError(route: ActivatedRouteSnapshot) {
-    const error = this.getRouteParam(route, 'error');
-    if (this.isTokenError(error)) return true;
-    return this.router.createUrlTree(['/page-not-found']);
-  }
-
-  /**
-   * Check a token error by error key.
-   * @param token - The token error to be tested.
-   * @returns A boolean value.
-   */
-  private isTokenError(error: string) {
-    return Object.keys(tokenErrorData).includes(error);
-  }
-
-  /**
    * Resolve a token parameter to get a token check response.
    * @param route - The ActivatedRouteSnapshot.
    * @returns The token check response or a redirect command.
@@ -90,21 +69,19 @@ export class TokenStore {
   ): Observable<TokenCheckResponse | RedirectCommand> {
     const token = this.getRouteParam(route, 'token');
     const payload = { token: token };
-    return this.auth.checkToken(payload).pipe(
-      catchError(() => {
-        const urlTree = this.router.parseUrl('/token/rejected');
-        const command = new RedirectCommand(urlTree);
-        return of(command);
-      })
-    );
+    return this.auth
+      .checkToken(payload)
+      .pipe(catchError(() => this.getRedirectCommand('/reset-password/error')));
   }
 
   /**
-   * Resolve an error parameter to get an error key.
-   * @param route - The ActivatedRouteSnapshot.
-   * @returns The error key as string.
+   * Get a redirect command.
+   * @param url - The target url.
+   * @returns An observable of the type RedirectCommand.
    */
-  resolveTokenError(route: ActivatedRouteSnapshot): string {
-    return this.getRouteParam(route, 'error', 'required');
+  getRedirectCommand(url: string) {
+    const urlTree = this.router.parseUrl(url);
+    const command = new RedirectCommand(urlTree);
+    return of(command);
   }
 }

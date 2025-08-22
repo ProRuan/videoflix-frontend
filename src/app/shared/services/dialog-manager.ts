@@ -42,13 +42,6 @@ export class DialogManager extends OverlayManagerBase {
         'Check your inbox and click the link to choose a new password.',
       ],
     },
-    [DialogIds.ResetPasswordSuccess]: {
-      title: 'Password Reset Successful',
-      messages: [
-        'Your password has been updated.',
-        'You can now use your new password to log in.',
-      ],
-    },
   };
 
   /**

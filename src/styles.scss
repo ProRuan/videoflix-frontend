@@ -15,6 +15,7 @@ body {
 h1,
 h2,
 h3,
+h4,
 p {
   margin: 0;
 }
@@ -36,6 +37,20 @@ button {
   color: $white;
 }
 
+.headline-4 {
+  @include font($fs: 24px, $fw: 700, $lh: 32px);
+  text-align: center;
+}
+
+.c-error {
+  color: $error;
+}
+
+.c-success {
+  color: $success;
+}
+
+// remove
 .headline-error {
   @include font($fs: 32px, $fw: 700, $lh: 42px);
   color: $error;
@@ -171,4 +186,8 @@ button {
 
 .c-white {
   color: $white;
+}
+
+.hidden {
+  display: none !important;
 }

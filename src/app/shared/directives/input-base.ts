@@ -22,6 +22,7 @@ export abstract class InputBase implements ControlValueAccessor {
   error: string = '';
 
   @Input() control: AbstractControl | null = null;
+  @Input() readOnly: boolean = false;
   @Input() errorsVisible: boolean = true;
 
   abstract get possibleErrorKeys(): string[];

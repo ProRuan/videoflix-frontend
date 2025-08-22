@@ -1,5 +1,5 @@
 import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
-import { emailPatterns, passwordPatterns } from '../constants';
+import { emailPatterns, passwordPatterns, tokenPatterns } from '../constants';
 
 /**
  * Class representing form control validators.
@@ -117,5 +117,15 @@ export class FormControlValidators {
   static hasSpecialChar: ValidatorFn = (control: AbstractControl) => {
     const errors = Validators.pattern(passwordPatterns.specialChar)(control);
     return errors ? { specialChar: true } : null;
+  };
+
+  /**
+   * ValidatorFn checking a control value for including a valid token.
+   * @returns Validation errors if the included token is invalid,
+   *          otherwise null.
+   */
+  static token: ValidatorFn = (control: AbstractControl) => {
+    const errors = Validators.pattern(tokenPatterns.token)(control);
+    return errors ? { token: true } : null;
   };
 }

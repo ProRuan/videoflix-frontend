@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TokenError } from './token-error';
+import { ResetPasswordSuccess } from './reset-password-success';
 
-describe('TokenError', () => {
-  let component: TokenError;
-  let fixture: ComponentFixture<TokenError>;
+describe('ResetPasswordSuccess', () => {
+  let component: ResetPasswordSuccess;
+  let fixture: ComponentFixture<ResetPasswordSuccess>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TokenError]
+      imports: [ResetPasswordSuccess]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TokenError);
+    fixture = TestBed.createComponent(ResetPasswordSuccess);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

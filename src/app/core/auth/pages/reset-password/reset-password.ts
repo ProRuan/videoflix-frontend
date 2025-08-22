@@ -1,15 +1,16 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls } from '@core/auth/interfaces';
+import { FormGroupControls, TokenCheckResponse } from '@core/auth/interfaces';
 import { PrimaryButton } from '@shared/components/buttons';
-import { PasswordInput } from '@shared/components/inputs';
+import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { DialogIds } from '@shared/constants';
 import { FormValidator } from '@shared/modules/form-validation';
+
+type Response = TokenCheckResponse;
 
 /**
  * Class representing a reset-password component.
@@ -17,23 +18,27 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-reset-password',
-  imports: [ReactiveFormsModule, LoadingBar, PasswordInput, PrimaryButton],
+  imports: [
+    ReactiveFormsModule,
+    LoadingBar,
+    EmailInput,
+    PasswordInput,
+    PrimaryButton,
+  ],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })
 export class ResetPassword extends AuthFormBase {
   route: ActivatedRoute = inject(ActivatedRoute);
+  router: Router = inject(Router);
 
-  // hidden email input or hidden input ... ?
+  data: Signal<Data | undefined> = toSignal(this.route.data);
+  response: Signal<Response> = computed(() => this.data()?.['response']);
+  token: Signal<string> = computed(() => this.response()?.token);
+  requestEmail: Signal<string> = computed(() => this.response()?.email);
 
-  data = toSignal(this.route.data);
-  // review signals ...
-  token = computed(() => this.data()?.['response'].token);
-  requestEmail = computed(() => this.data()?.['response'].email);
-
-  // validate token ...
   protected controls: FormGroupControls = {
-    token: [this.token()],
+    token: [this.token(), FormValidator.tokenValidators],
     email: [this.requestEmail(), FormValidator.emailValidators],
     password: ['', FormValidator.passwordValidators],
     confirmPassword: ['', FormValidator.passwordValidators],
@@ -46,7 +51,7 @@ export class ResetPassword extends AuthFormBase {
   /**
    * Perform an update-password request on submit.
    *
-   * Opens a success dialog with further information on success;
+   * Redirect to the reset-passsword success page on success;
    * shows an error toast on error.
    */
   onPasswordUpdate() {
@@ -57,6 +62,7 @@ export class ResetPassword extends AuthFormBase {
    * Show a success dialog upon a successful password update.
    */
   private handleSuccess(): void {
-    this.showSuccessDialog(DialogIds.ResetPasswordSuccess);
+    this.toasts.close();
+    this.router.navigateByUrl('/reset-password/success');
   }
 }

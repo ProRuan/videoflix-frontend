@@ -13,5 +13,6 @@ export interface FormControlErrorMessages {
   lowercase: string;
   digit: string;
   specialChar: string;
+  token: string;
   maxLength: StringFunction;
 }

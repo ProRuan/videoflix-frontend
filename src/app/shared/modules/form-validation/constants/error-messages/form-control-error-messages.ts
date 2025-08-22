@@ -11,6 +11,7 @@ export const formControlErrorMessages: FormControlErrorMessages = {
   lowercase: 'Include at least one lowercase letter.',
   digit: 'Include at least one digit.',
   specialChar: 'Include at least one special character.',
+  token: 'Enter a valid token.',
   maxLength: (value: string, number: number) =>
     `Remove at least ${value} character${getPlural(number)}.`,
 };
