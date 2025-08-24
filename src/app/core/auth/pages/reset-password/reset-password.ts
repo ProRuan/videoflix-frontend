@@ -59,7 +59,7 @@ export class ResetPassword extends AuthFormBase {
   }
 
   /**
-   * Show a success dialog upon a successful password update.
+   * Redirect to the reset-password success page.
    */
   private handleSuccess(): void {
     this.toasts.close();

@@ -12,6 +12,8 @@ import { EmailPayload } from '@core/auth/interfaces';
 type Endpoints =
   | 'email-check'
   | 'registration'
+  | 'account-activation'
+  | 'account-reactivation'
   | 'login'
   | 'forgot-password'
   | 'reset-password'

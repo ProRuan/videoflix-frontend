@@ -68,10 +68,29 @@ export class TokenStore {
     route: ActivatedRouteSnapshot
   ): Observable<TokenCheckResponse | RedirectCommand> {
     const token = this.getRouteParam(route, 'token');
-    const payload = { token: token };
+    const payload = this.getTokenPayload(token);
+    const url = this.getErrorUrl(route);
     return this.auth
       .checkToken(payload)
-      .pipe(catchError(() => this.getRedirectCommand('/reset-password/error')));
+      .pipe(catchError(() => this.getRedirectCommand(url)));
+  }
+
+  /**
+   * Get a token payload.
+   * @param token - The token.
+   * @returns The token payload.
+   */
+  private getTokenPayload(token: string) {
+    return { token: token };
+  }
+
+  /**
+   * Get the URL of a related error page.
+   * @param route The ActivatedRouteSnapshot.
+   * @returns The URL of the related error page.
+   */
+  private getErrorUrl(route: ActivatedRouteSnapshot) {
+    return `/${route.url[0]}/error`;
   }
 
   /**

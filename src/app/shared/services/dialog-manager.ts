@@ -35,10 +35,17 @@ export class DialogManager extends OverlayManagerBase {
               Please click the activation link inside to unlock your account.`,
       ],
     },
+    [DialogIds.ReactivateAccountSuccess]: {
+      title: 'Email Sent',
+      messages: [
+        'We’ve sent you an account activation link.',
+        'Check your inbox and click the link to reactivate your account.',
+      ],
+    },
     [DialogIds.ForgotPasswordSuccess]: {
       title: 'Email Sent',
       messages: [
-        'We’ve sent you a password‑reset link.',
+        'We’ve sent you a password reset link.',
         'Check your inbox and click the link to choose a new password.',
       ],
     },

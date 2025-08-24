@@ -1,0 +1,15 @@
+<form class="auth-form">
+    @if (isLoading()) {
+    <app-loading-bar></app-loading-bar>
+    }
+    <h2 class="headline-2">Activate account</h2>
+
+    <div class="column-16">
+        <p class="text">Please confirm your email to activate your account.</p>
+        <p class="text">Did not register this account? Contact our support.</p>
+    </div>
+
+    <div class="button-cont">
+        <app-primary-button text="Activate my account" (click)="onActivate()"></app-primary-button>
+    </div>
+</form>

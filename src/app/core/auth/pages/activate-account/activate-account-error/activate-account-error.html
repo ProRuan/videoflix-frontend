@@ -1,0 +1,13 @@
+<form class="auth-form">
+    <h4 class="headline-4 c-error">Token rejected</h4>
+
+    <div class="column-16">
+        <p class="text">This link can no longer be used.</p>
+        <p class="text">Request a new token or go to login.</p>
+    </div>
+
+    <div class="button-cont">
+        <app-primary-button text="Resend email" (click)="onEmailResend()"></app-primary-button>
+        <app-primary-button text="Go to login" (click)="onLogin()"></app-primary-button>
+    </div>
+</form>

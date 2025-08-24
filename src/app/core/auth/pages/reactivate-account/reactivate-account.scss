@@ -1,0 +1,16 @@
+@use "mixins" as *;
+
+:host {
+  @include flexbox($jc: center, $ai: center);
+  flex: 1;
+}
+
+.text {
+  @include font();
+  text-align: center;
+  color: $white;
+}
+
+.button-cont {
+  @include flexbox($jc: center);
+}

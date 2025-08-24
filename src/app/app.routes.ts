@@ -12,13 +12,17 @@ import { PageNotFound } from '@core/errors/pages';
 import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { VideoOffer, VideoPlayer } from '@features/video/pages';
 
-// sort # index.ts
+// sort + index.ts
 import { VideoPlayerResolver } from '@features/video/services/video-player-resolver';
 import { videoPlayerGuard } from '@features/video/guards/video-player-guard';
 import { tokenGuard } from '@core/auth/guards';
 import { TokenResolver } from '@core/auth/resolvers';
 import { ResetPasswordError } from '@core/auth/pages/reset-password/reset-password-error/reset-password-error';
 import { ResetPasswordSuccess } from '@core/auth/pages/reset-password/reset-password-success/reset-password-success';
+import { ActivateAccount } from '@core/auth/pages/activate-account/activate-account';
+import { ActivateAccountError } from '@core/auth/pages/activate-account/activate-account-error/activate-account-error';
+import { ActivateAccountSuccess } from '@core/auth/pages/activate-account/activate-account-success/activate-account-success';
+import { ReactivateAccount } from '@core/auth/pages/reactivate-account/reactivate-account';
 
 // generate imprint and privacy policy ...
 
@@ -66,6 +70,29 @@ export const routes: Routes = [
     children: [
       { path: '', component: Startsite, data: { bg: bg.startsite } },
       { path: 'sign-up', component: SignUp, data: { bg: bg.signUp } },
+      {
+        path: 'activate-account/error',
+        component: ActivateAccountError,
+        data: { bg: bg.signUp },
+      },
+      {
+        path: 'activate-account/success',
+        component: ActivateAccountSuccess,
+        data: { bg: bg.signUp },
+      },
+      {
+        path: 'activate-account/:token',
+        component: ActivateAccount,
+        canActivate: [tokenGuard],
+        // add token resolver (with with right error page)!
+        resolve: { response: TokenResolver },
+        data: { bg: bg.signUp },
+      },
+      {
+        path: 'reactivate-account',
+        component: ReactivateAccount,
+        data: { bg: bg.signUp },
+      },
       { path: 'log-in', component: LogIn, data: { bg: bg.logIn } },
       {
         path: 'forgot-password',

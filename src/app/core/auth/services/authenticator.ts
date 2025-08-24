@@ -39,6 +39,18 @@ export class Authenticator extends ApiBase implements AuthRequests {
     return this.post('registration', payload);
   }
 
+  checkToken(payload: TokenPayload) {
+    return this.post('token/check', payload);
+  }
+
+  activateAccount(payload: TokenPayload) {
+    return this.post('account-activation', payload);
+  }
+
+  reactivateAccount(payload: EmailPayload) {
+    return this.post('account-reactivation', payload);
+  }
+
   /**
    * Request a login from the API.
    * @param payload - The login payload.
@@ -64,9 +76,5 @@ export class Authenticator extends ApiBase implements AuthRequests {
    */
   updatePassword(payload: PasswordPayload) {
     return this.post('reset-password', payload);
-  }
-
-  checkToken(payload: TokenPayload) {
-    return this.post('token/check', payload);
   }
 }

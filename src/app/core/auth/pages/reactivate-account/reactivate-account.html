@@ -1,0 +1,18 @@
+<form [formGroup]="form" class="auth-form" (ngSubmit)="onAccountReactivation()">
+    @if (isLoading()) {
+    <app-loading-bar></app-loading-bar>
+    }
+
+    <h2 class="headline-2">Reactivate Account</h2>
+
+    <div class="column-16">
+        <p class="text">
+            We will send you an email with instructions to reactivate your account.
+        </p>
+        <app-email-input [control]="email" [errorsVisible]="false" placeholder="Email address"></app-email-input>
+    </div>
+
+    <div class="button-cont">
+        <app-primary-button text="Send email" type="submit" [disabled]="isFormInvalid()"></app-primary-button>
+    </div>
+</form>
