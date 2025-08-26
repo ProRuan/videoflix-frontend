@@ -5,7 +5,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Header, Footer } from '@core/layout/components';
 import { VideoGroup, VideoGroupData } from '@features/video/interfaces';
@@ -23,6 +23,7 @@ import { PrimaryButton } from '@shared/components/buttons';
   styleUrl: './video-offer.scss',
 })
 export class VideoOffer implements OnInit {
+  private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
   private vs: VideoStore = inject(VideoStore);
 
@@ -35,6 +36,9 @@ export class VideoOffer implements OnInit {
 
   // prepare error toast ...
   ngOnInit() {
+    this.route.paramMap.subscribe({
+      next: (value) => this.vs.setToken(value?.get('token') ?? ''),
+    });
     this.vs.listVideos().subscribe({
       next: (value) => this.setVideoLibrary(value),
       error: (error) => console.log('error: ', error),

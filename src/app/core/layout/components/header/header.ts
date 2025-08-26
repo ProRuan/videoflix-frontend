@@ -1,22 +1,26 @@
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PrimaryButton } from '@shared/components/buttons';
+import { PrimaryButton, SecondaryButton } from '@shared/components/buttons';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
+import { VideoStore } from '@features/video/services';
+import { Authenticator } from '@core/auth/services';
 
 /**
  * Class representing a header component.
  */
 @Component({
   selector: 'app-header',
-  imports: [PrimaryButton],
+  imports: [PrimaryButton, SecondaryButton],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
+  private auth: Authenticator = inject(Authenticator);
+  private vs: VideoStore = inject(VideoStore);
 
   @Input() complete: boolean = true;
 
@@ -33,7 +37,11 @@ export class Header {
    */
   onLogOut() {
     this.videoflix.logOut();
-    this.router.navigateByUrl('log-in');
+    const payload = { token: this.vs.getToken() };
+    this.auth.logOut(payload).subscribe({
+      next: (value) => this.router.navigateByUrl('/log-in'),
+    });
+    // this.router.navigateByUrl('log-in');
   }
 
   /**
@@ -51,10 +59,19 @@ export class Header {
     this.router.navigateByUrl('');
   }
 
-  /**
-   * Navigate to the log-in component.
-   */
-  onNavigate() {
-    this.router.navigateByUrl('log-in');
+  onSignOut() {
+    const url = `/sign-out/${this.vs.getToken()}`;
+    this.router.navigateByUrl(url);
   }
+
+  onNavigate(url: string) {
+    this.router.navigateByUrl(url);
+  }
+
+  // /**
+  //  * Navigate to the log-in component.
+  //  */
+  // onNavigate() {
+  //   this.router.navigateByUrl('log-in');
+  // }
 }

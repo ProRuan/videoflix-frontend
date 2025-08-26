@@ -3,6 +3,7 @@ export const enum DialogIds {
   SignUpSuccess = 'sign-up-success-dialog',
   ReactivateAccountSuccess = 'reactivate-account-success-dialog',
   ForgotPasswordSuccess = 'forgot-password-success-dialog',
+  SignOutSuccess = 'sign-out-success-dialog',
 }
 
 export const enum InputAutocompletes {

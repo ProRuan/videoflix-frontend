@@ -1,0 +1,40 @@
+@use "mixins" as *;
+
+:host {
+  width: fit-content;
+}
+
+.button {
+  @include border($b: none, $br: 40px);
+  @include spacing($p: 12px 24px);
+  @include size($w: fit-content, $h: 48px);
+  @include font($fw: 700);
+  @include colors($c: $white, $bgc: $sec-blue);
+  @include flexbox($jc: center, $ai: center, $g: 4px);
+  transition: background-color 100ms ease-in-out;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+
+  &:hover {
+    background-color: $sec-blue-hover;
+  }
+
+  &:active {
+    background-color: $sec-blue-active;
+  }
+
+  &:disabled {
+    background-color: $disabled;
+    cursor: default;
+  }
+}
+
+.icon {
+  @include image($w: auto, $h: 24px);
+}
+
+.text {
+  @include font($fw: 700);
+}

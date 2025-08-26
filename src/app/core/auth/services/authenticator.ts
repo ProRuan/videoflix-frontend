@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import {
   AuthRequests,
+  AuthResponse,
   EmailPayload,
   LoginPayload,
   PasswordPayload,
@@ -9,6 +10,7 @@ import {
   TokenPayload,
 } from '@core/auth/interfaces';
 import { ApiBase } from '@shared/services';
+import { Observable } from 'rxjs';
 
 /**
  * Class representing an authenticator service.
@@ -51,6 +53,14 @@ export class Authenticator extends ApiBase implements AuthRequests {
     return this.post('account-reactivation', payload);
   }
 
+  deregister(payload: LoginPayload) {
+    return this.post('deregistration', payload);
+  }
+
+  deleteAccount(payload: TokenPayload) {
+    return this.post('account-deletion', payload);
+  }
+
   /**
    * Request a login from the API.
    * @param payload - The login payload.
@@ -58,6 +68,11 @@ export class Authenticator extends ApiBase implements AuthRequests {
    */
   logIn(payload: LoginPayload) {
     return this.post('login', payload);
+  }
+
+  // fix payload and response
+  logOut(payload: TokenPayload): Observable<any> {
+    return this.post<any>('logout', payload);
   }
 
   /**
@@ -76,5 +91,9 @@ export class Authenticator extends ApiBase implements AuthRequests {
    */
   updatePassword(payload: PasswordPayload) {
     return this.post('reset-password', payload);
+  }
+
+  requestUserEmail(payload: TokenPayload): Observable<any> {
+    return this.post('user-email', payload);
   }
 }

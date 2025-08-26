@@ -54,6 +54,6 @@ export class LogIn extends AuthFormBase {
   private handleSuccess(response: AuthResponse) {
     this.toasts.close();
     this.videoflix.setAuthData(response);
-    this.router.navigateByUrl('/video-offer');
+    this.router.navigateByUrl(`/video-offer/${response.token}`);
   }
 }

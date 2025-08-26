@@ -1,8 +1,16 @@
 <div class="content">
-    <article class="column-16">
-        <h3 class="headline-error">Page not found</h3>
-        <p class="c-white">Sorry, the page you requested does not exist.</p>
-    </article>
+    <section class="column-32">
+        <article class="column-16">
+            <h3 class="headline-error">Page not found</h3>
 
-    <app-primary-button text="Home" (click)="onHome()"></app-primary-button>
+            <div class="column-16">
+                <p class="c-white">We can’t find the page you’re looking for.</p>
+                <p class="c-white">Try checking the URL or use the button below to go home.</p>
+            </div>
+        </article>
+
+        <div class="button-group">
+            <app-primary-button text="Home" type="button" (click)="onHome()"></app-primary-button>
+        </div>
+    </section>
 </div>

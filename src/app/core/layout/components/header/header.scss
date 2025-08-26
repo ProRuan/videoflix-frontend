@@ -39,6 +39,10 @@ $logo: url("/images/logo/logo.png");
   }
 }
 
+.button-group {
+  @include flexbox($jc: flex-end, $g: 48px);
+}
+
 @media (min-width: 1441px) {
   .header {
     padding: 10px calc(50% - 624px);

@@ -13,7 +13,14 @@ import { User } from '@core/models';
 export class Videoflix {
   private router: Router = inject(Router);
 
-  // add delete-account (soft deletion) ... ?
+  // if still token: login redirects to video-offer ... ?
+
+  // our support: replace with configurated support email ...
+
+  // sign-out
+  // --------
+  // think about header buttons ...
+  // think about button options of sign-out success dialog ...
 
   // activate-account
   // ----------------
@@ -49,7 +56,8 @@ export class Videoflix {
   }
 
   isVideoOffer() {
-    return this.currentUrl() === '/video-offer';
+    return /\/video-offer\/[0-9a-f]{40}/.test(this.currentUrl());
+    // return this.currentUrl() === '/video-offer';
   }
 
   logOut() {

@@ -19,9 +19,12 @@ export interface AuthRequests {
   activateAccount(payload: TokenPayload): Observable<TokenCheckResponse>;
   checkEmail(payload: EmailPayload): Observable<EmailResponse>;
   checkToken(payload: TokenPayload): Observable<TokenCheckResponse>;
+  deleteAccount(payload: TokenPayload): Observable<TokenCheckResponse>;
+  deregister(payload: LoginPayload): Observable<AuthResponse>;
   logIn(payload: LoginPayload): Observable<AuthResponse>;
   reactivateAccount(payload: EmailPayload): Observable<EmailResponse>;
   register(payload: RegistrationPayload): Observable<AuthResponse>;
   resetPassword(payload: EmailPayload): Observable<EmailResponse>;
   updatePassword(payload: PasswordPayload): Observable<AuthResponse>;
+  requestUserEmail(payload: TokenPayload): Observable<any>;
 }

@@ -8,7 +8,7 @@ import {
   ForgotPassword,
   ResetPassword,
 } from '@core/auth/pages';
-import { PageNotFound } from '@core/errors/pages';
+import { AuthenticationRequired, PageNotFound } from '@core/errors/pages';
 import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { VideoOffer, VideoPlayer } from '@features/video/pages';
 
@@ -23,6 +23,12 @@ import { ActivateAccount } from '@core/auth/pages/activate-account/activate-acco
 import { ActivateAccountError } from '@core/auth/pages/activate-account/activate-account-error/activate-account-error';
 import { ActivateAccountSuccess } from '@core/auth/pages/activate-account/activate-account-success/activate-account-success';
 import { ReactivateAccount } from '@core/auth/pages/reactivate-account/reactivate-account';
+import { SignOut } from '@core/auth/pages/sign-out/sign-out';
+import { DeleteAccount } from '@core/auth/pages/delete-account/delete-account';
+import { DeleteAccountError } from '@core/auth/pages/delete-account/delete-account-error/delete-account-error';
+import { DeleteAccountSuccess } from '@core/auth/pages/delete-account/delete-account-success/delete-account-success';
+import { AuthResolver } from '@core/auth/resolvers/auth-resolver';
+import { EmailResolver } from '@core/auth/resolvers/email-resolver';
 
 // generate imprint and privacy policy ...
 
@@ -116,13 +122,45 @@ export const routes: Routes = [
         resolve: { response: TokenResolver },
         data: { bg: bg.logIn },
       },
+      // must be with token
+      {
+        path: 'sign-out/:token',
+        component: SignOut,
+        canActivate: [tokenGuard],
+        resolve: { response: EmailResolver },
+        data: { bg: bg.signUp },
+      },
+      {
+        path: 'delete-account/error',
+        component: DeleteAccountError,
+        data: { bg: bg.signUp },
+      },
+      {
+        path: 'delete-account/success',
+        component: DeleteAccountSuccess,
+        data: { bg: bg.signUp },
+      },
+      {
+        path: 'delete-account/:token',
+        component: DeleteAccount,
+        canActivate: [tokenGuard],
+        resolve: { response: TokenResolver },
+        data: { bg: bg.signUp },
+      },
       { path: 'imprint', component: Imprint },
       { path: 'privacy-policy', component: PrivacyPolicy },
+      { path: 'authentication-required', component: AuthenticationRequired },
       { path: 'page-not-found', component: PageNotFound },
     ],
   },
 
-  { path: 'video-offer', component: VideoOffer },
+  {
+    path: 'video-offer/:token',
+    component: VideoOffer,
+    canActivate: [tokenGuard],
+    resolve: { result: AuthResolver },
+  },
+  // must be with token
   {
     path: 'video-player/:id',
     component: VideoPlayer,

@@ -15,8 +15,12 @@ type Endpoints =
   | 'account-activation'
   | 'account-reactivation'
   | 'login'
+  | 'logout'
   | 'forgot-password'
   | 'reset-password'
+  | 'user-email'
+  | 'deregistration'
+  | 'account-deletion'
   | 'token/check'
   | 'videos';
 
@@ -40,6 +44,7 @@ export class ApiBase {
 
   // work with environments dev/prod ... ?
   private readonly baseURL = 'http://127.0.0.1:8000/api/';
+  private token: string = '';
 
   // use encodeURIComponent ... !
   private getURL(...segments: string[]) {
@@ -56,11 +61,19 @@ export class ApiBase {
     if (tokenProvided) {
       return new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: 'Token f33e82a05fb53c3c3aa50a5c8f659e6fa24b23c0',
+        Authorization: `Token ${this.token}`,
       });
     } else {
       return new HttpHeaders({ 'Content-Type': 'application/json' });
     }
+  }
+
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  getToken() {
+    return this.token;
   }
 
   post<T>(endpoint: Endpoints, payload: T, tokenProvided: boolean = false) {

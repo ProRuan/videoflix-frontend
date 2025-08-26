@@ -1,0 +1,24 @@
+<form [formGroup]="form" class="auth-form" (ngSubmit)="onDeregistration()">
+    @if (isLoading()) {
+    <app-loading-bar></app-loading-bar>
+    }
+
+    <h2 class="headline-2">Sign out</h2>
+
+    <div class="column-16">
+        <p class="text">
+            We will send you an email with instructions to delete your account.
+        </p>
+
+        <div class="column-32">
+            <app-email-input [control]="email" [errorsVisible]="false" placeholder="Email address" [readOnly]="true"
+                class="hidden"></app-email-input>
+            <app-password-input [control]="password" [errorsVisible]="false"
+                placeholder="Password"></app-password-input>
+        </div>
+    </div>
+
+    <div class="button-cont">
+        <app-primary-button text="Send email" type="submit" [disabled]="isFormInvalid()"></app-primary-button>
+    </div>
+</form>

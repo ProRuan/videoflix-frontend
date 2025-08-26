@@ -1,12 +1,17 @@
 <header class="header">
     @if (isVideoOffer()) {
     <img class="logo" src="images/logo/logo_square.png" alt="logo">
-    <app-primary-button icon="logout" text="Log out" type="button" [disabled]="false"
-        (click)="onLogOut()"></app-primary-button>
+    <div class="button-group">
+        <app-secondary-button icon="logout" text="Sign out" type="button" [disabled]="false"
+            (click)="onSignOut()"></app-secondary-button>
+        <app-primary-button icon="logout" text="Log out" type="button" [disabled]="false"
+            (click)="onLogOut()"></app-primary-button>
+    </div>
     } @else {
     <button class="home-button" type="button" [disabled]="isHome()" (click)="onHome()"></button>
     @if (complete) {
-    <app-primary-button text="Log in" type="button" [disabled]="false" (click)="onNavigate()"></app-primary-button>
+    <app-primary-button text="Log in" type="button" [disabled]="false"
+        (click)="onNavigate('/log-in')"></app-primary-button>
     }
     }
 </header>

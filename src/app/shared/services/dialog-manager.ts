@@ -28,7 +28,7 @@ export class DialogManager extends OverlayManagerBase {
 
   private readonly configData: Record<string, SuccessDialogConfig> = {
     [DialogIds.SignUpSuccess]: {
-      title: 'Registration Successful',
+      title: 'Registration successful',
       messages: [
         'Thank you for registering!',
         `We’ve sent a confirmation email to your inbox.
@@ -36,17 +36,24 @@ export class DialogManager extends OverlayManagerBase {
       ],
     },
     [DialogIds.ReactivateAccountSuccess]: {
-      title: 'Email Sent',
+      title: 'Email sent',
       messages: [
         'We’ve sent you an account activation link.',
         'Check your inbox and click the link to reactivate your account.',
       ],
     },
     [DialogIds.ForgotPasswordSuccess]: {
-      title: 'Email Sent',
+      title: 'Email sent',
       messages: [
         'We’ve sent you a password reset link.',
         'Check your inbox and click the link to choose a new password.',
+      ],
+    },
+    [DialogIds.SignOutSuccess]: {
+      title: 'Email sent',
+      messages: [
+        'We’ve sent you an account deletion link.',
+        'Check your inbox and click the link to delete your account.',
       ],
     },
   };
