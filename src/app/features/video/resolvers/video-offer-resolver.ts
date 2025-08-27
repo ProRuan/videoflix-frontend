@@ -1,26 +1,21 @@
 import { inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
-  MaybeAsync,
   RedirectCommand,
-  Resolve,
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Authenticator } from '../services';
 import { catchError, Observable, of } from 'rxjs';
 import { VideoStore } from '@features/video/services';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthResolver implements Resolve<void> {
+export class VideoOfferResolver {
   private router: Router = inject(Router);
-  private auth: Authenticator = inject(Authenticator);
   private vs: VideoStore = inject(VideoStore);
 
-  // no token check necessary since video list request ... ?
-  // update alt url ... !
+  // clean code ...
 
   resolve(
     route: ActivatedRouteSnapshot,

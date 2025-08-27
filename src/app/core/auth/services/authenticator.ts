@@ -21,7 +21,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class Authenticator extends ApiBase implements AuthRequests {
-  [key: string]: any;
+  [key: string]: any; // necessary ... ?
+
+  // review and sort methods ...
+  // think about methods, payloads and response interfaces ...
 
   /**
    * Request an email-check from the API.

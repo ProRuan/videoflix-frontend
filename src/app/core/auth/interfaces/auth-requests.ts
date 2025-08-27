@@ -13,6 +13,8 @@ import { AuthResponse, EmailResponse, TokenCheckResponse } from './responses';
  * Interface representing authentication requests.
  */
 export interface AuthRequests {
+  // sort and review endpoints ...
+  //   --> think about payload and response interfaces ...
   // activate account with different respnose type ... ?!
   // update email response ... !
   //   --> startsite with token response ... ?

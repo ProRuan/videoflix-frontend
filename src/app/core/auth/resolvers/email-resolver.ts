@@ -17,6 +17,8 @@ export class EmailResolver implements Resolve<string> {
   router: Router = inject(Router);
   auth: Authenticator = inject(Authenticator);
 
+  // clean code ...
+
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

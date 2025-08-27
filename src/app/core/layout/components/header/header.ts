@@ -22,6 +22,10 @@ export class Header {
   private auth: Authenticator = inject(Authenticator);
   private vs: VideoStore = inject(VideoStore);
 
+  // think about header.html ...
+  // finalize header ...
+  // add more header types ... ?
+
   @Input() complete: boolean = true;
 
   /**

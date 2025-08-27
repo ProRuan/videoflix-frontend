@@ -14,7 +14,6 @@ import { VideoOffer, VideoPlayer } from '@features/video/pages';
 
 // sort + index.ts
 import { VideoPlayerResolver } from '@features/video/services/video-player-resolver';
-import { videoPlayerGuard } from '@features/video/guards/video-player-guard';
 import { tokenGuard } from '@core/auth/guards';
 import { TokenResolver } from '@core/auth/resolvers';
 import { ResetPasswordError } from '@core/auth/pages/reset-password/reset-password-error/reset-password-error';
@@ -27,8 +26,10 @@ import { SignOut } from '@core/auth/pages/sign-out/sign-out';
 import { DeleteAccount } from '@core/auth/pages/delete-account/delete-account';
 import { DeleteAccountError } from '@core/auth/pages/delete-account/delete-account-error/delete-account-error';
 import { DeleteAccountSuccess } from '@core/auth/pages/delete-account/delete-account-success/delete-account-success';
-import { AuthResolver } from '@core/auth/resolvers/auth-resolver';
 import { EmailResolver } from '@core/auth/resolvers/email-resolver';
+import { VideoOfferResolver } from '@features/video/resolvers';
+import { videoGuard } from '@features/video/guards/video-guard';
+import { VideoNotFound } from 'features/errors/pages/video-not-found/video-not-found';
 
 // generate imprint and privacy policy ...
 
@@ -68,6 +69,9 @@ const bg = {
 // improve concept of video player guard + resolver ...
 
 // error layout, e. g. /errors/token/:error ... ?
+
+// map resolved data, e. g. res => res.token ... !
+// use more resolvers, e. g. { token: TokenResolver, email: EmailResolver } ...
 
 export const routes: Routes = [
   {
@@ -158,13 +162,26 @@ export const routes: Routes = [
     path: 'video-offer/:token',
     component: VideoOffer,
     canActivate: [tokenGuard],
-    resolve: { result: AuthResolver },
+    resolve: { result: VideoOfferResolver },
   },
-  // must be with token
   {
-    path: 'video-player/:id',
-    component: VideoPlayer,
-    canActivate: [videoPlayerGuard],
-    resolve: { playableVideoData: VideoPlayerResolver },
+    // add child ./error ...
+    path: 'video-player',
+    children: [
+      {
+        path: ':token/:id',
+        component: VideoPlayer,
+        // add videoPlayerGuard ...
+        // add resolver for token and id ...
+        canActivate: [tokenGuard, videoGuard],
+        resolve: { playableVideoData: VideoPlayerResolver },
+      },
+    ],
+  },
+  // { path: 'video/not-found', component: VideoNotFound },
+  {
+    path: 'video/:token',
+    component: CoreLayout,
+    children: [{ path: 'not-found', component: VideoNotFound }],
   },
 ];

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthResolver } from './auth-resolver';
+import { VideoOfferResolver } from './video-offer-resolver';
 
-describe('AuthResolver', () => {
-  let service: AuthResolver;
+describe('VideoOfferResolver', () => {
+  let service: VideoOfferResolver;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthResolver);
+    service = TestBed.inject(VideoOfferResolver);
   });
 
   it('should be created', () => {
