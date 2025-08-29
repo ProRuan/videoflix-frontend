@@ -1,10 +1,16 @@
 import {
   Component,
+  computed,
+  ElementRef,
   inject,
   OnInit,
+  QueryList,
   signal,
+  ViewChild,
+  ViewChildren,
   WritableSignal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Header, Footer } from '@core/layout/components';
@@ -27,39 +33,212 @@ export class VideoOffer implements OnInit {
   private router: Router = inject(Router);
   private vs: VideoStore = inject(VideoStore);
 
-  // select preview video randomly ...
-  // add select video logic ...
-  // prepare error toast ...
+  // horizontal navigation menu: left scroll right ...
+  // mobile scrolling by swiping (overflow-x: auto) ...
+  // show UI only on container hover ...
+  // finalize UI navigation style ...
+
+  // better: native scroll bar with custom styling ... ?
+
+  data = toSignal(this.route.data);
+  library = computed(() => this.data?.()?.['result'] as VideoGroup[]);
 
   libraryData: WritableSignal<VideoGroupData[]> = signal([]);
-  library: WritableSignal<VideoGroup[]> = signal([]);
+  // library: WritableSignal<VideoGroup[]> = signal([]);
 
-  // prepare error toast ...
+  title: WritableSignal<string> = signal('Mighty Magic');
+  description: WritableSignal<string> = signal('Magic is powerful');
+
+  video?: WritableSignal<Video>;
+  videoId: number = 0;
+
+  currentTranslation: WritableSignal<number[]> = signal([]);
+  leftStop: WritableSignal<number[]> = signal([]);
+
+  scrollData: WritableSignal<
+    {
+      delta: number;
+      track: number;
+      indicator: number;
+      trackPercent: number;
+    }[]
+  > = signal([]);
+
+  scrollArea = signal(false);
+
+  @ViewChild('preview') preview?: ElementRef<HTMLVideoElement>;
+
+  @ViewChildren('genreRowTrack') genreRowTrack?: QueryList<
+    ElementRef<HTMLDivElement>
+  >;
+  @ViewChildren('genreRowButton') genreRowButton?: QueryList<
+    ElementRef<HTMLButtonElement>
+  >;
+  @ViewChildren('genreRow') genreRow?: QueryList<ElementRef<HTMLDivElement>>;
+
   ngOnInit() {
+    window.addEventListener('resize', (event) => {
+      this.leftStop.update((values) =>
+        values.map((v, i) => {
+          const track =
+            this.genreRowTrack?.get(i)?.nativeElement.clientWidth ?? 0;
+          const indicator =
+            this.genreRow?.get(i)?.nativeElement.scrollWidth ?? 0;
+          console.log('delta: ', track - indicator);
+
+          return track - indicator;
+        })
+      );
+    });
+
+    this.preview?.nativeElement.setAttribute('type', 'video/mp4');
+    this.preview?.nativeElement.setAttribute(
+      'src',
+      this.library()[0].videos[0].previewClip
+    );
+    this.preview?.nativeElement.play();
+    const values = this.library().map(() => 0);
+    this.currentTranslation.set([...values]);
+    this.leftStop.set([...values]);
+    const scrollDefaultData = values.map((v) => {
+      return {
+        delta: 0,
+        track: 0,
+        indicator: 0,
+        trackPercent: 0,
+      };
+    });
+    this.scrollData.set([...scrollDefaultData]);
     this.route.paramMap.subscribe({
       next: (value) => this.vs.setToken(value?.get('token') ?? ''),
     });
-    this.vs.listVideos().subscribe({
-      next: (value) => this.setVideoLibrary(value),
-      error: (error) => console.log('error: ', error),
-    });
   }
 
-  setVideoLibrary(libraryData: VideoGroupData[]) {
-    this.libraryData.set([...libraryData]);
-    console.log('video genre groups: ', this.libraryData());
-    const lib: VideoGroup[] = [];
-    for (let g of this.libraryData()) {
-      const videoData = g.videos;
-      const videos = videoData.map((v) => new Video(v));
-      const group = { genre: g.genre, videos: videos };
-      lib.push(group);
+  ngAfterViewInit() {
+    this.leftStop.update((values) =>
+      values.map((v, i) => {
+        const track =
+          this.genreRowTrack?.get(i)?.nativeElement.clientWidth ?? 0;
+        const indicator = this.genreRow?.get(i)?.nativeElement.scrollWidth ?? 0;
+        // console.log('delta: ', track - indicator, track, indicator);
+        const scrollData = {
+          delta: track - indicator,
+          track: track,
+          indicator: indicator,
+          trackPercent: Math.round((track / indicator) * 100),
+        };
+        console.log('scroll data: ', scrollData);
+        this.scrollData()[i] = scrollData;
+
+        return track - indicator;
+      })
+    );
+
+    console.log('scroll data: ', this.scrollData());
+
+    // mousewheel events
+    // this.genreRow?.forEach((r, i) => {
+    //   const row = r.nativeElement;
+    //   row.addEventListener('mousewheel', (event) => this.onScroll(event, i), {
+    //     passive: false,
+    //   });
+    // });
+  }
+
+  switchScrollArea() {
+    this.scrollArea.update((value) => !value);
+  }
+
+  onScroll(event: Event, index: number) {
+    console.log('event: ', index);
+    event.preventDefault();
+    const row = this.genreRow?.get(index)?.nativeElement;
+    const wheelEvent = event as WheelEvent;
+
+    if (wheelEvent.deltaY < 0) {
+      // if (this.currentTranslation()[index] < 0) {
+      //   event.preventDefault();
+      // }
+      const test = this.currentTranslation()[index] + 213 + 16;
+      this.currentTranslation()[index] = Math.min(0, test);
+      row?.setAttribute(
+        'style',
+        `transform: translateX(${
+          this.currentTranslation()[index]
+        }px); transition: transform 300ms ease-in-out`
+      );
     }
-    this.library.set([...lib]);
-    console.log('converted video genre groups: ', this.library());
+    if (wheelEvent.deltaY > 0) {
+      // if (this.currentTranslation()[index] > this.leftStop()[index]) {
+      //   event.preventDefault();
+      // }
+      const delta = this.leftStop()[index];
+      const test = this.currentTranslation()[index] - 213 - 16;
+      this.currentTranslation()[index] = Math.max(delta, test);
+      row?.setAttribute(
+        'style',
+        `transform: translateX(${
+          this.currentTranslation()[index]
+        }px); transition: transform 300ms ease-in-out`
+      );
+    }
   }
 
   onPlay() {
-    this.router.navigateByUrl('/video-player');
+    const token = this.vs.getToken();
+    const id = this.getVideoId();
+    this.router.navigateByUrl(`/video-player/${token}/${id}`);
+  }
+
+  setVideo(video: Video) {
+    this.setVideoId(video.id);
+    this.video?.set(video);
+
+    this.preview?.nativeElement.setAttribute('src', video.previewClip);
+    this.title.set(video.title);
+    this.description.set(video.description);
+
+    console.log('genre row: ', this.genreRow);
+  }
+
+  getVideoId() {
+    return this.videoId.toString();
+  }
+
+  setVideoId(id: number) {
+    this.videoId = id;
+  }
+
+  // set slide limit - check
+  onToRight($index: number) {
+    console.log('to right: ', $index);
+    const row = this.genreRow?.get($index);
+    console.log('row from left: ', row);
+
+    const test = this.currentTranslation()[$index] + 213 + 16;
+    this.currentTranslation()[$index] = Math.min(0, test);
+    row?.nativeElement.setAttribute(
+      'style',
+      `transform: translateX(${
+        this.currentTranslation()[$index]
+      }px); transition: transform 300ms ease-in-out`
+    );
+  }
+
+  // set lide limit ...
+  onToLeft($index: number) {
+    console.log('to left: ', $index);
+    const row = this.genreRow?.get($index);
+    console.log('row from right: ', row);
+
+    const delta = this.leftStop()[$index];
+    const test = this.currentTranslation()[$index] - 213 - 16;
+    this.currentTranslation()[$index] = Math.max(delta, test);
+    row?.nativeElement.setAttribute(
+      'style',
+      `transform: translateX(${
+        this.currentTranslation()[$index]
+      }px); transition: transform 300ms ease-in-out`
+    );
   }
 }

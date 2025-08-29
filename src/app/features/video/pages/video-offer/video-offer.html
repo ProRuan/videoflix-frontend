@@ -1,9 +1,10 @@
 <app-header></app-header>
 
 <main class="main">
+    @if (library().length > 0) {
     <section class="preview">
         <div class="video-shadow-cont">
-            <video class="video" [autoplay]="true" [loop]="true" [muted]="true">
+            <video #preview class="video" [autoplay]="true" [loop]="true" [muted]="true">
                 <source src="Kristallbruch_preview.mp4" type="video/mp4">
             </video>
             <div class="shadow"></div>
@@ -12,25 +13,51 @@
 
     <section class="preview-info">
         <div class="column-32">
-            <h1 class="info-title">Mighty Magic</h1>
-            <p class="info-description">
-                In a high-security prison, a wrongly convicted man formulates a meticulous plan to break out and prove
-                his innocence. He must navigate a web of alliances and betrayals to reclaim his freedom and expose the
-                truth.
-            </p>
+            <h1 class="info-title">{{ title() }}</h1>
+            <p class="info-description">{{ description() }}</p>
+            <!-- play by video id?! -->
             <app-primary-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-primary-button>
         </div>
     </section>
+    }
 
     <section class="library">
-        @for (group of library(); track group.genre) {
-        <div class="column-16">
+        @for (group of library(); track group.genre; let index = $index) {
+        <div class="column-16 pos-relative">
             <h3 class="genre-title">{{ group.genre }}</h3>
-            <div class="row-16">
-                @for (video of group.videos; track video) {
-                <img [src]="video.thumbnailImage" alt="thumb" class="thumbnail">
+            <!-- testing + set passive event -->
+            @if (currentTranslation()[$index] < 0 || currentTranslation()[$index]> leftStop()[$index] &&
+                leftStop()[$index] < 0) { <div class="slide-controller" [class.open]="scrollArea()"
+                    (click)="switchScrollArea()" (wheel)="onScroll($event, $index)">
+                    <span>Scroll here</span>
+        </div>
+        }
+        <div #genreRowTrack class="genre-row-track pos-relative">
+            @if (currentTranslation()[$index] < 0) { <button #genreRowButton class="genre-row-button-left"
+                (click)="onToRight($index)">To left</button>
                 }
-            </div>
+
+                <div #genreRow class="row-16">
+                    @for (video of group.videos; track video) {
+                    <button type="button" class="thumbnail-cont" (click)="setVideo(video)">
+                        <div class="thumbnail-shadow"></div>
+                        <img [src]="video.thumbnailImage" alt="thumbnail" class="thumbnail-image">
+                        <div class="thumbnail-title-cont">
+                            <span class="thumbnail-title">{{ video.title }}</span>
+                        </div>
+                    </button>
+                    }
+                </div>
+                <!-- fix right button for short rows -->
+                @if (currentTranslation()[$index] > leftStop()[$index] && leftStop()[$index] < 0) { <button
+                    #genreRowButton class="genre-row-button-right" (click)="onToLeft($index)">To right</button>
+                    }
+        </div>
+        <div class="scroll-progress-track">
+            <div [style.width.%]="currentTranslation()[$index] / leftStop()[$index] * 100"
+                class="scroll-progress-indicator"></div>
+            <!-- <div [style.width.%]="scrollData()[$index].trackPercent" class="scroll-progress-indicator"></div> -->
+        </div>
         </div>
         } @empty {
         <div class="empty-text">

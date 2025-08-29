@@ -6,7 +6,6 @@ import { AvailableResolutions, PlayableVideoData } from '../interfaces';
  * @extends Video
  */
 export class PlayableVideo extends Video {
-  readonly description: string;
   readonly videoFile: string;
   readonly hlsPlaylist: string;
   readonly duration: number;
@@ -18,7 +17,6 @@ export class PlayableVideo extends Video {
    */
   constructor(data: PlayableVideoData) {
     super(data);
-    this.description = data.description;
     this.videoFile = data.video_file;
     this.hlsPlaylist = data.hls_playlist;
     this.duration = data.duration;
