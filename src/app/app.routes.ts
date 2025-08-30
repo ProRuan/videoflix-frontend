@@ -158,6 +158,7 @@ export const routes: Routes = [
     ],
   },
 
+  // change routes to video/offer, video/player etc.
   {
     path: 'video-offer/:token',
     component: VideoOffer,

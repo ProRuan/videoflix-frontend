@@ -33,11 +33,17 @@ export class VideoPlayer extends VideoPlayerBase {
   hiddenTimeoutId!: ReturnType<typeof setTimeout>;
   lastTimeLock: number = Date.now();
 
+  // add video quality options ...
+  // add video progress logic ...
+
   // fix progress bar height, transition and colors ...
   // fix bar box-shadows ...
   // fix full screen (theater mode) ...
 
   // fix loading behavior ...
+
+  // finalize video-player design ...
+  // clean code ...
 
   player!: Player;
   options = {
@@ -92,7 +98,9 @@ export class VideoPlayer extends VideoPlayerBase {
   }
 
   onBack() {
-    this.router.navigateByUrl('video-offer');
+    const token = this.vs.getToken();
+    this.router.navigateByUrl(`/video-offer/${token}`);
+    // this.router.navigateByUrl('video-offer');
   }
 
   stopDrag() {

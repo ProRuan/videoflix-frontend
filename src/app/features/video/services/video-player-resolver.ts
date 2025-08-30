@@ -19,6 +19,7 @@ export class VideoPlayerResolver implements Resolve<PlayableVideoData> {
   vs: VideoStore = inject(VideoStore);
 
   // clean code ...
+  // move + resolve data (loading) ...
 
   resolve(
     route: ActivatedRouteSnapshot,

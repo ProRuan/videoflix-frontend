@@ -95,7 +95,7 @@ $library-gradient: linear-gradient(
 
 .scroll-progress-track {
   width: 100%;
-  height: 15px;
+  height: 4px;
   background-color: $white;
   position: relative;
 }
@@ -103,7 +103,7 @@ $library-gradient: linear-gradient(
 .scroll-progress-indicator {
   @include position($pos: absolute, $l: 0, $t: 0);
   width: 50%;
-  height: 15px;
+  height: 4px;
   background-color: $primBlue;
   transition: width 300ms ease-in-out;
 }
