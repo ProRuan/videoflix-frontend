@@ -6,15 +6,15 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { PlayableVideoData } from '../interfaces';
 import { VideoStore } from './video-store';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PlayableVideo } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class VideoPlayerResolver implements Resolve<PlayableVideoData> {
+export class VideoPlayerResolver implements Resolve<PlayableVideo> {
   router: Router = inject(Router);
   vs: VideoStore = inject(VideoStore);
 
@@ -24,7 +24,7 @@ export class VideoPlayerResolver implements Resolve<PlayableVideoData> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<PlayableVideoData | RedirectCommand> {
+  ): Observable<PlayableVideo | RedirectCommand> {
     const token = route.paramMap.get('token') ?? '';
     console.log('token: ', token);
     this.vs.setToken(token);
@@ -34,6 +34,7 @@ export class VideoPlayerResolver implements Resolve<PlayableVideoData> {
 
     const videoId: number = isNaN(id) ? 0 : id;
     return this.vs.retrieveVideo(videoId).pipe(
+      map((data) => new PlayableVideo(data)),
       catchError((err: HttpErrorResponse) => {
         console.log('video player error: ', err);
 

@@ -1,17 +1,17 @@
 import {
   Component,
+  computed,
   ElementRef,
   inject,
   signal,
   ViewChild,
-  WritableSignal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
 import { PlayableVideo, VideoPlayerBase } from '@features/video/models';
 import { VideoStore } from '@features/video/services';
-import { PlayableVideoData } from '@features/video/interfaces';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-video-player',
@@ -27,6 +27,15 @@ export class VideoPlayer extends VideoPlayerBase {
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
   private vs: VideoStore = inject(VideoStore);
+
+  // I. Video quality / resolutions ...
+  // II. Video progress ...
+
+  // rename activatedRoute to route
+  data = toSignal(this.activatedRoute.data);
+  playableVideo = computed(
+    () => this.data()?.['playableVideo'] as PlayableVideo
+  );
 
   playerHeaderHidden = signal(false);
   playerBarHidden = signal(false);
@@ -46,20 +55,36 @@ export class VideoPlayer extends VideoPlayerBase {
   // clean code ...
 
   player!: Player;
+
+  // use only one master playlist ...
   options = {
     controls: false,
     autoplay: false,
     preload: 'auto',
     techOrder: ['html5'],
     sources: [
+      // {
+      //   src: this.playableVideo().hlsPlaylist,
+      //   type: 'application/x-mpegURL',
+      // },
       {
-        src: 'out.m3u8',
+        src: this.playableVideo().availableResolutions['1080p'],
+        type: 'application/x-mpegURL',
+      },
+      {
+        src: this.playableVideo().availableResolutions['720p'],
+        type: 'application/x-mpegURL',
+      },
+      {
+        src: this.playableVideo().availableResolutions['360p'],
+        type: 'application/x-mpegURL',
+      },
+      {
+        src: this.playableVideo().availableResolutions['120p'],
         type: 'application/x-mpegURL',
       },
     ],
   };
-
-  playableVideo!: PlayableVideo;
 
   playing: boolean = false;
   volume: number = 0.5;
@@ -112,39 +137,10 @@ export class VideoPlayer extends VideoPlayerBase {
     this.wasPlayingBeforeDrag = false;
   }
 
-  // id must be provided by video-offer component ...
-  // use route resolver ...
+  // remove
   ngOnInit() {
-    this.activatedRoute.data.subscribe(({ playableVideoData }) => {
-      this.setPlayableVideo(playableVideoData);
-    });
-    // this.vs.retrieveVideo(1).subscribe({
-    //   next: (videoData) => this.setPlayableVideo(videoData),
-    //   error: (error) => console.log('error: ', error),
-    // });
-  }
-
-  setPlayableVideo(videoData: PlayableVideoData) {
-    console.log('video data: ', videoData);
-    this.playableVideo = new PlayableVideo(videoData);
-    console.log('video: ', this.playableVideo.title);
-    console.log(
-      'video resolutions: ',
-      this.playableVideo.availableResolutions['120p']
-    );
-
-    this.options = {
-      controls: false,
-      autoplay: false,
-      preload: 'auto',
-      techOrder: ['html5'],
-      sources: [
-        {
-          src: this.playableVideo.availableResolutions['720p'],
-          type: 'application/x-mpegURL',
-        },
-      ],
-    };
+    console.log('playable video data: ', this.playableVideo());
+    console.log('options: ', this.options);
   }
 
   ngAfterViewInit() {
@@ -159,7 +155,6 @@ export class VideoPlayer extends VideoPlayerBase {
         this.duration.set(duration);
       }
       this.setCurrentBufferInterval();
-      console.log('player src: ', this.player.currentSource());
     });
 
     // setTimeout(() => {

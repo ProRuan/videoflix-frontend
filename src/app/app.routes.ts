@@ -175,7 +175,7 @@ export const routes: Routes = [
         // add videoPlayerGuard ...
         // add resolver for token and id ...
         canActivate: [tokenGuard, videoGuard],
-        resolve: { playableVideoData: VideoPlayerResolver },
+        resolve: { playableVideo: VideoPlayerResolver },
       },
     ],
   },
