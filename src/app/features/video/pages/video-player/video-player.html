@@ -2,7 +2,9 @@
     <div class="player-header" [class.player-header-hidden]="playerHeaderHidden()" (click)="onEventStop($event)"
         (dblclick)="onEventStop($event)">
         <button #arrowBack class="button arrow-back" (click)="onBack()"></button>
-        <span class="info-text">Optimizing video for your screen 40%</span>
+        <!-- display for a few seconds after opening video first time -->
+        <span class="info-text">{{ qualityMessage() }}</span>
+        <!-- <span class="info-text">Optimizing video for your screen 40%</span> -->
         <div class="logo-cont">
             <img src="images/logo/logo.png" alt="videoflix logo" class="logo">
         </div>
@@ -30,6 +32,11 @@
 
         <div class="control-bar">
             <div class="button-group">
+                <button class="speed-button" (click)="updateSource('auto')">A</button>
+                <button class="speed-button" (click)="updateSource('1080p')">B</button>
+                <button class="speed-button" (click)="updateSource('720p')">C</button>
+                <button class="speed-button" (click)="updateSource('360p')">D</button>
+                <button class="speed-button" (click)="updateSource('120p')">E</button>
                 <button class="button play" (click)="onPlayToggle()"></button>
                 <button class="button backward" (click)="onBackwardSkip()"></button>
                 <button class="button forward" (click)="onForwardSkip()"></button>

@@ -31,6 +31,8 @@ export class VideoPlayer extends VideoPlayerBase {
   // I. Video quality / resolutions ...
   // II. Video progress ...
 
+  // update resolution message ...
+
   // rename activatedRoute to route
   data = toSignal(this.activatedRoute.data);
   playableVideo = computed(
@@ -55,6 +57,28 @@ export class VideoPlayer extends VideoPlayerBase {
   // clean code ...
 
   player!: Player;
+  sources = {
+    auto: {
+      src: this.playableVideo().hlsPlaylist,
+      type: 'application/x-mpegURL',
+    },
+    '1080p': {
+      src: this.playableVideo().availableResolutions['1080p'],
+      type: 'application/x-mpegURL',
+    },
+    '720p': {
+      src: this.playableVideo().availableResolutions['720p'],
+      type: 'application/x-mpegURL',
+    },
+    '360p': {
+      src: this.playableVideo().availableResolutions['360p'],
+      type: 'application/x-mpegURL',
+    },
+    '120p': {
+      src: this.playableVideo().availableResolutions['120p'],
+      type: 'application/x-mpegURL',
+    },
+  };
 
   // use only one master playlist ...
   options = {
@@ -63,28 +87,30 @@ export class VideoPlayer extends VideoPlayerBase {
     preload: 'auto',
     techOrder: ['html5'],
     sources: [
+      {
+        src: this.playableVideo().hlsPlaylist,
+        type: 'application/x-mpegURL',
+      },
       // {
-      //   src: this.playableVideo().hlsPlaylist,
+      //   src: this.playableVideo().availableResolutions['1080p'],
       //   type: 'application/x-mpegURL',
       // },
-      {
-        src: this.playableVideo().availableResolutions['1080p'],
-        type: 'application/x-mpegURL',
-      },
-      {
-        src: this.playableVideo().availableResolutions['720p'],
-        type: 'application/x-mpegURL',
-      },
-      {
-        src: this.playableVideo().availableResolutions['360p'],
-        type: 'application/x-mpegURL',
-      },
-      {
-        src: this.playableVideo().availableResolutions['120p'],
-        type: 'application/x-mpegURL',
-      },
+      // {
+      //   src: this.playableVideo().availableResolutions['720p'],
+      //   type: 'application/x-mpegURL',
+      // },
+      // {
+      //   src: this.playableVideo().availableResolutions['360p'],
+      //   type: 'application/x-mpegURL',
+      // },
+      // {
+      //   src: this.playableVideo().availableResolutions['120p'],
+      //   type: 'application/x-mpegURL',
+      // },
     ],
   };
+
+  qualityMessage = signal('');
 
   playing: boolean = false;
   volume: number = 0.5;
@@ -165,6 +191,32 @@ export class VideoPlayer extends VideoPlayerBase {
     //   });
     //   console.log('player src: ', this.player.currentSource());
     // }, 1000);
+  }
+
+  updateSource(key: 'auto' | '1080p' | '720p' | '360p' | '120p') {
+    this.player.pause();
+    const currentTime = this.player.currentTime();
+    this.player.src(this.sources[key]);
+
+    this.setQualityMessage(key);
+
+    this.player.ready(() => {
+      this.player.currentTime(currentTime);
+      this.player.play();
+      console.log('source: ', this.player.currentSource());
+    });
+  }
+
+  setQualityMessage(height: string) {
+    if (height.includes('p')) {
+      const h = height.match(/\d{1,}/)?.[0] ?? '0';
+      console.log('height: ', h);
+      const bodyHeight = document.body.clientHeight;
+      const value = Math.round((Number(h) / bodyHeight) * 100);
+      const message = `Optimizing video for your screen ${value}%`;
+      this.qualityMessage.set(message);
+      console.log('message: ', message);
+    }
   }
 
   onEventStop(event: Event) {

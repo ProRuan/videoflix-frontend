@@ -108,6 +108,7 @@ export class VideoOffer implements OnInit {
         trackPercent: 0,
       };
     });
+    this.videoId = this.library()[0].videos[0].id ?? 0;
     this.scrollData.set([...scrollDefaultData]);
     this.route.paramMap.subscribe({
       next: (value) => this.vs.setToken(value?.get('token') ?? ''),
