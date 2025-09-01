@@ -1,8 +1,11 @@
 import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
+
 import { emailPatterns, passwordPatterns, tokenPatterns } from '../constants';
 
 /**
  * Class representing form control validators.
+ *
+ * Provides validator functions for form control validation.
  */
 export class FormControlValidators {
   /**
@@ -53,7 +56,7 @@ export class FormControlValidators {
 
   /**
    * ValidatorFn checking a control value for including forbidden characters.
-   * @param pattern - The forbidden pattern to set.
+   * @param pattern - The forbidden pattern for testing.
    * @returns Validation errors if the control value includes
    *          forbidden characters, otherwise null.
    */

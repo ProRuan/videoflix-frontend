@@ -11,7 +11,7 @@ import { InputBase } from './input-base';
 /**
  * Class representing a password input base directive.
  *
- * Provides common properties for password inputs.
+ * Provides properties for password inputs.
  *
  * @extends InputBase
  */
@@ -47,7 +47,7 @@ export class PasswordInputBase extends InputBase {
 
   /**
    * Check a password input for the masked state.
-   * @returns A boolean value.
+   * @returns True if the input is masked, otherwise false.
    */
   isMasked() {
     return this.masked && this.isInputFilled();
@@ -55,7 +55,7 @@ export class PasswordInputBase extends InputBase {
 
   /**
    * Check a password input for invalidity.
-   * @returns A boolean value.
+   * @returns True if the input is invalid, otherwise false.
    */
   isInvalid() {
     return this.isError() || !!this.matchError;
@@ -78,7 +78,7 @@ export class PasswordInputBase extends InputBase {
 
   /**
    * Check a password input for validation error or match error.
-   * @returns A boolean value.
+   * @returns True if there is a password error, otherwise false.
    */
   isPasswordError() {
     return this.isError() || this.isMatchError();
@@ -86,7 +86,7 @@ export class PasswordInputBase extends InputBase {
 
   /**
    * Check a password input for a match error.
-   * @returns A boolean value.
+   * @returns True if there is a match error, otherwise false.
    */
   isMatchError() {
     return !!this.matchError && this.matchErrorDisplayed;

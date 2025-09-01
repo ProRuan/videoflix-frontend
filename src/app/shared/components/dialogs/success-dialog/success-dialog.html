@@ -5,9 +5,9 @@
         @for(message of config.messages; track message) {
         <p class="dialog-text">{{ message }}</p>
         }
-        <div class="button-cont">
-            <app-primary-button text="Close" type="button" (click)="onCloseStart()"></app-primary-button>
+        <div class="jc-evenly">
             <app-primary-button text="Log in" type="button" (click)="onRedirect()"></app-primary-button>
+            <app-secondary-button text="Close" type="button" (click)="onCloseStart()"></app-secondary-button>
         </div>
     </div>
 

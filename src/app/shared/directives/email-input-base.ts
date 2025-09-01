@@ -1,11 +1,13 @@
 import { Directive, ElementRef, Input, ViewChild } from '@angular/core';
-import { InputBase } from './input-base';
+
 import { FormControlErrors as ControlErrors } from '@shared/constants';
+
+import { InputBase } from './input-base';
 
 /**
  * Class representing an email input base directive.
  *
- * Provides common properties for email inputs.
+ * Provides properties for email inputs.
  *
  * @extends InputBase
  */

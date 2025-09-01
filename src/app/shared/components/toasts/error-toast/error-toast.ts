@@ -1,24 +1,23 @@
 import { Component, inject } from '@angular/core';
 
 import { ToastIds } from '@shared/constants';
-import { ToastManager } from '../../../services/toast-manager';
+import { ToastManager } from '@shared/services';
 
+/**
+ * Class representing an error toast component.
+ */
 @Component({
   selector: 'app-error-toast',
   imports: [],
   templateUrl: './error-toast.html',
   styleUrl: './error-toast.scss',
 })
-
-/**
- * Class representing an error toast component.
- */
 export class ErrorToast {
-  private toasts: ToastManager = inject(ToastManager);
+  private toasts = inject(ToastManager);
 
   /**
    * Get the closing state of an error toast.
-   * @returns A boolean value.
+   * @returns True if the error toast is closing, otherwise false.
    */
   get closing() {
     return this.toasts.isClosing(ToastIds.Error);

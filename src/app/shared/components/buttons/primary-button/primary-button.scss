@@ -32,7 +32,7 @@
 }
 
 .icon {
-  @include image($w: auto, $h: 24px);
+  @include image($h: 24px);
 }
 
 .text {

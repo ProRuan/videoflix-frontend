@@ -1,5 +1,0 @@
-@use "mixins" as *;
-
-.button-cont {
-  @include flexbox($jc: space-evenly);
-}

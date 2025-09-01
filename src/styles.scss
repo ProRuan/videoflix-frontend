@@ -152,6 +152,10 @@ button {
   color: $white;
 }
 
+.jc-evenly {
+  @include flexbox($jc: space-evenly);
+}
+
 // .toast {
 //   @include position($pos: fixed, $l: 32px, $b: 32px);
 //   transition: transform 100ms ease-in-out;

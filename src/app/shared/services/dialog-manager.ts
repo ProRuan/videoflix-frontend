@@ -7,19 +7,17 @@ import {
 } from '@angular/core';
 
 import { SuccessDialogConfig } from '@core/auth/interfaces';
-
 import { DialogIds } from '@shared/constants';
 
 import { OverlayManagerBase } from './overlay-manager-base';
-
-@Injectable({
-  providedIn: 'root',
-})
 
 /**
  * Class representing a dialog manager service.
  * @extends OverlayManagerBase
  */
+@Injectable({
+  providedIn: 'root',
+})
 export class DialogManager extends OverlayManagerBase {
   private configId: WritableSignal<string> = signal('');
   private currentConfig: Signal<SuccessDialogConfig> = computed(

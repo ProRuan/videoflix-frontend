@@ -11,7 +11,7 @@ const errorMessages = formControlErrorMessages;
 /**
  * Abstract class representing an input base directive.
  *
- * Provides common properties and methods for input validation.
+ * Provides properties and methods for input validation.
  *
  * @extends InputBase
  *
@@ -71,7 +71,7 @@ export abstract class InputBase implements ControlValueAccessor {
   /**
    * Check a control for a specified error.
    * @param error - The error key to be checked.
-   * @returns A boolean value.
+   * @returns True if the control has an error, otherwise false.
    */
   hasError(error: string) {
     return !!this.control?.hasError(error);
@@ -97,7 +97,7 @@ export abstract class InputBase implements ControlValueAccessor {
    * @param key - The error key.
    * @returns The error message parameters.
    */
-  getErrorMessageParams(key: string): ErrorMessageParams {
+  getErrorMessageParams(key: string) {
     return this.getError(key);
   }
 
@@ -106,13 +106,13 @@ export abstract class InputBase implements ControlValueAccessor {
    * @param error - The error key.
    * @returns The error value.
    */
-  getError(error: string) {
+  getError(error: string): ErrorMessageParams {
     return this.control?.getError(error);
   }
 
   /**
    * Check an input for an error.
-   * @returns A boolean value.
+   * @returns True if there is an error, otherwise null.
    */
   isError() {
     return this.errorsVisible && !!this.error;
@@ -120,7 +120,7 @@ export abstract class InputBase implements ControlValueAccessor {
 
   /**
    * Check an input for the fill state.
-   * @returns A boolean value.
+   * @returns True if the input is filled, otherwise false.
    */
   isInputFilled() {
     return this.control?.value?.length > 0;

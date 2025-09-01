@@ -1,27 +1,26 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { PrimaryButton, SecondaryButton } from '@shared/components/buttons';
 import { DialogIds } from '@shared/constants';
-import { PrimaryButton } from '@shared/components/buttons';
-import { DialogManager } from '../../../services/dialog-manager';
-
-@Component({
-  selector: 'app-success-dialog',
-  imports: [PrimaryButton],
-  templateUrl: './success-dialog.html',
-  styleUrl: './success-dialog.scss',
-})
+import { DialogManager } from '@shared/services';
 
 /**
  * Class representing a success dialog component.
  */
+@Component({
+  selector: 'app-success-dialog',
+  imports: [PrimaryButton, SecondaryButton],
+  templateUrl: './success-dialog.html',
+  styleUrl: './success-dialog.scss',
+})
 export class SuccessDialog {
-  private router: Router = inject(Router);
-  private dialogs: DialogManager = inject(DialogManager);
+  private router = inject(Router);
+  private dialogs = inject(DialogManager);
 
   /**
    * Get the closing state of a success dialog.
-   * @return A boolean value.
+   * @returns True if the dialog is closing, otherwise false.
    */
   get closing() {
     return this.dialogs.isClosing(DialogIds.Success);
@@ -64,6 +63,6 @@ export class SuccessDialog {
    */
   onRedirect() {
     this.dialogs.close();
-    this.router.navigateByUrl('log-in');
+    this.router.navigateByUrl('/log-in');
   }
 }

@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+/**
+ * Class representing a primary button component.
+ */
 @Component({
   selector: 'app-primary-button',
   imports: [],
   templateUrl: './primary-button.html',
   styleUrl: './primary-button.scss',
 })
-
-/**
- * Class representing a primary button.
- */
 export class PrimaryButton {
   @Input() text: string = 'Action';
   @Input() type: string = 'button';

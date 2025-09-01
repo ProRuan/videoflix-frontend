@@ -9,6 +9,8 @@ import {
 
 /**
  * Class representing a form validator service.
+ *
+ * Provides arrays of validator functions for form validation.
  */
 @Injectable({ providedIn: 'root' })
 export class FormValidator {

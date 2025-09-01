@@ -22,7 +22,7 @@ export class OverlayManagerBase {
   /**
    * Check an overlay element for its open state.
    * @param id - The overlay element id.
-   * @returns A boolean value.
+   * @returns True if the overlay element is open, otherwise false.
    */
   isOpen(id: string) {
     return this.activeElement() === id;
@@ -38,7 +38,7 @@ export class OverlayManagerBase {
   /**
    * Check if an overlay element is closing.
    * @param id - The overlay element id.
-   * @returns A boolean value.
+   * @returns True if the overlay element is closing, otherwise false.
    */
   isClosing(id: string) {
     return this.activeElement() === id && this.hasCloseStyle();

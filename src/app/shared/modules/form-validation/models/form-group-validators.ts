@@ -2,6 +2,8 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /**
  * Class representing form group validators.
+ *
+ * Provides validator functions for form group validation.
  */
 export class FormGroupValidators {
   /**
