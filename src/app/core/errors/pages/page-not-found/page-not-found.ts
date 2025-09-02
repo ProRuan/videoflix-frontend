@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 
 /**
  * Class representing a page-not-found component.
  */
 @Component({
   selector: 'app-page-not-found',
-  imports: [PrimaryButton],
+  imports: [Button],
   templateUrl: './page-not-found.html',
   styleUrl: './page-not-found.scss',
 })

@@ -1,2 +1,1 @@
-export * from './primary-button/primary-button';
-export * from './secondary-button/secondary-button';
+export * from './button/button';

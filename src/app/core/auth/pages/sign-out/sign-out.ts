@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { FormGroupControls } from '@core/auth/interfaces';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { DialogIds } from '@shared/constants';
@@ -17,13 +17,7 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-sign-out',
-  imports: [
-    ReactiveFormsModule,
-    LoadingBar,
-    EmailInput,
-    PasswordInput,
-    PrimaryButton,
-  ],
+  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput, PasswordInput],
   templateUrl: './sign-out.html',
   styleUrl: './sign-out.scss',
 })

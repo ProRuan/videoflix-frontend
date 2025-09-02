@@ -2,14 +2,14 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { VideoStore } from '@features/video/services';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 
 /**
  * Class representing a video-not-found component.
  */
 @Component({
   selector: 'app-video-not-found',
-  imports: [PrimaryButton],
+  imports: [Button],
   templateUrl: './video-not-found.html',
   styleUrl: './video-not-found.scss',
 })

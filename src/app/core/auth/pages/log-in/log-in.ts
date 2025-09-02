@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { FormValidator } from '@shared/modules/form-validation';
@@ -18,12 +18,12 @@ import { Videoflix } from '../../../../shared/services/videoflix';
 @Component({
   selector: 'app-log-in',
   imports: [
+    Button,
     ReactiveFormsModule,
     RouterLink,
     LoadingBar,
     EmailInput,
     PasswordInput,
-    PrimaryButton,
   ],
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',

@@ -13,10 +13,6 @@
   @include flexbox($jc: center, $ai: center, $g: 4px);
   transition: background-color 100ms ease-in-out;
 
-  &.reverse {
-    flex-direction: row-reverse;
-  }
-
   &:hover {
     background-color: $hoverBlue;
   }
@@ -28,6 +24,22 @@
   &:disabled {
     background-color: $disabled;
     cursor: default;
+  }
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+
+  &.secondary {
+    background-color: $sec-blue;
+
+    &:hover {
+      background-color: $sec-blue-hover;
+    }
+
+    &:active {
+      background-color: $sec-blue-active;
+    }
   }
 }
 

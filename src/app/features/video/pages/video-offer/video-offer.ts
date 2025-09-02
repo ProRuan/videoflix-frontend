@@ -17,14 +17,14 @@ import { Header, Footer } from '@core/layout/components';
 import { VideoGroup, VideoGroupData } from '@features/video/interfaces';
 import { Video } from '@features/video/models';
 import { VideoStore } from '@features/video/services';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 
 /**
  * Class representing a video offer component.
  */
 @Component({
   selector: 'app-video-offer',
-  imports: [Header, PrimaryButton, Footer],
+  imports: [Button, Header, Footer],
   templateUrl: './video-offer.html',
   styleUrl: './video-offer.scss',
 })

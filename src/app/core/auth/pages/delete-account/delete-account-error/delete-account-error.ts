@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 
 /**
  * Class representing a delete-account error component.
  */
 @Component({
   selector: 'app-delete-account-error',
-  imports: [PrimaryButton],
+  imports: [Button],
   templateUrl: './delete-account-error.html',
   styleUrl: './delete-account-error.scss',
 })

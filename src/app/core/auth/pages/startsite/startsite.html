@@ -6,7 +6,7 @@
 
     <form [formGroup]="form" class="form" (ngSubmit)="onSignUp()">
         <app-start-email-input [control]="email"></app-start-email-input>
-        <app-primary-button icon="chevron_right" text="Sign up" type="submit" [disabled]="isFormInvalid()"
-            [reverse]="true"></app-primary-button>
+        <app-button icon="chevron_right" text="Sign up" type="submit" [disabled]="isFormInvalid()"
+            [reverse]="true"></app-button>
     </form>
 </div>

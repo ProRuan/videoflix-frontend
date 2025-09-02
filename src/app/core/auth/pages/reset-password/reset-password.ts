@@ -5,7 +5,7 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { FormGroupControls, TokenCheckResponse } from '@core/auth/interfaces';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { FormValidator } from '@shared/modules/form-validation';
@@ -18,13 +18,7 @@ type Response = TokenCheckResponse;
  */
 @Component({
   selector: 'app-reset-password',
-  imports: [
-    ReactiveFormsModule,
-    LoadingBar,
-    EmailInput,
-    PasswordInput,
-    PrimaryButton,
-  ],
+  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput, PasswordInput],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })

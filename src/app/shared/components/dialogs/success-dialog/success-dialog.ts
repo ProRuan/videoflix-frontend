@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PrimaryButton, SecondaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 import { DialogIds } from '@shared/constants';
 import { DialogManager } from '@shared/services';
 
@@ -10,7 +10,7 @@ import { DialogManager } from '@shared/services';
  */
 @Component({
   selector: 'app-success-dialog',
-  imports: [PrimaryButton, SecondaryButton],
+  imports: [Button],
   templateUrl: './success-dialog.html',
   styleUrl: './success-dialog.scss',
 })

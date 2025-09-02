@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PrimaryButton, SecondaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 
 /**
  * Class representing an authentication-required component.
  */
 @Component({
   selector: 'app-authentication-required',
-  imports: [PrimaryButton, SecondaryButton],
+  imports: [Button],
   templateUrl: './authentication-required.html',
   styleUrl: './authentication-required.scss',
 })

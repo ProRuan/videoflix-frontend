@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { FormGroupControls } from '@core/auth/interfaces';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { DialogIds } from '@shared/constants';
@@ -15,7 +15,7 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-reactivate-account',
-  imports: [ReactiveFormsModule, LoadingBar, EmailInput, PrimaryButton],
+  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput],
   templateUrl: './reactivate-account.html',
   styleUrl: './reactivate-account.scss',
 })

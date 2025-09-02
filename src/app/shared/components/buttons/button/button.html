@@ -1,4 +1,4 @@
-<button class="button" [class.reverse]="reverse" [type]="type" [disabled]="disabled" (click)="onAction()">
+<button class="button" [class]="getClasses()" [type]="type" [disabled]="disabled" (click)="onAction()">
     @if (icon) {
     <img [src]="getSrc()" [alt]="icon" class="icon">
     }

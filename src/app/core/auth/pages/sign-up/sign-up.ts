@@ -3,7 +3,7 @@ import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { FormGroupControls } from '@core/auth/interfaces';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { DialogIds } from '@shared/constants';
@@ -18,13 +18,7 @@ import { Videoflix } from '../../../../shared/services/videoflix';
  */
 @Component({
   selector: 'app-sign-up',
-  imports: [
-    ReactiveFormsModule,
-    LoadingBar,
-    EmailInput,
-    PasswordInput,
-    PrimaryButton,
-  ],
+  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput, PasswordInput],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })

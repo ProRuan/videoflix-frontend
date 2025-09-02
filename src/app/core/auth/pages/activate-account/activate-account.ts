@@ -4,7 +4,7 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { FormGroupControls, TokenCheckResponse } from '@core/auth/interfaces';
-import { PrimaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
 import { FormValidator } from '@shared/modules/form-validation';
 
@@ -16,7 +16,7 @@ type Response = TokenCheckResponse;
  */
 @Component({
   selector: 'app-activate-account',
-  imports: [PrimaryButton, LoadingBar],
+  imports: [Button, LoadingBar],
   templateUrl: './activate-account.html',
   styleUrl: './activate-account.scss',
 })

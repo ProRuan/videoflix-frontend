@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PrimaryButton, SecondaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { VideoStore } from '@features/video/services';
@@ -12,7 +12,7 @@ import { Authenticator } from '@core/auth/services';
  */
 @Component({
   selector: 'app-header',
-  imports: [PrimaryButton, SecondaryButton],
+  imports: [Button],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PrimaryButton, SecondaryButton } from '@shared/components/buttons';
+import { Button } from '@shared/components/buttons';
 
 /**
  * Class representing a delete-account success component.
  */
 @Component({
   selector: 'app-delete-account-success',
-  imports: [PrimaryButton, SecondaryButton],
+  imports: [Button],
   templateUrl: './delete-account-success.html',
   styleUrl: './delete-account-success.scss',
 })
