@@ -24,7 +24,7 @@ $logo: url("/images/logo/logo.png");
 
 .home-button {
   @include size($w: 201px, $h: 32px);
-  @include background($bg: $logo, $size: auto 32px);
+  @include background($image: $logo, $size: auto 32px);
   border: none;
   padding: 0;
   transition: filter 100ms ease-in-out;

@@ -1,43 +1,51 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
   Router,
   RouterOutlet,
 } from '@angular/router';
+
 import { filter, map } from 'rxjs';
+
 import { Header, Footer } from '../components';
 
+/**
+ * Class representing a core layout component.
+ */
 @Component({
   selector: 'app-core-layout',
   imports: [RouterOutlet, Header, Footer],
   templateUrl: './core-layout.html',
   styleUrl: './core-layout.scss',
   host: {
-    // whenever bgUrl changes, Angular will update the host's inline background-image
-    // set background-position and so on ...
-    '[style.backgroundImage]': `bgUrl ? bgUrl : ''`,
+    '[class]': 'theme()',
   },
 })
 export class CoreLayout {
-  private router: Router = inject(Router);
-  private route: ActivatedRoute = inject(ActivatedRoute);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
-  bgUrl: string = '';
+  theme: WritableSignal<string> = signal('');
 
+  /**
+   * Creates a core layout component.
+   */
   constructor() {
     this.router.events
       .pipe(
-        filter((evt) => evt instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         map(() => this.findDeepestChild(this.route)),
-        map((route) => route.snapshot.data['bg'] as string),
-        filter((bg) => !!bg)
+        map((route) => route.snapshot.data['theme'] as string)
       )
-      .subscribe((bg) => {
-        this.bgUrl = bg;
-      });
+      .subscribe((theme) => this.theme.set(theme));
   }
 
+  /**
+   * Find the deepest child of an activated route.
+   * @param route - The activated route.
+   * @returns The deepest child of the activated route.
+   */
   private findDeepestChild(route: ActivatedRoute): ActivatedRoute {
     return route.firstChild ? this.findDeepestChild(route.firstChild) : route;
   }

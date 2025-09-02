@@ -4,6 +4,18 @@
   @include background();
   @include flexbox($fd: column);
   min-height: 100vh;
+
+  &.startsite-theme {
+    background-image: $startsite-gradient, $startsite-bg;
+  }
+
+  &.sign-up-theme {
+    background-image: $auth-gradient, $sign-up-bg;
+  }
+
+  &.login-theme {
+    background-image: $auth-gradient, $login-bg;
+  }
 }
 
 main {

@@ -28,6 +28,12 @@ export const enum FormControlErrors {
   MaxLength = 'maxLength',
 }
 
+export const enum Themes {
+  Startsite = 'startsite-theme',
+  SignUp = 'sign-up-theme',
+  Login = 'login-theme',
+}
+
 export const enum ToastIds {
   Error = 'error-toast',
 }
