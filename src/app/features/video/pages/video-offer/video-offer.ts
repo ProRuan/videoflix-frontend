@@ -188,7 +188,7 @@ export class VideoOffer implements OnInit {
   onPlay() {
     const token = this.vs.getToken();
     const id = this.getVideoId();
-    this.router.navigateByUrl(`/video-player/${token}/${id}`);
+    this.router.navigateByUrl(`/video/player/${token}/${id}`);
   }
 
   setVideo(video: Video) {

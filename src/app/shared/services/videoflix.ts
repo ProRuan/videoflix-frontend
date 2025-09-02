@@ -55,8 +55,9 @@ export class Videoflix {
     this.user.setAuthData(response);
   }
 
+  // fix this ...
   isVideoOffer() {
-    return /\/video-offer\/[0-9a-f]{40}/.test(this.currentUrl());
+    return /\/video\/offer\/[0-9a-f]{40}/.test(this.currentUrl());
     // return this.currentUrl() === '/video-offer';
   }
 

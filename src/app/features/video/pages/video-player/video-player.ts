@@ -150,7 +150,7 @@ export class VideoPlayer extends VideoPlayerBase {
 
   onBack() {
     const token = this.vs.getToken();
-    this.router.navigateByUrl(`/video-offer/${token}`);
+    this.router.navigateByUrl(`/video/offer/${token}`);
     // this.router.navigateByUrl('video-offer');
   }
 
