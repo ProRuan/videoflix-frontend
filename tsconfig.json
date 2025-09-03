@@ -55,6 +55,12 @@
       "@shared/directives/*": [
         "shared/directives/*"
       ],
+       "@shared/interfaces": [
+        "shared/interfaces"
+      ],
+      "@shared/interfaces/*": [
+        "shared/interfaces/*"
+      ],
       "@shared/models": [
         "shared/models"
       ],

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActivateAccountError } from './activate-account-error';
+import { TokenStatePage } from './token-state-page';
 
-describe('ActivateAccountError', () => {
-  let component: ActivateAccountError;
-  let fixture: ComponentFixture<ActivateAccountError>;
+describe('TokenStatePage', () => {
+  let component: TokenStatePage;
+  let fixture: ComponentFixture<TokenStatePage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ActivateAccountError]
+      imports: [TokenStatePage]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ActivateAccountError);
+    fixture = TestBed.createComponent(TokenStatePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
