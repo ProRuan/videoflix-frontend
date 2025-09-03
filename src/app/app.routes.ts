@@ -7,6 +7,9 @@ import { videoRoutes } from '@features/video/video.routes';
 
 // generate video layout ... ?
 
+// PageNotFound with second button ...
+//   - replace url and go one step back ... ?
+
 // guide
 // -----
 // move data to parents ...
@@ -25,4 +28,5 @@ import { videoRoutes } from '@features/video/video.routes';
 export const routes: Routes = [
   { path: '', component: CoreLayout, children: authRoutes },
   { path: 'video', children: videoRoutes },
+  { path: '**', redirectTo: 'page-not-found' },
 ];
