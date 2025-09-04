@@ -1,0 +1,18 @@
+<section class="column-32">
+    <article class="column-16">
+        <h3 class="headline-error">{{ status() }} - {{ title() }}</h3>
+
+        <div class="column-16">
+            @for (message of messages(); track message) {
+            <p class="c-white">{{ message }}</p>
+            }
+        </div>
+    </article>
+
+    <div class="button-group">
+        @if (hasSecondaryOptions()) {
+        <app-button [text]="secText()" type="button" variant="secondary" (click)="onSecondaryAction()"></app-button>
+        }
+        <app-button [text]="primText()" type="button" (click)="onPrimaryAction()"></app-button>
+    </div>
+</section>

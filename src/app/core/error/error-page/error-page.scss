@@ -1,14 +1,9 @@
 @use "mixins" as *;
 
 :host {
-  @include flexbox();
-  flex: 1;
-}
-
-.content {
   @include spacing($p: 48px 96px);
   @include flexbox($fd: column, $g: 40px);
-  width: 100%;
+  flex: 1;
 }
 
 .button-group {

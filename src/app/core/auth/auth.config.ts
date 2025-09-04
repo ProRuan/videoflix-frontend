@@ -9,6 +9,8 @@ export const authData = {
   startsite: { theme: Themes.Startsite },
   signUp: { theme: Themes.SignUp },
   login: { theme: Themes.Login },
+  pageNotFound: { configKey: 'pageNotFound' },
+  unauthorized: { configKey: 'unauthorized' },
 };
 
 export const authChildrenRoutes = {

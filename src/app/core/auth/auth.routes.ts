@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 
+// review imports + index.ts
+import { ErrorPage } from '@core/error';
+import { Imprint, PrivacyPolicy } from '@core/static/pages';
+
 import {
   ForgotPassword,
   LogIn,
@@ -8,9 +12,6 @@ import {
   Startsite,
 } from './pages';
 
-// clean imports + index.ts
-import { Imprint, PrivacyPolicy } from '../static';
-import { AuthenticationRequired, PageNotFound } from '../errors';
 import { authChildrenRoutes, authData } from './auth.config';
 
 // own routes for other page types ...
@@ -35,6 +36,6 @@ export const authRoutes: Routes = [
   { path: 'imprint', component: Imprint },
   { path: 'privacy-policy', component: PrivacyPolicy },
 
-  { path: 'authentication-required', component: AuthenticationRequired },
-  { path: 'page-not-found', component: PageNotFound },
+  { path: 'unauthorized', component: ErrorPage, data: d.unauthorized },
+  { path: 'page-not-found', component: ErrorPage, data: d.pageNotFound },
 ];
