@@ -2,20 +2,20 @@ import { Routes } from '@angular/router';
 
 import { tokenGuard } from '@core/auth/guards';
 import { TokenResolver } from '@core/auth/resolvers';
-import { TokenStatePage } from '@shared/components/pages';
+import { RESET_TOKEN, TokenPage } from '@shared/modules/token-page';
 
 import { ResetPassword } from './reset-password';
 
 export const resetPasswordRoutes: Routes = [
   {
     path: 'error',
-    component: TokenStatePage,
-    data: { page: 'resetPassword', state: 'error' },
+    component: TokenPage,
+    data: { config: RESET_TOKEN.error },
   },
   {
     path: 'success',
-    component: TokenStatePage,
-    data: { page: 'resetPassword', state: 'success' },
+    component: TokenPage,
+    data: { config: RESET_TOKEN.success },
   },
   {
     path: ':token',

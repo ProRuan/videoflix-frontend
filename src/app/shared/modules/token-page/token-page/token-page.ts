@@ -2,27 +2,25 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { TOKEN_PAGE_CONFIG } from '@core/auth/constants';
-import { TokenPageConfig, TokenStatePageConfig } from '@core/auth/interfaces';
 import { Button } from '@shared/components/buttons';
 
+import { TokenPageConfig } from '../interfaces';
+
 /**
- * Class representing a token state page component.
+ * Class representing a token page component.
  */
 @Component({
-  selector: 'app-token-state-page',
+  selector: 'app-token-page',
   imports: [Button],
-  templateUrl: './token-state-page.html',
-  styleUrl: './token-state-page.scss',
+  templateUrl: './token-page.html',
+  styleUrl: './token-page.scss',
 })
-export class TokenStatePage {
+export class TokenPage {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
   data = toSignal(this.route.data);
-  page = computed(() => this.data()?.['page'] as keyof TokenStatePageConfig);
-  state = computed(() => this.data()?.['state'] as keyof TokenPageConfig);
-  config = computed(() => TOKEN_PAGE_CONFIG[this.page()][this.state()]);
+  config = computed(() => this.data()?.['config'] as TokenPageConfig);
 
   color = computed(() => this.config().color);
   title = computed(() => this.config().title);
@@ -37,14 +35,14 @@ export class TokenStatePage {
    * @returns True if the configuration includes secondary text and route,
    *          otherwise false.
    */
-  hasSecondaryOptions() {
+  hasSecOption() {
     return !!this.secText() && !!this.secRoute();
   }
 
   /**
    * Navigate to the secondary route on click.
    */
-  onSecondaryRoute() {
+  onSecRoute() {
     if (this.secRoute() !== '') {
       this.router.navigateByUrl(this.secRoute());
     }
@@ -53,7 +51,7 @@ export class TokenStatePage {
   /**
    * Navigate to the primary route on click.
    */
-  onPrimaryRoute() {
+  onPrimRoute() {
     this.router.navigateByUrl(this.primRoute());
   }
 }

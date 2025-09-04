@@ -2,20 +2,20 @@ import { Routes } from '@angular/router';
 
 import { tokenGuard } from '@core/auth/guards';
 import { TokenResolver } from '@core/auth/resolvers';
-import { TokenStatePage } from '@shared/components/pages';
+import { ACTIVATION_TOKEN, TokenPage } from '@shared/modules/token-page';
 
 import { ActivateAccount } from './activate-account';
 
 export const activateAccountRoutes: Routes = [
   {
     path: 'error',
-    component: TokenStatePage,
-    data: { page: 'activateAccount', state: 'error' },
+    component: TokenPage,
+    data: { config: ACTIVATION_TOKEN.error },
   },
   {
     path: 'success',
-    component: TokenStatePage,
-    data: { page: 'activateAccount', state: 'success' },
+    component: TokenPage,
+    data: { config: ACTIVATION_TOKEN.success },
   },
   {
     path: ':token',

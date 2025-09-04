@@ -1,7 +1,7 @@
 /**
- * Interface representing a token state configuration.
+ * Interface representing a token page configuration.
  */
-export interface TokenStateConfig {
+export interface TokenPageConfig {
   title: string;
   color: string;
   messages: string[];

@@ -2,20 +2,20 @@ import { Routes } from '@angular/router';
 
 import { tokenGuard } from '@core/auth/guards';
 import { TokenResolver } from '@core/auth/resolvers';
-import { TokenStatePage } from '@shared/components/pages';
+import { DELETION_TOKEN, TokenPage } from '@shared/modules/token-page';
 
 import { DeleteAccount } from './delete-account';
 
 export const deleteAccountRoutes: Routes = [
   {
     path: 'error',
-    component: TokenStatePage,
-    data: { page: 'deleteAccount', state: 'error' },
+    component: TokenPage,
+    data: { config: DELETION_TOKEN.error },
   },
   {
     path: 'success',
-    component: TokenStatePage,
-    data: { page: 'deleteAccount', state: 'success' },
+    component: TokenPage,
+    data: { config: DELETION_TOKEN.success },
   },
   {
     path: ':token',
