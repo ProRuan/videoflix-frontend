@@ -1,16 +1,16 @@
 <form class="auth-form">
-    <h4 class="headline-4" [class]="get('color')">{{ get('title') }}</h4>
+    <h4 class="headline-4" [class]="color()">{{ title() }}</h4>
 
     <div class="column-16">
-        @for (message of getMessages(); track message) {
+        @for (message of messages(); track message) {
         <p class="text">{{ message }}</p>
         }
     </div>
 
     <div class="jc-evenly">
-        @if (hasSecondary()) {
-        <app-button [text]="getText('secondary')" variant="secondary" (click)="onAction('secondary')"></app-button>
+        @if (hasSecondaryOptions()) {
+        <app-button [text]="secText()" variant="secondary" (click)="onSecondaryRoute()"></app-button>
         }
-        <app-button [text]="getText('primary')" (click)="onAction('primary')"></app-button>
+        <app-button [text]="primText()" (click)="onPrimaryRoute()"></app-button>
     </div>
 </form>

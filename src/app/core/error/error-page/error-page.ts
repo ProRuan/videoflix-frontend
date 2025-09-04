@@ -41,18 +41,18 @@ export class ErrorPage {
   }
 
   /**
-   * Navigate to the prim route on click.
-   */
-  onPrimaryAction() {
-    this.router.navigateByUrl(this.primRoute());
-  }
-
-  /**
    * Navigate to the secondary route on click.
    */
-  onSecondaryAction() {
+  onSecondaryRoute() {
     if (this.secRoute() !== '') {
       this.router.navigateByUrl(this.secRoute());
     }
+  }
+
+  /**
+   * Navigate to the primary route on click.
+   */
+  onPrimaryRoute() {
+    this.router.navigateByUrl(this.primRoute());
   }
 }

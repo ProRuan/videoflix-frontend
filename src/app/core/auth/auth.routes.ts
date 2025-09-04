@@ -19,6 +19,9 @@ import { authChildrenRoutes, authData } from './auth.config';
 // rename reactivate-account ... ?
 // rename authentication-required ...
 
+// move token interfaces into a folder ...
+// move token state page logic to core ... ?
+
 const d = authData;
 const r = authChildrenRoutes;
 

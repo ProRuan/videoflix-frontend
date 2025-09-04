@@ -2,13 +2,9 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { TokenPageConfigurator } from '@core/auth/services';
+import { TOKEN_PAGE_CONFIG } from '@core/auth/constants';
+import { TokenPageConfig, TokenStatePageConfig } from '@core/auth/interfaces';
 import { Button } from '@shared/components/buttons';
-import { TokenPageConfig, TokenStateConfig } from '@shared/interfaces';
-
-type ActionVariants = 'primaryAction' | 'secondaryAction';
-type TextVariants = 'primaryText' | 'secondaryText';
-type Variants = 'primary' | 'secondary';
 
 /**
  * Class representing a token state page component.
@@ -22,60 +18,42 @@ type Variants = 'primary' | 'secondary';
 export class TokenStatePage {
   route = inject(ActivatedRoute);
   router = inject(Router);
-  configurator = inject(TokenPageConfigurator);
 
   data = toSignal(this.route.data);
-  page = computed(() => this.data()?.['page'] as keyof TokenPageConfigurator);
+  page = computed(() => this.data()?.['page'] as keyof TokenStatePageConfig);
   state = computed(() => this.data()?.['state'] as keyof TokenPageConfig);
-  pageConfig = computed(
-    () => this.configurator[this.page()] as TokenPageConfig
-  );
-  stateConfig = computed(
-    () => this.pageConfig()[this.state()] as TokenStateConfig
-  );
+  config = computed(() => TOKEN_PAGE_CONFIG[this.page()][this.state()]);
+
+  color = computed(() => this.config().color);
+  title = computed(() => this.config().title);
+  messages = computed(() => this.config().messages);
+  primText = computed(() => this.config().primText);
+  primRoute = computed(() => this.config().primRoute);
+  secText = computed(() => this.config().secText ?? '');
+  secRoute = computed(() => this.config().secRoute ?? '');
 
   /**
-   * Get the property value of a token state configuration.
-   * @param key - The property key of the token state configuration.
-   * @returns The property value of the token state configuration.
+   * Check the configuration for including secondary text and route.
+   * @returns True if the configuration includes secondary text and route,
+   *          otherwise false.
    */
-  get(key: keyof TokenStateConfig) {
-    return this.stateConfig()[key];
+  hasSecondaryOptions() {
+    return !!this.secText() && !!this.secRoute();
   }
 
   /**
-   * Get the messages of a token state configuration.
-   * @returns The messages of the token state configuration.
+   * Navigate to the secondary route on click.
    */
-  getMessages() {
-    return this.stateConfig().messages;
+  onSecondaryRoute() {
+    if (this.secRoute() !== '') {
+      this.router.navigateByUrl(this.secRoute());
+    }
   }
 
   /**
-   * Check a token state configuration for including secondary properties.
-   * @returns True if secondary properties are included, otherwise false.
+   * Navigate to the primary route on click.
    */
-  hasSecondary() {
-    const config = this.stateConfig();
-    return config.secondaryText && config.secondaryAction;
-  }
-
-  /**
-   * Get the button text from a token state configuration.
-   * @param variant - The text variant.
-   * @returns The button text.
-   */
-  getText(variant: Variants) {
-    const key = `${variant}Text` as TextVariants;
-    return this.stateConfig()[key] ?? '';
-  }
-
-  /**
-   * Perform an action on click based on the token state configuration.
-   * @param variant - The action variant.
-   */
-  onAction(variant: Variants) {
-    const key = `${variant}Action` as ActionVariants;
-    this.stateConfig()[key]?.();
+  onPrimaryRoute() {
+    this.router.navigateByUrl(this.primRoute());
   }
 }

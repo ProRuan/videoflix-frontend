@@ -1,6 +1,6 @@
 import { ErrorPageConfig } from '@shared/interfaces';
 
-export const ERROR_PAGE_CONFIG: Record<string, ErrorPageConfig> = {
+export const ERROR_PAGE_CONFIG: ErrorPageConfig = {
   unauthorized: {
     status: '401',
     title: 'Unauthorized',
