@@ -10,9 +10,9 @@
     </article>
 
     <div class="button-group">
-        @if (hasSecondaryOptions()) {
-        <app-button [text]="secText()" type="button" variant="secondary" (click)="onSecondaryRoute()"></app-button>
+        @if (hasSecOption()) {
+        <app-button [text]="secText()" type="button" variant="secondary" (click)="onSecRoute()"></app-button>
         }
-        <app-button [text]="primText()" type="button" (click)="onPrimaryRoute()"></app-button>
+        <app-button [text]="primText()" type="button" (click)="onPrimRoute()"></app-button>
     </div>
 </section>

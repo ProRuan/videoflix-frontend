@@ -1,4 +1,5 @@
 import { Themes } from '@shared/constants';
+import { PAGE_NOT_FOUND, UNAUTHORIZED } from '@shared/modules/error-page';
 
 import { activateAccountRoutes } from './pages/activate-account/activate-account.routes';
 import { deleteAccountRoutes } from './pages/delete-account/delete-account.routes';
@@ -9,8 +10,8 @@ export const authData = {
   startsite: { theme: Themes.Startsite },
   signUp: { theme: Themes.SignUp },
   login: { theme: Themes.Login },
-  pageNotFound: { configKey: 'pageNotFound' },
-  unauthorized: { configKey: 'unauthorized' },
+  unauthorized: { config: UNAUTHORIZED },
+  pageNotFound: { config: PAGE_NOT_FOUND },
 };
 
 export const authChildrenRoutes = {

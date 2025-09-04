@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
 // review imports + index.ts
-import { ErrorPage } from '@core/error';
 import { Imprint, PrivacyPolicy } from '@core/static/pages';
+import { ErrorPage } from '@shared/modules/error-page';
 
 import {
   ForgotPassword,

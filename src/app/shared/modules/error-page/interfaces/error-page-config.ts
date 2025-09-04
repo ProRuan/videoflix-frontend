@@ -1,7 +1,7 @@
 /**
- * Interface representing an error state configuration.
+ * Interface representing an error page configuration.
  */
-export interface ErrorStateConfig {
+export interface ErrorPageConfig {
   status: string;
   title: string;
   messages: string[];

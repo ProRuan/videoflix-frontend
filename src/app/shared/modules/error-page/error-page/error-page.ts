@@ -3,8 +3,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Button } from '@shared/components/buttons';
-import { ERROR_PAGE_CONFIG } from '@shared/constants';
-import { ErrorPageConfig } from '@shared/interfaces';
+
+import { ErrorPageConfig } from '../interfaces';
 
 /**
  * Class representing an error page component.
@@ -20,8 +20,7 @@ export class ErrorPage {
   router = inject(Router);
 
   data = toSignal(this.route.data);
-  key = computed(() => this.data()?.['configKey'] as keyof ErrorPageConfig);
-  config = computed(() => ERROR_PAGE_CONFIG[this.key()]);
+  config = computed(() => this.data()?.['config'] as ErrorPageConfig);
 
   status = computed(() => this.config().status);
   title = computed(() => this.config().title);
@@ -36,14 +35,14 @@ export class ErrorPage {
    * @returns True if the configuration includes secondary text and route,
    *          otherwise false.
    */
-  hasSecondaryOptions() {
+  hasSecOption() {
     return !!this.secText() && !!this.secRoute();
   }
 
   /**
    * Navigate to the secondary route on click.
    */
-  onSecondaryRoute() {
+  onSecRoute() {
     if (this.secRoute() !== '') {
       this.router.navigateByUrl(this.secRoute());
     }
@@ -52,7 +51,7 @@ export class ErrorPage {
   /**
    * Navigate to the primary route on click.
    */
-  onPrimaryRoute() {
+  onPrimRoute() {
     this.router.navigateByUrl(this.primRoute());
   }
 }
