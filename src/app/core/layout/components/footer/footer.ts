@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { Videoflix } from '../../../../shared/services/videoflix';
+import { Videoflix } from '@shared/services/videoflix';
 
 /**
  * Class representing a footer component.
@@ -13,7 +13,7 @@ import { Videoflix } from '../../../../shared/services/videoflix';
   styleUrl: './footer.scss',
 })
 export class Footer {
-  private videoflix: Videoflix = inject(Videoflix);
+  private videoflix = inject(Videoflix);
 
   /**
    * Check the current component for being the video offer component.

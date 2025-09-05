@@ -1,0 +1,28 @@
+@use "mixins" as *;
+
+$image: url("/images/buttons/arrow_back.png");
+
+:host {
+  @include size($w: 48px, $h: 48px);
+}
+
+.back-button {
+  @include border($b: none, $br: 40px);
+  @include size($w: 100%, $h: 100%);
+  @include background($image: $image, $size: auto 32px);
+  padding: 0;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $hoverBlue;
+  }
+
+  &:active {
+    background-color: $activeBlue;
+  }
+
+  &:disabled {
+    background-color: none;
+    cursor: default;
+  }
+}

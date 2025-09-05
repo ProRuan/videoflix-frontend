@@ -76,6 +76,12 @@
       "@shared/services/*": [
         "shared/services/*"
       ],
+       "@shared/utils": [
+        "shared/utils"
+      ],
+      "@shared/utils/*": [
+        "shared/utils/*"
+      ],
     }
   },
   "angularCompilerOptions": {

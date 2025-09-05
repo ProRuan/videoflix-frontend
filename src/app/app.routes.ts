@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 
+// review imports
 import { CoreLayout } from '@core/layout';
-
 import { authRoutes } from '@core/auth/auth.routes';
+import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { videoRoutes } from '@features/video/video.routes';
 
 // generate video layout ... ?
@@ -28,5 +29,7 @@ import { videoRoutes } from '@features/video/video.routes';
 export const routes: Routes = [
   { path: '', component: CoreLayout, children: authRoutes },
   { path: 'video', children: videoRoutes },
+  { path: 'imprint', component: Imprint },
+  { path: 'privacy-policy', component: PrivacyPolicy },
   { path: '**', redirectTo: 'page-not-found' },
 ];

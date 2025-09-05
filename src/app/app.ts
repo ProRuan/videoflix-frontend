@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 import { DialogIds, ToastIds } from '@shared/constants';
 import { SuccessDialog } from '@shared/components/dialogs';
@@ -7,6 +7,8 @@ import { ErrorToast } from '@shared/components/toasts';
 
 import { DialogManager } from './shared/services/dialog-manager';
 import { ToastManager } from './shared/services/toast-manager';
+import { filter, map } from 'rxjs';
+import { PageNavigator } from '@shared/services';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +17,10 @@ import { ToastManager } from './shared/services/toast-manager';
   styleUrl: './app.scss',
 })
 export class App {
-  private dialogs: DialogManager = inject(DialogManager);
-  private toasts: ToastManager = inject(ToastManager);
+  private router = inject(Router);
+  private navigator = inject(PageNavigator);
+  private dialogs = inject(DialogManager);
+  private toasts = inject(ToastManager);
 
   // update multiple line comments ... !
 
@@ -60,6 +64,26 @@ export class App {
   // }
 
   protected title = 'videoflix-frontend';
+
+  private initialized: boolean = false;
+
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map((route) => route.url)
+      )
+      .subscribe((url) => this.updateUrls(url));
+  }
+
+  updateUrls(url: string) {
+    if (this.initialized) {
+      this.navigator.updateUrls(url);
+    } else {
+      this.navigator.setUrls(url);
+      this.initialized = true;
+    }
+  }
 
   isDialogOpen() {
     return this.dialogs.isOpen(DialogIds.Success);

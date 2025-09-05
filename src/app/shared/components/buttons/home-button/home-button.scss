@@ -3,21 +3,11 @@
 $logo: url("/images/logo/logo.png");
 
 :host {
-  @include flexbox($jc: center);
-  width: 100%;
-  z-index: $z-header;
-}
-
-.logo {
-  @include image($w: auto, $h: 48px);
-}
-
-.button-group {
-  @include flexbox($jc: flex-end, $g: 48px);
+  @include size($w: 201px, $h: 32px);
 }
 
 .home-button {
-  @include size($w: 201px, $h: 32px);
+  @include size($w: 100%, $h: 100%);
   @include background($image: $logo, $size: auto 32px);
   border: none;
   padding: 0;
@@ -34,11 +24,5 @@ $logo: url("/images/logo/logo.png");
   &:disabled {
     filter: none;
     cursor: default;
-  }
-}
-
-@media (min-width: 1441px) {
-  .header {
-    padding: 10px calc(50% - 624px);
   }
 }

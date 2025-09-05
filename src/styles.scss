@@ -29,6 +29,8 @@ button {
   font-family: $dmSans;
   outline: none;
   cursor: pointer;
+
+  // disabled: cursor: default
 }
 
 .headline-2 {
@@ -195,3 +197,17 @@ button {
 .hidden {
   display: none !important;
 }
+
+.static-main {
+  @include flexbox($fd: column, $g: 40px);
+  padding: 48px 96px 156px 96px;
+  flex: 1;
+}
+
+.header {
+  @include spacing($p: 10px 96px);
+  @include size($w: 100%, $h: 108px);
+  @include flexbox($jc: space-between, $ai: center);
+}
+
+// sort and move styles

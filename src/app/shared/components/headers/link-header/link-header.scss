@@ -1,0 +1,7 @@
+@use "mixins" as *;
+
+:host {
+  @include flexbox($jc: center);
+  width: 100%;
+  z-index: $z-header;
+}

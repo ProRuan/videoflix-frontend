@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 // review imports + index.ts
-import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { ErrorPage } from '@shared/modules/error-page';
 
 import {
@@ -35,9 +34,6 @@ export const authRoutes: Routes = [
   { path: 'reset-password', data: d.login, children: r.resetPassword },
   { path: 'sign-out', data: d.signUp, children: r.signOut },
   { path: 'delete-account', data: d.signUp, children: r.deleteAccount },
-
-  { path: 'imprint', component: Imprint },
-  { path: 'privacy-policy', component: PrivacyPolicy },
 
   { path: 'unauthorized', component: ErrorPage, data: d.unauthorized },
   { path: 'page-not-found', component: ErrorPage, data: d.pageNotFound },
