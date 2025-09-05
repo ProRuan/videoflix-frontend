@@ -1,4 +1,6 @@
-export const RESET_TOKEN = {
+import { TokenPageConfigOptions } from '../interfaces';
+
+export const RESET_TOKEN: TokenPageConfigOptions = {
   error: {
     title: 'Token rejected',
     color: 'c-error',

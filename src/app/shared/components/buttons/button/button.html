@@ -1,4 +1,5 @@
 <button class="button" [class]="getClasses()" [type]="type" [disabled]="disabled" (click)="onAction()">
+    <div class="background"></div>
     @if (icon) {
     <img [src]="getSrc()" [alt]="icon" class="icon">
     }

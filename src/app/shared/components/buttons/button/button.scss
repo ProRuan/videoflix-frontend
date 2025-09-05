@@ -11,15 +11,9 @@
   @include font($fw: 700);
   @include colors($c: $white, $bgc: $primBlue);
   @include flexbox($jc: center, $ai: center, $g: 4px);
+  position: relative;
+  overflow: hidden;
   transition: background-color 100ms ease-in-out;
-
-  &:hover {
-    background-color: $hoverBlue;
-  }
-
-  &:active {
-    background-color: $activeBlue;
-  }
 
   &:disabled {
     background-color: $disabled;
@@ -32,21 +26,46 @@
 
   &.secondary {
     background-color: $sec-blue;
+  }
+}
 
-    &:hover {
-      background-color: $sec-blue-hover;
-    }
+.background {
+  @include size($w: 0, $h: 100%);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  background-image: linear-gradient(90deg, $primBlue 0%, $hoverBlue 100%);
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 125ms ease-in-out, width 125ms ease-in-out;
 
-    &:active {
-      background-color: $sec-blue-active;
-    }
+  .button.secondary & {
+    background-image: linear-gradient(
+      90deg,
+      $sec-blue 0%,
+      $sec-blue-hover 100%
+    );
+  }
+
+  .button:hover & {
+    width: 100%;
+    opacity: 1;
+  }
+
+  .button:active & {
+    opacity: 0.5;
+  }
+
+  .button:disabled & {
+    width: 0;
+    opacity: 0;
   }
 }
 
 .icon {
   @include image($h: 24px);
+  z-index: 1;
 }
 
 .text {
   @include font($fw: 700);
+  z-index: 1;
 }

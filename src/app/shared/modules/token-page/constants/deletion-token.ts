@@ -1,4 +1,6 @@
-export const DELETION_TOKEN = {
+import { TokenPageConfigOptions } from '../interfaces';
+
+export const DELETION_TOKEN: TokenPageConfigOptions = {
   error: {
     title: 'Token rejected',
     color: 'c-error',
