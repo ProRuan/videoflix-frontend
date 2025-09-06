@@ -4,12 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
+import { UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { FormValidator } from '@shared/modules/form-validation';
-
-import { Videoflix } from '../../../../shared/services/videoflix';
 
 /**
  * Class representing a log-in component.
@@ -30,7 +29,7 @@ import { Videoflix } from '../../../../shared/services/videoflix';
 })
 export class LogIn extends AuthFormBase {
   private router: Router = inject(Router);
-  private videoflix: Videoflix = inject(Videoflix);
+  private user = inject(UserClient);
 
   protected controls: FormGroupControls = {
     email: ['', FormValidator.emailValidators],
@@ -53,7 +52,7 @@ export class LogIn extends AuthFormBase {
    */
   private handleSuccess(response: AuthResponse) {
     this.toasts.close();
-    this.videoflix.setAuthData(response);
+    this.user.logIn(response);
     this.router.navigateByUrl(`/video/offer/${response.token}`);
   }
 }

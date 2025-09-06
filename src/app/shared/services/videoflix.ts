@@ -5,7 +5,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
 import { AuthResponse } from '@core/auth/interfaces';
-import { User } from '@core/models';
+import { User } from '@core/auth/models';
 
 @Injectable({
   providedIn: 'root',

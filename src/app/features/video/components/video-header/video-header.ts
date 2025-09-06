@@ -1,9 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Authenticator } from '@core/auth/services';
-import { VideoStore } from '@features/video/services';
+
+import { UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 
+/**
+ * Class representing a video header component.
+ */
 @Component({
   selector: 'app-video-header',
   imports: [Button],
@@ -12,23 +15,19 @@ import { Button } from '@shared/components/buttons';
 })
 export class VideoHeader {
   router = inject(Router);
-  auth = inject(Authenticator);
-  vs = inject(VideoStore);
+  user = inject(UserClient);
 
-  // clean this file ...
-  // think about location ...
-  // think about video folder structure ...
-
-  // replace test URL
+  /**
+   * Redirect to the sign-out page on click.
+   */
   onSignOut() {
-    const token = this.vs.getToken();
-    this.router.navigateByUrl(`/sign-out/${token}`);
+    this.user.signOut();
   }
 
+  /**
+   * Log out and redirect to the log-in page on click.
+   */
   onLogOut() {
-    const token = this.vs.getToken();
-    this.auth.logOut({ token }).subscribe({
-      next: () => this.router.navigateByUrl('/log-in'),
-    });
+    this.user.logOut();
   }
 }

@@ -1,8 +1,5 @@
-import { AuthResponse } from '@core/auth/interfaces';
+import { AuthResponse } from '../interfaces';
 
-/**
- * Class representing a user.
- */
 export class User {
   token: string = '';
   email: string = '';
