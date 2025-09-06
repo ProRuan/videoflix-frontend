@@ -13,7 +13,8 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Header, Footer } from '@core/layout/components';
+import { Footer } from '@core/layout/components';
+import { VideoHeader } from '@features/video/components';
 import { VideoGroup, VideoGroupData } from '@features/video/interfaces';
 import { Video } from '@features/video/models';
 import { VideoStore } from '@features/video/services';
@@ -24,7 +25,7 @@ import { Button } from '@shared/components/buttons';
  */
 @Component({
   selector: 'app-video-offer',
-  imports: [Button, Header, Footer],
+  imports: [Button, Footer, VideoHeader],
   templateUrl: './video-offer.html',
   styleUrl: './video-offer.scss',
 })

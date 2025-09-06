@@ -1,0 +1,13 @@
+@use "mixins" as *;
+
+:host {
+  z-index: $z-header;
+}
+
+.logo {
+  @include image($h: 48px);
+}
+
+.button-group {
+  @include flexbox($jc: flex-end, $g: 48px);
+}
