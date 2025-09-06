@@ -36,9 +36,7 @@ export class VideoOfferResolver {
         return newRes;
       }),
       catchError(() =>
-        of(
-          new RedirectCommand(this.router.parseUrl('/authentication-required'))
-        )
+        of(new RedirectCommand(this.router.parseUrl('/unauthorized')))
       )
     );
   }

@@ -22,6 +22,7 @@ export class VideoPlayerResolver implements Resolve<PlayableVideo> {
 
   // clean code ...
   // move + resolve data (loading) ...
+  // add bad request .. ?
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -47,9 +48,7 @@ export class VideoPlayerResolver implements Resolve<PlayableVideo> {
             )
           );
         }
-        return of(
-          new RedirectCommand(this.router.parseUrl('/authentication-required'))
-        );
+        return of(new RedirectCommand(this.router.parseUrl('/unauthorized')));
       })
     );
   }

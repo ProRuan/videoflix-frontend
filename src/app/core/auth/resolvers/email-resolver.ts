@@ -29,11 +29,7 @@ export class EmailResolver implements Resolve<string> {
       .requestUserEmail(payload)
       .pipe(
         catchError(() =>
-          of(
-            new RedirectCommand(
-              this.router.parseUrl('/authentication-required')
-            )
-          )
+          of(new RedirectCommand(this.router.parseUrl('/unauthorized')))
         )
       );
   }
