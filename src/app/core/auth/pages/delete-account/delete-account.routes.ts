@@ -20,7 +20,9 @@ export const deleteAccountRoutes: Routes = [
   {
     path: ':token',
     component: DeleteAccount,
+    data: { parent: 'delete-account' },
     canActivate: [tokenGuard],
     resolve: { response: TokenResolver },
   },
+  { path: '**', redirectTo: 'bad-request' },
 ];

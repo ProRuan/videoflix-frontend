@@ -20,7 +20,9 @@ export const resetPasswordRoutes: Routes = [
   {
     path: ':token',
     component: ResetPassword,
+    data: { parent: 'reset-password' },
     canActivate: [tokenGuard],
     resolve: { response: TokenResolver },
   },
+  { path: '**', redirectTo: 'bad-request' },
 ];

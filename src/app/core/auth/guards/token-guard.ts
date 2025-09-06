@@ -13,5 +13,5 @@ import { TokenStore } from '../services';
  */
 export const tokenGuard: CanActivateFn = (route) => {
   const tokenStore = inject(TokenStore);
-  return tokenStore.hasToken(route, ['/page-not-found']);
+  return tokenStore.hasToken(route, ['/bad-request']);
 };

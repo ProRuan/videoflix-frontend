@@ -90,7 +90,8 @@ export class TokenStore {
    * @returns The URL of the related error page.
    */
   private getErrorUrl(route: ActivatedRouteSnapshot) {
-    return `/${route.url[0]}/error`;
+    const parent = route.data['parent'] as string;
+    return `/${parent}/error`;
   }
 
   /**

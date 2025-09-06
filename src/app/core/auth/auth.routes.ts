@@ -35,6 +35,7 @@ export const authRoutes: Routes = [
   { path: 'sign-out', data: d.signUp, children: r.signOut },
   { path: 'delete-account', data: d.signUp, children: r.deleteAccount },
 
+  { path: 'bad-request', component: ErrorPage, data: d.badRequest },
   { path: 'unauthorized', component: ErrorPage, data: d.unauthorized },
   { path: 'page-not-found', component: ErrorPage, data: d.pageNotFound },
 ];
