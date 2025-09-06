@@ -1,5 +1,37 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import {
+  AuthResponse,
+  EmailPayload,
+  EmailResponse,
+  LoginPayload,
+  PasswordPayload,
+  RegistrationPayload,
+} from '@core/auth/interfaces';
+
+type Endpoints =
+  | 'email-check'
+  | 'registration'
+  | 'account-activation'
+  | 'account-reactivation'
+  | 'login'
+  | 'logout'
+  | 'forgot-password'
+  | 'reset-password'
+  | 'user-email'
+  | 'deregistration'
+  | 'account-deletion'
+  | 'token/check'
+  | 'videos';
+
+type ResponseOf<T> = T extends
+  | LoginPayload
+  | PasswordPayload
+  | RegistrationPayload
+  ? AuthResponse
+  : T extends EmailPayload
+  ? EmailResponse
+  : never;
 
 @Injectable({
   providedIn: 'root',
@@ -36,19 +68,20 @@ export class Api {
   }
 
   // replace any
-  post(endpoint: any, payload: any, token?: string) {
+  post<T>(endpoint: Endpoints, payload: T, token?: string) {
     const url = this.getUrl(endpoint);
     const options = this.getOptions(token);
-    return this.http.post<any>(url, payload, options);
+    return this.http.post<ResponseOf<Endpoints>>(url, payload, options);
   }
 
-  get(endpoint: any, id?: number, token?: string) {
+  // think about sequence of id and token
+  get(endpoint: Endpoints, id?: number, token?: string) {
     const url = this.getDetailUrl(endpoint, id);
     const options = this.getOptions(token);
     return this.http.get<any>(url, options);
   }
 
-  private getDetailUrl(endpoint: any, id?: number) {
+  private getDetailUrl(endpoint: Endpoints, id?: number) {
     if (id) {
       return this.getUrl(endpoint, id.toString());
     } else {

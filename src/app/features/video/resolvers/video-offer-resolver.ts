@@ -9,13 +9,15 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { VideoStore } from '@features/video/services';
 import { VideoGroup, VideoGroupData } from '../interfaces';
 import { Video } from '../models';
+import { UserClient } from '@core/auth/services';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideoOfferResolver {
-  private router: Router = inject(Router);
-  private vs: VideoStore = inject(VideoStore);
+  private router = inject(Router);
+  private user = inject(UserClient);
+  private vs = inject(VideoStore);
 
   // clean code ...
 
@@ -24,7 +26,7 @@ export class VideoOfferResolver {
     state: RouterStateSnapshot
   ): Observable<VideoGroup[] | RedirectCommand> {
     const token = route.paramMap.get('token') ?? '';
-    this.vs.setToken(token);
+    this.user.logIn({ token: token, email: '', user_id: 0 });
     return this.vs.listVideos().pipe(
       map((res: VideoGroupData[]) => {
         const newRes = res.map((g) => {

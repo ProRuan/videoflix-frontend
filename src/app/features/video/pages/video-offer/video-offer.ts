@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserClient } from '@core/auth/services';
 
 import { Footer } from '@core/layout/components';
 import { VideoHeader } from '@features/video/components';
@@ -32,6 +33,7 @@ import { Button } from '@shared/components/buttons';
 export class VideoOffer implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
+  private user: UserClient = inject(UserClient);
   private vs: VideoStore = inject(VideoStore);
 
   // horizontal navigation menu: left scroll right ...
@@ -112,7 +114,12 @@ export class VideoOffer implements OnInit {
     this.videoId = this.library()[0].videos[0].id ?? 0;
     this.scrollData.set([...scrollDefaultData]);
     this.route.paramMap.subscribe({
-      next: (value) => this.vs.setToken(value?.get('token') ?? ''),
+      next: (value) =>
+        this.user.logIn({
+          token: value?.get('token') ?? '',
+          email: '',
+          user_id: 0,
+        }),
     });
   }
 
@@ -187,7 +194,7 @@ export class VideoOffer implements OnInit {
   }
 
   onPlay() {
-    const token = this.vs.getToken();
+    const token = this.user.get('token');
     const id = this.getVideoId();
     this.router.navigateByUrl(`/video/player/${token}/${id}`);
   }

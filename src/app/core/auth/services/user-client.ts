@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models';
-import { Authenticator } from './authenticator';
 import { Router } from '@angular/router';
 import { AuthResponse } from '../interfaces';
+import { AuthStore } from './auth-store';
 
 type UserKeys = keyof Pick<User, 'email' | 'token'>;
 
@@ -11,7 +11,7 @@ type UserKeys = keyof Pick<User, 'email' | 'token'>;
 })
 export class UserClient {
   private router = inject(Router);
-  private auth = inject(Authenticator);
+  private auth = inject(AuthStore);
 
   user = new User();
 
@@ -29,6 +29,7 @@ export class UserClient {
     this.user.setAuthData(response);
   }
 
+  // move request or add error notification service
   logOut() {
     const token = this.user.token;
     this.auth.logOut({ token }).subscribe({

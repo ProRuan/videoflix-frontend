@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
-import { ApiBase } from '@shared/services';
+import { UserClient } from '@core/auth/services';
+import { Api } from '@shared/services/api';
 
 /**
  * Class representing an video store service.
@@ -9,13 +10,17 @@ import { ApiBase } from '@shared/services';
 @Injectable({
   providedIn: 'root',
 })
-export class VideoStore extends ApiBase {
+export class VideoStore {
+  api = inject(Api);
+  user = inject(UserClient);
+
   /**
    * List the videos from the video store.
    * @returns The video list.
    */
   listVideos() {
-    return this.get('videos');
+    const token = this.user.get('token');
+    return this.api.get('videos', undefined, token);
   }
 
   /**
@@ -24,6 +29,7 @@ export class VideoStore extends ApiBase {
    * @returns The video.
    */
   retrieveVideo(id: number) {
-    return this.get('videos', id);
+    const token = this.user.get('token');
+    return this.api.get('videos', id, token);
   }
 }

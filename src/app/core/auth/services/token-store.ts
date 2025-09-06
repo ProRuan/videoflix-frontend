@@ -10,7 +10,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { tokenPatterns } from '@shared/modules/form-validation';
 
 import { TokenCheckResponse } from '../interfaces';
-import { Authenticator } from './authenticator';
+import { AuthStore } from './auth-store';
 
 /**
  * Class representing a token store service.
@@ -19,8 +19,8 @@ import { Authenticator } from './authenticator';
   providedIn: 'root',
 })
 export class TokenStore {
-  private router: Router = inject(Router);
-  private auth: Authenticator = inject(Authenticator);
+  private router = inject(Router);
+  private auth = inject(AuthStore);
 
   private readonly pattern = tokenPatterns.token;
 

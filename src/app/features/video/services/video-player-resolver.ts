@@ -10,13 +10,15 @@ import { VideoStore } from './video-store';
 import { catchError, map, Observable, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PlayableVideo } from '../models';
+import { UserClient } from '@core/auth/services';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideoPlayerResolver implements Resolve<PlayableVideo> {
-  router: Router = inject(Router);
-  vs: VideoStore = inject(VideoStore);
+  router = inject(Router);
+  user = inject(UserClient);
+  vs = inject(VideoStore);
 
   // clean code ...
   // move + resolve data (loading) ...
@@ -27,7 +29,7 @@ export class VideoPlayerResolver implements Resolve<PlayableVideo> {
   ): Observable<PlayableVideo | RedirectCommand> {
     const token = route.paramMap.get('token') ?? '';
     console.log('token: ', token);
-    this.vs.setToken(token);
+    this.user.logIn({ token: token, email: '', user_id: 0 });
 
     const id = Number(route.paramMap.get('id') ?? '0');
     console.log('id: ', id);

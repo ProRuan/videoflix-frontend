@@ -5,7 +5,7 @@ import { Button } from '@shared/components/buttons';
 
 import { Videoflix } from '../../../../shared/services/videoflix';
 import { VideoStore } from '@features/video/services';
-import { Authenticator } from '@core/auth/services';
+import { AuthStore, UserClient } from '@core/auth/services';
 
 /**
  * Class representing a header component.
@@ -19,7 +19,8 @@ import { Authenticator } from '@core/auth/services';
 export class Header {
   private router: Router = inject(Router);
   private videoflix: Videoflix = inject(Videoflix);
-  private auth: Authenticator = inject(Authenticator);
+  private auth: AuthStore = inject(AuthStore);
+  private user: UserClient = inject(UserClient);
   private vs: VideoStore = inject(VideoStore);
 
   // think about header.html ...
@@ -41,7 +42,7 @@ export class Header {
    */
   onLogOut() {
     this.videoflix.logOut();
-    const payload = { token: this.vs.getToken() };
+    const payload = { token: this.user.get('token') };
     this.auth.logOut(payload).subscribe({
       next: (value) => this.router.navigateByUrl('/log-in'),
     });
@@ -64,7 +65,7 @@ export class Header {
   }
 
   onSignOut() {
-    const url = `/sign-out/${this.vs.getToken()}`;
+    const url = `/sign-out/${this.user.get('token')}`;
     this.router.navigateByUrl(url);
   }
 

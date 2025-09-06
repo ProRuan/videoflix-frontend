@@ -12,6 +12,7 @@ import Player from 'video.js/dist/types/player';
 import { PlayableVideo, VideoPlayerBase } from '@features/video/models';
 import { VideoStore } from '@features/video/services';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { UserClient } from '@core/auth/services';
 
 @Component({
   selector: 'app-video-player',
@@ -26,6 +27,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class VideoPlayer extends VideoPlayerBase {
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
+  private user: UserClient = inject(UserClient);
   private vs: VideoStore = inject(VideoStore);
 
   // I. Video quality / resolutions ...
@@ -149,7 +151,7 @@ export class VideoPlayer extends VideoPlayerBase {
   }
 
   onBack() {
-    const token = this.vs.getToken();
+    const token = this.user.get('token');
     this.router.navigateByUrl(`/video/offer/${token}`);
     // this.router.navigateByUrl('video-offer');
   }

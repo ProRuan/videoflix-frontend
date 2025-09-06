@@ -7,15 +7,15 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Authenticator } from '../services';
+import { AuthStore } from '../services';
 import { catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmailResolver implements Resolve<string> {
-  router: Router = inject(Router);
-  auth: Authenticator = inject(Authenticator);
+  router = inject(Router);
+  auth = inject(AuthStore);
 
   // clean code ...
 

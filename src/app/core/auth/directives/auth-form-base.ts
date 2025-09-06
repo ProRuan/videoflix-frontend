@@ -14,7 +14,7 @@ import { formGroupErrorMessages } from '@shared/modules/form-validation';
 import { DialogManager, ToastManager } from '@shared/services';
 
 import { FormGroupControls } from '../interfaces';
-import { Authenticator } from '../services';
+import { AuthStore } from '../services';
 import { PayloadOf, RequestMethod, ResponseOf } from '../types';
 
 /**
@@ -27,7 +27,7 @@ import { PayloadOf, RequestMethod, ResponseOf } from '../types';
 @Directive()
 export abstract class AuthFormBase implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
-  private auth: Authenticator = inject(Authenticator);
+  private auth: AuthStore = inject(AuthStore);
   protected dialogs: DialogManager = inject(DialogManager);
   protected toasts: ToastManager = inject(ToastManager);
 
@@ -124,7 +124,7 @@ export abstract class AuthFormBase implements OnInit {
    * @returns The request observable with the specified response type.
    */
   private getRequest$<T extends RequestMethod>(
-    key: keyof Authenticator
+    key: keyof AuthStore
   ): Observable<ResponseOf<T>> {
     const payload = this.getPayload<T>();
     const request$ = this.auth[key]?.(payload);
