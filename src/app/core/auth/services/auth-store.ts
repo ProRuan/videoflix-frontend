@@ -38,43 +38,51 @@ export class AuthStore implements AuthRequests {
   // checkActivationToken() - check
   // checkToken() - check
 
-  token: string = '';
+  private token: string = '';
+
+  getToken() {
+    return this.token;
+  }
+
+  setToken(token: string) {
+    this.token = token;
+  }
 
   checkEmail(payload: EmailPayload) {
-    return this.api.post('email-check', payload);
+    return this.api.post('email-check', payload, { skipAuth: true });
   }
 
   register(payload: RegistrationPayload) {
-    return this.api.post('registration', payload);
+    return this.api.post('registration', payload, { skipAuth: true });
   }
 
   activateAccount(payload: TokenPayload) {
-    return this.api.post('account-activation', payload);
+    return this.api.post('account-activation', payload, { skipAuth: true });
   }
 
   reactivateAccount(payload: EmailPayload) {
-    return this.api.post('account-reactivation', payload);
+    return this.api.post('account-reactivation', payload, { skipAuth: true });
   }
 
   logIn(payload: LoginPayload) {
-    return this.api.post('login', payload);
+    return this.api.post('login', payload, { skipAuth: true });
   }
 
   // logout as header click function ... ?
   logOut(token: string): Observable<any> {
-    return this.api.post<any>('logout', {}, token);
+    return this.api.post<any>('logout', {});
   }
 
   resetPassword(payload: EmailPayload) {
-    return this.api.post('password-reset', payload);
+    return this.api.post('password-reset', payload, { skipAuth: true });
   }
 
   updatePassword(payload: RegistrationPayload) {
-    return this.api.post('password-update', payload, this.token);
+    return this.api.post('password-update', payload);
   }
 
   deregister(payload: LoginPayload) {
-    return this.api.post('deregistration', payload, this.token);
+    return this.api.post('deregistration', payload);
   }
 
   deleteAccount() {
@@ -82,15 +90,14 @@ export class AuthStore implements AuthRequests {
   }
 
   checkActivationToken(token: string) {
-    return this.api.post('token/activation-token-check', { token });
+    return this.api.post(
+      'token/activation-token-check',
+      { token },
+      { skipAuth: true }
+    );
   }
 
-  checkToken(token: string) {
-    return this.api.post('token/token-check', {}, token);
-  }
-
-  // remove
-  requestUserEmail(payload: TokenPayload): Observable<any> {
-    return this.api.post('user-email', payload);
+  checkToken() {
+    return this.api.post('token/token-check', {});
   }
 }

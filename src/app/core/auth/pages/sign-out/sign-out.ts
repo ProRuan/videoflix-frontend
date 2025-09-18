@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { FormGroupControls } from '@core/auth/interfaces';
-import { AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -24,7 +23,6 @@ import { FormValidator } from '@shared/modules/form-validation';
 })
 export class SignOut extends AuthFormBase {
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private authStore = inject(AuthStore);
 
   data = toSignal(this.route.data);
   response = computed(() => this.data()?.['response']);
@@ -43,7 +41,6 @@ export class SignOut extends AuthFormBase {
    * shows an error toast on error.
    */
   onDeregistration() {
-    this.authStore.token = this.token();
     this.performRequest('deregister', () => this.handleSuccess());
   }
 

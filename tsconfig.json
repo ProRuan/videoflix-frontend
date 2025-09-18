@@ -22,6 +22,12 @@
        "@core/error": [
         "core/error"
       ],
+      "@core/http": [
+        "core/http"
+      ],
+      "@core/http/*": [
+        "core/http/*"
+      ],
       "@core/layout": [
         "core/layout"
       ],

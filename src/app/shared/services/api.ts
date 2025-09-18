@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import {
   AuthResponse,
@@ -7,6 +7,7 @@ import {
   LoginPayload,
   RegistrationPayload,
 } from '@core/auth/interfaces';
+import { SKIP_AUTH } from '@core/http';
 
 type Endpoints =
   | 'email-check'
@@ -67,18 +68,17 @@ export class Api {
     }
   }
 
-  // replace any
-  post<T>(endpoint: Endpoints, payload: T, token?: string) {
+  post<T>(endpoint: Endpoints, payload: T, opts: { skipAuth?: boolean } = {}) {
     const url = this.getUrl(endpoint);
-    const options = this.getOptions(token);
-    return this.http.post<ResponseOf<Endpoints>>(url, payload, options);
+    const context = new HttpContext().set(SKIP_AUTH, !!opts.skipAuth);
+    return this.http.post<ResponseOf<Endpoints>>(url, payload, { context });
   }
 
   // think about sequence of id and token
-  get(endpoint: Endpoints, id?: number, token?: string) {
+  get(endpoint: Endpoints, id?: number, opts: { skipAuth?: boolean } = {}) {
     const url = this.getDetailUrl(endpoint, id);
-    const options = this.getOptions(token);
-    return this.http.get<any>(url, options);
+    const context = new HttpContext().set(SKIP_AUTH, !!opts.skipAuth);
+    return this.http.get<any>(url, { context });
   }
 
   private getDetailUrl(endpoint: Endpoints, id?: number) {
@@ -89,6 +89,7 @@ export class Api {
     }
   }
 
+  // replace options with context ...
   // replace any
   delete<T>(endpoint: Endpoints, token: string) {
     const url = this.getUrl(endpoint);

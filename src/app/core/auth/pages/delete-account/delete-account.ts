@@ -4,7 +4,6 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
-import { AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
 import { FormValidator } from '@shared/modules/form-validation';
@@ -22,7 +21,6 @@ import { FormValidator } from '@shared/modules/form-validation';
 export class DeleteAccount extends AuthFormBase {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
-  authStore = inject(AuthStore);
 
   data: Signal<Data | undefined> = toSignal(this.route.data);
   response: Signal<AuthResponse> = computed(() => this.data()?.['response']);
@@ -39,7 +37,6 @@ export class DeleteAccount extends AuthFormBase {
    * shows an error toast on error.
    */
   onDelete() {
-    this.authStore.token = this.token();
     this.performRequest('deleteAccount', () => this.handleSuccess());
   }
 

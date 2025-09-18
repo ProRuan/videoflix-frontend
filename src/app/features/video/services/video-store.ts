@@ -19,8 +19,7 @@ export class VideoStore {
    * @returns The video list.
    */
   listVideos() {
-    const token = this.user.get('token');
-    return this.api.get('videos', undefined, token);
+    return this.api.get('videos');
   }
 
   /**
@@ -29,7 +28,6 @@ export class VideoStore {
    * @returns The video.
    */
   retrieveVideo(id: number) {
-    const token = this.user.get('token');
-    return this.api.get('videos', id, token);
+    return this.api.get('videos', id);
   }
 }

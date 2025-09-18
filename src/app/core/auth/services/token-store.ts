@@ -22,6 +22,9 @@ export class TokenStore {
   private router = inject(Router);
   private auth = inject(AuthStore);
 
+  // auth pages, e. g. video/offer/:token should just have 401 ... ?!
+  // only activate-account and activation-token-check can have 400 ... ?!
+
   private readonly pattern = tokenPatterns.token;
 
   /**
@@ -32,6 +35,7 @@ export class TokenStore {
    */
   hasToken(route: ActivatedRouteSnapshot, segments: string[]) {
     const token = this.getRouteParam(route, 'token');
+    this.auth.setToken(token);
     if (this.isToken(token)) return true;
     return this.router.createUrlTree(segments);
   }
@@ -79,7 +83,7 @@ export class TokenStore {
     }
 
     return this.auth
-      .checkToken(token)
+      .checkToken()
       .pipe(catchError(() => this.getRedirectCommand(url)));
   }
 
