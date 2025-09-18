@@ -9,7 +9,7 @@ import { catchError, Observable, of } from 'rxjs';
 
 import { tokenPatterns } from '@shared/modules/form-validation';
 
-import { TokenCheckResponse } from '../interfaces';
+import { AuthResponse } from '../interfaces';
 import { AuthStore } from './auth-store';
 
 /**
@@ -66,12 +66,20 @@ export class TokenStore {
    */
   resolveToken(
     route: ActivatedRouteSnapshot
-  ): Observable<TokenCheckResponse | RedirectCommand> {
+  ): Observable<AuthResponse | RedirectCommand> {
     const token = this.getRouteParam(route, 'token');
     const payload = this.getTokenPayload(token);
     const url = this.getErrorUrl(route);
+    console.log('parent: ', route.parent?.url[0].path);
+    const parent = route.parent?.url[0].path;
+    if (parent === 'activate-account') {
+      return this.auth
+        .checkActivationToken(token)
+        .pipe(catchError(() => this.getRedirectCommand(url)));
+    }
+
     return this.auth
-      .checkToken(payload)
+      .checkToken(token)
       .pipe(catchError(() => this.getRedirectCommand(url)));
   }
 

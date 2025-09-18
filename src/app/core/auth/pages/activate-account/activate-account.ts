@@ -3,12 +3,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls, TokenCheckResponse } from '@core/auth/interfaces';
+import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
 import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
 import { FormValidator } from '@shared/modules/form-validation';
-
-type Response = TokenCheckResponse;
 
 /**
  * Class representing an activate-account component.
@@ -25,7 +23,7 @@ export class ActivateAccount extends AuthFormBase {
   router: Router = inject(Router);
 
   data: Signal<Data | undefined> = toSignal(this.route.data);
-  response: Signal<Response> = computed(() => this.data()?.['response']);
+  response: Signal<AuthResponse> = computed(() => this.data()?.['response']);
   token: Signal<string> = computed(() => this.response()?.token);
 
   protected controls: FormGroupControls = {

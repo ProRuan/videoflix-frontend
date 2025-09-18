@@ -5,7 +5,6 @@ import {
   EmailPayload,
   EmailResponse,
   LoginPayload,
-  PasswordPayload,
   RegistrationPayload,
 } from '@core/auth/interfaces';
 
@@ -16,17 +15,18 @@ type Endpoints =
   | 'account-reactivation'
   | 'login'
   | 'logout'
-  | 'forgot-password'
-  | 'reset-password'
+  | 'password-reset'
+  | 'password-update'
   | 'user-email'
   | 'deregistration'
   | 'account-deletion'
-  | 'token/check'
+  | 'token/activation-token-check'
+  | 'token/token-check'
   | 'videos';
 
 type ResponseOf<T> = T extends
   | LoginPayload
-  | PasswordPayload
+  | RegistrationPayload
   | RegistrationPayload
   ? AuthResponse
   : T extends EmailPayload
@@ -87,5 +87,12 @@ export class Api {
     } else {
       return this.getUrl(endpoint);
     }
+  }
+
+  // replace any
+  delete<T>(endpoint: Endpoints, token: string) {
+    const url = this.getUrl(endpoint);
+    const options = this.getOptions(token);
+    return this.http.delete<ResponseOf<Endpoints>>(url, options);
   }
 }

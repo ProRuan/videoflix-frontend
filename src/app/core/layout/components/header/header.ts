@@ -42,8 +42,8 @@ export class Header {
    */
   onLogOut() {
     this.videoflix.logOut();
-    const payload = { token: this.user.get('token') };
-    this.auth.logOut(payload).subscribe({
+    const token = this.user.get('token');
+    this.auth.logOut(token).subscribe({
       next: (value) => this.router.navigateByUrl('/log-in'),
     });
     // this.router.navigateByUrl('log-in');

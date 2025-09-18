@@ -17,6 +17,9 @@ export class VideoHeader {
   router = inject(Router);
   user = inject(UserClient);
 
+  // apply for both buttons ...
+  isClicked: boolean = false;
+
   /**
    * Redirect to the sign-out page on click.
    */
@@ -28,6 +31,8 @@ export class VideoHeader {
    * Log out and redirect to the log-in page on click.
    */
   onLogOut() {
+    if (this.isClicked) return;
+    this.isClicked = true;
     this.user.logOut();
   }
 }

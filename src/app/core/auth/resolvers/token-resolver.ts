@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
-import { TokenCheckResponse } from '../interfaces';
+import { AuthResponse } from '../interfaces';
 import { TokenStore } from '../services';
 
 /**
@@ -11,7 +11,7 @@ import { TokenStore } from '../services';
 @Injectable({
   providedIn: 'root',
 })
-export class TokenResolver implements Resolve<TokenCheckResponse> {
+export class TokenResolver implements Resolve<AuthResponse> {
   tokenStore: TokenStore = inject(TokenStore);
 
   /**

@@ -3,12 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls, TokenCheckResponse } from '@core/auth/interfaces';
+import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
+import { AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
 import { FormValidator } from '@shared/modules/form-validation';
-
-type Response = TokenCheckResponse;
 
 /**
  * Class representing a delete-account component.
@@ -23,9 +22,10 @@ type Response = TokenCheckResponse;
 export class DeleteAccount extends AuthFormBase {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
+  authStore = inject(AuthStore);
 
   data: Signal<Data | undefined> = toSignal(this.route.data);
-  response: Signal<Response> = computed(() => this.data()?.['response']);
+  response: Signal<AuthResponse> = computed(() => this.data()?.['response']);
   token: Signal<string> = computed(() => this.response()?.token);
 
   protected controls: FormGroupControls = {
@@ -39,6 +39,7 @@ export class DeleteAccount extends AuthFormBase {
    * shows an error toast on error.
    */
   onDelete() {
+    this.authStore.token = this.token();
     this.performRequest('deleteAccount', () => this.handleSuccess());
   }
 
