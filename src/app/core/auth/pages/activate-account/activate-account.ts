@@ -74,7 +74,8 @@ export class ActivateAccount extends AuthFormBase<
    */
   onSuccess(): void {
     this.toasts.close();
-    this.router.navigateByUrl('/activate-account/success', {
+    this.router.navigate(['..', 'success'], {
+      relativeTo: this.route,
       replaceUrl: true,
     });
   }

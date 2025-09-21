@@ -79,7 +79,10 @@ export class ResetPassword extends AuthFormBase<
    */
   onSuccess(): void {
     this.toasts.close();
-    this.router.navigateByUrl('/reset-password/success', { replaceUrl: true });
+    this.router.navigate(['..', 'success'], {
+      relativeTo: this.route,
+      replaceUrl: true,
+    });
   }
 
   /**

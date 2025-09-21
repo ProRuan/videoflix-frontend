@@ -62,7 +62,10 @@ export class DeleteAccount extends AuthFormBase<
    */
   onSuccess(): void {
     this.toasts.close();
-    this.router.navigateByUrl('/delete-account/success', { replaceUrl: true });
+    this.router.navigate(['..', 'success'], {
+      relativeTo: this.route,
+      replaceUrl: true,
+    });
   }
 
   /**
