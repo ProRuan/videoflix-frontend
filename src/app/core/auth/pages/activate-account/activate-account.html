@@ -1,4 +1,4 @@
-<form class="auth-form">
+<form [formGroup]="form" class="auth-form" (ngSubmit)="onRequest()">
     @if (isLoading()) {
     <app-loading-bar></app-loading-bar>
     }
@@ -10,6 +10,6 @@
     </div>
 
     <div class="button-cont">
-        <app-button text="Activate my account" (click)="onActivate()"></app-button>
+        <app-button text="Activate my account" type="submit" [disabled]="isFormUnready()"></app-button>
     </div>
 </form>

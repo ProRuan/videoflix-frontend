@@ -1,12 +1,17 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Data, Router } from '@angular/router';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { Observable } from 'rxjs';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
+import { TokenForm, TokenPayload, UserResponse } from '@core/auth/interfaces';
+import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
-import { FormValidator } from '@shared/modules/form-validation';
+import { ToastManager } from '@shared/services';
 
 /**
  * Class representing an activate-account component.
@@ -14,37 +19,71 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-activate-account',
-  imports: [Button, LoadingBar],
+  imports: [Button, LoadingBar, ReactiveFormsModule],
   templateUrl: './activate-account.html',
   styleUrl: './activate-account.scss',
 })
-export class ActivateAccount extends AuthFormBase {
-  route: ActivatedRoute = inject(ActivatedRoute);
-  router: Router = inject(Router);
+export class ActivateAccount extends AuthFormBase<
+  TokenForm,
+  TokenPayload,
+  UserResponse
+> {
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  auth = inject(AuthStore);
+  utils = inject(AuthUtils);
+  toasts = inject(ToastManager);
 
-  data: Signal<Data | undefined> = toSignal(this.route.data);
-  response: Signal<AuthResponse> = computed(() => this.data()?.['response']);
-  token: Signal<string> = computed(() => this.response()?.token);
-
-  protected controls: FormGroupControls = {
-    token: [this.token(), FormValidator.tokenValidators],
-  };
+  data = toSignal(this.route.data);
+  token = computed(() => this.data()?.['token'] as string);
 
   /**
-   * Perform an activate-account request on submit.
-   *
-   * Redirect to the activate-account success page on success;
-   * shows an error toast on error.
+   * Get a token form.
+   * @returns The token form.
    */
-  onActivate() {
-    this.performRequest('activateAccount', () => this.handleSuccess());
+  getForm(): FormGroup<TokenForm> {
+    return this.utils.getTokenForm();
   }
 
   /**
-   * Redirect to the activate-account success page.
+   * Update the token control with the account activation token.
    */
-  private handleSuccess(): void {
+  override initOptions(): void {
+    this.form.get('token')?.setValue(this.token());
+  }
+
+  /**
+   * Get the payload for an account activation.
+   * @returns The payload for the account activation.
+   */
+  getPayload(): TokenPayload {
+    return this.utils.getTokenPayload(this.form);
+  }
+
+  /**
+   * Request an account activation from the Videoflix API.
+   * @param payload - The payload for an account activation.
+   * @returns An Observable with the user response.
+   */
+  request$(payload: TokenPayload): Observable<UserResponse> {
+    return this.auth.activateAccount(payload);
+  }
+
+  /**
+   * Complete account activation and redirect user to success page.
+   */
+  onSuccess(): void {
     this.toasts.close();
-    this.router.navigateByUrl('/activate-account/success');
+    this.router.navigateByUrl('/activate-account/success', {
+      replaceUrl: true,
+    });
+  }
+
+  /**
+   * Handle error response and further actions.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    this.toasts.openError(error);
   }
 }

@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="auth-form" (ngSubmit)="onAccountReactivation()">
+<form [formGroup]="form" class="auth-form" (ngSubmit)="onRequest()">
     @if (isLoading()) {
     <app-loading-bar></app-loading-bar>
     }
@@ -13,6 +13,6 @@
     </div>
 
     <div class="button-cont">
-        <app-button text="Send email" type="submit" [disabled]="isFormInvalid()"></app-button>
+        <app-button text="Send email" type="submit" [disabled]="isFormUnready()"></app-button>
     </div>
 </form>

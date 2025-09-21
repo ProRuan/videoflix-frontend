@@ -19,3 +19,16 @@ export type ResponseOf<K extends RequestMethod> = AuthRequests[K] extends (
 ) => Observable<infer R>
   ? R
   : never;
+
+// new
+export type AuthPayloads<K extends RequestMethod> = AuthRequests[K] extends (
+  p: infer P
+) => Observable<unknown>
+  ? P
+  : never;
+
+export type AuthResponses<K extends RequestMethod> = AuthRequests[K] extends (
+  p: unknown
+) => Observable<infer R>
+  ? R
+  : never;

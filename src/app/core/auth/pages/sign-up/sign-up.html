@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="auth-form" (ngSubmit)="onRegistration()">
+<form [formGroup]="form" class="auth-form" (ngSubmit)="onRequest()">
     @if (isLoading()) {
     <app-loading-bar></app-loading-bar>
     }
@@ -14,6 +14,6 @@
     </div>
 
     <div class="button-cont">
-        <app-button text="Get started" type="submit" [disabled]="isFormInvalid()"></app-button>
+        <app-button text="Get started" type="submit" [disabled]="isFormUnready()"></app-button>
     </div>
 </form>

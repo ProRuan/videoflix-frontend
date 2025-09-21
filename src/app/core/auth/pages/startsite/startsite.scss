@@ -16,11 +16,6 @@
 }
 
 .text {
-  @include font();
   text-align: center;
   color: $white;
-}
-
-.form {
-  @include flexbox($g: 16px);
 }

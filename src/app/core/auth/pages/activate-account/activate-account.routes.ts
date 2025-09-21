@@ -22,7 +22,7 @@ export const activateAccountRoutes: Routes = [
     component: ActivateAccount,
     data: { parent: 'activate-account' },
     canActivate: [tokenGuard],
-    resolve: { response: TokenResolver },
+    resolve: { token: TokenResolver },
   },
   { path: '**', redirectTo: 'bad-request' },
 ];

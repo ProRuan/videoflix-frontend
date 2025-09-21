@@ -5,7 +5,7 @@ import {
   Router,
 } from '@angular/router';
 
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 import { tokenPatterns } from '@shared/modules/form-validation';
 
@@ -24,6 +24,12 @@ export class TokenStore {
 
   // auth pages, e. g. video/offer/:token should just have 401 ... ?!
   // only activate-account and activation-token-check can have 400 ... ?!
+
+  // 1. error interceptors are for global use ...
+  //     --> let guard and resolver handle the specific error cases / pages ...
+  // 2. review token check and activation token check, no login check (0/3) ...
+  // 3. simple guard check, mapped resolver check (errors -> pages) ...
+  // 4. do not save short-lived token at auth store ... ?!
 
   private readonly pattern = tokenPatterns.token;
 
@@ -77,14 +83,16 @@ export class TokenStore {
     console.log('parent: ', route.parent?.url[0].path);
     const parent = route.parent?.url[0].path;
     if (parent === 'activate-account') {
-      return this.auth
-        .checkActivationToken(token)
-        .pipe(catchError(() => this.getRedirectCommand(url)));
+      return this.auth.checkActivationToken(token).pipe(
+        map((data) => data['token']),
+        catchError(() => this.getRedirectCommand(url))
+      );
     }
 
-    return this.auth
-      .checkToken()
-      .pipe(catchError(() => this.getRedirectCommand(url)));
+    return this.auth.checkToken().pipe(
+      map((data) => data['email']),
+      catchError(() => this.getRedirectCommand(url))
+    );
   }
 
   /**

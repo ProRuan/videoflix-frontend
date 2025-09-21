@@ -1,14 +1,16 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs';
+
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls } from '@core/auth/interfaces';
+import { EmailForm, EmailPayload, EmailResponse } from '@core/auth/interfaces';
+import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
-import { FormValidator } from '@shared/modules/form-validation';
-
-import { Videoflix } from '../../../../shared/services/videoflix';
+import { ToastManager } from '@shared/services';
 
 /**
  * Class representing a startsite component.
@@ -20,30 +22,57 @@ import { Videoflix } from '../../../../shared/services/videoflix';
   templateUrl: './startsite.html',
   styleUrl: './startsite.scss',
 })
-export class Startsite extends AuthFormBase {
-  private router: Router = inject(Router);
-  private videoflix: Videoflix = inject(Videoflix);
-
-  protected controls: FormGroupControls = {
-    email: ['', FormValidator.emailValidators],
-  };
+export class Startsite extends AuthFormBase<
+  EmailForm,
+  EmailPayload,
+  EmailResponse
+> {
+  private router = inject(Router);
+  private auth = inject(AuthStore);
+  private utils = inject(AuthUtils);
+  private user = inject(UserClient);
+  private toasts = inject(ToastManager);
 
   /**
-   * Perform an email check on submit before redirecting to the sign-up page.
-   *
-   * Caches the email and redirects to the sign-up page on success;
-   * shows an error toast on error.
+   * Get an email form.
+   * @returns The email form.
    */
-  onSignUp() {
-    this.performRequest('checkEmail', () => this.handleSuccess());
+  getForm(): FormGroup<EmailForm> {
+    return this.utils.getEmailForm();
   }
 
   /**
-   * Cache the email and redirect to the sign-up page.
+   * Get the payload for an email check.
+   * @returns The payload for the email check.
    */
-  private handleSuccess() {
+  getPayload(): EmailPayload {
+    return this.utils.getEmailPayload(this.form);
+  }
+
+  /**
+   * Request an email check from the Videoflix API.
+   * @param payload - The payload for the email check.
+   * @returns An Observable with the response of the email check.
+   */
+  request$(payload: EmailPayload): Observable<EmailResponse> {
+    return this.auth.checkEmail(payload);
+  }
+
+  /**
+   * Complete email check and redirect user to sign-up.
+   * @param response - The response of the email check.
+   */
+  onSuccess(response: EmailResponse): void {
     this.toasts.close();
-    this.videoflix.cachedEmail = this.email?.value;
+    this.user.startEmail = response.email;
     this.router.navigateByUrl('/sign-up');
+  }
+
+  /**
+   * Show an error toast with details.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    console.log('error: ', error);
   }
 }

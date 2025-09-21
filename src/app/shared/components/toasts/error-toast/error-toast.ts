@@ -28,7 +28,8 @@ export class ErrorToast {
    * @return The message of the error toast.
    */
   get message() {
-    return this.toasts.message;
+    // think about this ...
+    return this.toasts.errorMessage();
   }
 
   /**

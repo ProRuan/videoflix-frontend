@@ -22,7 +22,7 @@ export const resetPasswordRoutes: Routes = [
     component: ResetPassword,
     data: { parent: 'reset-password' },
     canActivate: [tokenGuard],
-    resolve: { response: TokenResolver },
+    resolve: { email: TokenResolver },
   },
   { path: '**', redirectTo: 'bad-request' },
 ];

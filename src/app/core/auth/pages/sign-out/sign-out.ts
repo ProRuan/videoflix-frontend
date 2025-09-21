@@ -1,15 +1,19 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
+import { Observable } from 'rxjs';
+
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls } from '@core/auth/interfaces';
+import { EmailResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
+import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { DialogIds } from '@shared/constants';
-import { FormValidator } from '@shared/modules/form-validation';
+import { DialogManager, ToastManager } from '@shared/services';
 
 /**
  * Class representing a sign-out component.
@@ -17,37 +21,69 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-sign-out',
-  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput, PasswordInput],
+  imports: [Button, EmailInput, LoadingBar, PasswordInput, ReactiveFormsModule],
   templateUrl: './sign-out.html',
   styleUrl: './sign-out.scss',
 })
-export class SignOut extends AuthFormBase {
-  private route: ActivatedRoute = inject(ActivatedRoute);
+export class SignOut extends AuthFormBase<
+  LoginForm,
+  LoginPayload,
+  EmailResponse
+> {
+  private route = inject(ActivatedRoute);
+  private auth = inject(AuthStore);
+  private utils = inject(AuthUtils);
+  private dialogs = inject(DialogManager);
+  private toasts = inject(ToastManager);
 
   data = toSignal(this.route.data);
-  response = computed(() => this.data()?.['response']);
-  token = computed(() => this.response?.()?.['token'] as string);
-  requestEmail = computed(() => this.response()?.email);
-
-  protected controls: FormGroupControls = {
-    email: [this.requestEmail(), FormValidator.emailValidators],
-    password: ['', FormValidator.passwordValidators],
-  };
+  requestEmail = computed(() => this.data()?.['email'] as string);
 
   /**
-   * Perform a user deregistration on submit.
-   *
-   * Opens a success dialog with further information on success;
-   * shows an error toast on error.
+   * Get a deregistration form.
+   * @returns The deregistration form.
    */
-  onDeregistration() {
-    this.performRequest('deregister', () => this.handleSuccess());
+  getForm(): FormGroup<LoginForm> {
+    return this.utils.getLoginForm();
   }
 
   /**
-   * Show a success dialog upon a successful user deregistration.
+   * Update the email control with the user´s email.
    */
-  private handleSuccess() {
-    this.showSuccessDialog(DialogIds.SignOutSuccess);
+  override initOptions(): void {
+    this.email.setValue(this.requestEmail());
+  }
+
+  /**
+   * Get the payload for a deregistration.
+   * @returns The payload for the deregistration.
+   */
+  getPayload(): LoginPayload {
+    return this.utils.getLoginPayload(this.form);
+  }
+
+  /**
+   * Request a deregistration from the Videoflix API.
+   * @param payload - The payload for the deregistration.
+   * @returns An Observable with the email response.
+   */
+  request$(payload: LoginPayload): Observable<EmailResponse> {
+    return this.auth.deregister(payload);
+  }
+
+  /**
+   * Show a success dialog upon a successful deregistration.
+   */
+  onSuccess(): void {
+    this.toasts.close();
+    this.dialogs.openSuccessDialog(DialogIds.SignOutSuccess);
+  }
+
+  /**
+   * Handle error response and further actions.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    this.toasts.openError(error);
   }
 }

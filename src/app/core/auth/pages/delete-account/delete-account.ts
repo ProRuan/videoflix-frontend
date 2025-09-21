@@ -1,12 +1,16 @@
-import { Component, computed, inject, Signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Data, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { Observable } from 'rxjs';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
+import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
-import { FormValidator } from '@shared/modules/form-validation';
+import { EmptyObject } from '@shared/interfaces';
+import { ToastManager } from '@shared/services';
 
 /**
  * Class representing a delete-account component.
@@ -14,37 +18,58 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-delete-account',
-  imports: [Button, LoadingBar],
+  imports: [Button, LoadingBar, ReactiveFormsModule],
   templateUrl: './delete-account.html',
   styleUrl: './delete-account.scss',
 })
-export class DeleteAccount extends AuthFormBase {
-  route: ActivatedRoute = inject(ActivatedRoute);
-  router: Router = inject(Router);
-
-  data: Signal<Data | undefined> = toSignal(this.route.data);
-  response: Signal<AuthResponse> = computed(() => this.data()?.['response']);
-  token: Signal<string> = computed(() => this.response()?.token);
-
-  protected controls: FormGroupControls = {
-    token: [this.token(), FormValidator.tokenValidators],
-  };
+export class DeleteAccount extends AuthFormBase<
+  EmptyObject,
+  EmptyObject,
+  void
+> {
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  auth = inject(AuthStore);
+  utils = inject(AuthUtils);
+  toasts = inject(ToastManager);
 
   /**
-   * Perform an delete-account request on submit.
-   *
-   * Redirect to the delete-account success page on success;
-   * shows an error toast on error.
+   * Get a default form.
+   * @returns The default form.
    */
-  onDelete() {
-    this.performRequest('deleteAccount', () => this.handleSuccess());
+  getForm(): FormGroup<EmptyObject> {
+    return this.utils.getEmptyForm();
   }
 
   /**
-   * Redirect to the delete-account success page.
+   * Get the payload for default.
+   * @returns The payload for default.
    */
-  private handleSuccess(): void {
+  getPayload(): EmptyObject {
+    return this.utils.getEmptyPayload();
+  }
+
+  /**
+   * Request an account deletion from the Videoflix API.
+   * @returns An Observable with no response.
+   */
+  request$(): Observable<void> {
+    return this.auth.deleteAccount();
+  }
+
+  /**
+   * Complete account deletion and redirect user to success page.
+   */
+  onSuccess(): void {
     this.toasts.close();
-    this.router.navigateByUrl('/delete-account/success');
+    this.router.navigateByUrl('/delete-account/success', { replaceUrl: true });
+  }
+
+  /**
+   * Show an error toast with details.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    console.log('error: ', error);
   }
 }

@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import { Observable } from 'rxjs';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls } from '@core/auth/interfaces';
+import { EmailForm, EmailPayload, EmailResponse } from '@core/auth/interfaces';
+import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { DialogIds } from '@shared/constants';
-import { FormValidator } from '@shared/modules/form-validation';
+import { DialogManager, ToastManager } from '@shared/services';
 
 /**
  * Class representing a forgot-password component.
@@ -15,29 +19,58 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-forgot-password',
-  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput],
+  imports: [Button, EmailInput, LoadingBar, ReactiveFormsModule],
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.scss',
 })
-export class ForgotPassword extends AuthFormBase {
-  protected override controls: FormGroupControls = {
-    email: ['', FormValidator.emailValidators],
-  };
+export class ForgotPassword extends AuthFormBase<
+  EmailForm,
+  EmailPayload,
+  EmailResponse
+> {
+  private auth = inject(AuthStore);
+  private utils = inject(AuthUtils);
+  private dialogs = inject(DialogManager);
+  private toasts = inject(ToastManager);
 
   /**
-   * Perform a reset-password request on submit.
-   *
-   * Opens a success dialog with further information on success;
-   * shows an error toast on error.
+   * Get an email form.
+   * @returns The email form.
    */
-  onPasswordReset() {
-    this.performRequest('resetPassword', () => this.handleSuccess());
+  getForm(): FormGroup<EmailForm> {
+    return this.utils.getEmailForm();
   }
 
   /**
-   * Show a success dialog upon a successful password reset.
+   * Get a payload for a password reset.
+   * @returns The payload for a password reset.
    */
-  private handleSuccess() {
-    this.showSuccessDialog(DialogIds.ForgotPasswordSuccess);
+  getPayload(): EmailPayload {
+    return this.utils.getEmailPayload(this.form);
+  }
+
+  /**
+   * Request a password reset from the Videoflix API.
+   * @param payload - The payload for the password reset.
+   * @returns An Observable with the email response.
+   */
+  request$(payload: EmailPayload): Observable<EmailResponse> {
+    return this.auth.resetPassword(payload);
+  }
+
+  /**
+   * Show a success dialog upon successful password reset.
+   */
+  onSuccess(): void {
+    this.toasts.close();
+    this.dialogs.openSuccessDialog(DialogIds.ForgotPasswordSuccess);
+  }
+
+  /**
+   * Show an error toast with details.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    console.log('error: ', error);
   }
 }

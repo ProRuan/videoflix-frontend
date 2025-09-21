@@ -1,15 +1,21 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import { Observable } from 'rxjs';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { FormGroupControls } from '@core/auth/interfaces';
+import {
+  RegistrationForm,
+  RegistrationPayload,
+  RegistrationResponse,
+} from '@core/auth/interfaces';
+import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
 import { DialogIds } from '@shared/constants';
-import { FormValidator } from '@shared/modules/form-validation';
-
-import { Videoflix } from '../../../../shared/services/videoflix';
+import { DialogManager, ToastManager } from '@shared/services';
 
 /**
  * Class representing a sign-up component.
@@ -18,53 +24,66 @@ import { Videoflix } from '../../../../shared/services/videoflix';
  */
 @Component({
   selector: 'app-sign-up',
-  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput, PasswordInput],
+  imports: [Button, EmailInput, LoadingBar, PasswordInput, ReactiveFormsModule],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })
-export class SignUp extends AuthFormBase implements OnInit {
-  private videoflix: Videoflix = inject(Videoflix);
-
-  protected controls: FormGroupControls = {
-    email: ['', FormValidator.emailValidators],
-    password: ['', FormValidator.passwordValidators],
-    confirmPassword: ['', FormValidator.passwordValidators],
-  };
-
-  protected override options: AbstractControlOptions | null = {
-    validators: FormValidator.formValidators,
-  };
+export class SignUp extends AuthFormBase<
+  RegistrationForm,
+  RegistrationPayload,
+  RegistrationResponse
+> {
+  auth = inject(AuthStore);
+  utils = inject(AuthUtils);
+  user = inject(UserClient);
+  dialogs = inject(DialogManager);
+  toasts = inject(ToastManager);
 
   /**
-   * Initialize a sign-up component.
+   * Get a registration form.
+   * @returns The registration form.
    */
-  override ngOnInit() {
-    this.setForm();
-    this.updateEmail();
+  getForm(): FormGroup<RegistrationForm> {
+    return this.utils.getRegistrationForm();
   }
 
   /**
-   * Update an email control with the cached value
-   * provided by the startsite form.
+   * Update the email control with a user´s start email.
    */
-  private updateEmail() {
-    this.email?.setValue(this.videoflix.cachedEmail);
+  override initOptions(): void {
+    this.email.setValue(this.user.startEmail);
   }
 
   /**
-   * Perform a user registration on submit.
-   *
-   * Opens a success dialog with further information on success;
-   * shows an error toast on error.
+   * Get the payload for a registration.
+   * @returns The payload for the registration.
    */
-  onRegistration() {
-    this.performRequest('register', () => this.handleSuccess());
+  getPayload(): RegistrationPayload {
+    return this.utils.getRegistrationPayload(this.form);
   }
 
   /**
-   * Show a success dialog upon a successful user registration.
+   * Request a registration from the Videoflix API.
+   * @param payload - The registration payload.
+   * @returns An Observable with the registration response.
    */
-  private handleSuccess() {
-    this.showSuccessDialog(DialogIds.SignUpSuccess);
+  request$(payload: RegistrationPayload): Observable<RegistrationResponse> {
+    return this.auth.register(payload);
+  }
+
+  /**
+   * Show a success dialog upon successful registration.
+   */
+  onSuccess(): void {
+    this.toasts.close();
+    this.dialogs.openSuccessDialog(DialogIds.SignUpSuccess);
+  }
+
+  /**
+   * Show an error toast with details.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    console.log('error: ', error);
   }
 }

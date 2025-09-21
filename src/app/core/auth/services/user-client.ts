@@ -13,6 +13,12 @@ export class UserClient {
   private router = inject(Router);
   private auth = inject(AuthStore);
 
+  startEmail: string = '';
+
+  email: string = '';
+  id: number = 0;
+
+  // remove ... ?
   user = new User();
 
   constructor() {}
@@ -26,6 +32,11 @@ export class UserClient {
   }
 
   logIn(response: AuthResponse) {
+    this.email = response.email;
+    this.id = response.user_id;
+    // move ... ?
+    this.auth.setToken(response.token);
+    // remove ... !
     this.user.setAuthData(response);
   }
 

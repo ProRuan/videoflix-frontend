@@ -1,14 +1,17 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
+import { Observable } from 'rxjs';
+
 import { AuthFormBase } from '@core/auth/directives';
-import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
-import { UserClient } from '@core/auth/services';
+import { AuthResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
+import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { FormValidator } from '@shared/modules/form-validation';
+import { ToastManager } from '@shared/services';
 
 /**
  * Class representing a log-in component.
@@ -18,41 +21,62 @@ import { FormValidator } from '@shared/modules/form-validation';
   selector: 'app-log-in',
   imports: [
     Button,
+    EmailInput,
+    LoadingBar,
+    PasswordInput,
     ReactiveFormsModule,
     RouterLink,
-    LoadingBar,
-    EmailInput,
-    PasswordInput,
   ],
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
 })
-export class LogIn extends AuthFormBase {
-  private router: Router = inject(Router);
+export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
+  private router = inject(Router);
+  private auth = inject(AuthStore);
+  private utils = inject(AuthUtils);
   private user = inject(UserClient);
-
-  protected controls: FormGroupControls = {
-    email: ['', FormValidator.emailValidators],
-    password: ['', FormValidator.passwordValidators],
-  };
+  private toasts = inject(ToastManager);
 
   /**
-   * Perform a user log-in on submit.
-   *
-   * Redirects to the video offer page on success;
-   * shows an error toast on error.
+   * Get a login form.
+   * @returns The login form.
    */
-  onLogIn() {
-    this.performRequest('logIn', (r: AuthResponse) => this.handleSuccess(r));
+  getForm(): FormGroup<LoginForm> {
+    return this.utils.getLoginForm();
   }
 
   /**
-   * Set the auth token and redirect to the video offer page.
-   * @param response The auth response.
+   * Get the payload for a login.
+   * @returns The payload for the login.
    */
-  private handleSuccess(response: AuthResponse) {
+  getPayload(): LoginPayload {
+    return this.utils.getLoginPayload(this.form);
+  }
+
+  /**
+   * Request a login from the Videoflix API.
+   * @param payload - The payload for the login.
+   * @returns An Observable with the authentication response.
+   */
+  request$(payload: LoginPayload): Observable<AuthResponse> {
+    return this.auth.logIn(payload);
+  }
+
+  /**
+   * Complete the login and redirect user to video offer.
+   * @param response - The authentication response.
+   */
+  onSuccess(response: AuthResponse): void {
     this.toasts.close();
     this.user.logIn(response);
     this.router.navigateByUrl(`/video/offer/${response.token}`);
+  }
+
+  /**
+   * Show an error toast with details.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    console.log('error: ', error);
   }
 }

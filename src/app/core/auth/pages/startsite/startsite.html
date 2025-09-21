@@ -4,9 +4,9 @@
         <p class="text">Enter your email to create or restart your subscription.</p>
     </div>
 
-    <form [formGroup]="form" class="form" (ngSubmit)="onSignUp()">
+    <form [formGroup]="form" class="row-16" (ngSubmit)="onRequest()">
         <app-start-email-input [control]="email"></app-start-email-input>
-        <app-button icon="chevron_right" text="Sign up" type="submit" [disabled]="isFormInvalid()"
+        <app-button icon="chevron_right" text="Sign up" type="submit" [disabled]="isFormUnready()"
             [reverse]="true"></app-button>
     </form>
 </div>

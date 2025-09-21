@@ -11,5 +11,5 @@
 }
 
 .button-cont {
-  @include flexbox($jc: space-evenly);
+  @include flexbox($jc: center);
 }

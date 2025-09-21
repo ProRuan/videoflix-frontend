@@ -1,177 +1,154 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { Directive, inject, OnInit, signal } from '@angular/core';
 import {
-  Directive,
-  inject,
-  OnInit,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import { AbstractControlOptions, FormBuilder, FormGroup } from '@angular/forms';
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+} from '@angular/forms';
 
 import { finalize, Observable } from 'rxjs';
 
-import { DialogIds } from '@shared/constants';
 import { formGroupErrorMessages } from '@shared/modules/form-validation';
-import { DialogManager, ToastManager } from '@shared/services';
 
-import { FormGroupControls } from '../interfaces';
-import { AuthStore } from '../services';
-import { PayloadOf, RequestMethod, ResponseOf } from '../types';
+type Controls<T> = { [K in keyof T]: AbstractControl<any, any> };
 
 /**
- * Abstract class representing an auth form base.
+ * Class representing an authentication form base directive.
  *
- * Provides common properties and methods related to authentication forms.
+ * Provides properties and methods for authentication forms and requests.
  *
  * @implements {OnInit}
  */
 @Directive()
-export abstract class AuthFormBase implements OnInit {
-  private fb: FormBuilder = inject(FormBuilder);
-  private auth: AuthStore = inject(AuthStore);
-  protected dialogs: DialogManager = inject(DialogManager);
-  protected toasts: ToastManager = inject(ToastManager);
+export abstract class AuthFormBase<
+  Form extends Controls<Form>,
+  Payload,
+  Response
+> implements OnInit
+{
+  fb = inject(NonNullableFormBuilder);
 
-  form!: FormGroup;
-  protected abstract controls: FormGroupControls;
-  protected options?: AbstractControlOptions | null;
-  isLoading: WritableSignal<boolean> = signal(false);
-
-  private readonly requestMethodError = [
-    'Request method undefined.',
-    'Please implement the interface AuthRequests on the Authenticator service,',
-    'and add the missing request method.',
-  ].join(' ');
+  form!: FormGroup<Form>;
+  isLoading = signal(false);
 
   /**
-   * Get the email control of a form.
-   * @returns The email control or null.
+   * Get a form´s email control.
+   * @returns The form´s email control.
    */
   get email() {
-    return this.form.get('email');
+    return this.form.get('email') as FormControl;
   }
 
   /**
-   * Get the password control of a form.
-   * @returns The password control or null.
+   * Get a form´s password control.
+   * @returns The form´s password control.
    */
   get password() {
-    return this.form.get('password');
+    return this.form.get('password') as FormControl;
   }
 
   /**
-   * Get the confirm-password control of a form.
-   * @returns The confirm-password control or null.
+   * Get a form´s confirm-password control.
+   * @returns The form´s confirm-password control.
    */
   get confirmPassword() {
-    return this.form.get('confirmPassword');
+    return this.form.get('confirmPassword') as FormControl;
   }
 
   /**
-   * Initializes an auth form base.
+   * Initialize an authentication form base.
    */
   ngOnInit(): void {
     this.setForm();
+    this.initOptions();
   }
 
   /**
-   * Set a form.
+   * Set an authentication form.
    */
-  protected setForm() {
+  setForm() {
     this.form = this.getForm();
   }
 
   /**
-   * Get a form.
-   * @returns The form.
+   * Get an authentication form.
+   * @returns The authentication form.
    */
-  protected getForm() {
-    return this.fb.group(this.controls, this.options);
-  }
+  abstract getForm(): FormGroup<Form>;
 
   /**
-   * Perform a API request.
-   *
-   * Calls a provided method on success;
-   * shows an error toast on error.
-   *
-   * @param key - The request method key.
-   * @param onSuccess - The method to be called on success.
+   * Initialize optional settings, e. g. init values of form controls.
    */
-  protected performRequest<T extends RequestMethod>(
-    key: T,
-    onSuccess: (response: ResponseOf<T>) => void
-  ) {
-    if (this.isFormInvalid()) return;
+  initOptions() {}
+
+  /**
+   * Request an authentication action from the Videoflix API on submit.
+   * @returns Void.
+   */
+  onRequest() {
+    if (this.isFormUnready()) return;
     this.isLoading.set(true);
-    const request$ = this.getRequest$<T>(key);
-    request$.pipe(finalize(() => this.isLoading.set(false))).subscribe({
-      next: (value: ResponseOf<T>) => onSuccess(value),
-      error: () => this.handleError(),
-    });
+    this.performRequest();
   }
 
   /**
-   * Check a sign-up form for invalidity.
-   * @returns A boolean value.
+   * Perform an authentication request to the Videoflix API.
+   *
+   * Handle response and further actions, if successful.
+   *
+   * Otherwise, handle error and user feedback.
    */
-  isFormInvalid() {
-    return this.form.invalid || this.isLoading();
+  performRequest() {
+    const payload = this.getPayload();
+    this.request$(payload)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (value) => this.onSuccess(value),
+        error: (error) => this.onError(error),
+      });
   }
 
   /**
-   * Get a request observable with a specified response type.
-   * @param key - The request method key of the authenticator.
-   * @returns The request observable with the specified response type.
+   * Get the payload for an authentication request.
+   * @returns The payload for the authentication request.
    */
-  private getRequest$<T extends RequestMethod>(
-    key: keyof AuthStore
-  ): Observable<ResponseOf<T>> {
-    const payload = this.getPayload<T>();
-    const request$ = this.auth[key]?.(payload);
-    if (typeof request$ === 'undefined') {
-      this.isLoading.set(false);
-      throw new Error(this.requestMethodError);
-    }
-    return request$;
-  }
+  abstract getPayload(): Payload;
 
   /**
-   * Get a payload for an API request.
-   * @returns The payload for the API request.
+   * Request an authentication action from the Videoflix API.
+   * @param payload - The request payload.
+   * @returns An Observable with the success response.
    */
-  private getPayload<T extends RequestMethod>(): PayloadOf<T> {
-    const payload = this.form?.value;
-    if (Object.keys(payload).includes('confirmPassword')) {
-      payload.repeated_password = payload.confirmPassword;
-      delete payload.confirmPassword;
-    }
-    return payload;
-  }
+  abstract request$(payload: Payload): Observable<Response>;
 
   /**
-   * Show an error toast upon a failed request.
+   * Handle success response and further actions.
+   * @param response - The success response.
    */
-  protected handleError() {
-    this.toasts.openErrorToast();
+  abstract onSuccess(response: Response): void;
+
+  /**
+   * Handle error response and further actions.
+   * @param error - The error response.
+   */
+  abstract onError(error: HttpErrorResponse): void;
+
+  /**
+   * Check a form for unreadiness.
+   * @returns True if the form is invalid or loading, otherwise false.
+   */
+  isFormUnready() {
+    return this.form.invalid || this.isLoading() === true;
   }
 
   /**
-   * Get a password match error.
+   * Get a password match error or undefined.
    * @returns The password match error or undefined.
    */
   getMatchError() {
     const key = 'passwordMismatch';
     const error = this.form.getError(key);
     return error ? formGroupErrorMessages[key] : undefined;
-  }
-
-  /**
-   * Show a success dialog.
-   * @param id - The success dialog id.
-   */
-  protected showSuccessDialog(id: DialogIds) {
-    this.form.reset();
-    this.toasts.slideOutImmediately();
-    this.dialogs.openSuccessDialog(id);
   }
 }

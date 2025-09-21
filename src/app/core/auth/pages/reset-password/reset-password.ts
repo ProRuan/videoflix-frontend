@@ -1,14 +1,22 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AbstractControlOptions, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Data, Router } from '@angular/router';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { Observable } from 'rxjs';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { AuthResponse, FormGroupControls } from '@core/auth/interfaces';
+import {
+  RegistrationForm,
+  RegistrationPayload,
+  RegistrationResponse,
+} from '@core/auth/interfaces';
+import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { FormValidator } from '@shared/modules/form-validation';
+import { ToastManager } from '@shared/services';
 
 /**
  * Class representing a reset-password component.
@@ -16,45 +24,69 @@ import { FormValidator } from '@shared/modules/form-validation';
  */
 @Component({
   selector: 'app-reset-password',
-  imports: [Button, ReactiveFormsModule, LoadingBar, EmailInput, PasswordInput],
+  imports: [Button, EmailInput, LoadingBar, PasswordInput, ReactiveFormsModule],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })
-export class ResetPassword extends AuthFormBase {
-  route: ActivatedRoute = inject(ActivatedRoute);
-  router: Router = inject(Router);
+export class ResetPassword extends AuthFormBase<
+  RegistrationForm,
+  RegistrationPayload,
+  RegistrationResponse
+> {
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  auth = inject(AuthStore);
+  utils = inject(AuthUtils);
+  toasts = inject(ToastManager);
 
-  data: Signal<Data | undefined> = toSignal(this.route.data);
-  response: Signal<AuthResponse> = computed(() => this.data()?.['response']);
-  token: Signal<string> = computed(() => this.response()?.token);
-  requestEmail: Signal<string> = computed(() => this.response()?.email);
-
-  protected controls: FormGroupControls = {
-    token: [this.token(), FormValidator.tokenValidators],
-    email: [this.requestEmail(), FormValidator.emailValidators],
-    password: ['', FormValidator.passwordValidators],
-    confirmPassword: ['', FormValidator.passwordValidators],
-  };
-
-  protected override options: AbstractControlOptions | null = {
-    validators: FormValidator.formValidators,
-  };
+  data = toSignal(this.route.data);
+  requestEmail = computed(() => this.data()?.['email'] as string);
 
   /**
-   * Perform an update-password request on submit.
-   *
-   * Redirect to the reset-passsword success page on success;
-   * shows an error toast on error.
+   * Get a password update form.
+   * @returns The password update form.
    */
-  onPasswordUpdate() {
-    this.performRequest('updatePassword', () => this.handleSuccess());
+  getForm(): FormGroup<RegistrationForm> {
+    return this.utils.getRegistrationForm();
   }
 
   /**
-   * Redirect to the reset-password success page.
+   * Update the email control with the user´s email.
    */
-  private handleSuccess(): void {
+  override initOptions(): void {
+    this.email.setValue(this.requestEmail());
+  }
+
+  /**
+   * Get the payload for a password update.
+   * @returns The payload for the password update.
+   */
+  getPayload(): RegistrationPayload {
+    return this.utils.getRegistrationPayload(this.form);
+  }
+
+  /**
+   * Request a password update from the Videoflix API.
+   * @param payload - The payload for the password update.
+   * @returns An Observable with the registration response.
+   */
+  request$(payload: RegistrationPayload): Observable<RegistrationResponse> {
+    return this.auth.updatePassword(payload);
+  }
+
+  /**
+   * Complete password update and redirect user to success page.
+   */
+  onSuccess(): void {
     this.toasts.close();
-    this.router.navigateByUrl('/reset-password/success');
+    this.router.navigateByUrl('/reset-password/success', { replaceUrl: true });
+  }
+
+  /**
+   * Handle error response and further actions.
+   * @param error - The error response.
+   */
+  onError(error: HttpErrorResponse): void {
+    console.log('error: ', error);
   }
 }

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
 import { ToastIds } from '@shared/constants';
 
 import { OverlayManagerBase } from './overlay-manager-base';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * Class representing a toast manager service.
@@ -14,6 +15,19 @@ import { OverlayManagerBase } from './overlay-manager-base';
 export class ToastManager extends OverlayManagerBase {
   message: string = 'Please check your input and try again.';
   private timeoutId!: ReturnType<typeof setTimeout>;
+
+  // improve an rename ... !
+  errorMessage: WritableSignal<string> = signal('');
+
+  // improve an rename ... !
+  openError(error: HttpErrorResponse) {
+    this.open(ToastIds.Error);
+    console.log('error: ', error);
+    console.log('error - status: ', error.status);
+    // console.log('error - status text: ', error.statusText);
+    console.log('error - custom: ', error.error.detail[0]);
+    this.errorMessage.set(error.error.detail[0]);
+  }
 
   /**
    * Open an error toast.

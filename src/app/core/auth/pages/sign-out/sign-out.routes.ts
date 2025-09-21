@@ -10,6 +10,6 @@ export const signOutRoutes: Routes = [
     path: ':token',
     component: SignOut,
     canActivate: [tokenGuard],
-    resolve: { response: TokenResolver },
+    resolve: { email: TokenResolver },
   },
 ];
