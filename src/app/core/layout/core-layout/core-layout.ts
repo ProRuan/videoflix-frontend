@@ -15,7 +15,7 @@ import { Header, Footer } from '../components';
  */
 @Component({
   selector: 'app-core-layout',
-  imports: [RouterOutlet, Header, Footer],
+  imports: [Footer, Header, RouterOutlet],
   templateUrl: './core-layout.html',
   styleUrl: './core-layout.scss',
   host: {
@@ -26,7 +26,7 @@ export class CoreLayout {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  theme: WritableSignal<string> = signal('');
+  theme = signal('');
 
   /**
    * Creates a core layout component.

@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 
 import { SKIP_AUTH } from '@core/http';
 
-import { AuthStore } from '../services';
+import { AuthStore } from '@core/auth/services';
 
 /**
  * Get current authentication headers.

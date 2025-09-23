@@ -34,6 +34,12 @@
       "@core/http/*": [
         "core/http/*"
       ],
+       "@core/interceptors": [
+        "core/interceptors"
+      ],
+      "@core/interceptors/*": [
+        "core/interceptors/*"
+      ],
       "@core/layout": [
         "core/layout"
       ],

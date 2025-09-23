@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { authInterceptor } from '@core/auth/interceptors';
+import { authInterceptor } from '@core/interceptors';
 
 import { routes } from './app.routes';
 

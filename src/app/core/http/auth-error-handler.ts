@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
+
 import { ErrorToastConfig } from '@shared/interfaces';
 
+/**
+ * Class representing an authentication error handler service.
+ *
+ * Provides default and specific error toast configurations.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthErrorHandler {
-  default = {
+  default: ErrorToastConfig = {
     status: 0,
     messages: ['Something went wrong.', 'Try again or contact support.'],
     button: {
@@ -13,12 +19,6 @@ export class AuthErrorHandler {
       route: '/imprint',
     },
   };
-
-  // rename to AuthErrorConfigurator ...
-  // remove default ...
-  // remove configurations which use default ...
-
-  constructor() {}
 
   startsite: ErrorToastConfig = {
     status: 400,
@@ -44,23 +44,13 @@ export class AuthErrorHandler {
     },
   };
 
-  activateAccount = this.default;
-
-  reactivateAccount = this.default;
-
   logIn: ErrorToastConfig = {
     status: 400,
     messages: ['Please check your login data and try again.'],
   };
 
-  forgotPassword = this.default;
-
-  resetPassword = this.default;
-
-  signOut = {
+  signOut: ErrorToastConfig = {
     status: 400,
     messages: ['Couldn´t sign you out. Please try again.'],
   };
-
-  deleteAccount = this.default;
 }
