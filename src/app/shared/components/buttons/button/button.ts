@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-type ButtonVariants = 'secondary';
+type ButtonVariants = 'secondary' | 'tertiary';
 
 /**
  * Class representing a button component.
@@ -29,6 +29,7 @@ export class Button {
     return {
       reverse: this.reverse,
       secondary: this.isVariant('secondary'),
+      tertiary: this.isVariant('tertiary'),
     };
   }
 

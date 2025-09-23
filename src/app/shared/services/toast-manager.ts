@@ -1,9 +1,11 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 
 import { ToastIds } from '@shared/constants';
 
 import { OverlayManagerBase } from './overlay-manager-base';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorToastConfig } from '@shared/interfaces';
+import { AuthErrorHandler } from '@core/http';
 
 /**
  * Class representing a toast manager service.
@@ -13,11 +15,45 @@ import { HttpErrorResponse } from '@angular/common/http';
   providedIn: 'root',
 })
 export class ToastManager extends OverlayManagerBase {
+  errors = inject(AuthErrorHandler);
+
+  messages: string[] = [];
+  label: string = '';
+  route: string = '';
+
+  default: ErrorToastConfig = this.errors.default;
+
   message: string = 'Please check your input and try again.';
   private timeoutId!: ReturnType<typeof setTimeout>;
 
   // improve an rename ... !
   errorMessage: WritableSignal<string> = signal('');
+
+  // replace any ...
+  // set default config ...
+  setErrorConfig(error: HttpErrorResponse, config?: ErrorToastConfig) {
+    if (config && error.status === config.status) {
+      this.messages = config.messages;
+      this.label = config.button?.label ?? '';
+      this.route = config.button?.route ?? '';
+    } else {
+      this.messages = this.default.messages;
+      this.label = this.default.button?.label ?? '';
+      this.route = this.default.button?.route ?? '';
+    }
+  }
+
+  setErrorToast(error: HttpErrorResponse, config?: ErrorToastConfig) {
+    if (config && error.status === config.status) {
+      this.messages = config.messages;
+      this.label = config.button?.label ?? '';
+      this.route = config.button?.route ?? '';
+    } else {
+      this.messages = this.default.messages;
+      this.label = this.default.button?.label ?? '';
+      this.route = this.default.button?.route ?? '';
+    }
+  }
 
   // improve an rename ... !
   openError(error: HttpErrorResponse) {
@@ -29,15 +65,21 @@ export class ToastManager extends OverlayManagerBase {
     this.errorMessage.set(error.error.detail[0]);
   }
 
+  // replace any with interface ...
+  showError(error: HttpErrorResponse, config?: ErrorToastConfig) {
+    this.setErrorToast(error, config);
+    this.openErrorToast();
+  }
+
   /**
    * Open an error toast.
    */
   openErrorToast() {
-    this.clearTimeout();
+    // this.clearTimeout();
     this.open(ToastIds.Error);
-    this.timeoutId = setTimeout(() => {
-      this.hasCloseStyle.set(true);
-    }, 4000);
+    // this.timeoutId = setTimeout(() => {
+    //   this.hasCloseStyle.set(true);
+    // }, 4000);
   }
 
   /**

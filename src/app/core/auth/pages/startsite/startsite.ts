@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { AuthFormBase } from '@core/auth/directives';
 import { EmailForm, EmailPayload, EmailResponse } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
+import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
 import { ToastManager } from '@shared/services';
@@ -31,6 +32,7 @@ export class Startsite extends AuthFormBase<
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
   private user = inject(UserClient);
+  private errors = inject(AuthErrorHandler);
   private toasts = inject(ToastManager);
 
   /**
@@ -63,16 +65,17 @@ export class Startsite extends AuthFormBase<
    * @param response - The response of the email check.
    */
   onSuccess(response: EmailResponse): void {
+    this.form.reset();
     this.toasts.close();
     this.user.startEmail = response.email;
     this.router.navigateByUrl('/sign-up');
   }
 
   /**
-   * Show an error toast with details.
+   * Show an error toast upon failed email check.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    console.log('error: ', error);
+    this.toasts.showError(error, this.errors.startsite);
   }
 }

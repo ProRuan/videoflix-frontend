@@ -78,18 +78,19 @@ export class ResetPassword extends AuthFormBase<
    * Complete password update and redirect user to success page.
    */
   onSuccess(): void {
+    this.form.reset();
     this.toasts.close();
-    this.router.navigate(['..', 'success'], {
-      relativeTo: this.route,
+    this.router.navigate(['success'], {
+      relativeTo: this.route.parent,
       replaceUrl: true,
     });
   }
 
   /**
-   * Handle error response and further actions.
+   * Show an error toast upon failed password update.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    console.log('error: ', error);
+    this.toasts.showError(error);
   }
 }

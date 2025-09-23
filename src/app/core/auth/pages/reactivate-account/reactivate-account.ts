@@ -62,15 +62,16 @@ export class ReactivateAccount extends AuthFormBase<
    * Show a success dialog upon successful account reactivation.
    */
   onSuccess(): void {
+    this.form.reset();
     this.toasts.close();
     this.dialogs.openSuccessDialog(DialogIds.ReactivateAccountSuccess);
   }
 
   /**
-   * Show an error toast with details.
+   * Show an error toast upon failed account reactivation.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    console.log('error: ', error);
+    this.toasts.showError(error);
   }
 }

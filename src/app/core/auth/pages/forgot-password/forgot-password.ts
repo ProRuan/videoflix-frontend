@@ -43,7 +43,7 @@ export class ForgotPassword extends AuthFormBase<
 
   /**
    * Get a payload for a password reset.
-   * @returns The payload for a password reset.
+   * @returns The payload for the password reset.
    */
   getPayload(): EmailPayload {
     return this.utils.getEmailPayload(this.form);
@@ -62,15 +62,16 @@ export class ForgotPassword extends AuthFormBase<
    * Show a success dialog upon successful password reset.
    */
   onSuccess(): void {
+    this.form.reset();
     this.toasts.close();
     this.dialogs.openSuccessDialog(DialogIds.ForgotPasswordSuccess);
   }
 
   /**
-   * Show an error toast with details.
+   * Show an error toast upon failed password reset.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    console.log('error: ', error);
+    this.toasts.showError(error);
   }
 }

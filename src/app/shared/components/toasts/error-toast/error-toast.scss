@@ -36,7 +36,7 @@ $image: url("/images/toasts/close_small.png");
 
 .message {
   @include font($fs: 16px, $lh: 21px);
-  max-width: 372px;
+  max-width: 323px;
   color: $white;
 }
 

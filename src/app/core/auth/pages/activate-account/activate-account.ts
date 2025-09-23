@@ -73,18 +73,19 @@ export class ActivateAccount extends AuthFormBase<
    * Complete account activation and redirect user to success page.
    */
   onSuccess(): void {
+    this.form.reset();
     this.toasts.close();
-    this.router.navigate(['..', 'success'], {
-      relativeTo: this.route,
+    this.router.navigate(['success'], {
+      relativeTo: this.route.parent,
       replaceUrl: true,
     });
   }
 
   /**
-   * Handle error response and further actions.
+   * Show an error toast upon failed account activation.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    this.toasts.openError(error);
+    this.toasts.showError(error);
   }
 }

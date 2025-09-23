@@ -13,7 +13,8 @@
   @include flexbox($jc: center, $ai: center, $g: 4px);
   position: relative;
   overflow: hidden;
-  transition: background-color 100ms ease-in-out;
+  // necessary ... ?
+  transition: color 100ms ease-in-out, background-color 100ms ease-in-out;
 
   &:disabled {
     background-color: $disabled;
@@ -26,6 +27,10 @@
 
   &.secondary {
     background-color: $sec-blue;
+  }
+
+  &.tertiary {
+    @include colors($c: $primBlue, $bgc: $white);
   }
 }
 
@@ -43,6 +48,11 @@
       $sec-blue 0%,
       $sec-blue-hover 100%
     );
+  }
+
+  // set ...
+  .button.tertiary & {
+    background-image: linear-gradient(90deg, $white 0%, $hoverBlue 200%);
   }
 
   .button:hover & {

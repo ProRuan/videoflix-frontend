@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { AuthFormBase } from '@core/auth/directives';
 import { AuthResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
+import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -35,6 +36,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
   private user = inject(UserClient);
+  private errors = inject(AuthErrorHandler);
   private toasts = inject(ToastManager);
 
   /**
@@ -67,16 +69,18 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
    * @param response - The authentication response.
    */
   onSuccess(response: AuthResponse): void {
+    this.form.reset();
     this.toasts.close();
     this.user.logIn(response);
     this.router.navigateByUrl(`/video/offer/${response.token}`);
   }
 
   /**
-   * Show an error toast with details.
+   * Show an error toast upon failed login.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    console.log('error: ', error);
+    this.password.reset();
+    this.toasts.showError(error, this.errors.logIn);
   }
 }

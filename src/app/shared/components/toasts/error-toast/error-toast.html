@@ -1,7 +1,19 @@
-<div class="error-toast" [class.slide-out]="closing" (transitionend)="onCloseEnd()">
-    <div class="rectangle"></div>
-    <img class="icon" src="/images/toasts/exclamation.png" alt="exclamation">
-    <p class="message">{{ message }}</p>
-    <div class="border"></div>
-    <button class="button" type="button" (click)="onCloseStart()"></button>
-</div>
+<dialog class="dialog" [class.transparent]="closing" (click)="onCloseStart()" (transitionend)="onCloseEnd()">
+
+    <div class="error-toast" [class.slide-out]="closing" (click)="onEventStop($event)">
+        <div class="rectangle"></div>
+        <img class="icon" src="/images/toasts/exclamation.png" alt="exclamation">
+        <div class="column">
+            @for (message of messages; track message) {
+            <p class="message">{{ message }}</p>
+            }
+        </div>
+        <!-- think about button label and route -->
+        @if (label) {
+        <app-button [text]="label" variant="tertiary" (click)="onRedirect()"></app-button>
+        }
+        <div class="border"></div>
+        <button class="button" type="button" (click)="onCloseStart()"></button>
+    </div>
+
+</dialog>

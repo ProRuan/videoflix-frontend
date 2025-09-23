@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { AuthFormBase } from '@core/auth/directives';
 import { EmailResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils } from '@core/auth/services';
+import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -34,6 +35,7 @@ export class SignOut extends AuthFormBase<
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
   private dialogs = inject(DialogManager);
+  private errors = inject(AuthErrorHandler);
   private toasts = inject(ToastManager);
 
   data = toSignal(this.route.data);
@@ -72,18 +74,20 @@ export class SignOut extends AuthFormBase<
   }
 
   /**
-   * Show a success dialog upon a successful deregistration.
+   * Show a success dialog upon successful deregistration.
    */
   onSuccess(): void {
+    this.form.reset();
     this.toasts.close();
     this.dialogs.openSuccessDialog(DialogIds.SignOutSuccess);
   }
 
   /**
-   * Handle error response and further actions.
+   * Show an error toast upon failed deregistration.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    this.toasts.openError(error);
+    this.password.reset();
+    this.toasts.showError(error, this.errors.signOut);
   }
 }

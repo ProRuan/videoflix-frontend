@@ -62,6 +62,10 @@ button {
   @include flexbox($g: 16px);
 }
 
+.column {
+  @include flexbox($fd: column);
+}
+
 .column-16 {
   @include flexbox($fd: column, $g: 16px);
 }

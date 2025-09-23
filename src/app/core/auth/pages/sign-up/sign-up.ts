@@ -11,6 +11,7 @@ import {
   RegistrationResponse,
 } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
+import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -37,6 +38,7 @@ export class SignUp extends AuthFormBase<
   utils = inject(AuthUtils);
   user = inject(UserClient);
   dialogs = inject(DialogManager);
+  errors = inject(AuthErrorHandler);
   toasts = inject(ToastManager);
 
   /**
@@ -75,15 +77,16 @@ export class SignUp extends AuthFormBase<
    * Show a success dialog upon successful registration.
    */
   onSuccess(): void {
+    this.form.reset();
     this.toasts.close();
     this.dialogs.openSuccessDialog(DialogIds.SignUpSuccess);
   }
 
   /**
-   * Show an error toast with details.
+   * Show an error toast upon failed registration.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    console.log('error: ', error);
+    this.toasts.showError(error, this.errors.signUp);
   }
 }

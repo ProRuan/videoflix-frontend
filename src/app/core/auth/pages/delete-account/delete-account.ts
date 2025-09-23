@@ -61,18 +61,19 @@ export class DeleteAccount extends AuthFormBase<
    * Complete account deletion and redirect user to success page.
    */
   onSuccess(): void {
+    this.form.reset();
     this.toasts.close();
-    this.router.navigate(['..', 'success'], {
-      relativeTo: this.route,
+    this.router.navigate(['success'], {
+      relativeTo: this.route.parent,
       replaceUrl: true,
     });
   }
 
   /**
-   * Show an error toast with details.
+   * Show an error toast upon failed account deletion.
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    console.log('error: ', error);
+    this.toasts.showError(error);
   }
 }

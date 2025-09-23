@@ -1,4 +1,6 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { Button } from '@shared/components/buttons';
 
 import { ToastIds } from '@shared/constants';
 import { ToastManager } from '@shared/services';
@@ -8,11 +10,12 @@ import { ToastManager } from '@shared/services';
  */
 @Component({
   selector: 'app-error-toast',
-  imports: [],
+  imports: [Button],
   templateUrl: './error-toast.html',
   styleUrl: './error-toast.scss',
 })
 export class ErrorToast {
+  private router = inject(Router);
   private toasts = inject(ToastManager);
 
   /**
@@ -28,8 +31,29 @@ export class ErrorToast {
    * @return The message of the error toast.
    */
   get message() {
-    // think about this ...
-    return this.toasts.errorMessage();
+    return this.toasts.message;
+  }
+
+  // display all messages ... !
+  get messages() {
+    return this.toasts.messages;
+  }
+
+  get label() {
+    return this.toasts.label;
+  }
+
+  get route() {
+    return this.toasts.route;
+  }
+
+  onEventStop(event: Event) {
+    event.stopPropagation();
+  }
+
+  onRedirect() {
+    this.toasts.close();
+    this.router.navigateByUrl(this.route);
   }
 
   /**
