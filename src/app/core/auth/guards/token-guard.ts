@@ -6,7 +6,7 @@ import { TokenStore } from '../services';
 /**
  * CanActivateFn representing a token guard.
  *
- * Activates a component, if a token is provided as URL parameter.
+ * Activates a component, if the route contains a short-lived token.
  *
  * @param route - The ActivatedRouteSnapshot.
  * @returns True or a URL tree.
