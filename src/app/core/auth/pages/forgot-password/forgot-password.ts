@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -16,6 +16,7 @@ import { DialogManager, ToastManager } from '@shared/services';
 /**
  * Class representing a forgot-password component.
  * @extends AuthFormBase
+ * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-forgot-password',
@@ -23,11 +24,10 @@ import { DialogManager, ToastManager } from '@shared/services';
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.scss',
 })
-export class ForgotPassword extends AuthFormBase<
-  EmailForm,
-  EmailPayload,
-  EmailResponse
-> {
+export class ForgotPassword
+  extends AuthFormBase<EmailForm, EmailPayload, EmailResponse>
+  implements OnDestroy
+{
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
   private dialogs = inject(DialogManager);
@@ -63,7 +63,6 @@ export class ForgotPassword extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.toasts.close();
     this.dialogs.openSuccessDialog(DialogIds.ForgotPasswordSuccess);
   }
 
@@ -73,5 +72,14 @@ export class ForgotPassword extends AuthFormBase<
    */
   onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
+  }
+
+  /**
+   * Destroy a forgot-password component.
+   */
+  ngOnDestroy(): void {
+    this.form.reset();
+    this.dialogs.close();
+    this.toasts.close();
   }
 }

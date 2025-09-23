@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { ToastManager } from '@shared/services';
 /**
  * Class representing an activate-account component.
  * @extends AuthFormBase
+ * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-activate-account',
@@ -23,11 +24,10 @@ import { ToastManager } from '@shared/services';
   templateUrl: './activate-account.html',
   styleUrl: './activate-account.scss',
 })
-export class ActivateAccount extends AuthFormBase<
-  TokenForm,
-  TokenPayload,
-  UserResponse
-> {
+export class ActivateAccount
+  extends AuthFormBase<TokenForm, TokenPayload, UserResponse>
+  implements OnDestroy
+{
   route = inject(ActivatedRoute);
   router = inject(Router);
   auth = inject(AuthStore);
@@ -74,7 +74,6 @@ export class ActivateAccount extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.toasts.close();
     this.router.navigate(['success'], {
       relativeTo: this.route.parent,
       replaceUrl: true,
@@ -87,5 +86,13 @@ export class ActivateAccount extends AuthFormBase<
    */
   onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
+  }
+
+  /**
+   * Destroy an activate-account component.
+   */
+  ngOnDestroy(): void {
+    this.form.reset();
+    this.toasts.close();
   }
 }

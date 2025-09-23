@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -21,7 +21,7 @@ import { DialogManager, ToastManager } from '@shared/services';
 /**
  * Class representing a sign-up component.
  * @extends AuthFormBase
- * @implements {OnInit}
+ * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-sign-up',
@@ -29,11 +29,14 @@ import { DialogManager, ToastManager } from '@shared/services';
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })
-export class SignUp extends AuthFormBase<
-  RegistrationForm,
-  RegistrationPayload,
-  RegistrationResponse
-> {
+export class SignUp
+  extends AuthFormBase<
+    RegistrationForm,
+    RegistrationPayload,
+    RegistrationResponse
+  >
+  implements OnDestroy
+{
   auth = inject(AuthStore);
   utils = inject(AuthUtils);
   user = inject(UserClient);
@@ -78,7 +81,6 @@ export class SignUp extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.toasts.close();
     this.dialogs.openSuccessDialog(DialogIds.SignUpSuccess);
   }
 
@@ -88,5 +90,14 @@ export class SignUp extends AuthFormBase<
    */
   onError(error: HttpErrorResponse): void {
     this.toasts.showError(error, this.errors.signUp);
+  }
+
+  /**
+   * Destroy a sign-up component.
+   */
+  ngOnDestroy(): void {
+    this.form.reset();
+    this.dialogs.close();
+    this.toasts.close();
   }
 }

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -15,6 +15,7 @@ import { ToastManager } from '@shared/services';
 /**
  * Class representing a delete-account component.
  * @extends AuthFormBase
+ * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-delete-account',
@@ -22,11 +23,10 @@ import { ToastManager } from '@shared/services';
   templateUrl: './delete-account.html',
   styleUrl: './delete-account.scss',
 })
-export class DeleteAccount extends AuthFormBase<
-  EmptyObject,
-  EmptyObject,
-  void
-> {
+export class DeleteAccount
+  extends AuthFormBase<EmptyObject, EmptyObject, void>
+  implements OnDestroy
+{
   route = inject(ActivatedRoute);
   router = inject(Router);
   auth = inject(AuthStore);
@@ -62,7 +62,6 @@ export class DeleteAccount extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.toasts.close();
     this.router.navigate(['success'], {
       relativeTo: this.route.parent,
       replaceUrl: true,
@@ -75,5 +74,13 @@ export class DeleteAccount extends AuthFormBase<
    */
   onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
+  }
+
+  /**
+   * Destroy a delete-account component.
+   */
+  ngOnDestroy(): void {
+    this.form.reset();
+    this.toasts.close();
   }
 }

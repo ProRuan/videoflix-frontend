@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,6 +21,7 @@ import { ToastManager } from '@shared/services';
 /**
  * Class representing a reset-password component.
  * @extends AuthFormBase
+ * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-reset-password',
@@ -28,11 +29,14 @@ import { ToastManager } from '@shared/services';
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.scss',
 })
-export class ResetPassword extends AuthFormBase<
-  RegistrationForm,
-  RegistrationPayload,
-  RegistrationResponse
-> {
+export class ResetPassword
+  extends AuthFormBase<
+    RegistrationForm,
+    RegistrationPayload,
+    RegistrationResponse
+  >
+  implements OnDestroy
+{
   route = inject(ActivatedRoute);
   router = inject(Router);
   auth = inject(AuthStore);
@@ -79,7 +83,6 @@ export class ResetPassword extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.toasts.close();
     this.router.navigate(['success'], {
       relativeTo: this.route.parent,
       replaceUrl: true,
@@ -92,5 +95,13 @@ export class ResetPassword extends AuthFormBase<
    */
   onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
+  }
+
+  /**
+   * Destroy a reset-password component.
+   */
+  ngOnDestroy(): void {
+    this.form.reset();
+    this.toasts.close();
   }
 }
