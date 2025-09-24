@@ -1,0 +1,7 @@
+<header class="header">
+    <app-home-button></app-home-button>
+
+    @if (isNotLogIn()) {
+    <app-button text="Log in" type="button" [disabled]="false" (click)="onLogIn()"></app-button>
+    }
+</header>

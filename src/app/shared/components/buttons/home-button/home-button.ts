@@ -14,6 +14,14 @@ export class HomeButton {
   router = inject(Router);
 
   /**
+   * Check the current route for being the home route.
+   * @returns True if the current route is the home route, ohterwise false.
+   */
+  isHome() {
+    return this.router.url === '/';
+  }
+
+  /**
    * Redirect to the startsite on click.
    */
   onHome() {

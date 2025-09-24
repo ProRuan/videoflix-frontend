@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -8,14 +8,14 @@ import {
 
 import { filter, map } from 'rxjs';
 
-import { Header, Footer } from '../components';
+import { CoreFooter, CoreHeader } from './components';
 
 /**
  * Class representing a core layout component.
  */
 @Component({
   selector: 'app-core-layout',
-  imports: [Footer, Header, RouterOutlet],
+  imports: [CoreFooter, CoreHeader, RouterOutlet],
   templateUrl: './core-layout.html',
   styleUrl: './core-layout.scss',
   host: {

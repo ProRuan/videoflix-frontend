@@ -1,0 +1,31 @@
+@use "mixins" as *;
+
+:host {
+  @include flexbox($jc: center, $ai: center);
+}
+
+.footer {
+  @include spacing($p: 10px 96px);
+  @include size($w: 100%, $h: 104px);
+  @include flexbox($jc: center, $ai: center);
+}
+
+.link-group {
+  @include flexbox($jc: center, $ai: center, $g: 48px);
+}
+
+.link {
+  @include font($fw: 500);
+  text-decoration: none;
+  color: $white;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (min-width: 1441px) {
+  .footer {
+    padding: 10px calc(50% - 624px);
+  }
+}
