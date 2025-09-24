@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Directive, inject, OnInit, signal } from '@angular/core';
+import { Directive, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -19,13 +19,14 @@ type Controls<T> = { [K in keyof T]: AbstractControl<any, any> };
  * Provides properties and methods for authentication forms and requests.
  *
  * @implements {OnInit}
+ * @implements {OnDestroy}
  */
 @Directive()
 export abstract class AuthFormBase<
   Form extends Controls<Form>,
   Payload,
   Response
-> implements OnInit
+> implements OnInit, OnDestroy
 {
   fb = inject(NonNullableFormBuilder);
 
@@ -78,7 +79,7 @@ export abstract class AuthFormBase<
   abstract getForm(): FormGroup<Form>;
 
   /**
-   * Initialize optional settings, e. g. init values of form controls.
+   * Initialize optional settings, e. g. update values of form controls.
    */
   initOptions() {}
 
@@ -151,4 +152,17 @@ export abstract class AuthFormBase<
     const error = this.form.getError(key);
     return error ? formGroupErrorMessages[key] : undefined;
   }
+
+  /**
+   * Destroy an authentication form base.
+   */
+  ngOnDestroy(): void {
+    this.form.reset();
+    this.destroyOptions();
+  }
+
+  /**
+   * Destroy optional settings, e. g. close open dialogs or toasts.
+   */
+  destroyOptions() {}
 }

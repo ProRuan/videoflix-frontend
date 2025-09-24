@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,6 @@ import { ToastManager } from '@shared/services';
 /**
  * Class representing a startsite component.
  * @extends AuthFormBase
- * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-startsite',
@@ -24,10 +23,11 @@ import { ToastManager } from '@shared/services';
   templateUrl: './startsite.html',
   styleUrl: './startsite.scss',
 })
-export class Startsite
-  extends AuthFormBase<EmailForm, EmailPayload, EmailResponse>
-  implements OnDestroy
-{
+export class Startsite extends AuthFormBase<
+  EmailForm,
+  EmailPayload,
+  EmailResponse
+> {
   private router = inject(Router);
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
@@ -79,10 +79,9 @@ export class Startsite
   }
 
   /**
-   * Destroy a startsite component.
+   * Close error toast.
    */
-  ngOnDestroy(): void {
-    this.form.reset();
+  override destroyOptions(): void {
     this.toasts.close();
   }
 }

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -17,7 +17,6 @@ import { ToastManager } from '@shared/services';
 /**
  * Class representing a log-in component.
  * @extends AuthFormBase
- * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-log-in',
@@ -32,10 +31,7 @@ import { ToastManager } from '@shared/services';
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
 })
-export class LogIn
-  extends AuthFormBase<LoginForm, LoginPayload, AuthResponse>
-  implements OnDestroy
-{
+export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
   private router = inject(Router);
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
@@ -88,10 +84,9 @@ export class LogIn
   }
 
   /**
-   * Destroy a log-in component.
+   * Close error toast.
    */
-  ngOnDestroy(): void {
-    this.form.reset();
+  override destroyOptions(): void {
     this.toasts.close();
   }
 }

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject, OnDestroy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -19,7 +19,6 @@ import { DialogManager, ToastManager } from '@shared/services';
 /**
  * Class representing a sign-out component.
  * @extends AuthFormBase
- * @implements {OnDestroy}
  */
 @Component({
   selector: 'app-sign-out',
@@ -27,10 +26,11 @@ import { DialogManager, ToastManager } from '@shared/services';
   templateUrl: './sign-out.html',
   styleUrl: './sign-out.scss',
 })
-export class SignOut
-  extends AuthFormBase<LoginForm, LoginPayload, EmailResponse>
-  implements OnDestroy
-{
+export class SignOut extends AuthFormBase<
+  LoginForm,
+  LoginPayload,
+  EmailResponse
+> {
   private route = inject(ActivatedRoute);
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
@@ -91,10 +91,9 @@ export class SignOut
   }
 
   /**
-   * Destroy a sign-out component.
+   * Close success dialog and error toast.
    */
-  ngOnDestroy(): void {
-    this.form.reset();
+  override destroyOptions(): void {
     this.dialogs.close();
     this.toasts.close();
   }
