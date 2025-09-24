@@ -13,8 +13,11 @@ import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { DialogIds } from '@shared/constants';
-import { DialogManager, ToastManager } from '@shared/services';
+import {
+  DialogConfigurator,
+  DialogManager,
+  ToastManager,
+} from '@shared/services';
 
 /**
  * Class representing a sign-out component.
@@ -34,6 +37,7 @@ export class SignOut extends AuthFormBase<
   private route = inject(ActivatedRoute);
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
+  private config = inject(DialogConfigurator);
   private dialogs = inject(DialogManager);
   private errors = inject(AuthErrorHandler);
   private toasts = inject(ToastManager);
@@ -77,8 +81,8 @@ export class SignOut extends AuthFormBase<
    * Show a success dialog upon successful deregistration.
    */
   onSuccess(): void {
-    this.form.reset();
-    this.dialogs.openSuccessDialog(DialogIds.SignOutSuccess);
+    this.password.reset();
+    this.dialogs.showSuccess(this.config.signOut);
   }
 
   /**

@@ -26,12 +26,12 @@ export class SuccessDialog {
     return this.dialogs.isClosing(DialogIds.Success);
   }
 
-  /**
-   * Get the configuration of a success dialog.
-   * @returns The configuration of the success dialog.
-   */
-  get config() {
-    return this.dialogs.config;
+  get title() {
+    return this.dialogs.title;
+  }
+
+  get messages() {
+    return this.dialogs.messages;
   }
 
   /**

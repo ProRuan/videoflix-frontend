@@ -15,8 +15,11 @@ import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { DialogIds } from '@shared/constants';
-import { DialogManager, ToastManager } from '@shared/services';
+import {
+  DialogConfigurator,
+  DialogManager,
+  ToastManager,
+} from '@shared/services';
 
 /**
  * Class representing a sign-up component.
@@ -36,6 +39,7 @@ export class SignUp extends AuthFormBase<
   auth = inject(AuthStore);
   utils = inject(AuthUtils);
   user = inject(UserClient);
+  config = inject(DialogConfigurator);
   dialogs = inject(DialogManager);
   errors = inject(AuthErrorHandler);
   toasts = inject(ToastManager);
@@ -77,7 +81,7 @@ export class SignUp extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.dialogs.openSuccessDialog(DialogIds.SignUpSuccess);
+    this.dialogs.showSuccess(this.config.signUp);
   }
 
   /**

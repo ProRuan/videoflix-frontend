@@ -10,8 +10,11 @@ import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import { DialogIds } from '@shared/constants';
-import { DialogManager, ToastManager } from '@shared/services';
+import {
+  DialogConfigurator,
+  DialogManager,
+  ToastManager,
+} from '@shared/services';
 
 /**
  * Class representing a forgot-password component.
@@ -30,6 +33,7 @@ export class ForgotPassword extends AuthFormBase<
 > {
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
+  private config = inject(DialogConfigurator);
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);
 
@@ -63,7 +67,7 @@ export class ForgotPassword extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.dialogs.openSuccessDialog(DialogIds.ForgotPasswordSuccess);
+    this.dialogs.showSuccess(this.config.forgotPassword);
   }
 
   /**

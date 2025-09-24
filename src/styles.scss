@@ -111,6 +111,8 @@ button {
   border: none;
   padding: 0;
   background-color: rgba(0, 0, 0, 0.55);
+  // check z-index ... !
+  z-index: 10;
   // set ms!!!
   transition: background-color 125ms ease-in-out;
 

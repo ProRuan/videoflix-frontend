@@ -1,13 +1,13 @@
 <dialog class="dialog" [class.transparent]="closing" (click)="onCloseStart()" (transitionend)="onCloseEnd()">
 
     <div class="dialog-box" [class.zoom-out]="closing" (click)="onEventStop($event)">
-        <h3 class="dialog-headline">{{ config.title }}</h3>
-        @for(message of config.messages; track message) {
+        <h3 class="dialog-headline">{{ title }}</h3>
+        @for(message of messages; track message) {
         <p class="dialog-text">{{ message }}</p>
         }
         <div class="jc-evenly">
-            <app-button text="Log in" type="button" (click)="onRedirect()"></app-button>
             <app-button text="Close" type="button" variant="secondary" (click)="onCloseStart()"></app-button>
+            <app-button text="Log in" type="button" (click)="onRedirect()"></app-button>
         </div>
     </div>
 
