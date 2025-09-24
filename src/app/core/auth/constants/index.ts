@@ -1,2 +1,2 @@
-export * from './error-toast-catalog';
-export * from './success-dialog-catalog';
+export * from './auth-dialog-config';
+export * from './auth-toast-config';

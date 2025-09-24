@@ -5,18 +5,14 @@ import { Router, RouterLink } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
-import { ERROR_TOAST_CATALOG } from '@core/auth/constants';
+import { AUTH_TOAST_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
-import {
-  AuthResponse,
-  ErrorToastConfig,
-  LoginForm,
-  LoginPayload,
-} from '@core/auth/interfaces';
+import { AuthResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
+import { ToastConfig } from '@shared/interfaces';
 import { ToastManager } from '@shared/services';
 
 /**
@@ -43,7 +39,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
   private user = inject(UserClient);
   private toasts = inject(ToastManager);
 
-  private readonly error: ErrorToastConfig = ERROR_TOAST_CATALOG.logIn;
+  private readonly error: ToastConfig = AUTH_TOAST_CONFIG.logIn;
 
   /**
    * Get a login form.

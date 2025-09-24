@@ -1,6 +1,6 @@
-import { SuccessDialogCatalog } from '../interfaces';
+import { AuthDialogConfig } from '../interfaces';
 
-export const SUCCESS_DIALOG_CATALOG: SuccessDialogCatalog = {
+export const AUTH_DIALOG_CONFIG: AuthDialogConfig = {
   signUp: {
     title: 'Registration successful',
     messages: [

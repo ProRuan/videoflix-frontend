@@ -1,6 +1,6 @@
-import { ErrorToastCatalog } from '../interfaces';
+import { AuthToastConfig } from '../interfaces';
 
-export const ERROR_TOAST_CATALOG: ErrorToastCatalog = {
+export const AUTH_TOAST_CONFIG: AuthToastConfig = {
   default: {
     status: 0,
     messages: ['Something went wrong.', 'Try again or contact support.'],

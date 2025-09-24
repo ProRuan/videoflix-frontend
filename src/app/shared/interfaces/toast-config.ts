@@ -1,7 +1,7 @@
 /**
- * Interface representing an error toast configuration.
+ * Interface representing a toast configuration.
  */
-export interface ErrorToastConfig {
+export interface ToastConfig {
   status: number;
   messages: string[];
   button?: {

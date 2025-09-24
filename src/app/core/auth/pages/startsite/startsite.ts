@@ -5,17 +5,13 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
-import { ERROR_TOAST_CATALOG } from '@core/auth/constants';
+import { AUTH_TOAST_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
-import {
-  EmailForm,
-  EmailPayload,
-  EmailResponse,
-  ErrorToastConfig,
-} from '@core/auth/interfaces';
+import { EmailForm, EmailPayload, EmailResponse } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
+import { ToastConfig } from '@shared/interfaces';
 import { ToastManager } from '@shared/services';
 
 /**
@@ -39,7 +35,7 @@ export class Startsite extends AuthFormBase<
   private user = inject(UserClient);
   private toasts = inject(ToastManager);
 
-  private readonly error: ErrorToastConfig = ERROR_TOAST_CATALOG.startsite;
+  private readonly error: ToastConfig = AUTH_TOAST_CONFIG.startsite;
 
   /**
    * Get an email form.

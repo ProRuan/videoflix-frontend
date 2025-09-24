@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { SuccessDialogConfig } from '@core/auth/interfaces';
 import { DialogIds } from '@shared/constants';
+import { DialogConfig } from '@shared/interfaces';
 
 import { OverlayManagerBase } from './overlay-manager-base';
 
@@ -16,12 +16,12 @@ export class DialogManager extends OverlayManagerBase {
   title: string = '';
   messages: string[] = [];
 
-  setConfig(config: SuccessDialogConfig) {
+  setConfig(config: DialogConfig) {
     this.title = config.title;
     this.messages = config.messages;
   }
 
-  showSuccess(config: SuccessDialogConfig) {
+  showSuccess(config: DialogConfig) {
     this.setConfig(config);
     this.open(DialogIds.Success);
   }

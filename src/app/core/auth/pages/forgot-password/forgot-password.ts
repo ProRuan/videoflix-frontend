@@ -4,18 +4,14 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import { SUCCESS_DIALOG_CATALOG } from '@core/auth/constants';
+import { AUTH_DIALOG_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
-import {
-  EmailForm,
-  EmailPayload,
-  EmailResponse,
-  SuccessDialogConfig,
-} from '@core/auth/interfaces';
+import { EmailForm, EmailPayload, EmailResponse } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
+import { DialogConfig } from '@shared/interfaces';
 import { DialogManager, ToastManager } from '@shared/services';
 
 /**
@@ -38,8 +34,7 @@ export class ForgotPassword extends AuthFormBase<
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);
 
-  private readonly config: SuccessDialogConfig =
-    SUCCESS_DIALOG_CATALOG.forgotPassword;
+  private readonly config: DialogConfig = AUTH_DIALOG_CONFIG.forgotPassword;
 
   /**
    * Get an email form.

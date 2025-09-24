@@ -4,22 +4,18 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import {
-  ERROR_TOAST_CATALOG,
-  SUCCESS_DIALOG_CATALOG,
-} from '@core/auth/constants';
+import { AUTH_DIALOG_CONFIG, AUTH_TOAST_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
 import {
-  ErrorToastConfig,
   RegistrationForm,
   RegistrationPayload,
   RegistrationResponse,
-  SuccessDialogConfig,
 } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
+import { DialogConfig, ToastConfig } from '@shared/interfaces';
 import { DialogManager, ToastManager } from '@shared/services';
 
 /**
@@ -43,8 +39,8 @@ export class SignUp extends AuthFormBase<
   dialogs = inject(DialogManager);
   toasts = inject(ToastManager);
 
-  private readonly config: SuccessDialogConfig = SUCCESS_DIALOG_CATALOG.signUp;
-  private readonly error: ErrorToastConfig = ERROR_TOAST_CATALOG.signUp;
+  private readonly config: DialogConfig = AUTH_DIALOG_CONFIG.signUp;
+  private readonly error: ToastConfig = AUTH_TOAST_CONFIG.signUp;
 
   /**
    * Get a registration form.
