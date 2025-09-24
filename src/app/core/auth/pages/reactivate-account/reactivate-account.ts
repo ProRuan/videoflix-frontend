@@ -40,7 +40,7 @@ export class ReactivateAccount extends AuthFormBase<
    * Get an email form.
    * @returns The email form.
    */
-  getForm(): FormGroup<EmailForm> {
+  protected getForm(): FormGroup<EmailForm> {
     return this.utils.getEmailForm();
   }
 
@@ -48,7 +48,7 @@ export class ReactivateAccount extends AuthFormBase<
    * Get a payload for account reactivation.
    * @returns The payload for account reactivation.
    */
-  getPayload(): EmailPayload {
+  protected getPayload(): EmailPayload {
     return this.utils.getEmailPayload(this.form);
   }
 
@@ -57,14 +57,14 @@ export class ReactivateAccount extends AuthFormBase<
    * @param payload - The payload for the account reactivation.
    * @returns An Observable with the email response.
    */
-  request$(payload: EmailPayload): Observable<EmailResponse> {
+  protected request$(payload: EmailPayload): Observable<EmailResponse> {
     return this.auth.reactivateAccount(payload);
   }
 
   /**
    * Show a success dialog upon successful account reactivation.
    */
-  onSuccess(): void {
+  protected onSuccess(): void {
     this.form.reset();
     this.dialogs.showSuccess(this.config);
   }
@@ -73,14 +73,14 @@ export class ReactivateAccount extends AuthFormBase<
    * Show an error toast upon failed account reactivation.
    * @param error - The error response.
    */
-  onError(error: HttpErrorResponse): void {
+  protected onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
   }
 
   /**
    * Close success dialog and error toast.
    */
-  override destroyOptions(): void {
+  protected override destroyOptions(): void {
     this.dialogs.close();
     this.toasts.close();
   }

@@ -28,27 +28,27 @@ export class ActivateAccount extends AuthFormBase<
   TokenPayload,
   UserResponse
 > {
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  auth = inject(AuthStore);
-  utils = inject(AuthUtils);
-  toasts = inject(ToastManager);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private auth = inject(AuthStore);
+  private utils = inject(AuthUtils);
+  private toasts = inject(ToastManager);
 
-  data = toSignal(this.route.data);
-  token = computed(() => this.data()?.['token'] as string);
+  private data = toSignal(this.route.data);
+  private token = computed(() => this.data()?.['token'] as string);
 
   /**
    * Get a token form.
    * @returns The token form.
    */
-  getForm(): FormGroup<TokenForm> {
+  protected getForm(): FormGroup<TokenForm> {
     return this.utils.getTokenForm();
   }
 
   /**
    * Update the token control with the account activation token.
    */
-  override initOptions(): void {
+  protected override initOptions(): void {
     this.form.get('token')?.setValue(this.token());
   }
 
@@ -56,7 +56,7 @@ export class ActivateAccount extends AuthFormBase<
    * Get the payload for an account activation.
    * @returns The payload for the account activation.
    */
-  getPayload(): TokenPayload {
+  protected getPayload(): TokenPayload {
     return this.utils.getTokenPayload(this.form);
   }
 
@@ -65,14 +65,14 @@ export class ActivateAccount extends AuthFormBase<
    * @param payload - The payload for an account activation.
    * @returns An Observable with the user response.
    */
-  request$(payload: TokenPayload): Observable<UserResponse> {
+  protected request$(payload: TokenPayload): Observable<UserResponse> {
     return this.auth.activateAccount(payload);
   }
 
   /**
    * Complete account activation and redirect user to success page.
    */
-  onSuccess(): void {
+  protected onSuccess(): void {
     this.form.reset();
     this.router.navigate(['success'], {
       relativeTo: this.route.parent,
@@ -84,14 +84,14 @@ export class ActivateAccount extends AuthFormBase<
    * Show an error toast upon failed account activation.
    * @param error - The error response.
    */
-  onError(error: HttpErrorResponse): void {
+  protected onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
   }
 
   /**
    * Close error toast.
    */
-  override destroyOptions(): void {
+  protected override destroyOptions(): void {
     this.toasts.close();
   }
 }

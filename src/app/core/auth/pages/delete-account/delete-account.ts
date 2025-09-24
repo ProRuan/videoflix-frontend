@@ -27,17 +27,17 @@ export class DeleteAccount extends AuthFormBase<
   EmptyObject,
   void
 > {
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  auth = inject(AuthStore);
-  utils = inject(AuthUtils);
-  toasts = inject(ToastManager);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private auth = inject(AuthStore);
+  private utils = inject(AuthUtils);
+  private toasts = inject(ToastManager);
 
   /**
    * Get a default form.
    * @returns The default form.
    */
-  getForm(): FormGroup<EmptyObject> {
+  protected getForm(): FormGroup<EmptyObject> {
     return this.utils.getEmptyForm();
   }
 
@@ -45,7 +45,7 @@ export class DeleteAccount extends AuthFormBase<
    * Get the payload for default.
    * @returns The payload for default.
    */
-  getPayload(): EmptyObject {
+  protected getPayload(): EmptyObject {
     return this.utils.getEmptyPayload();
   }
 
@@ -53,14 +53,14 @@ export class DeleteAccount extends AuthFormBase<
    * Request an account deletion from the Videoflix API.
    * @returns An Observable with no response.
    */
-  request$(): Observable<void> {
+  protected request$(): Observable<void> {
     return this.auth.deleteAccount();
   }
 
   /**
    * Complete account deletion and redirect user to success page.
    */
-  onSuccess(): void {
+  protected onSuccess(): void {
     this.form.reset();
     this.router.navigate(['success'], {
       relativeTo: this.route.parent,
@@ -72,14 +72,14 @@ export class DeleteAccount extends AuthFormBase<
    * Show an error toast upon failed account deletion.
    * @param error - The error response.
    */
-  onError(error: HttpErrorResponse): void {
+  protected onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
   }
 
   /**
    * Close error toast.
    */
-  override destroyOptions(): void {
+  protected override destroyOptions(): void {
     this.toasts.close();
   }
 }

@@ -33,27 +33,27 @@ export class ResetPassword extends AuthFormBase<
   RegistrationPayload,
   RegistrationResponse
 > {
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  auth = inject(AuthStore);
-  utils = inject(AuthUtils);
-  toasts = inject(ToastManager);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private auth = inject(AuthStore);
+  private utils = inject(AuthUtils);
+  private toasts = inject(ToastManager);
 
-  data = toSignal(this.route.data);
-  requestEmail = computed(() => this.data()?.['email'] as string);
+  private data = toSignal(this.route.data);
+  private requestEmail = computed(() => this.data()?.['email'] as string);
 
   /**
    * Get a password update form.
    * @returns The password update form.
    */
-  getForm(): FormGroup<RegistrationForm> {
+  protected getForm(): FormGroup<RegistrationForm> {
     return this.utils.getRegistrationForm();
   }
 
   /**
    * Update the email control with the user´s email.
    */
-  override initOptions(): void {
+  protected override initOptions(): void {
     this.email.setValue(this.requestEmail());
   }
 
@@ -61,7 +61,7 @@ export class ResetPassword extends AuthFormBase<
    * Get the payload for a password update.
    * @returns The payload for the password update.
    */
-  getPayload(): RegistrationPayload {
+  protected getPayload(): RegistrationPayload {
     return this.utils.getRegistrationPayload(this.form);
   }
 
@@ -70,14 +70,16 @@ export class ResetPassword extends AuthFormBase<
    * @param payload - The payload for the password update.
    * @returns An Observable with the registration response.
    */
-  request$(payload: RegistrationPayload): Observable<RegistrationResponse> {
+  protected request$(
+    payload: RegistrationPayload
+  ): Observable<RegistrationResponse> {
     return this.auth.updatePassword(payload);
   }
 
   /**
    * Complete password update and redirect user to success page.
    */
-  onSuccess(): void {
+  protected onSuccess(): void {
     this.form.reset();
     this.router.navigate(['success'], {
       relativeTo: this.route.parent,
@@ -89,14 +91,14 @@ export class ResetPassword extends AuthFormBase<
    * Show an error toast upon failed password update.
    * @param error - The error response.
    */
-  onError(error: HttpErrorResponse): void {
+  protected onError(error: HttpErrorResponse): void {
     this.toasts.showError(error);
   }
 
   /**
    * Close error toast.
    */
-  override destroyOptions(): void {
+  protected override destroyOptions(): void {
     this.toasts.close();
   }
 }

@@ -37,8 +37,8 @@ export class SignOut extends AuthFormBase<
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);
 
-  data = toSignal(this.route.data);
-  requestEmail = computed(() => this.data()?.['email'] as string);
+  private data = toSignal(this.route.data);
+  private requestEmail = computed(() => this.data()?.['email'] as string);
 
   private readonly config: DialogConfig = AUTH_DIALOG_CONFIG.signOut;
   private readonly error: ToastConfig = AUTH_TOAST_CONFIG.signOut;
@@ -47,14 +47,14 @@ export class SignOut extends AuthFormBase<
    * Get a deregistration form.
    * @returns The deregistration form.
    */
-  getForm(): FormGroup<LoginForm> {
+  protected getForm(): FormGroup<LoginForm> {
     return this.utils.getLoginForm();
   }
 
   /**
    * Update the email control with the user´s email.
    */
-  override initOptions(): void {
+  protected override initOptions(): void {
     this.email.setValue(this.requestEmail());
   }
 
@@ -62,7 +62,7 @@ export class SignOut extends AuthFormBase<
    * Get the payload for a deregistration.
    * @returns The payload for the deregistration.
    */
-  getPayload(): LoginPayload {
+  protected getPayload(): LoginPayload {
     return this.utils.getLoginPayload(this.form);
   }
 
@@ -71,14 +71,14 @@ export class SignOut extends AuthFormBase<
    * @param payload - The payload for the deregistration.
    * @returns An Observable with the email response.
    */
-  request$(payload: LoginPayload): Observable<EmailResponse> {
+  protected request$(payload: LoginPayload): Observable<EmailResponse> {
     return this.auth.deregister(payload);
   }
 
   /**
    * Show a success dialog upon successful deregistration.
    */
-  onSuccess(): void {
+  protected onSuccess(): void {
     this.password.reset();
     this.dialogs.showSuccess(this.config);
   }
@@ -87,7 +87,7 @@ export class SignOut extends AuthFormBase<
    * Show an error toast upon failed deregistration.
    * @param error - The error response.
    */
-  onError(error: HttpErrorResponse): void {
+  protected onError(error: HttpErrorResponse): void {
     this.password.reset();
     this.toasts.showError(error, this.error);
   }
@@ -95,7 +95,7 @@ export class SignOut extends AuthFormBase<
   /**
    * Close success dialog and error toast.
    */
-  override destroyOptions(): void {
+  protected override destroyOptions(): void {
     this.dialogs.close();
     this.toasts.close();
   }

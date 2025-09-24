@@ -41,7 +41,7 @@ export class Startsite extends AuthFormBase<
    * Get an email form.
    * @returns The email form.
    */
-  getForm(): FormGroup<EmailForm> {
+  protected getForm(): FormGroup<EmailForm> {
     return this.utils.getEmailForm();
   }
 
@@ -49,7 +49,7 @@ export class Startsite extends AuthFormBase<
    * Get the payload for an email check.
    * @returns The payload for the email check.
    */
-  getPayload(): EmailPayload {
+  protected getPayload(): EmailPayload {
     return this.utils.getEmailPayload(this.form);
   }
 
@@ -58,7 +58,7 @@ export class Startsite extends AuthFormBase<
    * @param payload - The payload for the email check.
    * @returns An Observable with the response of the email check.
    */
-  request$(payload: EmailPayload): Observable<EmailResponse> {
+  protected request$(payload: EmailPayload): Observable<EmailResponse> {
     return this.auth.checkEmail(payload);
   }
 
@@ -66,7 +66,7 @@ export class Startsite extends AuthFormBase<
    * Complete email check and redirect user to sign-up.
    * @param response - The response of the email check.
    */
-  onSuccess(response: EmailResponse): void {
+  protected onSuccess(response: EmailResponse): void {
     this.form.reset();
     this.user.startEmail = response.email;
     this.router.navigateByUrl('/sign-up');
@@ -76,14 +76,14 @@ export class Startsite extends AuthFormBase<
    * Show an error toast upon failed email check.
    * @param error - The error response.
    */
-  onError(error: HttpErrorResponse): void {
+  protected onError(error: HttpErrorResponse): void {
     this.toasts.showError(error, this.error);
   }
 
   /**
    * Close error toast.
    */
-  override destroyOptions(): void {
+  protected override destroyOptions(): void {
     this.toasts.close();
   }
 }

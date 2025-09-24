@@ -1,11 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Directive, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-} from '@angular/forms';
+import { Directive, OnDestroy, OnInit, signal } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 import { finalize, Observable } from 'rxjs';
 
@@ -28,8 +23,6 @@ export abstract class AuthFormBase<
   Response
 > implements OnInit, OnDestroy
 {
-  fb = inject(NonNullableFormBuilder);
-
   form!: FormGroup<Form>;
   isLoading = signal(false);
 
@@ -68,7 +61,7 @@ export abstract class AuthFormBase<
   /**
    * Set an authentication form.
    */
-  setForm() {
+  private setForm() {
     this.form = this.getForm();
   }
 
@@ -76,12 +69,12 @@ export abstract class AuthFormBase<
    * Get an authentication form.
    * @returns The authentication form.
    */
-  abstract getForm(): FormGroup<Form>;
+  protected abstract getForm(): FormGroup<Form>;
 
   /**
    * Initialize optional settings, e. g. update values of form controls.
    */
-  initOptions() {}
+  protected initOptions() {}
 
   /**
    * Request an authentication action from the Videoflix API on submit.
@@ -100,7 +93,7 @@ export abstract class AuthFormBase<
    *
    * Otherwise, handle error and user feedback.
    */
-  performRequest() {
+  private performRequest() {
     const payload = this.getPayload();
     this.request$(payload)
       .pipe(finalize(() => this.isLoading.set(false)))
@@ -114,26 +107,26 @@ export abstract class AuthFormBase<
    * Get the payload for an authentication request.
    * @returns The payload for the authentication request.
    */
-  abstract getPayload(): Payload;
+  protected abstract getPayload(): Payload;
 
   /**
    * Request an authentication action from the Videoflix API.
    * @param payload - The request payload.
    * @returns An Observable with the success response.
    */
-  abstract request$(payload: Payload): Observable<Response>;
+  protected abstract request$(payload: Payload): Observable<Response>;
 
   /**
    * Handle success response and further actions.
    * @param response - The success response.
    */
-  abstract onSuccess(response: Response): void;
+  protected abstract onSuccess(response: Response): void;
 
   /**
    * Handle error response and further actions.
    * @param error - The error response.
    */
-  abstract onError(error: HttpErrorResponse): void;
+  protected abstract onError(error: HttpErrorResponse): void;
 
   /**
    * Check a form for unreadiness.
@@ -164,5 +157,5 @@ export abstract class AuthFormBase<
   /**
    * Destroy optional settings, e. g. close open dialogs or toasts.
    */
-  destroyOptions() {}
+  protected destroyOptions() {}
 }

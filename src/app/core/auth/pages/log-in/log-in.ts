@@ -45,7 +45,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
    * Get a login form.
    * @returns The login form.
    */
-  getForm(): FormGroup<LoginForm> {
+  protected getForm(): FormGroup<LoginForm> {
     return this.utils.getLoginForm();
   }
 
@@ -53,7 +53,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
    * Get the payload for a login.
    * @returns The payload for the login.
    */
-  getPayload(): LoginPayload {
+  protected getPayload(): LoginPayload {
     return this.utils.getLoginPayload(this.form);
   }
 
@@ -62,7 +62,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
    * @param payload - The payload for the login.
    * @returns An Observable with the authentication response.
    */
-  request$(payload: LoginPayload): Observable<AuthResponse> {
+  protected request$(payload: LoginPayload): Observable<AuthResponse> {
     return this.auth.logIn(payload);
   }
 
@@ -70,7 +70,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
    * Complete the login and redirect user to video offer.
    * @param response - The authentication response.
    */
-  onSuccess(response: AuthResponse): void {
+  protected onSuccess(response: AuthResponse): void {
     this.form.reset();
     this.user.logIn(response);
     this.router.navigateByUrl(`/video/offer/${response.token}`);
@@ -80,7 +80,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
    * Show an error toast upon failed login.
    * @param error - The error response.
    */
-  onError(error: HttpErrorResponse): void {
+  protected onError(error: HttpErrorResponse): void {
     this.password.reset();
     this.toasts.showError(error, this.error);
   }
@@ -88,7 +88,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
   /**
    * Close error toast.
    */
-  override destroyOptions(): void {
+  protected override destroyOptions(): void {
     this.toasts.close();
   }
 }
