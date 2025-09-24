@@ -4,16 +4,19 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import { SUCCESS_DIALOG_CATALOG } from '@core/auth/constants';
+import {
+  ERROR_TOAST_CATALOG,
+  SUCCESS_DIALOG_CATALOG,
+} from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
 import {
+  ErrorToastConfig,
   RegistrationForm,
   RegistrationPayload,
   RegistrationResponse,
   SuccessDialogConfig,
 } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
-import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -38,10 +41,10 @@ export class SignUp extends AuthFormBase<
   utils = inject(AuthUtils);
   user = inject(UserClient);
   dialogs = inject(DialogManager);
-  errors = inject(AuthErrorHandler);
   toasts = inject(ToastManager);
 
   private readonly config: SuccessDialogConfig = SUCCESS_DIALOG_CATALOG.signUp;
+  private readonly error: ErrorToastConfig = ERROR_TOAST_CATALOG.signUp;
 
   /**
    * Get a registration form.
@@ -88,7 +91,7 @@ export class SignUp extends AuthFormBase<
    * @param error - The error response.
    */
   onError(error: HttpErrorResponse): void {
-    this.toasts.showError(error, this.errors.signUp);
+    this.toasts.showError(error, this.error);
   }
 
   /**

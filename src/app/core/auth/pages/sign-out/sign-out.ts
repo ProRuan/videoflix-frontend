@@ -6,16 +6,19 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
-import { SUCCESS_DIALOG_CATALOG } from '@core/auth/constants';
+import {
+  ERROR_TOAST_CATALOG,
+  SUCCESS_DIALOG_CATALOG,
+} from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
 import {
   EmailResponse,
+  ErrorToastConfig,
   LoginForm,
   LoginPayload,
   SuccessDialogConfig,
 } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils } from '@core/auth/services';
-import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -40,13 +43,13 @@ export class SignOut extends AuthFormBase<
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
   private dialogs = inject(DialogManager);
-  private errors = inject(AuthErrorHandler);
   private toasts = inject(ToastManager);
 
   data = toSignal(this.route.data);
   requestEmail = computed(() => this.data()?.['email'] as string);
 
   private readonly config: SuccessDialogConfig = SUCCESS_DIALOG_CATALOG.signOut;
+  private readonly error: ErrorToastConfig = ERROR_TOAST_CATALOG.signOut;
 
   /**
    * Get a deregistration form.
@@ -94,7 +97,7 @@ export class SignOut extends AuthFormBase<
    */
   onError(error: HttpErrorResponse): void {
     this.password.reset();
-    this.toasts.showError(error, this.errors.signOut);
+    this.toasts.showError(error, this.error);
   }
 
   /**

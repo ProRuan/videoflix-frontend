@@ -1,26 +1,15 @@
-import { Injectable } from '@angular/core';
+import { ErrorToastCatalog } from '../interfaces';
 
-import { ErrorToastConfig } from '@shared/interfaces';
-
-/**
- * Class representing an authentication error handler service.
- *
- * Provides default and specific error toast configurations.
- */
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthErrorHandler {
-  default: ErrorToastConfig = {
+export const ERROR_TOAST_CATALOG: ErrorToastCatalog = {
+  default: {
     status: 0,
     messages: ['Something went wrong.', 'Try again or contact support.'],
     button: {
       label: 'Contact support',
       route: '/imprint',
     },
-  };
-
-  startsite: ErrorToastConfig = {
+  },
+  startsite: {
     status: 400,
     messages: [
       'Please check your email and try again.',
@@ -30,9 +19,8 @@ export class AuthErrorHandler {
       label: 'Activate account',
       route: '/reactivate-account',
     },
-  };
-
-  signUp: ErrorToastConfig = {
+  },
+  signUp: {
     status: 400,
     messages: [
       'Please check your input and try again.',
@@ -42,15 +30,13 @@ export class AuthErrorHandler {
       label: 'Activate account',
       route: '/reactivate-account',
     },
-  };
-
-  logIn: ErrorToastConfig = {
+  },
+  logIn: {
     status: 400,
     messages: ['Please check your login data and try again.'],
-  };
-
-  signOut: ErrorToastConfig = {
+  },
+  signOut: {
     status: 400,
     messages: ['Couldn´t sign you out. Please try again.'],
-  };
-}
+  },
+};

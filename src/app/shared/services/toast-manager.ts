@@ -1,11 +1,11 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
+import { ERROR_TOAST_CATALOG } from '@core/auth/constants';
+import { ErrorToastConfig } from '@core/auth/interfaces';
 import { ToastIds } from '@shared/constants';
 
 import { OverlayManagerBase } from './overlay-manager-base';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorToastConfig } from '@shared/interfaces';
-import { AuthErrorHandler } from '@core/http';
 
 /**
  * Class representing a toast manager service.
@@ -15,13 +15,11 @@ import { AuthErrorHandler } from '@core/http';
   providedIn: 'root',
 })
 export class ToastManager extends OverlayManagerBase {
-  errors = inject(AuthErrorHandler);
-
   messages: string[] = [];
   label: string = '';
   route: string = '';
 
-  default: ErrorToastConfig = this.errors.default;
+  default: ErrorToastConfig = ERROR_TOAST_CATALOG.default;
 
   message: string = 'Please check your input and try again.';
   private timeoutId!: ReturnType<typeof setTimeout>;
