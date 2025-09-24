@@ -4,17 +4,19 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
+import { SUCCESS_DIALOG_CATALOG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
-import { EmailForm, EmailPayload, EmailResponse } from '@core/auth/interfaces';
+import {
+  EmailForm,
+  EmailPayload,
+  EmailResponse,
+  SuccessDialogConfig,
+} from '@core/auth/interfaces';
 import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import {
-  DialogConfigurator,
-  DialogManager,
-  ToastManager,
-} from '@shared/services';
+import { DialogManager, ToastManager } from '@shared/services';
 
 /**
  * Class representing a reactivate-account component.
@@ -33,9 +35,11 @@ export class ReactivateAccount extends AuthFormBase<
 > {
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
-  private config = inject(DialogConfigurator);
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);
+
+  private readonly config: SuccessDialogConfig =
+    SUCCESS_DIALOG_CATALOG.reactivateAccount;
 
   /**
    * Get an email form.
@@ -67,7 +71,7 @@ export class ReactivateAccount extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.dialogs.showSuccess(this.config.reactivateAccount);
+    this.dialogs.showSuccess(this.config);
   }
 
   /**

@@ -4,22 +4,20 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
+import { SUCCESS_DIALOG_CATALOG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
 import {
   RegistrationForm,
   RegistrationPayload,
   RegistrationResponse,
+  SuccessDialogConfig,
 } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
 import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import {
-  DialogConfigurator,
-  DialogManager,
-  ToastManager,
-} from '@shared/services';
+import { DialogManager, ToastManager } from '@shared/services';
 
 /**
  * Class representing a sign-up component.
@@ -39,10 +37,11 @@ export class SignUp extends AuthFormBase<
   auth = inject(AuthStore);
   utils = inject(AuthUtils);
   user = inject(UserClient);
-  config = inject(DialogConfigurator);
   dialogs = inject(DialogManager);
   errors = inject(AuthErrorHandler);
   toasts = inject(ToastManager);
+
+  private readonly config: SuccessDialogConfig = SUCCESS_DIALOG_CATALOG.signUp;
 
   /**
    * Get a registration form.
@@ -81,7 +80,7 @@ export class SignUp extends AuthFormBase<
    */
   onSuccess(): void {
     this.form.reset();
-    this.dialogs.showSuccess(this.config.signUp);
+    this.dialogs.showSuccess(this.config);
   }
 
   /**

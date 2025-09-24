@@ -6,18 +6,20 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
+import { SUCCESS_DIALOG_CATALOG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
-import { EmailResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
+import {
+  EmailResponse,
+  LoginForm,
+  LoginPayload,
+  SuccessDialogConfig,
+} from '@core/auth/interfaces';
 import { AuthStore, AuthUtils } from '@core/auth/services';
 import { AuthErrorHandler } from '@core/http';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
-import {
-  DialogConfigurator,
-  DialogManager,
-  ToastManager,
-} from '@shared/services';
+import { DialogManager, ToastManager } from '@shared/services';
 
 /**
  * Class representing a sign-out component.
@@ -37,13 +39,14 @@ export class SignOut extends AuthFormBase<
   private route = inject(ActivatedRoute);
   private auth = inject(AuthStore);
   private utils = inject(AuthUtils);
-  private config = inject(DialogConfigurator);
   private dialogs = inject(DialogManager);
   private errors = inject(AuthErrorHandler);
   private toasts = inject(ToastManager);
 
   data = toSignal(this.route.data);
   requestEmail = computed(() => this.data()?.['email'] as string);
+
+  private readonly config: SuccessDialogConfig = SUCCESS_DIALOG_CATALOG.signOut;
 
   /**
    * Get a deregistration form.
@@ -82,7 +85,7 @@ export class SignOut extends AuthFormBase<
    */
   onSuccess(): void {
     this.password.reset();
-    this.dialogs.showSuccess(this.config.signOut);
+    this.dialogs.showSuccess(this.config);
   }
 
   /**
