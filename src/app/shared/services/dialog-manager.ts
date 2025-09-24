@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
 import { DialogIds } from '@shared/constants';
 import { DialogConfig } from '@shared/interfaces';
@@ -13,14 +13,26 @@ import { OverlayManagerBase } from './overlay-manager-base';
   providedIn: 'root',
 })
 export class DialogManager extends OverlayManagerBase {
-  title: string = '';
-  messages: string[] = [];
+  title: WritableSignal<string> = signal('');
+  messages: WritableSignal<string[]> = signal([]);
+  label: WritableSignal<string> = signal('');
+  url: WritableSignal<string> = signal('');
 
+  /**
+   * Set a dialog configuration.
+   * @param config - The dialog configuration to set.
+   */
   setConfig(config: DialogConfig) {
-    this.title = config.title;
-    this.messages = config.messages;
+    this.title.set(config.title);
+    this.messages.set(config.messages);
+    this.label.set(config.label);
+    this.url.set(config.url);
   }
 
+  /**
+   * Show a success dialog.
+   * @param config - The dialog configuration to set.
+   */
   showSuccess(config: DialogConfig) {
     this.setConfig(config);
     this.open(DialogIds.Success);

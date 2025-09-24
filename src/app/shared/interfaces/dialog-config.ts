@@ -4,4 +4,6 @@
 export interface DialogConfig {
   title: string;
   messages: string[];
+  label: string;
+  url: string;
 }
