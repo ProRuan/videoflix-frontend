@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Button } from '@shared/components/buttons';
 
+import { Button } from '@shared/components/buttons';
 import { ToastIds } from '@shared/constants';
 import { ToastManager } from '@shared/services';
 
@@ -18,6 +18,10 @@ export class ErrorToast {
   private router = inject(Router);
   private toasts = inject(ToastManager);
 
+  messages = computed(() => this.toasts.messages());
+  label = computed(() => this.toasts.label());
+  url = computed(() => this.toasts.url());
+
   /**
    * Get the closing state of an error toast.
    * @returns True if the error toast is closing, otherwise false.
@@ -27,40 +31,10 @@ export class ErrorToast {
   }
 
   /**
-   * Get the message of an error toast.
-   * @return The message of the error toast.
-   */
-  get message() {
-    return this.toasts.message;
-  }
-
-  // display all messages ... !
-  get messages() {
-    return this.toasts.messages;
-  }
-
-  get label() {
-    return this.toasts.label;
-  }
-
-  get route() {
-    return this.toasts.route;
-  }
-
-  onEventStop(event: Event) {
-    event.stopPropagation();
-  }
-
-  onRedirect() {
-    this.toasts.close();
-    this.router.navigateByUrl(this.route);
-  }
-
-  /**
    * Start closing an error toast on click.
    */
   onCloseStart() {
-    this.toasts.slideOutImmediately();
+    this.toasts.startClosing();
   }
 
   /**
@@ -70,5 +44,21 @@ export class ErrorToast {
     if (this.closing) {
       this.toasts.close();
     }
+  }
+
+  /**
+   * Stop an event.
+   * @param event - The event to be stopped.
+   */
+  onEventStop(event: Event) {
+    event.stopPropagation();
+  }
+
+  /**
+   * Redirect user to target route on click.
+   */
+  onRedirect() {
+    this.toasts.close();
+    this.router.navigateByUrl(this.url());
   }
 }

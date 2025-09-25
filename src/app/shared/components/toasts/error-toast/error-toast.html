@@ -4,13 +4,12 @@
         <div class="rectangle"></div>
         <img class="icon" src="/images/toasts/exclamation.png" alt="exclamation">
         <div class="column">
-            @for (message of messages; track message) {
+            @for (message of messages(); track message) {
             <p class="message">{{ message }}</p>
             }
         </div>
-        <!-- think about button label and route -->
-        @if (label) {
-        <app-button [text]="label" variant="tertiary" (click)="onRedirect()"></app-button>
+        @if (label()) {
+        <app-button [text]="label()" variant="tertiary" (click)="onRedirect()"></app-button>
         }
         <div class="border"></div>
         <button class="button" type="button" (click)="onCloseStart()"></button>

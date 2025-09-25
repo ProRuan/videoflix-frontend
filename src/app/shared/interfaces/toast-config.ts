@@ -4,8 +4,6 @@
 export interface ToastConfig {
   status: number;
   messages: string[];
-  button?: {
-    label: string;
-    route: string;
-  };
+  label?: string;
+  url?: string;
 }

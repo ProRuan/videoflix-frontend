@@ -89,16 +89,7 @@ export class App {
     return this.dialogs.isOpen(DialogIds.Success);
   }
 
-  // getConfig() {
-  //   const config = this.dialogs.config();
-  //   return config !== null ? config : { title: '', messages: ['', ''] };
-  // }
-
   isToastOpen() {
     return this.toasts.isOpen(ToastIds.Error);
-  }
-
-  getMessage() {
-    return this.toasts.message;
   }
 }

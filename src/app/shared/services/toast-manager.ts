@@ -15,85 +15,53 @@ import { OverlayManagerBase } from './overlay-manager-base';
   providedIn: 'root',
 })
 export class ToastManager extends OverlayManagerBase {
-  messages: string[] = [];
-  label: string = '';
-  route: string = '';
+  messages: WritableSignal<string[]> = signal([]);
+  label: WritableSignal<string> = signal('');
+  url: WritableSignal<string> = signal('');
 
   default: ToastConfig = AUTH_TOAST_CONFIG.default;
 
-  message: string = 'Please check your input and try again.';
-  private timeoutId!: ReturnType<typeof setTimeout>;
-
-  // improve an rename ... !
-  errorMessage: WritableSignal<string> = signal('');
-
-  // replace any ...
-  // set default config ...
-  setErrorConfig(error: HttpErrorResponse, config?: ToastConfig) {
-    if (config && error.status === config.status) {
-      this.messages = config.messages;
-      this.label = config.button?.label ?? '';
-      this.route = config.button?.route ?? '';
+  /**
+   * Set a toast configuration.
+   * @param error - The error response.
+   * @param config - The toast configuration to set.
+   */
+  setConfig(error: HttpErrorResponse, config?: ToastConfig) {
+    if (this.isConfig(error, config)) {
+      this.setConfigValues(config);
     } else {
-      this.messages = this.default.messages;
-      this.label = this.default.button?.label ?? '';
-      this.route = this.default.button?.route ?? '';
+      this.setConfigValues(this.default);
     }
   }
 
-  setErrorToast(error: HttpErrorResponse, config?: ToastConfig) {
-    if (config && error.status === config.status) {
-      this.messages = config.messages;
-      this.label = config.button?.label ?? '';
-      this.route = config.button?.route ?? '';
-    } else {
-      this.messages = this.default.messages;
-      this.label = this.default.button?.label ?? '';
-      this.route = this.default.button?.route ?? '';
-    }
+  /**
+   * Check for a match between error status and configuration status.
+   * @param error - The error response.
+   * @param config - The toast configuration.
+   * @returns True if the error status matches the configuration status,
+   *          otherwise false.
+   */
+  isConfig(error: HttpErrorResponse, config?: ToastConfig) {
+    return config && error.status === config.status;
   }
 
-  // improve an rename ... !
-  openError(error: HttpErrorResponse) {
-    this.open(ToastIds.Error);
-    console.log('error: ', error);
-    console.log('error - status: ', error.status);
-    // console.log('error - status text: ', error.statusText);
-    console.log('error - custom: ', error.error.detail[0]);
-    this.errorMessage.set(error.error.detail[0]);
+  /**
+   * Set the values of a toast configuration.
+   * @param config - The toast configuration to set.
+   */
+  setConfigValues(config?: ToastConfig) {
+    this.messages.set(config?.messages ?? []);
+    this.label.set(config?.label ?? '');
+    this.url.set(config?.url ?? '');
   }
 
-  // replace any with interface ...
+  /**
+   * Show an error toast.
+   * @param error - The error response.
+   * @param config - The toast configuration to set.
+   */
   showError(error: HttpErrorResponse, config?: ToastConfig) {
-    this.setErrorToast(error, config);
-    this.openErrorToast();
-  }
-
-  /**
-   * Open an error toast.
-   */
-  openErrorToast() {
-    // this.clearTimeout();
+    this.setConfig(error, config);
     this.open(ToastIds.Error);
-    // this.timeoutId = setTimeout(() => {
-    //   this.hasCloseStyle.set(true);
-    // }, 4000);
-  }
-
-  /**
-   * Slide out a toast element without timeout.
-   */
-  slideOutImmediately() {
-    this.clearTimeout();
-    this.startClosing();
-  }
-
-  /**
-   * Clear the current timeout.
-   */
-  clearTimeout() {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
-    }
   }
 }
