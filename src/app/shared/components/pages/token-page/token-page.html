@@ -9,8 +9,8 @@
 
     <div class="jc-evenly">
         @if (hasSecOption()) {
-        <app-button [text]="secText()" variant="secondary" (click)="onSecRoute()"></app-button>
+        <app-button [text]="secLabel()" variant="secondary" (click)="onSecRoute()"></app-button>
         }
-        <app-button [text]="primText()" (click)="onPrimRoute()"></app-button>
+        <app-button [text]="primLabel()" (click)="onPrimRoute()"></app-button>
     </div>
 </form>

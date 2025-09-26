@@ -1,4 +1,4 @@
-import { TokenPageConfigOptions } from '../interfaces';
+import { TokenPageConfigOptions } from '@shared/interfaces';
 
 export const DELETION_TOKEN: TokenPageConfigOptions = {
   error: {
@@ -8,8 +8,8 @@ export const DELETION_TOKEN: TokenPageConfigOptions = {
       'This deletion link can no longer be used.',
       'Log in and sign out again.',
     ],
-    primText: 'Go to login',
-    primRoute: '/log-in',
+    primLabel: 'Go to login',
+    primUrl: '/log-in',
   },
   success: {
     title: 'Account deleted',
@@ -18,9 +18,9 @@ export const DELETION_TOKEN: TokenPageConfigOptions = {
       'Your account has been deleted.',
       'You can now go home or create a new account.',
     ],
-    primText: 'Go to home',
-    primRoute: '/',
-    secText: 'Go to sign-up',
-    secRoute: '/sign-up',
+    primLabel: 'Go to home',
+    primUrl: '/',
+    secLabel: 'Go to sign-up',
+    secUrl: '/sign-up',
   },
 };

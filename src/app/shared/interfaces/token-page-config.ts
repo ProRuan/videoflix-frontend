@@ -5,8 +5,8 @@ export interface TokenPageConfig {
   title: string;
   color: string;
   messages: string[];
-  primText: string;
-  primRoute: string;
-  secText?: string;
-  secRoute?: string;
+  primLabel: string;
+  primUrl: string;
+  secLabel?: string;
+  secUrl?: string;
 }

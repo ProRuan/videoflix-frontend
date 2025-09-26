@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 
+import { DELETION_TOKEN } from '@core/auth/constants';
 import { tokenGuard } from '@core/auth/guards';
 import { tokenResolver } from '@core/auth/resolvers';
-import { DELETION_TOKEN, TokenPage } from '@shared/modules/token-page';
+import { TokenPage } from '@shared/components/pages';
 
 import { DeleteAccount } from './delete-account';
 
