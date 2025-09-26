@@ -52,6 +52,12 @@
       "@core/models/*": [
         "core/models/*"
       ],
+       "@core/services": [
+        "core/services"
+      ],
+      "@core/services/*": [
+        "core/services/*"
+      ],
       "@core/static/*": [
         "core/static/*"
       ],

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { tokenGuard } from '@core/auth/guards';
-import { TokenResolver } from '@core/auth/resolvers';
+import { tokenResolver } from '@core/auth/resolvers';
 import { DELETION_TOKEN, TokenPage } from '@shared/modules/token-page';
 
 import { DeleteAccount } from './delete-account';
@@ -22,7 +22,7 @@ export const deleteAccountRoutes: Routes = [
     component: DeleteAccount,
     data: { parent: 'delete-account' },
     canActivate: [tokenGuard],
-    resolve: { token: TokenResolver },
+    resolve: { token: tokenResolver },
   },
   { path: '**', redirectTo: 'bad-request' },
 ];

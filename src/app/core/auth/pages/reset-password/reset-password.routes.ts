@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { tokenGuard } from '@core/auth/guards';
-import { TokenResolver } from '@core/auth/resolvers';
+import { tokenResolver } from '@core/auth/resolvers';
 import { RESET_TOKEN, TokenPage } from '@shared/modules/token-page';
 
 import { ResetPassword } from './reset-password';
@@ -22,7 +22,7 @@ export const resetPasswordRoutes: Routes = [
     component: ResetPassword,
     data: { parent: 'reset-password' },
     canActivate: [tokenGuard],
-    resolve: { email: TokenResolver },
+    resolve: { email: tokenResolver },
   },
   { path: '**', redirectTo: 'bad-request' },
 ];

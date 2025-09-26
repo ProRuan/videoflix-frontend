@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { tokenGuard } from '@core/auth/guards';
-import { TokenResolver } from '@core/auth/resolvers';
+import { activationTokenResolver } from '@core/auth/resolvers';
 import { ACTIVATION_TOKEN, TokenPage } from '@shared/modules/token-page';
 
 import { ActivateAccount } from './activate-account';
@@ -22,7 +22,7 @@ export const activateAccountRoutes: Routes = [
     component: ActivateAccount,
     data: { parent: 'activate-account' },
     canActivate: [tokenGuard],
-    resolve: { token: TokenResolver },
+    resolve: { token: activationTokenResolver },
   },
   { path: '**', redirectTo: 'bad-request' },
 ];

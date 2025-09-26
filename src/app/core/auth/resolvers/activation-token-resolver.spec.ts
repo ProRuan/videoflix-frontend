@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { tokenResolver } from './token-resolver';
+import { activationTokenResolver } from './activation-token-resolver';
 
-describe('tokenResolver', () => {
+describe('activationTokenResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => tokenResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => activationTokenResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

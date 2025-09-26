@@ -4,16 +4,14 @@ import { RedirectCommand, ResolveFn } from '@angular/router';
 import { RouteUtils } from '@core/services';
 
 /**
- * ResolveFn representing a token resolver.
+ * ResolveFn representing an authentication resolver.
  *
- * Resolves the data of a token check.
+ * Resolves the data of an authentication token check.
  *
  * @param route - The ActivatedRouteSnapshot.
  * @returns True or a URL tree.
  */
-export const tokenResolver: ResolveFn<string | number | RedirectCommand> = (
-  route
-) => {
+export const authResolver: ResolveFn<string | RedirectCommand> = (route) => {
   const utils = inject(RouteUtils);
-  return utils.resolveToken(route, 'email');
+  return utils.resolveAuthToken(route);
 };

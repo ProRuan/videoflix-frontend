@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { tokenResolver } from './token-resolver';
+import { authResolver } from './auth-resolver';
 
-describe('tokenResolver', () => {
+describe('authResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => tokenResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => authResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
