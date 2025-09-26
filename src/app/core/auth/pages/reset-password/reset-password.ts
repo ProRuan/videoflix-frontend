@@ -10,7 +10,7 @@ import { AuthFormBase } from '@core/auth/directives';
 import {
   RegistrationForm,
   RegistrationPayload,
-  RegistrationResponse,
+  UserResponse,
 } from '@core/auth/interfaces';
 import { AuthStore, AuthUtils } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
@@ -31,7 +31,7 @@ import { ToastManager } from '@shared/services';
 export class ResetPassword extends AuthFormBase<
   RegistrationForm,
   RegistrationPayload,
-  RegistrationResponse
+  UserResponse
 > {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -68,11 +68,9 @@ export class ResetPassword extends AuthFormBase<
   /**
    * Request a password update from the Videoflix API.
    * @param payload - The payload for the password update.
-   * @returns An Observable with the registration response.
+   * @returns An Observable with the user response.
    */
-  protected request$(
-    payload: RegistrationPayload
-  ): Observable<RegistrationResponse> {
+  protected request$(payload: RegistrationPayload): Observable<UserResponse> {
     return this.auth.updatePassword(payload);
   }
 

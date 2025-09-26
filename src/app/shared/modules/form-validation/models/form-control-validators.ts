@@ -20,7 +20,7 @@ export class FormControlValidators {
 
   /**
    * ValidatorFn checking a control value for its required minimum length.
-   * @param min - The required minimum length to set.
+   * @param min - The required minimum length to be set.
    * @returns Validation errors if the control value is too short,
    *          otherwise null.
    */
@@ -38,7 +38,7 @@ export class FormControlValidators {
 
   /**
    * ValidatorFn checking a control value for its allowed maximum length.
-   * @param max - The allowed maximum length to set.
+   * @param max - The allowed maximum length to be set.
    * @returns Validation errors if the control value is too long,
    *          otherwise null.
    */

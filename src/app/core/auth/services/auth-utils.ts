@@ -32,8 +32,8 @@ export class AuthUtils {
 
   /**
    * Get a form control with value and validators.
-   * @param value - The value to set.
-   * @param validators - The validators to set.
+   * @param value - The value to be set.
+   * @param validators - The validators to be set.
    * @returns The form control.
    */
   private getFormControl(value: string, validators: ValidatorFn[]) {

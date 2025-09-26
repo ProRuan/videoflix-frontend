@@ -24,7 +24,7 @@ export class ToastManager extends OverlayManagerBase {
   /**
    * Set a toast configuration.
    * @param error - The error response.
-   * @param config - The toast configuration to set.
+   * @param config - The toast configuration to be set.
    */
   setConfig(error: HttpErrorResponse, config?: ToastConfig) {
     if (this.isConfig(error, config)) {
@@ -47,7 +47,7 @@ export class ToastManager extends OverlayManagerBase {
 
   /**
    * Set the values of a toast configuration.
-   * @param config - The toast configuration to set.
+   * @param config - The toast configuration to be set.
    */
   setConfigValues(config?: ToastConfig) {
     this.messages.set(config?.messages ?? []);
@@ -58,7 +58,7 @@ export class ToastManager extends OverlayManagerBase {
   /**
    * Show an error toast.
    * @param error - The error response.
-   * @param config - The toast configuration to set.
+   * @param config - The toast configuration to be set.
    */
   showError(error: HttpErrorResponse, config?: ToastConfig) {
     this.setConfig(error, config);

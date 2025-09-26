@@ -20,7 +20,7 @@ export class DialogManager extends OverlayManagerBase {
 
   /**
    * Set a dialog configuration.
-   * @param config - The dialog configuration to set.
+   * @param config - The dialog configuration to be set.
    */
   setConfig(config: DialogConfig) {
     this.title.set(config.title);
@@ -31,7 +31,7 @@ export class DialogManager extends OverlayManagerBase {
 
   /**
    * Show a success dialog.
-   * @param config - The dialog configuration to set.
+   * @param config - The dialog configuration to be set.
    */
   showSuccess(config: DialogConfig) {
     this.setConfig(config);

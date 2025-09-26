@@ -42,8 +42,7 @@ export class UserClient {
 
   // move request or add error notification service
   logOut() {
-    const token = this.user.token;
-    this.auth.logOut(token).subscribe({
+    this.auth.logOut().subscribe({
       next: () => {
         this.user.reset();
         this.router.navigateByUrl('/log-in');

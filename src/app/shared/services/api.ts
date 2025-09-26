@@ -1,44 +1,16 @@
 import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  AuthResponse,
-  EmailPayload,
-  EmailResponse,
-  LoginPayload,
-  RegistrationPayload,
-} from '@core/auth/interfaces';
+
 import { SKIP_AUTH } from '@core/http';
-
-type Endpoints =
-  | 'email-check'
-  | 'registration'
-  | 'account-activation'
-  | 'account-reactivation'
-  | 'login'
-  | 'logout'
-  | 'password-reset'
-  | 'password-update'
-  | 'user-email'
-  | 'deregistration'
-  | 'account-deletion'
-  | 'token/activation-token-check'
-  | 'token/token-check'
-  | 'videos';
-
-type ResponseOf<T> = T extends
-  | LoginPayload
-  | RegistrationPayload
-  | RegistrationPayload
-  ? AuthResponse
-  : T extends EmailPayload
-  ? EmailResponse
-  : never;
 
 @Injectable({
   providedIn: 'root',
 })
 export class Api {
   private http = inject(HttpClient);
+
+  // rename api to base store ...
+  // replace any ...
 
   private readonly baseUrl = 'http://127.0.0.1:8000/api/';
 
@@ -68,20 +40,20 @@ export class Api {
     }
   }
 
-  post<T>(endpoint: Endpoints, payload: T, opts: { skipAuth?: boolean } = {}) {
+  post<T>(endpoint: string, payload: T, opts: { skipAuth?: boolean } = {}) {
     const url = this.getUrl(endpoint);
     const context = new HttpContext().set(SKIP_AUTH, !!opts.skipAuth);
-    return this.http.post<ResponseOf<Endpoints>>(url, payload, { context });
+    return this.http.post<any>(url, payload, { context });
   }
 
   // think about sequence of id and token
-  get(endpoint: Endpoints, id?: number, opts: { skipAuth?: boolean } = {}) {
+  get(endpoint: string, id?: number, opts: { skipAuth?: boolean } = {}) {
     const url = this.getDetailUrl(endpoint, id);
     const context = new HttpContext().set(SKIP_AUTH, !!opts.skipAuth);
     return this.http.get<any>(url, { context });
   }
 
-  private getDetailUrl(endpoint: Endpoints, id?: number) {
+  private getDetailUrl(endpoint: string, id?: number) {
     if (id) {
       return this.getUrl(endpoint, id.toString());
     } else {
@@ -91,9 +63,9 @@ export class Api {
 
   // replace options with context ...
   // replace any
-  delete<T>(endpoint: Endpoints, token: string) {
+  delete<T>(endpoint: string, token: string) {
     const url = this.getUrl(endpoint);
     const options = this.getOptions(token);
-    return this.http.delete<ResponseOf<Endpoints>>(url, options);
+    return this.http.delete<any>(url, options);
   }
 }
