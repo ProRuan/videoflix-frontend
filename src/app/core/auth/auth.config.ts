@@ -1,9 +1,6 @@
+import { BAD_REQUEST, PAGE_NOT_FOUND, UNAUTHORIZED } from '@core/errors';
+
 import { Themes } from '@shared/constants';
-import {
-  BAD_REQUEST,
-  PAGE_NOT_FOUND,
-  UNAUTHORIZED,
-} from '@shared/modules/error-page';
 
 import { activateAccountRoutes } from './pages/activate-account/activate-account.routes';
 import { deleteAccountRoutes } from './pages/delete-account/delete-account.routes';

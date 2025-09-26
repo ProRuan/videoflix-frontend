@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 // review imports + index.ts
-import { ErrorPage } from '@shared/modules/error-page';
+import { ErrorPage } from '@shared/components/pages';
 
 import {
   ForgotPassword,

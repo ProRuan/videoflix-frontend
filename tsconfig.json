@@ -19,8 +19,11 @@
       "@core/auth/*": [
         "core/auth/*"
       ],
-       "@core/error": [
-        "core/error"
+       "@core/errors": [
+        "core/errors"
+      ],
+      "@core/errors/*": [
+        "core/errors/*"
       ],
        "@core/guards": [
         "core/guards"

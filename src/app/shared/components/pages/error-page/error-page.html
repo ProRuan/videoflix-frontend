@@ -11,8 +11,8 @@
 
     <div class="button-group">
         @if (hasSecOption()) {
-        <app-button [text]="secText()" type="button" variant="secondary" (click)="onSecRoute()"></app-button>
+        <app-button [text]="secLabel()" type="button" variant="secondary" (click)="onSecRoute()"></app-button>
         }
-        <app-button [text]="primText()" type="button" (click)="onPrimRoute()"></app-button>
+        <app-button [text]="primLabel()" type="button" (click)="onPrimRoute()"></app-button>
     </div>
 </section>

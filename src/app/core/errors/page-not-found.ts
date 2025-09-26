@@ -1,4 +1,4 @@
-import { ErrorPageConfig } from '../interfaces';
+import { ErrorPageConfig } from '@shared/interfaces';
 
 export const PAGE_NOT_FOUND: ErrorPageConfig = {
   status: '404',
@@ -7,6 +7,6 @@ export const PAGE_NOT_FOUND: ErrorPageConfig = {
     'We can’t find the page you’re looking for.',
     'Try checking the URL or use the button below to go home.',
   ],
-  primText: 'Home',
-  primRoute: '/',
+  primLabel: 'Home',
+  primUrl: '/',
 };

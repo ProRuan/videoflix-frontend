@@ -3,8 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Button } from '@shared/components/buttons';
-
-import { ErrorPageConfig } from '../interfaces';
+import { ErrorPageConfig } from '@shared/interfaces';
 
 /**
  * Class representing an error page component.
@@ -25,26 +24,26 @@ export class ErrorPage {
   status = computed(() => this.config().status);
   title = computed(() => this.config().title);
   messages = computed(() => this.config().messages);
-  primText = computed(() => this.config().primText);
-  primRoute = computed(() => this.config().primRoute);
-  secText = computed(() => this.config().secText ?? '');
-  secRoute = computed(() => this.config().secRoute ?? '');
+  primLabel = computed(() => this.config().primLabel);
+  primUrl = computed(() => this.config().primUrl);
+  secLabel = computed(() => this.config().secLabel ?? '');
+  secUrl = computed(() => this.config().secUrl ?? '');
 
   /**
-   * Check the configuration for including secondary text and route.
-   * @returns True if the configuration includes secondary text and route,
+   * Check the configuration for including secondary label and URL.
+   * @returns True if the configuration includes secondary label and URL,
    *          otherwise false.
    */
   hasSecOption() {
-    return !!this.secText() && !!this.secRoute();
+    return !!this.secLabel() && !!this.secUrl();
   }
 
   /**
    * Navigate to the secondary route on click.
    */
   onSecRoute() {
-    if (this.secRoute() !== '') {
-      this.router.navigateByUrl(this.secRoute());
+    if (this.secUrl() !== '') {
+      this.router.navigateByUrl(this.secUrl());
     }
   }
 
@@ -52,6 +51,6 @@ export class ErrorPage {
    * Navigate to the primary route on click.
    */
   onPrimRoute() {
-    this.router.navigateByUrl(this.primRoute());
+    this.router.navigateByUrl(this.primUrl());
   }
 }

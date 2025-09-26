@@ -1,4 +1,4 @@
-import { ErrorPageConfig } from '../interfaces';
+import { ErrorPageConfig } from '@shared/interfaces';
 
 export const BAD_REQUEST: ErrorPageConfig = {
   status: '400',
@@ -7,6 +7,6 @@ export const BAD_REQUEST: ErrorPageConfig = {
     'The server received incomplete or invalid data.',
     'Try checking the URL or use the button below to go home.',
   ],
-  primText: 'Home',
-  primRoute: '/',
+  primLabel: 'Home',
+  primUrl: '/',
 };

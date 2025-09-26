@@ -1,4 +1,4 @@
-import { ErrorPageConfig } from '../interfaces';
+import { ErrorPageConfig } from '@shared/interfaces';
 
 export const UNAUTHORIZED: ErrorPageConfig = {
   status: '401',
@@ -7,8 +7,8 @@ export const UNAUTHORIZED: ErrorPageConfig = {
     'Your session has ended or you don’t have access to this page.',
     'Please log in to continue.',
   ],
-  primText: 'Log in',
-  primRoute: '/log-in',
-  secText: 'Home',
-  secRoute: '/',
+  primLabel: 'Log in',
+  primUrl: '/log-in',
+  secLabel: 'Home',
+  secUrl: '/',
 };
