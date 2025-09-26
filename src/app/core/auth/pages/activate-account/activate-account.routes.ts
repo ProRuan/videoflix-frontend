@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { ACTIVATION_TOKEN } from '@core/auth/constants';
-import { tokenGuard } from '@core/auth/guards';
-import { activationTokenResolver } from '@core/auth/resolvers';
+import { ACTIVATION_TOKEN } from '@core/token/constants';
+import { tokenGuard } from '@core/token/guards';
+import { activationTokenResolver } from '@core/token/resolvers';
 import { TokenPage } from '@shared/components/pages';
 
 import { ActivateAccount } from './activate-account';

@@ -2,9 +2,8 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { AuthResponse } from '@core/auth/interfaces';
 import { Api } from '@shared/services/api';
-
-import { AuthResponse } from '../interfaces';
 
 /**
  * Class representing a token store service.

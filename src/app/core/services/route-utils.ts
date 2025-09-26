@@ -8,7 +8,8 @@ import {
 import { catchError, map, of } from 'rxjs';
 
 import { AuthResponse } from '@core/auth/interfaces';
-import { AuthStore, TokenStore } from '@core/auth/services';
+import { AuthStore } from '@core/auth/services';
+import { TokenStore } from '@core/token/services';
 import { tokenPatterns } from '@shared/modules/form-validation';
 
 /**

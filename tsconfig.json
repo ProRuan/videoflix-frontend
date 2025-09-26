@@ -64,6 +64,9 @@
       "@core/static/*": [
         "core/static/*"
       ],
+       "@core/token/*": [
+        "core/token/*"
+      ],
       "@features/video/*": [
         "features/video/*"
       ],

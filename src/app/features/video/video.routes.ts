@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { VideoOffer, VideoPlayer } from './pages';
-import { tokenGuard } from '@core/auth/guards';
+import { tokenGuard } from '@core/token/guards';
 import { VideoOfferResolver } from './resolvers';
 import { videoGuard } from './guards';
 import { VideoPlayerResolver } from './services/video-player-resolver';
