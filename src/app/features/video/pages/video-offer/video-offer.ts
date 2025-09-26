@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserClient } from '@core/auth/services';
+import { AuthStore, UserClient } from '@core/auth/services';
 
 import { Footer } from '@core/layout/components';
 import { VideoHeader } from '@features/video/components';
@@ -33,6 +33,7 @@ import { Button } from '@shared/components/buttons';
 export class VideoOffer implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
+  private auth = inject(AuthStore);
   private user: UserClient = inject(UserClient);
   private vs: VideoStore = inject(VideoStore);
 
@@ -194,7 +195,7 @@ export class VideoOffer implements OnInit {
   }
 
   onPlay() {
-    const token = this.user.get('token');
+    const token = this.auth.getToken();
     const id = this.getVideoId();
     this.router.navigateByUrl(`/video/player/${token}/${id}`);
   }

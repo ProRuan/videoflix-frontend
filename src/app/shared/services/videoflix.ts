@@ -5,7 +5,6 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
 import { AuthResponse } from '@core/auth/interfaces';
-import { User } from '@core/auth/models';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +35,6 @@ export class Videoflix {
   // add loading indicator for guards and resolvers ...
 
   cachedEmail: string = '';
-  user: User = new User();
 
   readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -51,17 +49,9 @@ export class Videoflix {
     return this.currentUrl() === '/';
   }
 
-  setAuthData(response: AuthResponse) {
-    this.user.setAuthData(response);
-  }
-
   // fix this ...
   isVideoOffer() {
     return /\/video\/offer\/[0-9a-f]{40}/.test(this.currentUrl());
     // return this.currentUrl() === '/video-offer';
-  }
-
-  logOut() {
-    this.user.reset();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserClient } from '@core/auth/services';
+import { AuthStore, UserClient } from '@core/auth/services';
 
 import { VideoStore } from '@features/video/services';
 import { Button } from '@shared/components/buttons';
@@ -17,6 +17,7 @@ import { Button } from '@shared/components/buttons';
 export class VideoNotFound {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
+  auth = inject(AuthStore);
   user: UserClient = inject(UserClient);
   vs: VideoStore = inject(VideoStore);
 
@@ -24,7 +25,7 @@ export class VideoNotFound {
    * Redirect to the video offer on click.
    */
   onVideoOffer() {
-    const token = this.user.get('token');
+    const token = this.auth.getToken();
     this.router.navigateByUrl(`/video/offer/${token}`);
   }
 }

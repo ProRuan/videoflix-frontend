@@ -12,7 +12,7 @@ import Player from 'video.js/dist/types/player';
 import { PlayableVideo, VideoPlayerBase } from '@features/video/models';
 import { VideoStore } from '@features/video/services';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { UserClient } from '@core/auth/services';
+import { AuthStore, UserClient } from '@core/auth/services';
 
 @Component({
   selector: 'app-video-player',
@@ -27,6 +27,7 @@ import { UserClient } from '@core/auth/services';
 export class VideoPlayer extends VideoPlayerBase {
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
+  private auth = inject(AuthStore);
   private user: UserClient = inject(UserClient);
   private vs: VideoStore = inject(VideoStore);
 
@@ -151,7 +152,7 @@ export class VideoPlayer extends VideoPlayerBase {
   }
 
   onBack() {
-    const token = this.user.get('token');
+    const token = this.auth.getToken();
     this.router.navigateByUrl(`/video/offer/${token}`);
     // this.router.navigateByUrl('video-offer');
   }
