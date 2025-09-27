@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthFormBase } from '@core/auth/directives';
-import { AuthStore, AuthUtils } from '@core/auth/services';
+import { AuthFormUtils, AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
 import { EmptyObject } from '@shared/interfaces';
@@ -30,7 +30,7 @@ export class DeleteAccount extends AuthFormBase<
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthStore);
-  private utils = inject(AuthUtils);
+  private utils = inject(AuthFormUtils);
   private toasts = inject(ToastManager);
 
   /**

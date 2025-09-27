@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 
 import { AuthFormBase } from '@core/auth/directives';
 import { TokenForm, TokenPayload, UserResponse } from '@core/auth/interfaces';
-import { AuthStore, AuthUtils } from '@core/auth/services';
+import { AuthFormUtils, AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { LoadingBar } from '@shared/components/loaders';
 import { ToastManager } from '@shared/services';
@@ -31,7 +31,7 @@ export class ActivateAccount extends AuthFormBase<
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthStore);
-  private utils = inject(AuthUtils);
+  private utils = inject(AuthFormUtils);
   private toasts = inject(ToastManager);
 
   private data = toSignal(this.route.data);

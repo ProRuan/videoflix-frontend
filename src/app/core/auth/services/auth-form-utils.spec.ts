@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthUtils } from './auth-utils';
+import { AuthFormUtils } from './auth-form-utils';
 
-describe('AuthUtils', () => {
-  let service: AuthUtils;
+describe('AuthFormUtils', () => {
+  let service: AuthFormUtils;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthUtils);
+    service = TestBed.inject(AuthFormUtils);
   });
 
   it('should be created', () => {

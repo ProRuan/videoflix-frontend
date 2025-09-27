@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { AUTH_DIALOG_CONFIG, AUTH_TOAST_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
 import { EmailResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
-import { AuthStore, AuthUtils } from '@core/auth/services';
+import { AuthFormUtils, AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -33,7 +33,7 @@ export class SignOut extends AuthFormBase<
 > {
   private route = inject(ActivatedRoute);
   private auth = inject(AuthStore);
-  private utils = inject(AuthUtils);
+  private utils = inject(AuthFormUtils);
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);
 

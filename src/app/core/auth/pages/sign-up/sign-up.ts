@@ -11,7 +11,7 @@ import {
   RegistrationPayload,
   RegistrationResponse,
 } from '@core/auth/interfaces';
-import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
+import { AuthFormUtils, AuthStore, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -34,7 +34,7 @@ export class SignUp extends AuthFormBase<
   RegistrationResponse
 > {
   private auth = inject(AuthStore);
-  private utils = inject(AuthUtils);
+  private utils = inject(AuthFormUtils);
   private user = inject(UserClient);
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);

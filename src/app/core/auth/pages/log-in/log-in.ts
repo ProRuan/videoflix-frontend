@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { AUTH_TOAST_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
 import { AuthResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
-import { AuthStore, AuthUtils, UserClient } from '@core/auth/services';
+import { AuthFormUtils, AuthStore, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -35,7 +35,7 @@ import { ToastManager } from '@shared/services';
 export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
   private router = inject(Router);
   private auth = inject(AuthStore);
-  private utils = inject(AuthUtils);
+  private utils = inject(AuthFormUtils);
   private user = inject(UserClient);
   private toasts = inject(ToastManager);
 

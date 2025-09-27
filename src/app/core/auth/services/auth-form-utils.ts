@@ -19,7 +19,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthUtils {
+export class AuthFormUtils {
   fb = inject(NonNullableFormBuilder);
 
   /**

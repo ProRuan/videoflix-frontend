@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { AUTH_DIALOG_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
 import { EmailForm, EmailPayload, EmailResponse } from '@core/auth/interfaces';
-import { AuthStore, AuthUtils } from '@core/auth/services';
+import { AuthFormUtils, AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -30,7 +30,7 @@ export class ForgotPassword extends AuthFormBase<
   EmailResponse
 > {
   private auth = inject(AuthStore);
-  private utils = inject(AuthUtils);
+  private utils = inject(AuthFormUtils);
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);
 

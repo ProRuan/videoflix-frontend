@@ -12,7 +12,7 @@ import {
   RegistrationPayload,
   UserResponse,
 } from '@core/auth/interfaces';
-import { AuthStore, AuthUtils } from '@core/auth/services';
+import { AuthFormUtils, AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
 import { LoadingBar } from '@shared/components/loaders';
@@ -36,7 +36,7 @@ export class ResetPassword extends AuthFormBase<
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthStore);
-  private utils = inject(AuthUtils);
+  private utils = inject(AuthFormUtils);
   private toasts = inject(ToastManager);
 
   private data = toSignal(this.route.data);
