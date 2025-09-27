@@ -17,7 +17,7 @@ export class TokenStore {
   private api = inject(Api);
 
   /**
-   * Check an activation token via Videoflix API.
+   * Check activation token via Videoflix API.
    * @param token - The token to be checked.
    * @returns An Observable with the authentication response.
    */
@@ -30,7 +30,7 @@ export class TokenStore {
   }
 
   /**
-   * Check a token via Videoflix API.
+   * Check token via Videoflix API.
    * @param token - The token to be checked.
    * @returns An Observable with the authentication response.
    */

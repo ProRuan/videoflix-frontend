@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
-// review imports + index.ts
 import { ErrorPage } from '@shared/components/pages';
 
+import { authChildrenRoutes, authData } from './auth.config';
 import {
   ForgotPassword,
   LogIn,
@@ -10,16 +10,6 @@ import {
   SignUp,
   Startsite,
 } from './pages';
-
-import { authChildrenRoutes, authData } from './auth.config';
-
-// own routes for other page types ...
-// own subroutes for children ... ?
-// rename reactivate-account ... ?
-// rename authentication-required ...
-
-// move token interfaces into a folder ...
-// move token state page logic to core ... ?
 
 const d = authData;
 const r = authChildrenRoutes;

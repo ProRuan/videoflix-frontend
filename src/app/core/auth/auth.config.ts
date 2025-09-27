@@ -1,11 +1,12 @@
 import { BAD_REQUEST, PAGE_NOT_FOUND, UNAUTHORIZED } from '@core/errors';
 
-import { Themes } from '@shared/constants';
-
-import { activateAccountRoutes } from './pages/activate-account/activate-account.routes';
-import { deleteAccountRoutes } from './pages/delete-account/delete-account.routes';
-import { resetPasswordRoutes } from './pages/reset-password/reset-password.routes';
-import { signOutRoutes } from './pages/sign-out/sign-out.routes';
+import { Themes } from './constants';
+import {
+  activateAccountRoutes,
+  deleteAccountRoutes,
+  resetPasswordRoutes,
+  signOutRoutes,
+} from './pages';
 
 export const authData = {
   startsite: { theme: Themes.Startsite },
