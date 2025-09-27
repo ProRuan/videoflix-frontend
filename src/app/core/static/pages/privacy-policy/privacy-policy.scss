@@ -4,3 +4,72 @@
   @include flexbox($fd: column);
   height: 100vh;
 }
+
+.content {
+  @include flexbox($fd: column, $g: 40px);
+  max-width: 864px;
+}
+
+h1 {
+  @include font($fs: 32px, $fw: 700, $lh: 42px);
+  color: $hoverBlue;
+}
+
+article {
+  @include flexbox($fd: column, $g: 16px);
+}
+
+h2 {
+  @include font($fs: 32px, $fw: 700, $lh: 42px);
+  color: $white;
+}
+
+p,
+ul,
+li {
+  @include font($fs: 16px, $lh: 21px);
+  text-align: justify;
+  color: $white;
+}
+
+a {
+  text-decoration: none;
+  color: $hoverBlue;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.it-kanzlei-copyright {
+  @include flexbox($jc: space-between, $ai: center);
+}
+
+.it-kanzlei-link {
+  padding: 4px 6px 4px 4px;
+  border-radius: 40px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.it-kanzlei-bg {
+  @include size($w: 200%, $h: 100%);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  border-radius: 40px;
+  background-image: linear-gradient(90deg, $hoverBlue 0%, $white 35%);
+  transform: translateX(-50%);
+  transition: transform 100ms ease-in-out;
+
+  .it-kanzlei-link:hover & {
+    transform: translateX(0);
+  }
+
+  .it-kanzlei-link:active & {
+    transform: translateX(-15%);
+  }
+}
+
+.it-kanzlei-logo {
+  display: block;
+  position: relative;
+}

@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
-import { LinkHeader } from '@shared/components/headers/link-header/link-header';
 
+import { LinkHeader } from '@shared/components/headers';
+
+/**
+ * Class representing an imprint component.
+ */
 @Component({
   selector: 'app-imprint',
   imports: [LinkHeader],

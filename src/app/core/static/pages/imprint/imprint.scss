@@ -4,3 +4,31 @@
   @include flexbox($fd: column);
   height: 100vh;
 }
+
+.content {
+  @include flexbox($fd: column, $g: 40px);
+}
+
+h1 {
+  @include font($fs: 32px, $fw: 700, $lh: 42px);
+  color: $hoverBlue;
+}
+
+.imprint {
+  @include font($fs: 16px, $lh: 21px);
+  @include flexbox($fd: column, $g: 16px);
+  color: $white;
+}
+
+address {
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+  color: $hoverBlue;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
