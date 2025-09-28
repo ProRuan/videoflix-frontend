@@ -78,3 +78,8 @@ a {
   display: block;
   position: relative;
 }
+
+.button-cont {
+  @include flexbox($jc: flex-end);
+  height: 48px;
+}

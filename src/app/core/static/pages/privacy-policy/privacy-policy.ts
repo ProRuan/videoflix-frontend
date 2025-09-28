@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { TopButton } from '@shared/components/buttons';
 import { LinkHeader } from '@shared/components/headers';
 
 /**
@@ -7,7 +8,7 @@ import { LinkHeader } from '@shared/components/headers';
  */
 @Component({
   selector: 'app-privacy-policy',
-  imports: [LinkHeader],
+  imports: [LinkHeader, TopButton],
   templateUrl: './privacy-policy.html',
   styleUrl: './privacy-policy.scss',
 })
