@@ -1,5 +1,5 @@
 <div class="input-error-cont">
-    <input #email [value]="control?.value" name="email" class="input" [class.invalid]="error" type="email"
+    <input #email [value]="control?.value" name="email" class="input" [class.invalid]="isError()" type="email"
         [placeholder]="placeholder" maxlength="128" (input)="onInput()">
     @if(isError()) {
     <div class="error-cont">
