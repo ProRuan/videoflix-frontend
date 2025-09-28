@@ -1,5 +1,14 @@
 @use "mixins" as *;
 
+@mixin button-gradient($colorA, $colorB) {
+  background-image: linear-gradient(
+    90deg,
+    $colorA 50%,
+    $colorB $two-thirds,
+    $colorA $two-thirds
+  );
+}
+
 :host {
   width: fit-content;
 }
@@ -9,15 +18,12 @@
   @include spacing($p: 12px 24px);
   @include size($w: fit-content, $h: 48px);
   @include font($fw: 700);
-  @include colors($c: $white, $bgc: $primBlue);
+  @include colors($c: $white, $bgc: transparent);
   @include flexbox($jc: center, $ai: center, $g: 4px);
   position: relative;
   overflow: hidden;
-  // necessary ... ?
-  transition: color 100ms ease-in-out, background-color 100ms ease-in-out;
 
   &:disabled {
-    background-color: $disabled;
     cursor: default;
   }
 
@@ -25,57 +31,46 @@
     flex-direction: row-reverse;
   }
 
-  &.secondary {
-    background-color: $sec-blue;
-  }
-
   &.tertiary {
-    @include colors($c: $primBlue, $bgc: $white);
+    color: $primBlue;
   }
 }
 
 .background {
-  @include size($w: 0, $h: 100%);
+  @include size($w: 300%, $h: 100%);
+  @include button-gradient($primBlue, $hoverBlue);
   @include position($pos: absolute, $l: 0, $t: 0);
-  background-image: linear-gradient(90deg, $primBlue 0%, $hoverBlue 100%);
-  opacity: 0;
-  z-index: 0;
-  transition: opacity 125ms ease-in-out, width 125ms ease-in-out;
+  transform: translateX(-$two-thirds);
+  transition: transform 100ms ease-in-out;
 
   .button.secondary & {
-    background-image: linear-gradient(
-      90deg,
-      $sec-blue 0%,
-      $sec-blue-hover 100%
-    );
+    @include button-gradient($sec-blue, $sec-blue-hover);
   }
 
-  // set ...
   .button.tertiary & {
-    background-image: linear-gradient(90deg, $white 0%, $hoverBlue 200%);
+    @include button-gradient($white, $hoverBlue);
   }
 
   .button:hover & {
-    width: 100%;
-    opacity: 1;
+    transform: translateX(-$one-third);
   }
 
   .button:active & {
-    opacity: 0.5;
+    transform: translateX(0);
   }
 
   .button:disabled & {
-    width: 0;
-    opacity: 0;
+    background-color: $disabled;
+    background-image: none;
   }
 }
 
 .icon {
   @include image($h: 24px);
-  z-index: 1;
+  position: relative;
 }
 
 .text {
   @include font($fw: 700);
-  z-index: 1;
+  position: relative;
 }
