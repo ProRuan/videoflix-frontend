@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Api } from '@shared/services/api';
+import { BaseStore } from '@shared/services';
 
 /**
  * Class representing a video progress store service.
@@ -9,7 +9,7 @@ import { Api } from '@shared/services/api';
   providedIn: 'root',
 })
 export class VideoProgressStore {
-  api = inject(Api);
+  store = inject(BaseStore);
 
   // get, add, update, delete ...
   // authenticator: rename it to auth-store ...

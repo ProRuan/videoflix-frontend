@@ -1,7 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { PageNavigator } from '@shared/services';
+import { Component } from '@angular/core';
 
 /**
  * Class representing a back button component.
@@ -13,14 +10,10 @@ import { PageNavigator } from '@shared/services';
   styleUrl: './back-button.scss',
 })
 export class BackButton {
-  router = inject(Router);
-  navigator = inject(PageNavigator);
-
   /**
-   * Redirect to the previous page on click.
+   * Step back in history on click.
    */
   onBack() {
-    const url = this.navigator.previousUrl;
-    this.router.navigateByUrl(url);
+    history.back();
   }
 }

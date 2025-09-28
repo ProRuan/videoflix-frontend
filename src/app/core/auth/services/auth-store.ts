@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { Api } from '@shared/services/api';
+import { BaseStore } from '@shared/services';
 
 import {
   AuthResponse,
@@ -18,13 +18,13 @@ import {
 /**
  * Class representing an authentication store service.
  *
- * Provides methods for authentication and Videoflix API.
+ * Provides methods for Videoflix API authentication requests.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthStore {
-  private api = inject(Api);
+  private store = inject(BaseStore);
 
   private token: string = '';
 
@@ -50,7 +50,7 @@ export class AuthStore {
    * @returns An Observable with the email response.
    */
   checkEmail(payload: EmailPayload): Observable<EmailResponse> {
-    return this.api.post('email-check', payload, { skipAuth: true });
+    return this.store.post('email-check', payload, { skipAuth: true });
   }
 
   /**
@@ -59,7 +59,7 @@ export class AuthStore {
    * @returns An Observable with the registration response.
    */
   register(payload: RegistrationPayload): Observable<RegistrationResponse> {
-    return this.api.post('registration', payload, { skipAuth: true });
+    return this.store.post('registration', payload, { skipAuth: true });
   }
 
   /**
@@ -68,7 +68,7 @@ export class AuthStore {
    * @returns An Observable with the registration response.
    */
   activateAccount(payload: TokenPayload): Observable<RegistrationResponse> {
-    return this.api.post('account-activation', payload, { skipAuth: true });
+    return this.store.post('account-activation', payload, { skipAuth: true });
   }
 
   /**
@@ -77,7 +77,7 @@ export class AuthStore {
    * @returns An Observable with the email response.
    */
   reactivateAccount(payload: EmailPayload): Observable<EmailResponse> {
-    return this.api.post('account-reactivation', payload, { skipAuth: true });
+    return this.store.post('account-reactivation', payload, { skipAuth: true });
   }
 
   /**
@@ -86,7 +86,7 @@ export class AuthStore {
    * @returns An Observable with the authentication response.
    */
   logIn(payload: LoginPayload): Observable<AuthResponse> {
-    return this.api.post('login', payload, { skipAuth: true });
+    return this.store.post('login', payload, { skipAuth: true });
   }
 
   /**
@@ -94,7 +94,7 @@ export class AuthStore {
    * @returns An Observable with no response.
    */
   logOut(): Observable<void> {
-    return this.api.post('logout', {});
+    return this.store.post('logout', {});
   }
 
   /**
@@ -103,7 +103,7 @@ export class AuthStore {
    * @returns An Observable with the email response.
    */
   resetPassword(payload: EmailPayload): Observable<EmailResponse> {
-    return this.api.post('password-reset', payload, { skipAuth: true });
+    return this.store.post('password-reset', payload, { skipAuth: true });
   }
 
   /**
@@ -112,7 +112,7 @@ export class AuthStore {
    * @returns An Observable with the user response.
    */
   updatePassword(payload: RegistrationPayload): Observable<UserResponse> {
-    return this.api.post('password-update', payload);
+    return this.store.post('password-update', payload);
   }
 
   /**
@@ -121,7 +121,7 @@ export class AuthStore {
    * @returns An Observable with the email response.
    */
   deregister(payload: LoginPayload): Observable<EmailResponse> {
-    return this.api.post('deregistration', payload);
+    return this.store.post('deregistration', payload);
   }
 
   /**
@@ -129,6 +129,6 @@ export class AuthStore {
    * @returns An Observable with no response.
    */
   deleteAccount(): Observable<void> {
-    return this.api.delete('account-deletion', this.token);
+    return this.store.delete('account-deletion');
   }
 }

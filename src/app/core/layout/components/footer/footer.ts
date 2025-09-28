@@ -1,7 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-
-import { Videoflix } from '@shared/services/videoflix';
+import { Router, RouterLink } from '@angular/router';
 
 /**
  * Class representing a footer component.
@@ -13,13 +11,14 @@ import { Videoflix } from '@shared/services/videoflix';
   styleUrl: './footer.scss',
 })
 export class Footer {
-  private videoflix = inject(Videoflix);
+  private router = inject(Router);
 
   /**
-   * Check the current component for being the video offer component.
-   * @returns A boolean value.
+   * Check if the current route matches the video offer route.
+   * @returns True if the current route matches the video offer route,
+   *          otherwise false.
    */
   isVideoOffer() {
-    return this.videoflix.isVideoOffer();
+    return this.router.url.includes('video/offer');
   }
 }

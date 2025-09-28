@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Videoflix } from './videoflix';
+import { BaseStore } from './base-store';
 
-describe('Videoflix', () => {
-  let service: Videoflix;
+describe('BaseStore', () => {
+  let service: BaseStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Videoflix);
+    service = TestBed.inject(BaseStore);
   });
 
   it('should be created', () => {

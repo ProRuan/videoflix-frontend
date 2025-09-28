@@ -1,33 +1,37 @@
 import { inject, Injectable } from '@angular/core';
 
-import { UserClient } from '@core/auth/services';
-import { Api } from '@shared/services/api';
+import { Observable } from 'rxjs';
 
-/**
- * Class representing an video store service.
- * @extends ApiBase
- */
+import { UserClient } from '@core/auth/services';
+import { BaseStore } from '@shared/services';
+
+import { PlayableVideoData, VideoGroupData } from '../interfaces';
+
 @Injectable({
   providedIn: 'root',
 })
 export class VideoStore {
-  api = inject(Api);
+  store = inject(BaseStore);
   user = inject(UserClient);
+
+  // write class comment ...
+  // review comments ...
+  // compare with other services ...
 
   /**
    * List the videos from the video store.
-   * @returns The video list.
+   * @returns An Observable with the video group data array.
    */
-  listVideos() {
-    return this.api.get('videos');
+  listVideos(): Observable<VideoGroupData[]> {
+    return this.store.get(['videos']);
   }
 
   /**
    * Retrieve a video from the video store.
    * @param id - The video id.
-   * @returns The video.
+   * @returns An Observable with the playable video data.
    */
-  retrieveVideo(id: number) {
-    return this.api.get('videos', id);
+  retrieveVideo(id: number): Observable<PlayableVideoData> {
+    return this.store.get(['videos', id.toString()]);
   }
 }

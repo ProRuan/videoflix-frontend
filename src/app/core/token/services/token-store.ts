@@ -3,18 +3,18 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthResponse } from '@core/auth/interfaces';
-import { Api } from '@shared/services/api';
+import { BaseStore } from '@shared/services';
 
 /**
  * Class representing a token store service.
  *
- * Provides methods for token checks via Videoflix API.
+ * Provides methods for Videoflix API token checks.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class TokenStore {
-  private api = inject(Api);
+  private store = inject(BaseStore);
 
   /**
    * Check activation token via Videoflix API.
@@ -22,7 +22,7 @@ export class TokenStore {
    * @returns An Observable with the authentication response.
    */
   checkActivationToken(token: string): Observable<AuthResponse> {
-    return this.api.post(
+    return this.store.post(
       'token/activation-token-check',
       { token },
       { skipAuth: true }
@@ -35,6 +35,6 @@ export class TokenStore {
    * @returns An Observable with the authentication response.
    */
   checkToken(): Observable<AuthResponse> {
-    return this.api.post('token/token-check', {});
+    return this.store.post('token/token-check', {});
   }
 }
