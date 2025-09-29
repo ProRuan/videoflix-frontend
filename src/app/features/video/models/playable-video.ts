@@ -6,10 +6,10 @@ import { AvailableResolutions, PlayableVideoData } from '../interfaces';
  * @extends Video
  */
 export class PlayableVideo extends Video {
-  readonly videoFile: string;
-  readonly hlsPlaylist: string;
   readonly duration: number;
-  readonly availableResolutions: AvailableResolutions;
+  readonly hlsPlaylist: string;
+  readonly qualityLevels: { label: string; source: string }[];
+  // readonly availableResolutions: AvailableResolutions;
 
   /**
    * Creates a playable video.
@@ -17,9 +17,9 @@ export class PlayableVideo extends Video {
    */
   constructor(data: PlayableVideoData) {
     super(data);
-    this.videoFile = data.video_file;
     this.hlsPlaylist = data.hls_playlist;
     this.duration = data.duration;
-    this.availableResolutions = data.available_resolutions;
+    this.qualityLevels = data.quality_levels;
+    // this.availableResolutions = data.available_resolutions;
   }
 }

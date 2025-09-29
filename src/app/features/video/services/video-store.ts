@@ -14,6 +14,9 @@ export class VideoStore {
   store = inject(BaseStore);
   user = inject(UserClient);
 
+  // fix GET "/api/videos/{id}/" ...
+  // return { ... } and not video: { ... } ...
+
   // write class comment ...
   // review comments ...
   // compare with other services ...
@@ -31,7 +34,7 @@ export class VideoStore {
    * @param id - The video id.
    * @returns An Observable with the playable video data.
    */
-  retrieveVideo(id: number): Observable<PlayableVideoData> {
+  retrieveVideo(id: number): Observable<{ video: PlayableVideoData }> {
     return this.store.get(['videos', id.toString()]);
   }
 }

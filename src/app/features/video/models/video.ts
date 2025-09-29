@@ -8,9 +8,10 @@ export class Video {
   readonly title: string;
   readonly genre: string;
   readonly description: string;
+  // rename
   readonly previewClip: string;
+  // rename
   readonly thumbnailImage: string;
-  readonly spriteSheet: string;
   readonly createdAt: string;
 
   /**
@@ -22,9 +23,8 @@ export class Video {
     this.title = data.title;
     this.genre = data.genre;
     this.description = data.description;
-    this.previewClip = data.preview_clip;
-    this.thumbnailImage = data.thumbnail_image;
-    this.spriteSheet = data.sprite_sheet;
+    this.previewClip = data.preview;
+    this.thumbnailImage = data.thumbnail;
     this.createdAt = data.created_at;
   }
 }

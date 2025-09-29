@@ -6,8 +6,11 @@ import { VideoData } from './video-data';
  * @extends VideoData
  */
 export interface PlayableVideoData extends VideoData {
-  video_file: string;
-  hls_playlist: string;
   duration: number;
-  available_resolutions: AvailableResolutions;
+  hls_playlist: string;
+  // interface for quality levels ... !
+  quality_levels: {
+    label: string;
+    source: string;
+  }[];
 }

@@ -60,25 +60,27 @@ export class VideoPlayer extends VideoPlayerBase {
   // clean code ...
 
   player!: Player;
+
+  // update quality level sources ... !
   sources = {
     auto: {
       src: this.playableVideo().hlsPlaylist,
       type: 'application/x-mpegURL',
     },
     '1080p': {
-      src: this.playableVideo().availableResolutions['1080p'],
+      src: this.playableVideo().qualityLevels[0].source,
       type: 'application/x-mpegURL',
     },
     '720p': {
-      src: this.playableVideo().availableResolutions['720p'],
+      src: this.playableVideo().qualityLevels[1].source,
       type: 'application/x-mpegURL',
     },
     '360p': {
-      src: this.playableVideo().availableResolutions['360p'],
+      src: this.playableVideo().qualityLevels[2].source,
       type: 'application/x-mpegURL',
     },
-    '120p': {
-      src: this.playableVideo().availableResolutions['120p'],
+    '144p': {
+      src: this.playableVideo().qualityLevels[3].source,
       type: 'application/x-mpegURL',
     },
   };
@@ -196,7 +198,7 @@ export class VideoPlayer extends VideoPlayerBase {
     // }, 1000);
   }
 
-  updateSource(key: 'auto' | '1080p' | '720p' | '360p' | '120p') {
+  updateSource(key: 'auto' | '1080p' | '720p' | '360p' | '144p') {
     this.player.pause();
     const currentTime = this.player.currentTime();
     this.player.src(this.sources[key]);

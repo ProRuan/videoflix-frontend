@@ -11,6 +11,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PlayableVideo } from '../models';
 import { UserClient } from '@core/auth/services';
+import { PlayableVideoData } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,12 @@ export class VideoPlayerResolver implements Resolve<PlayableVideo> {
 
     const videoId: number = isNaN(id) ? 0 : id;
     return this.vs.retrieveVideo(videoId).pipe(
-      map((data) => new PlayableVideo(data)),
+      map((data) => {
+        console.log('resolve video data: ', data['video']);
+        console.log('resolved video data: ', new PlayableVideo(data['video']));
+
+        return new PlayableVideo(data['video']);
+      }),
       catchError((err: HttpErrorResponse) => {
         console.log('video player error: ', err);
 

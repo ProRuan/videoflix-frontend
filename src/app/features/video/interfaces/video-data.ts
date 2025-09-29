@@ -6,8 +6,7 @@ export interface VideoData {
   title: string;
   genre: string;
   description: string;
-  preview_clip: string;
-  thumbnail_image: string;
-  sprite_sheet: string;
+  preview: string;
+  thumbnail: string;
   created_at: string;
 }
