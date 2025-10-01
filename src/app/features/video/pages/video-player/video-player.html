@@ -1,15 +1,6 @@
 <section #videoPlayer class="video-player" (click)="onPlayToggleLate()" (dblclick)="onFullScreen()">
-    <div class="player-header" [class.player-header-hidden]="playerHeaderHidden()" (click)="onEventStop($event)"
-        (dblclick)="onEventStop($event)">
-        <button #arrowBack class="button arrow-back" (click)="onBack()"></button>
-        <!-- display for a few seconds after opening video first time -->
-        <span class="info-text">{{ qualityMessage() }}</span>
-        <!-- <span class="info-text">Optimizing video for your screen 40%</span> -->
-        <div class="logo-cont">
-            <img src="images/logo/logo.png" alt="videoflix logo" class="logo">
-        </div>
-    </div>
-
+    <!-- set [percent]="..." -->
+    <app-video-player-header></app-video-player-header>
 
     <div class="video-cont" [class.full-size]="isFullscreen()">
         <video #video class="video video-js" src="Kristallbruch.mp4" type="video/mp4"></video>

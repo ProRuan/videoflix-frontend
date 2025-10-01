@@ -13,10 +13,11 @@ import { PlayableVideo, VideoPlayerBase } from '@features/video/models';
 import { VideoStore } from '@features/video/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthStore, UserClient } from '@core/auth/services';
+import { VideoPlayerHeader } from './components';
 
 @Component({
   selector: 'app-video-player',
-  imports: [],
+  imports: [VideoPlayerHeader],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
   host: {
@@ -114,6 +115,7 @@ export class VideoPlayer extends VideoPlayerBase {
       // },
     ],
     enableSmoothSeeking: true,
+    // apply fullscreen options ... ?!
   };
 
   qualityMessage = signal('');

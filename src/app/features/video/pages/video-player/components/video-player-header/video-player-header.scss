@@ -1,0 +1,28 @@
+@use "mixins" as *;
+
+$player-header-gradient: linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0.7) 0%,
+  rgba(0, 0, 0, 0) 100%
+);
+
+:host {
+  @include position($pos: absolute, $l: 0, $t: 0);
+  width: 100%;
+  background: $player-header-gradient;
+}
+
+.video-player-header {
+  @include spacing($p: 10px 32px);
+  @include flexbox($jc: space-between, $ai: center);
+  height: 108px;
+}
+
+.message {
+  @include font($fs: 16px, $lh: 21px);
+  color: $white;
+}
+
+.logo {
+  @include image($h: 48px);
+}
