@@ -39,10 +39,10 @@ export class VideoPlayerResolver implements Resolve<PlayableVideo> {
     const videoId: number = isNaN(id) ? 0 : id;
     return this.vs.retrieveVideo(videoId).pipe(
       map((data) => {
-        console.log('resolve video data: ', data['video']);
-        console.log('resolved video data: ', new PlayableVideo(data['video']));
+        console.log('resolve video data: ', data);
+        console.log('resolved video data: ', new PlayableVideo(data));
 
-        return new PlayableVideo(data['video']);
+        return new PlayableVideo(data);
       }),
       catchError((err: HttpErrorResponse) => {
         console.log('video player error: ', err);

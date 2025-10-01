@@ -113,6 +113,7 @@ export class VideoPlayer extends VideoPlayerBase {
       //   type: 'application/x-mpegURL',
       // },
     ],
+    enableSmoothSeeking: true,
   };
 
   qualityMessage = signal('');

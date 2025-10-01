@@ -40,7 +40,8 @@
 }
 
 .arrow-back {
-  background-image: url("/images/buttons/arrow_back.png");
+  background-image: url("/images/players/arrow_back.svg");
+  // background-image: url("/images/buttons/arrow_back.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 31.4px auto;
@@ -194,21 +195,29 @@
 }
 
 .play {
-  background-image: url("/images/buttons/play.png");
+  // play
+  background-image: url("/images/players/play.svg");
+  // pause
+  // background-image: url("/images/players/pause.svg");
+  // replay
+  // background-image: url("/images/players/replay.svg");
+  // background-image: url("/images/buttons/play.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 20.7px auto;
 }
 
 .backward {
-  background-image: url("/images/buttons/backward_10.png");
+  background-image: url("/images/players/backward_10.svg");
+  // background-image: url("/images/buttons/backward_10.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 36px auto;
 }
 
 .forward {
-  background-image: url("/images/buttons/forward_10.png");
+  background-image: url("/images/players/forward_10.svg");
+  // background-image: url("/images/buttons/forward_10.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 36px auto;
@@ -220,10 +229,14 @@
 }
 
 .volume {
-  background-image: url("/images/buttons/volume.png");
+  // volume
+  background-image: url("/images/players/volume.svg");
+  // mute
+  // background-image: url("/images/players/mute.svg");
+  // background-image: url("/images/buttons/volume.png");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 36px auto;
+  // background-size: 36px auto;
 }
 
 .volume-bar {
@@ -254,7 +267,11 @@
 }
 
 .speed {
-  background-image: url("/images/buttons/speed.png");
+  // speed
+  background-image: url("/images/players/speed.svg");
+  // quality
+  // background-image: url("/images/players/quality.svg");
+  // background-image: url("/images/buttons/speed.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 39.76px auto;
@@ -280,11 +297,16 @@
   }
 }
 
+// fix background-size for all button icons ...
 .full-screen {
-  background-image: url("/images/buttons/full_screen.png");
+  // fullscreen
+  background-image: url("/images/players/fullscreen.svg");
+  // exit fullscreen
+  // background-image: url("/images/players/exit_fullscreen.svg");
+  // background-image: url("/images/buttons/full_screen.png");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 48px auto;
+  background-size: auto auto;
 }
 
 // margin to styles.scss!!!

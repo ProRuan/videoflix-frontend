@@ -34,7 +34,7 @@ export class VideoStore {
    * @param id - The video id.
    * @returns An Observable with the playable video data.
    */
-  retrieveVideo(id: number): Observable<{ video: PlayableVideoData }> {
+  retrieveVideo(id: number): Observable<PlayableVideoData> {
     return this.store.get(['videos', id.toString()]);
   }
 }
