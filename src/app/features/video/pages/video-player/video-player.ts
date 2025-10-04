@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
@@ -10,20 +11,38 @@ import { ActivatedRoute, Router } from '@angular/router';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
 import { PlayableVideo, VideoPlayerBase } from '@features/video/models';
-import { VideoStore } from '@features/video/services';
+import { VideoPlayerFacade, VideoStore } from '@features/video/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthStore, UserClient } from '@core/auth/services';
-import { VideoPlayerHeader } from './components';
+import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
+import { PlayButton } from '@features/video/components/buttons/play-button/play-button';
+import { VolumeButton } from '@features/video/components/buttons/volume-button/volume-button';
+import { SkipBackwardsButton } from '@features/video/components/buttons/skip-backwards-button/skip-backwards-button';
+import { SkipForwardButton } from '@features/video/components/buttons/skip-forward-button/skip-forward-button';
+import { FullscreenButton } from '@features/video/components/buttons/fullscreen-button/fullscreen-button';
+import { SpeedButton } from '@features/video/components/buttons/speed-button/speed-button';
+import { QualityButton } from '@features/video/components/buttons/quality-button/quality-button';
 
 @Component({
   selector: 'app-video-player',
-  imports: [VideoPlayerHeader],
+  imports: [
+    FullscreenButton,
+    VideoPlayerHeader,
+    PlayButton,
+    QualityButton,
+    SkipBackwardsButton,
+    SkipForwardButton,
+    SpeedButton,
+    VolumeButton,
+    VideoPlayerMultiBar,
+  ],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
   host: {
     '(document:mousemove)': 'onMouseMove($event)',
     '(document:mouseup)': 'stopDrag()',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VideoPlayer extends VideoPlayerBase {
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -31,6 +50,11 @@ export class VideoPlayer extends VideoPlayerBase {
   private auth = inject(AuthStore);
   private user: UserClient = inject(UserClient);
   private vs: VideoStore = inject(VideoStore);
+
+  // testing
+  private facade = inject(VideoPlayerFacade);
+
+  // move ui elements to video player ui bar ...
 
   // I. Video quality / resolutions ...
   // II. Video progress ...
@@ -60,7 +84,7 @@ export class VideoPlayer extends VideoPlayerBase {
   // finalize video-player design ...
   // clean code ...
 
-  player!: Player;
+  player = computed(() => this.facade.player());
 
   // update quality level sources ... !
   sources = {
@@ -97,26 +121,36 @@ export class VideoPlayer extends VideoPlayerBase {
         src: this.playableVideo().hlsPlaylist,
         type: 'application/x-mpegURL',
       },
-      // {
-      //   src: this.playableVideo().availableResolutions['1080p'],
-      //   type: 'application/x-mpegURL',
-      // },
-      // {
-      //   src: this.playableVideo().availableResolutions['720p'],
-      //   type: 'application/x-mpegURL',
-      // },
-      // {
-      //   src: this.playableVideo().availableResolutions['360p'],
-      //   type: 'application/x-mpegURL',
-      // },
-      // {
-      //   src: this.playableVideo().availableResolutions['120p'],
-      //   type: 'application/x-mpegURL',
-      // },
+      {
+        src: this.playableVideo().qualityLevels[0].source,
+        type: 'application/x-mpegURL',
+      },
+      {
+        src: this.playableVideo().qualityLevels[1].source,
+        type: 'application/x-mpegURL',
+      },
+      {
+        src: this.playableVideo().qualityLevels[2].source,
+        type: 'application/x-mpegURL',
+      },
+      {
+        src: this.playableVideo().qualityLevels[3].source,
+        type: 'application/x-mpegURL',
+      },
     ],
     enableSmoothSeeking: true,
+    enableDocumentPictureInPicture: true,
     // apply fullscreen options ... ?!
+    sourceOrder: true,
   };
+
+  qualityLevels = [
+    this.playableVideo().hlsPlaylist,
+    this.playableVideo().qualityLevels[0].source,
+    this.playableVideo().qualityLevels[1].source,
+    this.playableVideo().qualityLevels[2].source,
+    this.playableVideo().qualityLevels[3].source,
+  ];
 
   qualityMessage = signal('');
 
@@ -129,14 +163,41 @@ export class VideoPlayer extends VideoPlayerBase {
   fullScreenEnabled: boolean = false;
   isFullscreen = signal(false);
 
+  lastMouseMove: number = 0;
+  controlTimeout: ReturnType<typeof setTimeout> = -1;
+  hasControls = signal(false);
+
+  videoWidth = signal('100%');
+  videoHeight = signal('auto');
+
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
   @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
 
+  constructor() {
+    // remove super later ...
+    super();
+    document.onkeydown = (event: KeyboardEvent) => {
+      const key = event.key;
+      if (key === 'Escape' && this.facade.isFullscreen()) {
+        this.facade.exitFullscreen();
+      }
+    };
+  }
+
   onMouseMove(event: MouseEvent) {
     if (this.draggingCurrentTime) this.updateCurrentTime(event);
     if (this.dragging) this.updateVolume(event);
+
+    const time = Date.now();
+    if (time - this.lastMouseMove < 100) return;
+    clearTimeout(this.controlTimeout);
+    this.lastMouseMove = time;
+    this.hasControls.set(true);
+    this.controlTimeout = setTimeout(() => {
+      this.hasControls.set(false);
+    }, 3000);
 
     // activate
     // --------
@@ -178,13 +239,16 @@ export class VideoPlayer extends VideoPlayerBase {
   }
 
   ngAfterViewInit() {
-    this.player = videojs(this.video.nativeElement, this.options);
-    this.player.ready(() => {
+    this.facade.setPlayerContainer(this.videoPlayer);
+    this.facade.setPlayer(this.video, this.options);
+    this.facade.setSources(this.options.sources);
+    this.player()?.ready(() => {
       console.log('player ready');
-      console.log('player src: ', this.player.currentSource());
+      console.log('player src: ', this.player()?.currentSource());
+      console.log('select source: ', this.facade.getPlayer()?.currentSources());
     });
-    this.player.on('loadedmetadata', () => {
-      const duration = this.player.duration();
+    this.player()?.on('loadedmetadata', () => {
+      const duration = this.player()?.duration();
       if (duration) {
         this.duration.set(duration);
       }
@@ -192,26 +256,26 @@ export class VideoPlayer extends VideoPlayerBase {
     });
 
     // setTimeout(() => {
-    //   console.log('player src: ', this.player.currentSource());
-    //   this.player.src({
+    //   console.log('player src: ', this.player()?.currentSource());
+    //   this.player()?.src({
     //     src: this.playableVideo?.availableResolutions?.['720p'],
     //     type: 'application/x-mpegURL',
     //   });
-    //   console.log('player src: ', this.player.currentSource());
+    //   console.log('player src: ', this.player()?.currentSource());
     // }, 1000);
   }
 
   updateSource(key: 'auto' | '1080p' | '720p' | '360p' | '144p') {
-    this.player.pause();
-    const currentTime = this.player.currentTime();
-    this.player.src(this.sources[key]);
+    this.player()?.pause();
+    const currentTime = this.player()?.currentTime();
+    this.player()?.src(this.sources[key]);
 
     this.setQualityMessage(key);
 
-    this.player.ready(() => {
-      this.player.currentTime(currentTime);
-      this.player.play();
-      console.log('source: ', this.player.currentSource());
+    this.player()?.ready(() => {
+      this.player()?.currentTime(currentTime);
+      this.player()?.play();
+      console.log('source: ', this.player()?.currentSource());
     });
   }
 
@@ -261,11 +325,10 @@ export class VideoPlayer extends VideoPlayerBase {
     event.preventDefault();
   }
 
-  /**
-   * Toggle between play and pause after a delay on click.
-   */
+  // rename ...
   onPlayToggleLate() {
-    this.togglePlayLate();
+    this.facade.togglePlayWithDelay();
+    // this.togglePlayLate();
   }
 
   /**
@@ -326,20 +389,57 @@ export class VideoPlayer extends VideoPlayerBase {
     clearTimeout(this.clickTimeout);
     // this.clickTimeout = null;
 
-    // const fullScreenEnabled = this.player.isFullscreen();
+    // const fullScreenEnabled = this.player()?.isFullscreen();
     // if (fullScreenEnabled) {
-    //   this.player.exitFullscreen();
+    //   this.player()?.exitFullscreen();
     // } else {
-    //   this.player.requestFullscreen();
+    //   this.player()?.requestFullscreen();
     // }
 
-    const videoPlayerElement = this.videoPlayer.nativeElement;
-    if (!document.fullscreenElement) {
-      videoPlayerElement?.requestFullscreen?.();
-      this.isFullscreen.set(true);
-    } else {
-      document.exitFullscreen?.();
-      this.isFullscreen.set(false);
+    this.facade.toggleFullscreen();
+
+    // const videoPlayerElement = this.videoPlayer.nativeElement;
+    // if (!document.fullscreenElement) {
+    //   videoPlayerElement?.requestFullscreen?.();
+    //   this.isFullscreen.set(true);
+    // } else {
+    //   document.exitFullscreen?.();
+    //   this.isFullscreen.set(false);
+    // }
+  }
+
+  isFullscreenNew() {
+    return this.facade.isFullscreen();
+  }
+
+  isUIDisabled() {
+    return this.isFullscreenNew() && !this.hasControls();
+  }
+
+  onFullscreenChange(event: Event) {
+    this.facade.isFullscreen.update((value) => !value);
+    if (this.isFullscreenNew()) {
+      clearTimeout(this.controlTimeout);
+      this.hasControls.set(true);
+      this.controlTimeout = setTimeout(() => {
+        this.hasControls.set(false);
+      }, 3000);
     }
   }
+
+  /**
+   * 16 / 9 = 1.7777
+   *
+   * longer width: 20 / 9 = 2.2222
+   * 1.7777 < 2.2222 --> favour height
+   *
+   * shorter width: 12 / 9 = 1.3333
+   * 1.3333 < 1.7777 ---> favour width
+   *
+   * longer height: 16 / 12 = 1.3333
+   * 1.3333 < 1.7777 --> favour width
+   *
+   * shorter height: 16 / 6 = 2.6666
+   * 1.7777 < 2.6666 --> favour height
+   */
 }

@@ -1,0 +1,11 @@
+<div class="volume-container">
+    <button class="volume-button" [class.mute]="isMuted()" (click)="onMute()"></button>
+    <div #volumeBar class="volume-bar" (click)="onVolumeSelect($event)" (mousedown)="onDragStart($event)"
+        (dragstart)="onDragPrevent($event)">
+        <!-- set values -->
+        <div class="volume-fill" [style.width.%]="volume"></div>
+        <div class="volume-handle" [style.left.%]="volume"></div>
+    </div>
+</div>
+
+<!-- <button class="volume-button" [class.mute]="isMuted()" (click)="onMute()"></button> -->

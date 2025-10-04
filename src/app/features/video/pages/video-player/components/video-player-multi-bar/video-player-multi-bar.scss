@@ -1,0 +1,122 @@
+@use "mixins" as *;
+
+$gradient: linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0.6) 100%
+);
+
+// set properties and values ... !
+:host {
+  @include position($pos: absolute, $l: 0, $b: 0);
+  width: 100%;
+  z-index: $z-header;
+  transform: translateY(0);
+  transition: transform 100ms ease-in-out;
+}
+
+.video-player-multi-bar {
+  @include spacing($p: 0 32px 10px 32px);
+  @include size($w: 100%, $h: 108px);
+  @include flexbox($fd: column, $g: 16px);
+  background: $gradient;
+}
+
+.play-progress-bar {
+  @include flexbox($g: 12px);
+}
+
+.remaining-time {
+  @include font($fs: 12px, $lh: 16px);
+  color: $white;
+}
+
+// rename and style ...
+.progress-bar-cont {
+  @include size($w: 100%, $h: 16px);
+  @include flexbox($ai: center);
+  cursor: pointer;
+}
+
+// add hover, active, transition ...
+.progress-bar {
+  border-radius: 100px;
+  height: 4px;
+  background-color: #b5b5b5;
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+// add hover, active, transition ...
+.progress-bar-buffer {
+  @include position($pos: absolute, $l: 0, $t: 0);
+  border-radius: 100px;
+  width: 0;
+  height: 4px;
+  background-color: #ececec;
+  transition: width 100ms ease-in-out, background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+// add hover, active, transition ...
+.progress-bar-fill {
+  @include position($pos: absolute, $l: 0, $t: 0);
+  border-radius: 100px;
+  width: 0;
+  height: 4px;
+  background-color: $primBlue;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $hoverBlue;
+  }
+
+  &:active {
+    background-color: $activeBlue;
+  }
+}
+
+// add hover, active, transition ...
+.progress-handle {
+  @include size($w: 16px, $h: 16px);
+  @include position($pos: absolute, $t: -6px);
+  border-radius: 8px;
+  background-color: $primBlue;
+  transform: translateX(-50%);
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $hoverBlue;
+  }
+
+  &:active {
+    background-color: $activeBlue;
+  }
+}
+
+.current-time {
+  @include font($fs: 12px, $lh: 16px);
+  color: $video-gray;
+}
+
+.control-bar {
+  @include flexbox($jc: space-between, $ai: center);
+  width: 100%;
+}
+
+.control-button-group {
+  @include flexbox($g: 24px);
+}
+
+.video-title {
+  @include font($fs: 24px, $fw: 700, $lh: 32px);
+  color: $white;
+}

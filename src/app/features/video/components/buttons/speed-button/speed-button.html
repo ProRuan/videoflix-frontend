@@ -1,0 +1,19 @@
+@if (isOpen()) {
+<div class="speed-menu">
+    <!-- for loop -->
+    <button class="speed-option-button" [class.selected]="isSelected(2)"
+        (click)="onSpeedUpdate(2)"><span>2</span></button>
+    <button class="speed-option-button" [class.selected]="isSelected(1.5)"
+        (click)="onSpeedUpdate(1.5)"><span>1.5</span></button>
+    <button class="speed-option-button" [class.selected]="isSelected(1.25)"
+        (click)="onSpeedUpdate(1.25)"><span>1.25</span></button>
+    <button class="speed-option-button" [class.selected]="isSelected(1)"
+        (click)="onSpeedUpdate(1)"><span>1</span></button>
+    <button class="speed-option-button" [class.selected]="isSelected(0.75)"
+        (click)="onSpeedUpdate(0.75)"><span>0.75</span></button>
+    <button class="speed-option-button" [class.selected]="isSelected(0.5)"
+        (click)="onSpeedUpdate(0.5)"><span>0.5</span></button>
+</div>
+}
+
+<button class="speed-button" (click)="onSpeedChange()"></button>

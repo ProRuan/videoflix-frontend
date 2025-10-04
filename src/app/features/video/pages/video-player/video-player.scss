@@ -28,6 +28,14 @@
   transition: transform 125ms ease-in-out;
 }
 
+.move-up {
+  transform: translateY(-108px);
+}
+
+.move-down {
+  transform: translateY(108px);
+}
+
 .player-header-hidden {
   transform: translateY(-108px);
 }
@@ -61,23 +69,25 @@
   @include image($h: 48px);
 }
 
+// set values ...
 .video-cont {
-  // @include size($w: 1920px, $h: 1080px);
-  // @include size($w: 1280px, $h: 720px);
-  @include size($w: 640px, $h: 360px);
-  // @include size($w: 213.33px, $h: 120px);
+  @include spacing($p: 108px 0);
+  @include size($w: 100%, $h: 100%);
   @include flexbox($jc: center, $ai: center);
 }
 
 // rename mixin image to media or block?
 .video {
-  // @include size($w: 640px, $h: 360px);
   @include size($w: 100%, $h: 100%);
+  // padding: 108px 0;
+  background-color: $prim-dark;
   display: block;
+  cursor: pointer;
 }
 
 .full-size {
   @include size($w: 100%, $h: 100%);
+  padding: 0;
 }
 
 .player-bar {

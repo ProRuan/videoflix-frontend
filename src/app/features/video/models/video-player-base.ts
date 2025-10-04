@@ -1,9 +1,9 @@
-import { computed, ElementRef, signal } from '@angular/core';
+import { computed, ElementRef, Signal, signal } from '@angular/core';
 import Player from 'video.js/dist/types/player';
 
 export abstract class VideoPlayerBase {
   abstract video: ElementRef;
-  abstract player: Player;
+  abstract player: Signal<Player | null>;
   abstract options: any;
 
   clickTimeout: ReturnType<typeof setTimeout> = -1;
@@ -27,7 +27,7 @@ export abstract class VideoPlayerBase {
    * Play a video.
    */
   play() {
-    this.player.play();
+    this.player()?.play();
     this.setCurrentTimeInterval();
   }
 
@@ -35,7 +35,7 @@ export abstract class VideoPlayerBase {
    * Pause a video.
    */
   pause() {
-    this.player.pause();
+    this.player()?.pause();
     this.clearCurrentTimeInterval();
   }
 
@@ -44,7 +44,7 @@ export abstract class VideoPlayerBase {
    * @returns A boolean value.
    */
   isPaused() {
-    return this.player.paused();
+    return this.player()?.paused();
   }
 
   /**
@@ -76,13 +76,13 @@ export abstract class VideoPlayerBase {
   }
 
   getCurrentTime() {
-    return this.player.currentTime();
+    return this.player()?.currentTime();
   }
 
   setCurrentTime(value: number) {
     const seconds = this.getCurrentTime();
     if (seconds) {
-      this.player.currentTime(seconds + value);
+      this.player()?.currentTime(seconds + value);
     }
   }
 
@@ -95,28 +95,28 @@ export abstract class VideoPlayerBase {
   }
 
   isMuted() {
-    return this.player.muted();
+    return this.player()?.muted();
   }
 
   toggleMute() {
     const muted = this.isMuted() ? true : false;
-    this.player.muted(!muted);
+    this.player()?.muted(!muted);
   }
 
   getVolume() {
-    return this.player.volume();
+    return this.player()?.volume();
   }
 
   setVolume(value: number) {
-    this.player.volume(value);
+    this.player()?.volume(value);
   }
 
   getPlaybackRate() {
-    return this.player.playbackRate();
+    return this.player()?.playbackRate();
   }
 
   setPlaybackRate(value: number) {
-    this.player.playbackRate(value);
+    this.player()?.playbackRate(value);
   }
 
   setCurrentTimeInterval() {
@@ -142,7 +142,7 @@ export abstract class VideoPlayerBase {
   }
 
   getCurrentBuffer() {
-    return this.player.bufferedEnd();
+    return this.player()?.bufferedEnd();
   }
 
   // set interval id ...
