@@ -8,34 +8,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import videojs from 'video.js';
-import Player from 'video.js/dist/types/player';
-import { PlayableVideo, VideoPlayerBase } from '@features/video/models';
+import { PlayableVideo } from '@features/video/models';
 import { VideoPlayerFacade, VideoStore } from '@features/video/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthStore, UserClient } from '@core/auth/services';
 import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
-import { PlayButton } from '@features/video/components/buttons/play-button/play-button';
-import { VolumeButton } from '@features/video/components/buttons/volume-button/volume-button';
-import { SkipBackwardsButton } from '@features/video/components/buttons/skip-backwards-button/skip-backwards-button';
-import { SkipForwardButton } from '@features/video/components/buttons/skip-forward-button/skip-forward-button';
-import { FullscreenButton } from '@features/video/components/buttons/fullscreen-button/fullscreen-button';
-import { SpeedButton } from '@features/video/components/buttons/speed-button/speed-button';
-import { QualityButton } from '@features/video/components/buttons/quality-button/quality-button';
 
 @Component({
   selector: 'app-video-player',
-  imports: [
-    FullscreenButton,
-    VideoPlayerHeader,
-    PlayButton,
-    QualityButton,
-    SkipBackwardsButton,
-    SkipForwardButton,
-    SpeedButton,
-    VolumeButton,
-    VideoPlayerMultiBar,
-  ],
+  imports: [VideoPlayerHeader, VideoPlayerMultiBar],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
   host: {
@@ -44,7 +25,7 @@ import { QualityButton } from '@features/video/components/buttons/quality-button
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VideoPlayer extends VideoPlayerBase {
+export class VideoPlayer {
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
   private auth = inject(AuthStore);
@@ -176,8 +157,6 @@ export class VideoPlayer extends VideoPlayerBase {
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
 
   constructor() {
-    // remove super later ...
-    super();
     document.onkeydown = (event: KeyboardEvent) => {
       const key = event.key;
       if (key === 'Escape' && this.facade.isFullscreen()) {
@@ -187,9 +166,6 @@ export class VideoPlayer extends VideoPlayerBase {
   }
 
   onMouseMove(event: MouseEvent) {
-    if (this.draggingCurrentTime) this.updateCurrentTime(event);
-    if (this.dragging) this.updateVolume(event);
-
     const time = Date.now();
     if (time - this.lastMouseMove < 100) return;
     clearTimeout(this.controlTimeout);
@@ -198,23 +174,6 @@ export class VideoPlayer extends VideoPlayerBase {
     this.controlTimeout = setTimeout(() => {
       this.hasControls.set(false);
     }, 3000);
-
-    // activate
-    // --------
-    // if (this.lastTimeLock < Date.now()) {
-    //   console.log('mouse move');
-    //   this.lastTimeLock = Date.now() + 100;
-
-    //   if (this.playerHeaderHidden()) {
-    //     clearTimeout(this.hiddenTimeoutId);
-    //     this.playerHeaderHidden.set(false);
-    //     this.playerBarHidden.set(false);
-    //     this.hiddenTimeoutId = setTimeout(() => {
-    //       this.playerHeaderHidden.set(true);
-    //       this.playerBarHidden.set(true);
-    //     }, 3000);
-    //   }
-    // }
   }
 
   onBack() {
@@ -247,22 +206,6 @@ export class VideoPlayer extends VideoPlayerBase {
       console.log('player src: ', this.player()?.currentSource());
       console.log('select source: ', this.facade.getPlayer()?.currentSources());
     });
-    this.player()?.on('loadedmetadata', () => {
-      const duration = this.player()?.duration();
-      if (duration) {
-        this.duration.set(duration);
-      }
-      this.setCurrentBufferInterval();
-    });
-
-    // setTimeout(() => {
-    //   console.log('player src: ', this.player()?.currentSource());
-    //   this.player()?.src({
-    //     src: this.playableVideo?.availableResolutions?.['720p'],
-    //     type: 'application/x-mpegURL',
-    //   });
-    //   console.log('player src: ', this.player()?.currentSource());
-    // }, 1000);
   }
 
   updateSource(key: 'auto' | '1080p' | '720p' | '360p' | '144p') {
@@ -295,32 +238,6 @@ export class VideoPlayer extends VideoPlayerBase {
     event.stopPropagation();
   }
 
-  onCurrentTimeSet(event: MouseEvent) {
-    this.updateCurrentTime(event);
-  }
-
-  // replace duration=40 with variable!!!
-  updateCurrentTime(event: MouseEvent) {
-    const bar = this.progressBar.nativeElement;
-    const rect = bar.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    this.currentTime.set(Math.max(0, Math.min(40, (x / rect.width) * 40)));
-    console.log('currentTime: ', this.currentTime);
-
-    // Sync with actual video element
-    const videoElement = this.video.nativeElement;
-    if (videoElement) videoElement.currentTime = this.currentTime();
-  }
-
-  onDragStartCurrentTime(event: MouseEvent) {
-    event.preventDefault();
-    this.draggingCurrentTime = true;
-    const videoElement = this.video.nativeElement;
-    this.wasPlayingBeforeDrag = !videoElement.paused;
-    videoElement.pause();
-    this.updateCurrentTime(event);
-  }
-
   onDragPreventCurrentTime(event: DragEvent) {
     event.preventDefault();
   }
@@ -331,81 +248,9 @@ export class VideoPlayer extends VideoPlayerBase {
     // this.togglePlayLate();
   }
 
-  /**
-   * Toggle between play and pause on click.
-   */
-  onPlayToggle() {
-    this.clearClickTimeout();
-    this.togglePlay();
-  }
-
-  onBackwardSkip() {
-    this.skipBackward();
-  }
-
-  onForwardSkip() {
-    this.skipForward();
-  }
-
-  onMuteToggle() {
-    this.toggleMute();
-  }
-
-  onVolumeSet(event: MouseEvent) {
-    this.updateVolume(event);
-  }
-
-  updateVolume(event: MouseEvent) {
-    const bar = this.volumeBar.nativeElement;
-    const rect = bar.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, x / rect.width));
-    this.volume = percentage;
-
-    this.setVolume(this.volume);
-  }
-
-  onDragStart(event: MouseEvent) {
-    event.preventDefault();
-    this.dragging = true;
-    this.updateVolume(event);
-  }
-
-  onDragPrevent(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  onSpeedSelect(value: number) {
-    this.playbackrate = value;
-    this.setPlaybackRate(value);
-  }
-
-  isSpeed(value: number) {
-    return value === this.playbackrate;
-  }
-
   // onFullscreen() for button and onFullscreenDelayed() for video-container!!
   onFullScreen() {
-    clearTimeout(this.clickTimeout);
-    // this.clickTimeout = null;
-
-    // const fullScreenEnabled = this.player()?.isFullscreen();
-    // if (fullScreenEnabled) {
-    //   this.player()?.exitFullscreen();
-    // } else {
-    //   this.player()?.requestFullscreen();
-    // }
-
     this.facade.toggleFullscreen();
-
-    // const videoPlayerElement = this.videoPlayer.nativeElement;
-    // if (!document.fullscreenElement) {
-    //   videoPlayerElement?.requestFullscreen?.();
-    //   this.isFullscreen.set(true);
-    // } else {
-    //   document.exitFullscreen?.();
-    //   this.isFullscreen.set(false);
-    // }
   }
 
   isFullscreenNew() {
@@ -426,20 +271,4 @@ export class VideoPlayer extends VideoPlayerBase {
       }, 3000);
     }
   }
-
-  /**
-   * 16 / 9 = 1.7777
-   *
-   * longer width: 20 / 9 = 2.2222
-   * 1.7777 < 2.2222 --> favour height
-   *
-   * shorter width: 12 / 9 = 1.3333
-   * 1.3333 < 1.7777 ---> favour width
-   *
-   * longer height: 16 / 12 = 1.3333
-   * 1.3333 < 1.7777 --> favour width
-   *
-   * shorter height: 16 / 6 = 2.6666
-   * 1.7777 < 2.6666 --> favour height
-   */
 }
