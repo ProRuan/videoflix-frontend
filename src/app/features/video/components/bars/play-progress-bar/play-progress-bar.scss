@@ -1,0 +1,63 @@
+@use "mixins" as *;
+
+$time-display-gray: #e2e2e2;
+$track-gray: #b5b5b5;
+$buffer-gray: #ececec;
+
+:host {
+  @include flexbox($g: 12px);
+}
+
+.time-display {
+  @include font($fs: 12px, $lh: 16px);
+  color: $time-display-gray;
+}
+
+.progress-bar {
+  @include flexbox($ai: center);
+  height: 16px;
+  background-color: transparent;
+  flex: 1;
+  transition: background-color 100ms ease-in-out;
+  cursor: pointer;
+
+  &:hover,
+  &:active {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.track {
+  @include size($w: 100%, $h: 4px);
+  border-radius: 100px;
+  background-color: $track-gray;
+  position: relative;
+}
+
+.buffer {
+  @include size($w: 0px, $h: 4px);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  border-radius: 100px;
+  background-color: $buffer-gray;
+}
+
+.fill {
+  @include size($w: 0px, $h: 4px);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  border-radius: 100px;
+  background-color: $primBlue;
+}
+
+.handle {
+  @include size($w: 16px, $h: 16px);
+  @include position($pos: absolute, $l: 0, $t: -6px);
+  border-radius: 8px;
+  background-color: $primBlue;
+  transform: translateX(-50%);
+  transition: background-color 100ms ease-in-out;
+
+  &:hover,
+  &:active {
+    background-color: $hoverBlue;
+  }
+}

@@ -26,6 +26,8 @@ export class VideoPlayerFacade {
   remainingDisplayTime = signal('');
   currentTime = signal(0);
   bufferPercent = signal(0);
+  duration = signal(0);
+  hasDuration = computed(() => this.duration() > 0);
 
   cachedVolume: number = 0.5;
   currentPlaybackRate = signal(1);
@@ -33,6 +35,9 @@ export class VideoPlayerFacade {
   playTimeoutId: ReturnType<typeof setTimeout> = -1;
 
   isFullscreen = signal(false);
+
+  // use isPlayerReady to display interface when player is ready .. ?
+  // isPlayerReady = signal(false);
 
   // 60 fps ... ?!
   constructor() {
@@ -60,6 +65,7 @@ export class VideoPlayerFacade {
   // double code
   getRemainingDisplayTime() {
     const remainingTime = Math.round(this.player()?.remainingTime() ?? 0);
+    if (isNaN(remainingTime)) return '0:00';
     const hours = getHours(remainingTime);
     const minutes = getMinutes(remainingTime);
     const seconds = getSeconds(remainingTime);
@@ -112,6 +118,10 @@ export class VideoPlayerFacade {
     return this.player()?.bufferedPercent() ?? 0;
   }
 
+  getPlayedPercent() {
+    return (this.currentTime() / this.duration()) * 100;
+  }
+
   // play button
   togglePlay() {
     this.clearPlayTimeout();
@@ -127,7 +137,7 @@ export class VideoPlayerFacade {
   }
 
   isPaused() {
-    return this.player()?.paused();
+    return this.player()?.paused() ?? false;
   }
 
   hasStarted() {
@@ -135,7 +145,7 @@ export class VideoPlayerFacade {
   }
 
   hasEnded() {
-    return this.player()?.ended();
+    return this.player()?.ended() ?? false;
   }
 
   // volume button

@@ -1,0 +1,11 @@
+<div class="time-display">-{{ remainingDisplayTime() }}</div>
+
+<div #progressBar class="progress-bar" (mousedown)="onScrubbingStart($event)" (click)="onCurrentTime($event)">
+    <div class="track">
+        <div class="buffer" [style.width.%]="bufferPercent()"></div>
+        <div class="fill" [style.width.%]="playedPercent()"></div>
+        <div class="handle" [style.left.%]="playedPercent()"></div>
+    </div>
+</div>
+
+<div class="time-display">{{ currentDisplayTime() }}</div>

@@ -1,19 +1,5 @@
 <div class="video-player-multi-bar" (click)="onEventStop($event)">
-    <div class="play-progress-bar">
-        <div class="remaining-time">-{{ remainingDisplayTime() }}</div>
-
-        <!-- improve precision -->
-        <div #progressBar class="progress-bar-cont" (click)="onTimeSelect($event)" (mousedown)="onTimeDragStart($event)"
-            (dragstart)="onDragStop($event)">
-            <div class="progress-bar">
-                <div class="progress-bar-buffer" [style.width.%]="bufferPercent()"></div>
-                <div class="progress-bar-fill" [style.width.%]="currentTime() / duration * 100"></div>
-                <div class="progress-handle" [style.left.%]="currentTime() / duration * 100"></div>
-            </div>
-        </div>
-
-        <div class="current-time">{{ currentDisplayTime() }}</div>
-    </div>
+    <app-play-progress-bar></app-play-progress-bar>
 
     <div class="control-bar">
         <div class="control-button-group">

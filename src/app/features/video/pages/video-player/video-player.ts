@@ -206,6 +206,10 @@ export class VideoPlayer {
       console.log('player src: ', this.player()?.currentSource());
       console.log('select source: ', this.facade.getPlayer()?.currentSources());
     });
+    this.facade.getPlayer()?.on('durationchange', () => {
+      this.facade.duration.update(() => this.facade.getDuration());
+      console.log('duration change: ', this.facade.duration());
+    });
   }
 
   updateSource(key: 'auto' | '1080p' | '720p' | '360p' | '144p') {

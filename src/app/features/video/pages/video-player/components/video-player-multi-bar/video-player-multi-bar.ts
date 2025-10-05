@@ -13,6 +13,7 @@ import { SkipBackwardsButton } from '@features/video/components/buttons/skip-bac
 import { SkipForwardButton } from '@features/video/components/buttons/skip-forward-button/skip-forward-button';
 import { SpeedButton } from '@features/video/components/buttons/speed-button/speed-button';
 import { VolumeButton } from '@features/video/components/buttons/volume-button/volume-button';
+import { PlayProgressBar } from '@features/video/components';
 import { VideoPlayerFacade } from '@features/video/services';
 import {
   getHours,
@@ -25,6 +26,7 @@ import {
   imports: [
     FullscreenButton,
     PlayButton,
+    PlayProgressBar,
     QualityButton,
     SkipBackwardsButton,
     SkipForwardButton,
