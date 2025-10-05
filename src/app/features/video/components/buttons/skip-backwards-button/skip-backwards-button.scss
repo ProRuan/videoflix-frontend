@@ -1,13 +1,12 @@
 @use "mixins" as *;
 
+$backward-icon: url("/images/players/backward_10.svg");
+
 .skip-backwards-button {
   @include border($b: none, $br: 40px);
   @include spacing($p: 0);
   @include size($w: 48px, $h: 48px);
-  background-color: transparent;
-  background-image: url("/images/players/backward_10.svg");
-  background-position: 6px 2px;
-  background-repeat: no-repeat;
+  @include background($image: $backward-icon, $position: 6px 2px, $size: auto);
 
   &:hover {
     background-color: $hoverBlue;

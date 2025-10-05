@@ -1,6 +1,10 @@
 import { Component, inject } from '@angular/core';
+
 import { VideoPlayerFacade } from '@features/video/services';
 
+/**
+ * Class representing a skip-forward button component.
+ */
 @Component({
   selector: 'app-skip-forward-button',
   imports: [],
@@ -10,6 +14,9 @@ import { VideoPlayerFacade } from '@features/video/services';
 export class SkipForwardButton {
   private facade = inject(VideoPlayerFacade);
 
+  /**
+   * Skip forward on click.
+   */
   onForwardSkip() {
     this.facade.skipForward();
   }
