@@ -32,6 +32,7 @@ export class VideoPlayerFacade {
   cachedVolume: number = 0.5;
   currentPlaybackRate = signal(1);
 
+  isPlaying = signal(false);
   playTimeoutId: ReturnType<typeof setTimeout> = -1;
 
   isFullscreen = signal(false);
@@ -130,10 +131,12 @@ export class VideoPlayerFacade {
 
   play() {
     this.player()?.play();
+    this.isPlaying.set(true);
   }
 
   pause() {
     this.player()?.pause();
+    this.isPlaying.set(false);
   }
 
   isPaused() {
