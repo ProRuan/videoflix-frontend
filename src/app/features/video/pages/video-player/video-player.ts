@@ -201,6 +201,7 @@ export class VideoPlayer {
     this.facade.setPlayerContainer(this.videoPlayer);
     this.facade.setPlayer(this.video, this.options);
     this.facade.setSources(this.options.sources);
+    this.facade.setTitle(this.playableVideo().title);
     this.player()?.ready(() => {
       console.log('player ready');
       console.log('player src: ', this.player()?.currentSource());

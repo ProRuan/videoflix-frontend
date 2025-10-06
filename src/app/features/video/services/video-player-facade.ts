@@ -18,9 +18,15 @@ export class VideoPlayerFacade {
 
   // work with quality levels (for auto rendering) ...
 
+  // think about private properties and methods (0/2) ...
+
+  // reset facade on destory ... !
+
   private readonly stepSize: number = 10;
 
   sources = signal<any[]>([]);
+
+  title = signal('');
 
   currentDisplayTime = signal('');
   remainingDisplayTime = signal('');
@@ -52,6 +58,10 @@ export class VideoPlayerFacade {
       this.currentTime.update(() => this.getCurrentTime());
       this.bufferPercent.update(() => this.getBufferedPercent() * 100);
     }, 1000 / 60);
+  }
+
+  setTitle(value: string) {
+    this.title.set(value);
   }
 
   setPlayerContainer(element: ElementRef<HTMLDivElement>) {

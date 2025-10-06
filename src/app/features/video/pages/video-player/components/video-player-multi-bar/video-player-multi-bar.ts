@@ -40,6 +40,8 @@ export class VideoPlayerMultiBar {
   draggingCurrentTime = signal(false);
   wasPlayingBeforeDrag = signal(false);
 
+  title = computed(() => this.facade.title());
+
   currentDisplayTime = computed(() => this.facade.currentDisplayTime());
   remainingDisplayTime = computed(() => this.facade.remainingDisplayTime());
   currentTime = computed(() => this.facade.currentTime());
