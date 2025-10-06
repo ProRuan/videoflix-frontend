@@ -12,14 +12,9 @@ import { QualityButton } from '@features/video/components/buttons/quality-button
 import { SkipBackwardsButton } from '@features/video/components/buttons/skip-backwards-button/skip-backwards-button';
 import { SkipForwardButton } from '@features/video/components/buttons/skip-forward-button/skip-forward-button';
 import { SpeedButton } from '@features/video/components/buttons/speed-button/speed-button';
-import { VolumeButton } from '@features/video/components/buttons/volume-button/volume-button';
 import { PlayProgressBar } from '@features/video/components';
 import { VideoPlayerFacade } from '@features/video/services';
-import {
-  getHours,
-  getMinutes,
-  getSeconds,
-} from '@features/video/utils/time-utils';
+import { VolumeControl } from '@features/video/components/controls/volume-control/volume-control';
 
 @Component({
   selector: 'app-video-player-multi-bar',
@@ -31,14 +26,10 @@ import {
     SkipBackwardsButton,
     SkipForwardButton,
     SpeedButton,
-    VolumeButton,
+    VolumeControl,
   ],
   templateUrl: './video-player-multi-bar.html',
   styleUrl: './video-player-multi-bar.scss',
-  host: {
-    '(document:mousemove)': 'onMouseMove($event)',
-    '(document:mouseup)': 'stopDrag()',
-  },
 })
 export class VideoPlayerMultiBar {
   private facade = inject(VideoPlayerFacade);
@@ -98,20 +89,5 @@ export class VideoPlayerMultiBar {
 
   onDragStop(event: Event) {
     event.preventDefault();
-  }
-
-  onMouseMove(event: MouseEvent) {
-    if (this.draggingCurrentTime()) this.updateCurrentTime(event);
-
-    // if (this.dragging) this.updateVolume(event);
-  }
-
-  stopDrag() {
-    this.draggingCurrentTime.set(false);
-    if (this.wasPlayingBeforeDrag()) {
-      this.facade.play();
-    }
-    this.draggingCurrentTime.set(false);
-    this.wasPlayingBeforeDrag.set(false);
   }
 }

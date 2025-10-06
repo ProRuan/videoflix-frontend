@@ -1,7 +1,6 @@
 @use "mixins" as *;
 
 $time-display-gray: #e2e2e2;
-$track-gray: #b5b5b5;
 $buffer-gray: #ececec;
 
 :host {
@@ -23,7 +22,7 @@ $buffer-gray: #ececec;
 
   &:hover,
   &:active {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }
 

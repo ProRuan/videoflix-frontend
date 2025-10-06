@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VolumeButton } from './volume-button';
+import { VolumeControl } from './volume-control';
 
-describe('VolumeButton', () => {
-  let component: VolumeButton;
-  let fixture: ComponentFixture<VolumeButton>;
+describe('VolumeControl', () => {
+  let component: VolumeControl;
+  let fixture: ComponentFixture<VolumeControl>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VolumeButton]
+      imports: [VolumeControl]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VolumeButton);
+    fixture = TestBed.createComponent(VolumeControl);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

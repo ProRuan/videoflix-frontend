@@ -29,7 +29,11 @@ export class VideoPlayerFacade {
   duration = signal(0);
   hasDuration = computed(() => this.duration() > 0);
 
-  cachedVolume: number = 0.5;
+  cachedVolume = signal(0.5);
+  volume = signal(0.5);
+  volumePercent = computed(() => this.volume() * 100);
+  isMute = computed(() => this.volume() === 0);
+
   currentPlaybackRate = signal(1);
 
   isPlaying = signal(false);
@@ -156,16 +160,16 @@ export class VideoPlayerFacade {
   toggleMute() {
     if (this.isMuted()) {
       this.setMute(false);
-      this.setVolume(this.cachedVolume);
+      this.setVolume(this.cachedVolume());
     } else {
       this.setMute(true);
-      this.cachedVolume = this.getVolume();
+      this.cachedVolume.set(this.getVolume());
       this.setVolume(0);
     }
   }
 
   isMuted() {
-    return this.player()?.muted();
+    return this.player()?.muted() ?? false;
   }
 
   setMute(value: boolean) {
@@ -173,7 +177,11 @@ export class VideoPlayerFacade {
   }
 
   setVolume(value: number) {
-    return this.player()?.volume(value);
+    this.volume.set(value);
+    this.player()?.volume(value);
+    if (this.volume() > 0) {
+      this.setMute(false);
+    }
   }
 
   // backward-10 button

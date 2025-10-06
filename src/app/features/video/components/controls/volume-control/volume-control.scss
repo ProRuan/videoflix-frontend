@@ -1,0 +1,63 @@
+@use "mixins" as *;
+
+$volume-icon: url("/images/players/volume.svg");
+$mute-icon: url("/images/players/mute.svg");
+
+.volume-control {
+  @include flexbox($ai: center, $g: 16px);
+}
+
+.volume-button {
+  @include border($b: none, $br: 40px);
+  @include spacing($p: 0);
+  @include size($w: 48px, $h: 48px);
+  @include background($image: $volume-icon, $size: auto);
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $hoverBlue;
+  }
+
+  &:active {
+    background-color: $primBlue;
+  }
+
+  &.mute {
+    background-image: $mute-icon;
+  }
+}
+
+.volume-bar {
+  @include size($w: 100px, $h: 16px);
+  @include flexbox($ai: center);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.track {
+  @include size($w: 100%, $h: 8px);
+  border-radius: 4px;
+  background-color: $track-gray;
+  position: relative;
+}
+
+.fill {
+  @include size($w: 50%, $h: 8px);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  border-radius: 4px;
+  background-color: $primBlue;
+}
+
+.handle {
+  @include size($w: 16px, $h: 16px);
+  @include position($pos: absolute, $l: 0, $t: -4px);
+  border-radius: 8px;
+  background-color: $primBlue;
+  transform: translateX(-50%);
+  transition: background-color 100ms ease-in-out;
+
+  &:hover,
+  &:active {
+    background-color: $hoverBlue;
+  }
+}

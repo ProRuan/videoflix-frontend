@@ -7,6 +7,7 @@ $forward-icon: url("/images/players/forward_10.svg");
   @include spacing($p: 0);
   @include size($w: 48px, $h: 48px);
   @include background($image: $forward-icon, $position: 6px 2px, $size: auto);
+  transition: background-color 100ms ease-in-out;
 
   &:hover {
     background-color: $hoverBlue;
