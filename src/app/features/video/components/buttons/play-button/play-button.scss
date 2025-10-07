@@ -12,11 +12,11 @@ $replay-icon: url("/images/players/replay.svg");
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: $hoverBlue;
+    background-color: $primBlue;
   }
 
   &:active {
-    background-color: $primBlue;
+    background-color: $hoverBlue;
   }
 
   &.pause {

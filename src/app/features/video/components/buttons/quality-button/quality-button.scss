@@ -10,10 +10,10 @@ $quality-icon: url("/images/players/quality.svg");
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: $hoverBlue;
+    background-color: $primBlue;
   }
 
   &:active {
-    background-color: $primBlue;
+    background-color: $hoverBlue;
   }
 }

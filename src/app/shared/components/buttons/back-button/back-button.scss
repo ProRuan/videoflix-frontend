@@ -14,11 +14,11 @@ $image: url("/images/buttons/arrow_back.png");
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: $hoverBlue;
+    background-color: $primBlue;
   }
 
   &:active {
-    background-color: $activeBlue;
+    background-color: $hoverBlue;
   }
 
   &:disabled {
