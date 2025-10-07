@@ -1,6 +1,10 @@
 import { Component, inject } from '@angular/core';
+
 import { VideoPlayerFacade } from '@features/video/services';
 
+/**
+ * Class representing a fullscreen button component.
+ */
 @Component({
   selector: 'app-fullscreen-button',
   imports: [],
@@ -10,12 +14,17 @@ import { VideoPlayerFacade } from '@features/video/services';
 export class FullscreenButton {
   private facade = inject(VideoPlayerFacade);
 
+  /**
+   * Toggle fullscreen mode on click.
+   */
   onFullscreen() {
-    console.log('toggle fullscreen');
-
     this.facade.toggleFullscreen();
   }
 
+  /**
+   * Check if the fullscreen mode is enabled.
+   * @returns True if the fullscreen mode is enabled, otherwise false.
+   */
   isFullscreen() {
     return this.facade.isFullscreen();
   }
