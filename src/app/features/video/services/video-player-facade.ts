@@ -40,7 +40,10 @@ export class VideoPlayerFacade {
   volumePercent = computed(() => this.volume() * 100);
   isMute = computed(() => this.volume() === 0);
 
+  private readonly availablePlaybackRates = [2, 1.5, 1.25, 1, 0.75, 0.5];
+
   currentPlaybackRate = signal(1);
+  currentQualityLevel = signal(0);
 
   isPlaying = signal(false);
   playTimeoutId: ReturnType<typeof setTimeout> = -1;
@@ -217,9 +220,14 @@ export class VideoPlayerFacade {
   }
 
   // speed button
-  setPlaybackRate(value: number) {
+  setPlaybackRate(index: number) {
+    const value = this.availablePlaybackRates[index];
     this.currentPlaybackRate.set(value);
     this.player()?.playbackRate(value);
+  }
+
+  isCurrentPlaybackRate(index: number) {
+    return this.currentPlaybackRate() === this.availablePlaybackRates[index];
   }
 
   // quality button
@@ -229,17 +237,22 @@ export class VideoPlayerFacade {
   }
 
   // update quality level message ...
-  setQualityLevel(value: number) {
+  setQualityLevel(index: number) {
+    this.currentQualityLevel.set(index);
     console.log('this sources: ', this.sources());
     this.pause();
     const currentTime = this.getCurrentTime();
-    const index = value ?? 0;
-    this.player()?.updateSourceCaches_(this.sources()[index]);
+    const level = index ?? 0;
+    this.player()?.updateSourceCaches_(this.sources()[level]);
     this.player()?.load();
     this.player()?.ready(() => {
       this.setCurrentTime(currentTime);
       this.play();
     });
+  }
+
+  isCurrentQualityLevel(index: number) {
+    return this.currentQualityLevel() === index;
   }
 
   // for video element or video container element ... ?!

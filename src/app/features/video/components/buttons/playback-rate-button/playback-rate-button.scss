@@ -1,12 +1,16 @@
 @use "mixins" as *;
 
-$quality-icon: url("/images/players/quality.svg");
+$speed-icon: url("/images/players/speed.svg");
 
-.quality-button {
+.playback-rate-button {
   @include border($b: none, $br: 40px);
   @include spacing($p: 0);
   @include size($w: 48px, $h: 48px);
-  @include background($image: $quality-icon, $size: 36px 36px);
+  @include background(
+    $image: $speed-icon,
+    $position: 7px 9px,
+    $size: 35px 28px
+  );
   transition: background-color 100ms ease-in-out;
 
   &:hover {

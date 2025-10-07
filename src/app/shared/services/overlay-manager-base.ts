@@ -5,8 +5,12 @@ import { Injectable, signal, WritableSignal } from '@angular/core';
  *
  * It provides logic for overlay elements such as dialogs or toasts.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class OverlayManagerBase {
+  // rename overlay manager base ...
+
   protected activeElement: WritableSignal<string> = signal('');
   protected hasCloseStyle: WritableSignal<boolean> = signal(false);
 

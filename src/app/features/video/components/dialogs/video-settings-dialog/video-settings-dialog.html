@@ -1,0 +1,18 @@
+<dialog class="dialog" [class.transparent]="isClosing()" (click)="onCloseStart()" (transitionend)="onCloseEnd()">
+
+    <div class="dialog-box" [class.slide-out]="isClosing()" (click)="onEventStop($event)">
+        <div class="title-border-cont">
+            <h5 class="title">{{ title() }}</h5>
+            <div class="border"></div>
+        </div>
+
+        <button class="close-button" (click)="onCloseStart()"></button>
+
+        <div class="options">
+            @for (value of values(); track value; let i = $index) {
+            <button class="value-button" [disabled]="isSelected(i)" (click)="onSelect(i)">{{ value }}</button>
+            }
+        </div>
+    </div>
+
+</dialog>

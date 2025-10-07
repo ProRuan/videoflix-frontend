@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpeedButton } from './speed-button';
+import { PlaybackRateButton } from './playback-rate-button';
 
-describe('SpeedButton', () => {
-  let component: SpeedButton;
-  let fixture: ComponentFixture<SpeedButton>;
+describe('PlaybackRateButton', () => {
+  let component: PlaybackRateButton;
+  let fixture: ComponentFixture<PlaybackRateButton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SpeedButton]
+      imports: [PlaybackRateButton]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SpeedButton);
+    fixture = TestBed.createComponent(PlaybackRateButton);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

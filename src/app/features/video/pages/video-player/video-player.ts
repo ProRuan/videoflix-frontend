@@ -13,10 +13,21 @@ import { VideoPlayerFacade, VideoStore } from '@features/video/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthStore, UserClient } from '@core/auth/services';
 import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
+// import { PlaybackRateDialog } from '@features/video/components/dialogs/playback-rate-dialog/playback-rate-dialog';
+import { OverlayManagerBase } from '@shared/services';
+import { VideoSettingsDialog } from '@features/video/components/dialogs';
+import { VideoDialogConfigurator } from '@features/video/services';
+// import { VideoQualityDialog } from '@features/video/components/dialogs/video-quality-dialog/video-quality-dialog';
 
 @Component({
   selector: 'app-video-player',
-  imports: [VideoPlayerHeader, VideoPlayerMultiBar],
+  imports: [
+    VideoPlayerHeader,
+    VideoPlayerMultiBar,
+    // PlaybackRateDialog,
+    // VideoQualityDialog,
+    VideoSettingsDialog,
+  ],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
   host: {
@@ -34,6 +45,8 @@ export class VideoPlayer {
 
   // testing
   private facade = inject(VideoPlayerFacade);
+  private dialogs = inject(OverlayManagerBase);
+  private config = inject(VideoDialogConfigurator);
 
   // move ui elements to video player ui bar ...
 
@@ -52,6 +65,12 @@ export class VideoPlayer {
   playerBarHidden = signal(false);
   hiddenTimeoutId!: ReturnType<typeof setTimeout>;
   lastTimeLock: number = Date.now();
+
+  // as signal ... ?
+  playbackRateConfig = this.config.playbackRateDialogConfig;
+
+  // as signal ... ?
+  qualityLevelConfig = this.config.qualityLevelsDialogConfig;
 
   // add video quality options ...
   // add video progress logic ...
@@ -251,6 +270,16 @@ export class VideoPlayer {
   onPlayToggleLate() {
     this.facade.togglePlayWithDelay();
     // this.togglePlayLate();
+  }
+
+  // rename method and dialog id ... ?
+  isPlaybackRateMenu() {
+    return this.dialogs.isOpen('playback-rate-dialog');
+  }
+
+  // rename method ... ?
+  isQualityMenu() {
+    return this.dialogs.isOpen('quality-levels-dialog');
   }
 
   // onFullscreen() for button and onFullscreenDelayed() for video-container!!

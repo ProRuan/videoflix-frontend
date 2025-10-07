@@ -1,6 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
-import { VideoPlayerFacade } from '@features/video/services';
+import { Component, inject } from '@angular/core';
 
+import { OverlayManagerBase } from '@shared/services';
+
+/**
+ * Class representing a quality button component.
+ */
 @Component({
   selector: 'app-quality-button',
   imports: [],
@@ -8,35 +12,12 @@ import { VideoPlayerFacade } from '@features/video/services';
   styleUrl: './quality-button.scss',
 })
 export class QualityButton {
-  private facade = inject(VideoPlayerFacade);
+  private dialogs = inject(OverlayManagerBase);
 
-  // review on close ...
-  // add animation ...
-
-  // rename + double code ...
-
-  // add quality levels (labels) ...
-  // improve source change and loading behaviour ...
-  //   --> choose right on event ...
-
-  // optional: try quality levels plugin ...
-
-  isOpen = signal(false);
-
-  onClose() {
-    this.isOpen.set(false);
-  }
-
-  onSpeedChange() {
-    this.isOpen.update((value) => !value);
-  }
-
-  onSpeedUpdate(value: number) {
-    this.facade.setQualityLevel(value);
-  }
-
-  isSelected(value: number) {
-    const currentPlayBackRate = this.facade.currentPlaybackRate();
-    return value === currentPlayBackRate ? true : false;
+  /**
+   * Open a quality levels dialog on click.
+   */
+  onQuality() {
+    this.dialogs.open('quality-levels-dialog');
   }
 }

@@ -1,0 +1,103 @@
+@use "mixins" as *;
+
+$close-icon: url("/images/players/close_small.svg");
+
+.dialog {
+  @include size($w: 100%, $h: 100vh);
+  @include flexbox($jc: flex-end, $ai: flex-end);
+  @include position($pos: fixed, $r: 0, $b: 0);
+  margin: 0;
+  border: none;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  z-index: $z-dialog;
+  transition: background-color 100ms ease-in-out;
+
+  @starting-style {
+    background-color: transparent;
+  }
+}
+
+.dialog-box {
+  @include spacing($p: 16px);
+  @include border($b: none, $br: 12px);
+  @include flexbox($fd: column, $ai: center, $g: 16px);
+  @include position($pos: relative, $r: 32px, $b: 124px);
+  width: fit-content;
+  background-color: $formBG;
+  box-shadow: 0 0 8px 3px $white;
+  transform: translateX(0);
+  transition: transform 100ms ease-in-out;
+
+  @starting-style {
+    transform: translateX(304px);
+  }
+}
+
+.slide-out {
+  transform: translateX(304px);
+}
+
+.title-border-cont {
+  @include flexbox($fd: column, $ai: center, $g: 4px);
+  padding: 0 40px;
+}
+
+.title {
+  @include font($fw: 700);
+  text-align: center;
+  color: $white;
+}
+
+.border {
+  border-bottom: 3px solid $primBlue;
+  border-radius: 1px;
+  width: 85%;
+}
+
+.close-button {
+  @include spacing($p: 0);
+  @include border($b: none, $br: 40px);
+  @include size($w: 24px, $h: 24px);
+  @include background($image: $close-icon, $size: 10px 10px);
+  @include position($pos: absolute, $t: 16px, $r: 16px);
+  margin: 0;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $hoverBlue;
+  }
+
+  &:active {
+    background-color: $primBlue;
+  }
+}
+
+.options {
+  @include flexbox($fd: column, $ai: center, $g: 8px);
+  width: 100%;
+}
+
+.value-button {
+  @include spacing($p: 6px 12px);
+  @include border($b: none, $br: 8px);
+  @include size($w: 128px, $h: 32px);
+  @include font($fs: 15px, $fw: 500, $lh: 20px);
+  @include colors($c: $white, $bgc: transparent);
+  margin: 0;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &:disabled {
+    background-color: $primBlue;
+    cursor: default;
+  }
+}

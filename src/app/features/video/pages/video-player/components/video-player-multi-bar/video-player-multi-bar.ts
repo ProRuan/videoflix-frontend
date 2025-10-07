@@ -11,21 +11,21 @@ import { PlayButton } from '@features/video/components/buttons/play-button/play-
 import { QualityButton } from '@features/video/components/buttons/quality-button/quality-button';
 import { SkipBackwardsButton } from '@features/video/components/buttons/skip-backwards-button/skip-backwards-button';
 import { SkipForwardButton } from '@features/video/components/buttons/skip-forward-button/skip-forward-button';
-import { SpeedButton } from '@features/video/components/buttons/speed-button/speed-button';
 import { PlayProgressBar } from '@features/video/components';
 import { VideoPlayerFacade } from '@features/video/services';
 import { VolumeControl } from '@features/video/components/controls/volume-control/volume-control';
+import { PlaybackRateButton } from '@features/video/components/buttons/playback-rate-button/playback-rate-button';
 
 @Component({
   selector: 'app-video-player-multi-bar',
   imports: [
     FullscreenButton,
+    PlaybackRateButton,
     PlayButton,
     PlayProgressBar,
     QualityButton,
     SkipBackwardsButton,
     SkipForwardButton,
-    SpeedButton,
     VolumeControl,
   ],
   templateUrl: './video-player-multi-bar.html',

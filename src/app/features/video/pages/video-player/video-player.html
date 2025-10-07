@@ -1,5 +1,6 @@
 <section #videoPlayer class="video-player" (fullscreenchange)="onFullscreenChange($event)">
     <!-- set [percent]="..." -->
+    <!-- work with quality levels plugin -->
     <app-video-player-header [class.move-up]="isUIDisabled()"></app-video-player-header>
 
     <div class="video-cont" [class.full-size]="isFullscreenNew()" (click)="onPlayToggleLate()"
@@ -9,4 +10,10 @@
 
     <app-video-player-multi-bar [class.move-down]="isUIDisabled()"></app-video-player-multi-bar>
 
+    @if (isPlaybackRateMenu()) {
+    <app-video-settings-dialog [config]="playbackRateConfig"></app-video-settings-dialog>
+    }
+    @if (isQualityMenu()) {
+    <app-video-settings-dialog [config]="qualityLevelConfig"></app-video-settings-dialog>
+    }
 </section>

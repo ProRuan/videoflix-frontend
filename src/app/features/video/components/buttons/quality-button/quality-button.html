@@ -1,16 +1,1 @@
-@if (isOpen()) {
-<div class="speed-menu">
-    <button class="speed-option-button" [class.selected]="isSelected(0.5)"
-        (click)="onSpeedUpdate(0)"><span>auto</span></button>
-    <button class="speed-option-button" [class.selected]="isSelected(0.75)"
-        (click)="onSpeedUpdate(1)"><span>1080p</span></button>
-    <button class="speed-option-button" [class.selected]="isSelected(1)"
-        (click)="onSpeedUpdate(2)"><span>720p</span></button>
-    <button class="speed-option-button" [class.selected]="isSelected(1.25)"
-        (click)="onSpeedUpdate(3)"><span>360p</span></button>
-    <button class="speed-option-button" [class.selected]="isSelected(1.5)"
-        (click)="onSpeedUpdate(4)"><span>144p</span></button>
-</div>
-}
-
-<button class="quality-button" (click)="onSpeedChange()"></button>
+<button class="quality-button" (click)="onQuality()"></button>
