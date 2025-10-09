@@ -17,6 +17,8 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
 import { OverlayManagerBase } from '@shared/services';
 import { VideoSettingsDialog } from '@features/video/components/dialogs';
 import { VideoDialogConfigurator } from '@features/video/services';
+import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
+import QualityLevel from 'videojs-contrib-quality-levels/dist/types/quality-level';
 // import { VideoQualityDialog } from '@features/video/components/dialogs/video-quality-dialog/video-quality-dialog';
 
 @Component({
@@ -226,9 +228,29 @@ export class VideoPlayer {
       console.log('player src: ', this.player()?.currentSource());
       console.log('select source: ', this.facade.getPlayer()?.currentSources());
     });
-    this.facade.getPlayer()?.on('durationchange', () => {
-      this.facade.duration.update(() => this.facade.getDuration());
-      console.log('duration change: ', this.facade.duration());
+    this.facade.listenToDurationChange();
+
+    const player = this.facade.getPlayer() as any;
+    const qualityLevels = player.qualityLevels() as QualityLevelList;
+    // set on or one ... ?
+    qualityLevels.on('change', (event: Event) => {
+      console.log('change: ', event);
+      this.facade.setQualityLevels();
+      console.log('quality levels signal: ', this.facade.qualityLevels());
+
+      if (this.facade.isMasterSource()) {
+        const qualityLevelEvent = event as any;
+        const selectedIndex = qualityLevelEvent.selectedIndex;
+        console.log('selected index: ', selectedIndex);
+
+        const level = this.facade.qualityLevels()[selectedIndex];
+        console.log('master level: ', level);
+
+        const height = document.body.clientHeight;
+        const percent = Math.round((level.height / height) * 100);
+        console.log('percent: ', percent);
+        this.facade.optimizingPercent.set(percent);
+      }
     });
   }
 

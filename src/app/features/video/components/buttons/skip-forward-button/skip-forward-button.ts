@@ -18,6 +18,6 @@ export class SkipForwardButton {
    * Skip forward on click.
    */
   onForwardSkip() {
-    this.facade.skipForward();
+    this.facade.skipPlayProgress();
   }
 }

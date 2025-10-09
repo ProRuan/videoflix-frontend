@@ -32,7 +32,7 @@ export class PlayProgressBar {
   remainingDisplayTime = computed(() => this.facade.remainingDisplayTime());
   currentDisplayTime = computed(() => this.facade.currentDisplayTime());
   bufferPercent = computed(() => this.facade.bufferPercent());
-  playedPercent = computed(() => this.facade.getPlayedPercent());
+  playedPercent = computed(() => this.facade.playedPercent());
 
   @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
 

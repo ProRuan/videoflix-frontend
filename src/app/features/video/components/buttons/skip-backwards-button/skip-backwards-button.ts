@@ -18,6 +18,6 @@ export class SkipBackwardsButton {
    * Skip backwards on click.
    */
   onBackwardSkip() {
-    this.facade.skipBackwards();
+    this.facade.skipPlayProgress(true);
   }
 }

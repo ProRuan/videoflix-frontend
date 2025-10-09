@@ -50,10 +50,6 @@ export class VideoPlayerMultiBar {
   // replace getters ...
   constructor() {}
 
-  get duration() {
-    return this.facade.getDuration();
-  }
-
   onEventStop(event: Event) {
     event.stopPropagation();
   }

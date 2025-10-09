@@ -2,6 +2,10 @@ import { computed, ElementRef, Injectable, signal } from '@angular/core';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
 import { getHours, getMinutes, getSeconds } from '../utils/time-utils';
+// import 'videojs-contrib-quality-levels';
+import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
+import QualityLevel from 'videojs-contrib-quality-levels/dist/types/quality-level';
+import { TimeoutId } from '@shared/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +15,7 @@ export class VideoPlayerFacade {
   player = signal<Player | null>(null);
 
   // replace any ...
+  // set private keyword ...
 
   // no interval needed ... ?!
   // options: getter, signal, set value, markForCheck ...
@@ -23,30 +28,44 @@ export class VideoPlayerFacade {
   // reset facade on destory ... !
 
   private readonly stepSize: number = 10;
-
-  sources = signal<any[]>([]);
+  private readonly availablePlaybackRates = [2, 1.5, 1.25, 1, 0.75, 0.5];
 
   title = signal('');
 
+  isPlaying = signal(false);
+
   currentDisplayTime = signal('');
   remainingDisplayTime = signal('');
-  currentTime = signal(0);
-  bufferPercent = signal(0);
   duration = signal(0);
-  hasDuration = computed(() => this.duration() > 0);
+  buffered = signal(0);
+  currentTime = signal(0);
+  hasEnded = signal(false);
+
+  bufferPercent = computed(() => this.getBufferedPercent());
+  playedPercent = computed(() => this.getPlayedPercent());
+
+  playTimeoutId: TimeoutId = -1;
+
+  // in progress
 
   cachedVolume = signal(0.5);
   volume = signal(0.5);
   volumePercent = computed(() => this.volume() * 100);
   isMute = computed(() => this.volume() === 0);
 
-  private readonly availablePlaybackRates = [2, 1.5, 1.25, 1, 0.75, 0.5];
+  // to edit
+  sources = signal<any[]>([]);
+  wasPlayingBeforePause = signal(false);
 
   currentPlaybackRate = signal(1);
-  currentQualityLevel = signal(0);
 
-  isPlaying = signal(false);
-  playTimeoutId: ReturnType<typeof setTimeout> = -1;
+  qualityLevelList = signal<QualityLevelList | null>(null);
+  qualityLevels = signal<QualityLevel[]>([]);
+  selectedIndex = computed(() => this.qualityLevelList()?.selectedIndex_);
+  hasQualityLevels = signal(false);
+  isMasterSource = signal(true);
+  currentQualityLevel = signal(0);
+  optimizingPercent = signal(0);
 
   isFullscreen = signal(false);
 
@@ -59,38 +78,304 @@ export class VideoPlayerFacade {
       this.currentDisplayTime.update(() => this.getCurrentDisplayTime());
       this.remainingDisplayTime.update(() => this.getRemainingDisplayTime());
       this.currentTime.update(() => this.getCurrentTime());
-      this.bufferPercent.update(() => this.getBufferedPercent() * 100);
+      this.buffered.update(() => this.getBufferEnd());
+
+      this.hasEnded.update(() => this.player()?.ended() ?? false);
+      if (this.hasEnded()) {
+        this.isPlaying.set(false);
+      }
     }, 1000 / 60);
   }
 
+  /**
+   * Set the video title.
+   * @param value - The value to be set.
+   */
   setTitle(value: string) {
     this.title.set(value);
   }
 
-  setPlayerContainer(element: ElementRef<HTMLDivElement>) {
-    this.playerContainer.set(element);
+  /**
+   * Toggle between play and pause with delay.
+   * @returns Void.
+   */
+  togglePlayWithDelay() {
+    if (this.hasPlayTimeout()) return;
+    this.playTimeoutId = setTimeout(() => this.togglePlay(), 250);
   }
 
-  getCurrentDisplayTime() {
-    const currentTime = Math.round(this.getCurrentTime());
-    const hours = getHours(currentTime);
-    const minutes = getMinutes(currentTime);
-    const seconds = getSeconds(currentTime);
-    const times = [hours, minutes, seconds].filter((t) => t !== null);
-    return times.join(':');
+  /**
+   * Check if a play timeout is set.
+   * @returns True if the play timeout id is greater than -1, otherwise false.
+   */
+  private hasPlayTimeout() {
+    return this.playTimeoutId > -1;
   }
 
-  // double code
-  getRemainingDisplayTime() {
-    const remainingTime = Math.round(this.player()?.remainingTime() ?? 0);
-    if (isNaN(remainingTime)) return '0:00';
-    const hours = getHours(remainingTime);
-    const minutes = getMinutes(remainingTime);
-    const seconds = getSeconds(remainingTime);
-    const times = [hours, minutes, seconds].filter((t) => t !== null);
-    return times.join(':');
+  /**
+   * Toggle between play and pause.
+   */
+  togglePlay() {
+    this.clearPlayTimeout();
+    this.isPaused() ? this.play() : this.pause();
   }
 
+  /**
+   * Clear the play timeout.
+   */
+  private clearPlayTimeout() {
+    clearTimeout(this.playTimeoutId);
+    this.playTimeoutId = -1;
+  }
+
+  /**
+   * Check if the video is paused.
+   * @returns True if the video is paused, otherwise false.
+   */
+  isPaused() {
+    return this.player()?.paused() ?? false;
+  }
+
+  /**
+   * Play the video.
+   */
+  play() {
+    this.player()?.play();
+    this.isPlaying.set(true);
+  }
+
+  /**
+   * Pause the video.
+   */
+  pause() {
+    this.player()?.pause();
+    this.isPlaying.set(false);
+  }
+
+  /**
+   * Get the current display time of the video.
+   * @returns The current display time of the video.
+   */
+  private getCurrentDisplayTime() {
+    const currentTime = this.getCurrentTime();
+    return this.getDisplayTime(currentTime);
+  }
+
+  /**
+   * Get the current time of a video.
+   * @returns The current time of the video.
+   */
+  private getCurrentTime() {
+    return this.player()?.currentTime() ?? 0;
+  }
+
+  /**
+   * Get a display time of a video.
+   * @param exactTime - The exact time.
+   * @returns The display time of the video.
+   */
+  private getDisplayTime(exactTime: number) {
+    const time = Math.round(exactTime);
+    if (isNaN(time)) return '0:00';
+    return this.getFormattedDisplayTime(time);
+  }
+
+  /**
+   * Get a formatted display time.
+   * @param time - The time to be formatted.
+   * @returns The formatted display time.
+   */
+  private getFormattedDisplayTime(time: number) {
+    const hours = getHours(time);
+    const minutes = getMinutes(time);
+    const seconds = getSeconds(time);
+    const timeParts = [hours, minutes, seconds];
+    return timeParts.filter((t) => t !== null).join(':');
+  }
+
+  /**
+   * Get the remaining display time of a video.
+   * @returns The remainging display time of the video.
+   */
+  private getRemainingDisplayTime() {
+    const remainingTime = this.getRemainingTime();
+    return this.getDisplayTime(remainingTime);
+  }
+
+  /**
+   * Get the remaining of a video.
+   * @returns The remaining time of the video.
+   */
+  private getRemainingTime() {
+    return this.player()?.remainingTime() ?? 0;
+  }
+
+  /**
+   * Listen to duration change events to update the video`s duration.
+   */
+  listenToDurationChange() {
+    this.player()?.on('durationchange', () => this.setDuration());
+  }
+
+  /**
+   * Set the duration of the video.
+   */
+  private setDuration() {
+    const duration = this.getDuration();
+    this.duration.set(duration);
+  }
+
+  /**
+   * Get the duration of the video.
+   * @returns The duration of the video.
+   */
+  private getDuration() {
+    return this.player()?.duration() ?? 0;
+  }
+
+  /**
+   * Get the buffer end of a video.
+   * @returns The buffer end of the video.
+   */
+  private getBufferEnd() {
+    return this.player()?.bufferedEnd() ?? 0;
+  }
+
+  /**
+   * Get the buffered percent of the video.
+   * @returns The buffered percent of the video.
+   */
+  private getBufferedPercent() {
+    return (this.buffered() / this.duration()) * 100;
+  }
+
+  /**
+   * Set the current time of the video.
+   * @param value - The value to be set.
+   */
+  setCurrentTime(value: number) {
+    this.player()?.currentTime(value);
+  }
+
+  /**
+   * Get the played percent of the video.
+   * @returns The played percent of the video.
+   */
+  private getPlayedPercent() {
+    return (this.currentTime() / this.duration()) * 100;
+  }
+
+  /**
+   * Skip the video´s play progress.
+   * @param backwards - A boolean value.
+   */
+  skipPlayProgress(backwards: boolean = false) {
+    const time = this.getSkipTargetTime(backwards);
+    this.setCurrentTime(time);
+  }
+
+  /**
+   * Get the skip target time.
+   * @param backwards - A boolean value.
+   * @returns The skip target time.
+   */
+  private getSkipTargetTime(backwards: boolean = false) {
+    const currentTime = this.getCurrentTime();
+    const timeStep = this.getTimeStep(backwards);
+    return currentTime + timeStep;
+  }
+
+  /**
+   * Get a time step for skipping the play progress.
+   * @param backwards - A boolean value.
+   * @returns The time step for skipping the play progress.
+   */
+  private getTimeStep(backwards: boolean = false) {
+    return backwards ? -this.stepSize : this.stepSize;
+  }
+
+  /**
+   * Toggle between mute and volume.
+   */
+  toggleMute() {
+    if (this.isMuted()) {
+      this.updateVolume(false, this.cachedVolume());
+    } else {
+      this.updateVolume(true, 0, this.getVolume());
+    }
+  }
+
+  /**
+   * Check if the video is muted.
+   * @returns True if the video is muted, otherwise false.
+   */
+  private isMuted() {
+    return this.player()?.muted() ?? false;
+  }
+
+  /**
+   * Update the volume parameters.
+   * @param muted - A boolean value.
+   * @param volume - The volume to be set.
+   * @param currentVolume - The current volume.
+   */
+  private updateVolume(muted: boolean, volume: number, currentVolume?: number) {
+    this.setMute(muted);
+    this.cachedVolume.update((value) => currentVolume ?? value);
+    this.setVolume(volume);
+  }
+
+  /**
+   * Set the mute state of the video.
+   * @param value - The value to be set.
+   */
+  private setMute(value: boolean) {
+    this.player()?.muted(value);
+  }
+
+  /**
+   * Set the volume of the video.
+   * @param value - The value to be set.
+   */
+  setVolume(value: number) {
+    this.volume.set(value);
+    this.player()?.volume(value);
+    if (this.volume() > 0) {
+      this.setMute(false);
+    }
+  }
+
+  /**
+   * Get the volume of the video.
+   * @returns - The volume of the video.
+   */
+  private getVolume() {
+    return this.player()?.volume() ?? 0;
+  }
+
+  /**
+   * Set the playback rate of the video.
+   * @param index - The index of the playback rate to be set.
+   */
+  setPlaybackRate(index: number) {
+    const value = this.availablePlaybackRates[index];
+    this.currentPlaybackRate.set(value);
+    this.player()?.playbackRate(value);
+  }
+
+  /**
+   * Check a playback rate for being the current playback rate.
+   * @param index - The index of the playback rate.
+   * @returns True if the playback rate matches the current playback rate.
+   */
+  isCurrentPlaybackRate(index: number) {
+    return this.currentPlaybackRate() === this.availablePlaybackRates[index];
+  }
+
+  // --- edit --- edit --- edit ---
+  // ------------------------------
+
+  // remove at the end ...
   getPlayer() {
     return this.player();
   }
@@ -100,134 +385,8 @@ export class VideoPlayerFacade {
     this.setVolume(0.5);
   }
 
-  // video element
-  togglePlayWithDelay() {
-    if (this.isPlayTimeout()) return;
-    // necessary ... ?
-    this.clearPlayTimeout();
-    this.playTimeoutId = setTimeout(() => {
-      this.togglePlay();
-    }, 250);
-  }
-
-  isPlayTimeout() {
-    return this.playTimeoutId > -1;
-  }
-
-  clearPlayTimeout() {
-    clearTimeout(this.playTimeoutId);
-    this.playTimeoutId = -1;
-  }
-
-  // play progress bar
-  getDuration() {
-    return this.player()?.duration() ?? 0;
-  }
-
-  getRemainingTime() {
-    return this.player()?.remainingTime() ?? 0;
-  }
-
-  setCurrentTime(value: number) {
-    this.player()?.currentTime(value);
-  }
-
-  getBufferedPercent() {
-    return this.player()?.bufferedPercent() ?? 0;
-  }
-
-  getPlayedPercent() {
-    return (this.currentTime() / this.duration()) * 100;
-  }
-
-  // play button
-  togglePlay() {
-    this.clearPlayTimeout();
-    this.isPaused() ? this.play() : this.pause();
-  }
-
-  play() {
-    this.player()?.play();
-    this.isPlaying.set(true);
-  }
-
-  pause() {
-    this.player()?.pause();
-    this.isPlaying.set(false);
-  }
-
-  isPaused() {
-    return this.player()?.paused() ?? false;
-  }
-
-  hasStarted() {
-    return this.player()?.hasStarted_;
-  }
-
-  hasEnded() {
-    return this.player()?.ended() ?? false;
-  }
-
-  // volume button
-  // improve
-  toggleMute() {
-    if (this.isMuted()) {
-      this.setMute(false);
-      this.setVolume(this.cachedVolume());
-    } else {
-      this.setMute(true);
-      this.cachedVolume.set(this.getVolume());
-      this.setVolume(0);
-    }
-  }
-
-  isMuted() {
-    return this.player()?.muted() ?? false;
-  }
-
-  setMute(value: boolean) {
-    this.player()?.muted(value);
-  }
-
-  setVolume(value: number) {
-    this.volume.set(value);
-    this.player()?.volume(value);
-    if (this.volume() > 0) {
-      this.setMute(false);
-    }
-  }
-
-  // backward-10 button
-  skipBackwards() {
-    const currentTime = this.getCurrentTime();
-    const newTime = currentTime - this.stepSize;
-    this.player()?.currentTime(newTime);
-  }
-
-  getCurrentTime() {
-    return this.player()?.currentTime() ?? 0;
-  }
-
-  // forward-10 button
-  skipForward() {
-    const currentTime = this.getCurrentTime();
-    const newTime = currentTime + this.stepSize;
-    this.player()?.currentTime(newTime);
-  }
-
-  getVolume() {
-    return this.player()?.volume() ?? 0;
-  }
-
-  // speed button
-  setPlaybackRate(index: number) {
-    const value = this.availablePlaybackRates[index];
-    this.currentPlaybackRate.set(value);
-    this.player()?.playbackRate(value);
-  }
-
-  isCurrentPlaybackRate(index: number) {
-    return this.currentPlaybackRate() === this.availablePlaybackRates[index];
+  setPlayerContainer(element: ElementRef<HTMLDivElement>) {
+    this.playerContainer.set(element);
   }
 
   // quality button
@@ -244,6 +403,29 @@ export class VideoPlayerFacade {
     const currentTime = this.getCurrentTime();
     const level = index ?? 0;
     this.player()?.updateSourceCaches_(this.sources()[level]);
+
+    if (index === 0) {
+      this.isMasterSource.set(true);
+      const list = this.getQualityLevelList();
+      list.selectedIndex_ = index - 1;
+      // list.trigger({ type: 'change', selectedIndex: index - 1 });
+    } else {
+      this.isMasterSource.set(false);
+      const iNew = index - 1;
+      console.log('i new: ', iNew);
+
+      const levels = this.qualityLevels();
+      console.log('current levels: ', levels);
+
+      const level = levels[iNew];
+
+      // use video player height instead ... ?!
+      const height = document.body.clientHeight;
+      const percent = Math.round((level.height / height) * 100);
+      this.optimizingPercent.set(percent);
+      console.log(`${level} / ${height} * 100 = ${percent}%`);
+    }
+
     this.player()?.load();
     this.player()?.ready(() => {
       this.setCurrentTime(currentTime);
@@ -251,11 +433,44 @@ export class VideoPlayerFacade {
     });
   }
 
+  getQualityLevelList() {
+    const player = this.getPlayer() as any;
+    return player.qualityLevels() as any;
+  }
+
+  setQualityLevels() {
+    if (this.hasQualityLevels()) return;
+    console.log('set quality levels first');
+
+    const p = this.getPlayer() as any;
+    const qualityLevels = p.qualityLevels() as QualityLevelList;
+    const levels: QualityLevel[] = this.getOriginalQualityLevels(qualityLevels);
+    console.log('original levels: ', levels);
+
+    this.qualityLevels.set(levels);
+    this.hasQualityLevels.set(true);
+  }
+
+  getOriginalQualityLevels(qualityLevelList: QualityLevelList) {
+    const levels = qualityLevelList.levels_;
+    const newLevels = levels.map((level: QualityLevel) => {
+      return {
+        id: level.id,
+        label: level.label,
+        width: level.width,
+        height: level.height,
+        bitrate: level.bitrate,
+        frameRate: level.frameRate,
+        enabled_: (value?: boolean) => level.enabled_(value),
+      };
+    });
+    return newLevels;
+  }
+
   isCurrentQualityLevel(index: number) {
     return this.currentQualityLevel() === index;
   }
 
-  // for video element or video container element ... ?!
   // fullscreen button
   toggleFullscreen() {
     this.clearPlayTimeout();
@@ -268,28 +483,10 @@ export class VideoPlayerFacade {
   }
 
   exitFullscreen(element?: HTMLDivElement) {
-    // this.isFullscreen.set(false);
     document.exitFullscreen();
   }
 
   enterFullscreen(element?: HTMLDivElement) {
     element?.requestFullscreen();
-    // this.isFullscreen.set(true);
   }
-
-  // // for video element or video container element ... ?!
-  // // fullscreen button
-  // toggleFullscreen() {
-  //   if (this.isFullscreen()) {
-  //     this.player()?.exitFullscreen();
-  //     // this.player()?.isFullscreen(false);
-  //   } else {
-  //     this.player()?.requestFullscreen();
-  //     // this.player()?.isFullscreen(true);
-  //   }
-  // }
-
-  // isFullscreen() {
-  //   return this.player()?.isFullscreen();
-  // }
 }

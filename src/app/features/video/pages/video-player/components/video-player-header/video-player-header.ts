@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
+import { VideoPlayerFacade } from '@features/video/services';
 
 import { BackButton } from '@shared/components/buttons';
 
@@ -12,5 +13,7 @@ import { BackButton } from '@shared/components/buttons';
   styleUrl: './video-player-header.scss',
 })
 export class VideoPlayerHeader {
-  percent = input(0);
+  private facade = inject(VideoPlayerFacade);
+
+  percent = computed(() => this.facade.optimizingPercent());
 }
