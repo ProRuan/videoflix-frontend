@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 
 import { VideoPlayerFacade } from '@features/video/services';
 
@@ -14,26 +14,13 @@ import { VideoPlayerFacade } from '@features/video/services';
 export class PlayButton {
   private facade = inject(VideoPlayerFacade);
 
+  isPause = computed(() => this.facade.isPlaying());
+  isReplay = computed(() => this.facade.hasEnded());
+
   /**
    * Toggle between play and pause on click.
    */
   onPlay() {
     this.facade.togglePlay();
-  }
-
-  /**
-   * Check if the pause icon needs to be displayed.
-   * @returns True if the video is playing, otherwise false.
-   */
-  isPause() {
-    return this.facade.isPlaying();
-  }
-
-  /**
-   * Check if the replay icon needs to be displayed.
-   * @returns True if the video has ended, otherwise false.
-   */
-  isReplay() {
-    return this.facade.hasEnded();
   }
 }

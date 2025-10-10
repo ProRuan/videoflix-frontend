@@ -27,6 +27,7 @@ export class VolumeControl {
 
   isDragging = signal(false);
   volumePercent = computed(() => this.facade.volumePercent());
+  isMute = computed(() => this.facade.isMute());
 
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
 
@@ -73,14 +74,6 @@ export class VolumeControl {
    */
   onVolumeEnd() {
     this.isDragging.set(false);
-  }
-
-  /**
-   * Check the video for its mute state.
-   * @returns True if the video is muted, otherwise false.
-   */
-  isMute() {
-    return this.facade.isMute();
   }
 
   /**

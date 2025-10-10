@@ -183,14 +183,7 @@ export class VideoPlayer {
   @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
 
-  constructor() {
-    document.onkeydown = (event: KeyboardEvent) => {
-      const key = event.key;
-      if (key === 'Escape' && this.facade.isFullscreen()) {
-        this.fsContr.exitFullscreen();
-      }
-    };
-  }
+  constructor() {}
 
   onMouseMove(event: MouseEvent) {
     const time = Date.now();
@@ -339,7 +332,7 @@ export class VideoPlayer {
   }
 
   isFullscreenNew() {
-    return this.facade.isFullscreen();
+    return this.fsContr.isFullscreen();
   }
 
   isUIDisabled() {
@@ -347,7 +340,9 @@ export class VideoPlayer {
   }
 
   onFullscreenChange(event: Event) {
-    this.facade.isFullscreen.update((value) => !value);
+    console.log('fullscreen change: ', event);
+    this.fsContr.isFullscreen.update((value) => !value);
+
     if (this.isFullscreenNew()) {
       clearTimeout(this.controlTimeout);
       this.hasControls.set(true);

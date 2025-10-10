@@ -55,8 +55,6 @@ export class VideoPlayerFacade {
   sources = signal<any[]>([]);
   wasPlayingBeforePause = signal(false);
 
-  isFullscreen = signal(false);
-
   // use isPlayerReady to display interface when player is ready .. ?
   // isPlayerReady = signal(false);
 

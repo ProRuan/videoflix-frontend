@@ -28,7 +28,9 @@ export class FullscreenController {
    * Exit the video´s fullscreen mode.
    */
   exitFullscreen() {
-    document.exitFullscreen();
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
   }
 
   /**
@@ -36,6 +38,8 @@ export class FullscreenController {
    * @param element - The element to be displayed in fullscreen mode.
    */
   enterFullscreen(element?: HTMLDivElement) {
-    element?.requestFullscreen();
+    if (document.fullscreenEnabled) {
+      element?.requestFullscreen();
+    }
   }
 }
