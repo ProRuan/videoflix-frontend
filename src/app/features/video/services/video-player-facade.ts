@@ -47,7 +47,6 @@ export class VideoPlayerFacade {
   playTimeoutId: TimeoutId = -1;
 
   // in progress
-
   cachedVolume = signal(0.5);
   volume = signal(0.5);
   volumePercent = computed(() => this.volume() * 100);
@@ -58,14 +57,6 @@ export class VideoPlayerFacade {
   wasPlayingBeforePause = signal(false);
 
   currentPlaybackRate = signal(1);
-
-  qualityLevelList = signal<QualityLevelList | null>(null);
-  qualityLevels = signal<QualityLevel[]>([]);
-  selectedIndex = computed(() => this.qualityLevelList()?.selectedIndex_);
-  hasQualityLevels = signal(false);
-  isMasterSource = signal(true);
-  currentQualityLevel = signal(0);
-  optimizingPercent = signal(0);
 
   isFullscreen = signal(false);
 
@@ -165,7 +156,7 @@ export class VideoPlayerFacade {
    * Get the current time of a video.
    * @returns The current time of the video.
    */
-  private getCurrentTime() {
+  getCurrentTime() {
     return this.player()?.currentTime() ?? 0;
   }
 
@@ -354,10 +345,10 @@ export class VideoPlayerFacade {
   }
 
   /**
-   * Set the playback rate of the video.
-   * @param index - The index of the playback rate to be set.
+   * Update the video´s playback rate.
+   * @param index - The index of the playback rate.
    */
-  setPlaybackRate(index: number) {
+  updatePlaybackRate(index: number) {
     const value = this.availablePlaybackRates[index];
     this.currentPlaybackRate.set(value);
     this.player()?.playbackRate(value);
@@ -393,82 +384,6 @@ export class VideoPlayerFacade {
   // replace any ... !
   setSources(sources: any[]) {
     this.sources.set(sources);
-  }
-
-  // update quality level message ...
-  setQualityLevel(index: number) {
-    this.currentQualityLevel.set(index);
-    console.log('this sources: ', this.sources());
-    this.pause();
-    const currentTime = this.getCurrentTime();
-    const level = index ?? 0;
-    this.player()?.updateSourceCaches_(this.sources()[level]);
-
-    if (index === 0) {
-      this.isMasterSource.set(true);
-      const list = this.getQualityLevelList();
-      list.selectedIndex_ = index - 1;
-      // list.trigger({ type: 'change', selectedIndex: index - 1 });
-    } else {
-      this.isMasterSource.set(false);
-      const iNew = index - 1;
-      console.log('i new: ', iNew);
-
-      const levels = this.qualityLevels();
-      console.log('current levels: ', levels);
-
-      const level = levels[iNew];
-
-      // use video player height instead ... ?!
-      const height = document.body.clientHeight;
-      const percent = Math.round((level.height / height) * 100);
-      this.optimizingPercent.set(percent);
-      console.log(`${level} / ${height} * 100 = ${percent}%`);
-    }
-
-    this.player()?.load();
-    this.player()?.ready(() => {
-      this.setCurrentTime(currentTime);
-      this.play();
-    });
-  }
-
-  getQualityLevelList() {
-    const player = this.getPlayer() as any;
-    return player.qualityLevels() as any;
-  }
-
-  setQualityLevels() {
-    if (this.hasQualityLevels()) return;
-    console.log('set quality levels first');
-
-    const p = this.getPlayer() as any;
-    const qualityLevels = p.qualityLevels() as QualityLevelList;
-    const levels: QualityLevel[] = this.getOriginalQualityLevels(qualityLevels);
-    console.log('original levels: ', levels);
-
-    this.qualityLevels.set(levels);
-    this.hasQualityLevels.set(true);
-  }
-
-  getOriginalQualityLevels(qualityLevelList: QualityLevelList) {
-    const levels = qualityLevelList.levels_;
-    const newLevels = levels.map((level: QualityLevel) => {
-      return {
-        id: level.id,
-        label: level.label,
-        width: level.width,
-        height: level.height,
-        bitrate: level.bitrate,
-        frameRate: level.frameRate,
-        enabled_: (value?: boolean) => level.enabled_(value),
-      };
-    });
-    return newLevels;
-  }
-
-  isCurrentQualityLevel(index: number) {
-    return this.currentQualityLevel() === index;
   }
 
   // fullscreen button

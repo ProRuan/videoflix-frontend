@@ -1,6 +1,6 @@
-import { Component, computed, inject, input } from '@angular/core';
-import { VideoPlayerFacade } from '@features/video/services';
+import { Component, computed, inject } from '@angular/core';
 
+import { VideoQualityController } from '@features/video/services';
 import { BackButton } from '@shared/components/buttons';
 
 /**
@@ -13,7 +13,7 @@ import { BackButton } from '@shared/components/buttons';
   styleUrl: './video-player-header.scss',
 })
 export class VideoPlayerHeader {
-  private facade = inject(VideoPlayerFacade);
+  private qualities = inject(VideoQualityController);
 
-  percent = computed(() => this.facade.optimizingPercent());
+  percent = computed(() => this.qualities.optimizingPercent());
 }

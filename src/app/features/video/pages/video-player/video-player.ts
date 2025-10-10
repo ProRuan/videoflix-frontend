@@ -19,6 +19,7 @@ import { VideoSettingsDialog } from '@features/video/components/dialogs';
 import { VideoDialogConfigurator } from '@features/video/services';
 import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
 import QualityLevel from 'videojs-contrib-quality-levels/dist/types/quality-level';
+import { VideoQualityController } from '@features/video/services/video-quality-controller';
 // import { VideoQualityDialog } from '@features/video/components/dialogs/video-quality-dialog/video-quality-dialog';
 
 @Component({
@@ -47,6 +48,7 @@ export class VideoPlayer {
 
   // testing
   private facade = inject(VideoPlayerFacade);
+  private qualities = inject(VideoQualityController);
   private dialogs = inject(OverlayManagerBase);
   private config = inject(VideoDialogConfigurator);
 
@@ -230,26 +232,49 @@ export class VideoPlayer {
     });
     this.facade.listenToDurationChange();
 
-    const player = this.facade.getPlayer() as any;
+    // const player = this.facade.getPlayer() as any;
+    // const qualityLevels = player.qualityLevels() as QualityLevelList;
+    // // set on or one ... ?
+    // qualityLevels.on('change', (event: Event) => {
+    //   console.log('change: ', event);
+    //   this.facade.setQualityLevels();
+    //   console.log('quality levels signal: ', this.facade.qualityLevels());
+
+    //   if (this.facade.isMasterSource()) {
+    //     const qualityLevelEvent = event as any;
+    //     const selectedIndex = qualityLevelEvent.selectedIndex;
+    //     console.log('selected index: ', selectedIndex);
+
+    //     const level = this.facade.qualityLevels()[selectedIndex];
+    //     console.log('master level: ', level);
+
+    //     const height = document.body.clientHeight;
+    //     const percent = Math.round((level.height / height) * 100);
+    //     console.log('percent: ', percent);
+    //     this.facade.optimizingPercent.set(percent);
+    //   }
+    // });
+
+    const player = this.qualities.player() as any;
     const qualityLevels = player.qualityLevels() as QualityLevelList;
     // set on or one ... ?
     qualityLevels.on('change', (event: Event) => {
       console.log('change: ', event);
-      this.facade.setQualityLevels();
-      console.log('quality levels signal: ', this.facade.qualityLevels());
+      this.qualities.setQualityLevels();
+      console.log('quality levels signal: ', this.qualities.qualityLevels());
 
-      if (this.facade.isMasterSource()) {
+      if (this.qualities.hasMasterSource()) {
         const qualityLevelEvent = event as any;
         const selectedIndex = qualityLevelEvent.selectedIndex;
         console.log('selected index: ', selectedIndex);
 
-        const level = this.facade.qualityLevels()[selectedIndex];
+        const level = this.qualities.qualityLevels()[selectedIndex];
         console.log('master level: ', level);
 
         const height = document.body.clientHeight;
         const percent = Math.round((level.height / height) * 100);
         console.log('percent: ', percent);
-        this.facade.optimizingPercent.set(percent);
+        this.qualities.optimizingPercent.set(percent);
       }
     });
   }
