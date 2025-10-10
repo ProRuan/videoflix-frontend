@@ -9,7 +9,11 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayableVideo } from '@features/video/models';
-import { VideoPlayerFacade, VideoStore } from '@features/video/services';
+import {
+  QualityLevelController,
+  VideoPlayerFacade,
+  VideoStore,
+} from '@features/video/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthStore, UserClient } from '@core/auth/services';
 import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
@@ -18,8 +22,6 @@ import { OverlayManagerBase } from '@shared/services';
 import { VideoSettingsDialog } from '@features/video/components/dialogs';
 import { VideoDialogConfigurator } from '@features/video/services';
 import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
-import QualityLevel from 'videojs-contrib-quality-levels/dist/types/quality-level';
-import { VideoQualityController } from '@features/video/services/video-quality-controller';
 // import { VideoQualityDialog } from '@features/video/components/dialogs/video-quality-dialog/video-quality-dialog';
 
 @Component({
@@ -48,7 +50,7 @@ export class VideoPlayer {
 
   // testing
   private facade = inject(VideoPlayerFacade);
-  private qualities = inject(VideoQualityController);
+  private qlContr = inject(QualityLevelController);
   private dialogs = inject(OverlayManagerBase);
   private config = inject(VideoDialogConfigurator);
 
@@ -255,26 +257,26 @@ export class VideoPlayer {
     //   }
     // });
 
-    const player = this.qualities.player() as any;
+    const player = this.qlContr.player() as any;
     const qualityLevels = player.qualityLevels() as QualityLevelList;
     // set on or one ... ?
     qualityLevels.on('change', (event: Event) => {
       console.log('change: ', event);
-      this.qualities.setQualityLevels();
-      console.log('quality levels signal: ', this.qualities.qualityLevels());
+      this.qlContr.setQualityLevels();
+      console.log('quality levels signal: ', this.qlContr.qualityLevels());
 
-      if (this.qualities.hasMasterSource()) {
+      if (this.qlContr.hasMasterSource()) {
         const qualityLevelEvent = event as any;
         const selectedIndex = qualityLevelEvent.selectedIndex;
         console.log('selected index: ', selectedIndex);
 
-        const level = this.qualities.qualityLevels()[selectedIndex];
+        const level = this.qlContr.qualityLevels()[selectedIndex];
         console.log('master level: ', level);
 
         const height = document.body.clientHeight;
         const percent = Math.round((level.height / height) * 100);
         console.log('percent: ', percent);
-        this.qualities.optimizingPercent.set(percent);
+        this.qlContr.optimizingPercent.set(percent);
       }
     });
   }

@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 
-import { VideoQualityController } from '@features/video/services';
+import { QualityLevelController } from '@features/video/services';
 import { BackButton } from '@shared/components/buttons';
 
 /**
@@ -13,7 +13,7 @@ import { BackButton } from '@shared/components/buttons';
   styleUrl: './video-player-header.scss',
 })
 export class VideoPlayerHeader {
-  private qualities = inject(VideoQualityController);
+  private qlContr = inject(QualityLevelController);
 
-  percent = computed(() => this.qualities.optimizingPercent());
+  percent = computed(() => this.qlContr.optimizingPercent());
 }

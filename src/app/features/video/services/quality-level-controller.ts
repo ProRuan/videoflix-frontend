@@ -6,14 +6,14 @@ import QualityLevel from 'videojs-contrib-quality-levels/dist/types/quality-leve
 import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
 
 /**
- * Class representing a video quality controller service.
+ * Class representing a quality level controller service.
  *
- * Handles master source, quality level sources and quality level changes.
+ * Controls a video´s source and quality levels.
  */
 @Injectable({
   providedIn: 'root',
 })
-export class VideoQualityController {
+export class QualityLevelController {
   private facade = inject(VideoPlayerFacade);
 
   player = computed(() => this.facade.player());

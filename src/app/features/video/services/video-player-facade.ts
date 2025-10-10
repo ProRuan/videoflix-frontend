@@ -2,9 +2,6 @@ import { computed, ElementRef, Injectable, signal } from '@angular/core';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
 import { getHours, getMinutes, getSeconds } from '../utils/time-utils';
-// import 'videojs-contrib-quality-levels';
-import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
-import QualityLevel from 'videojs-contrib-quality-levels/dist/types/quality-level';
 import { TimeoutId } from '@shared/constants';
 
 @Injectable({
@@ -28,7 +25,6 @@ export class VideoPlayerFacade {
   // reset facade on destory ... !
 
   private readonly stepSize: number = 10;
-  private readonly availablePlaybackRates = [2, 1.5, 1.25, 1, 0.75, 0.5];
 
   title = signal('');
 
@@ -55,8 +51,6 @@ export class VideoPlayerFacade {
   // to edit
   sources = signal<any[]>([]);
   wasPlayingBeforePause = signal(false);
-
-  currentPlaybackRate = signal(1);
 
   isFullscreen = signal(false);
 
@@ -342,25 +336,6 @@ export class VideoPlayerFacade {
    */
   private getVolume() {
     return this.player()?.volume() ?? 0;
-  }
-
-  /**
-   * Update the video´s playback rate.
-   * @param index - The index of the playback rate.
-   */
-  updatePlaybackRate(index: number) {
-    const value = this.availablePlaybackRates[index];
-    this.currentPlaybackRate.set(value);
-    this.player()?.playbackRate(value);
-  }
-
-  /**
-   * Check a playback rate for being the current playback rate.
-   * @param index - The index of the playback rate.
-   * @returns True if the playback rate matches the current playback rate.
-   */
-  isCurrentPlaybackRate(index: number) {
-    return this.currentPlaybackRate() === this.availablePlaybackRates[index];
   }
 
   // --- edit --- edit --- edit ---
