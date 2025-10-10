@@ -24,6 +24,9 @@ export class VideoPlayerFacade {
 
   // reset facade on destory ... !
 
+  // improve and/or rename playerContainer ...
+  // dispose player on destroy ... !
+
   private readonly stepSize: number = 10;
 
   title = signal('');
@@ -108,7 +111,7 @@ export class VideoPlayerFacade {
   /**
    * Clear the play timeout.
    */
-  private clearPlayTimeout() {
+  clearPlayTimeout() {
     clearTimeout(this.playTimeoutId);
     this.playTimeoutId = -1;
   }
@@ -359,24 +362,5 @@ export class VideoPlayerFacade {
   // replace any ... !
   setSources(sources: any[]) {
     this.sources.set(sources);
-  }
-
-  // fullscreen button
-  toggleFullscreen() {
-    this.clearPlayTimeout();
-    const playerContainer = this.playerContainer()?.nativeElement;
-    if (this.isFullscreen()) {
-      this.exitFullscreen(playerContainer);
-    } else {
-      this.enterFullscreen(playerContainer);
-    }
-  }
-
-  exitFullscreen(element?: HTMLDivElement) {
-    document.exitFullscreen();
-  }
-
-  enterFullscreen(element?: HTMLDivElement) {
-    element?.requestFullscreen();
   }
 }

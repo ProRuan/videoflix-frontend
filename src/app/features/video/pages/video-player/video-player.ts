@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayableVideo } from '@features/video/models';
 import {
+  FullscreenController,
   QualityLevelController,
   VideoPlayerFacade,
   VideoStore,
@@ -51,6 +52,7 @@ export class VideoPlayer {
   // testing
   private facade = inject(VideoPlayerFacade);
   private qlContr = inject(QualityLevelController);
+  private fsContr = inject(FullscreenController);
   private dialogs = inject(OverlayManagerBase);
   private config = inject(VideoDialogConfigurator);
 
@@ -185,7 +187,7 @@ export class VideoPlayer {
     document.onkeydown = (event: KeyboardEvent) => {
       const key = event.key;
       if (key === 'Escape' && this.facade.isFullscreen()) {
-        this.facade.exitFullscreen();
+        this.fsContr.exitFullscreen();
       }
     };
   }
@@ -333,7 +335,7 @@ export class VideoPlayer {
 
   // onFullscreen() for button and onFullscreenDelayed() for video-container!!
   onFullScreen() {
-    this.facade.toggleFullscreen();
+    this.fsContr.toggleFullscreen();
   }
 
   isFullscreenNew() {
