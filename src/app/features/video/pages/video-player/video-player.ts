@@ -23,6 +23,7 @@ import { OverlayManagerBase } from '@shared/services';
 import { VideoSettingsDialog } from '@features/video/components/dialogs';
 import { VideoDialogConfigurator } from '@features/video/services';
 import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
+import { VIDEO_PLAYER_OPTIONS } from '@features/video/constants';
 // import { VideoQualityDialog } from '@features/video/components/dialogs/video-quality-dialog/video-quality-dialog';
 
 @Component({
@@ -94,7 +95,31 @@ export class VideoPlayer {
 
   player = computed(() => this.facade.player());
 
-  // update quality level sources ... !
+  // rename ... !
+  sourceArray = [
+    {
+      src: this.playableVideo().hlsPlaylist,
+      type: 'application/x-mpegURL',
+    },
+    {
+      src: this.playableVideo().qualityLevels[0].source,
+      type: 'application/x-mpegURL',
+    },
+    {
+      src: this.playableVideo().qualityLevels[1].source,
+      type: 'application/x-mpegURL',
+    },
+    {
+      src: this.playableVideo().qualityLevels[2].source,
+      type: 'application/x-mpegURL',
+    },
+    {
+      src: this.playableVideo().qualityLevels[3].source,
+      type: 'application/x-mpegURL',
+    },
+  ];
+
+  // // update quality level sources ... !
   sources = {
     auto: {
       src: this.playableVideo().hlsPlaylist,
@@ -118,39 +143,8 @@ export class VideoPlayer {
     },
   };
 
-  // use only one master playlist ...
-  options = {
-    controls: false,
-    autoplay: false,
-    preload: 'auto',
-    techOrder: ['html5'],
-    sources: [
-      {
-        src: this.playableVideo().hlsPlaylist,
-        type: 'application/x-mpegURL',
-      },
-      {
-        src: this.playableVideo().qualityLevels[0].source,
-        type: 'application/x-mpegURL',
-      },
-      {
-        src: this.playableVideo().qualityLevels[1].source,
-        type: 'application/x-mpegURL',
-      },
-      {
-        src: this.playableVideo().qualityLevels[2].source,
-        type: 'application/x-mpegURL',
-      },
-      {
-        src: this.playableVideo().qualityLevels[3].source,
-        type: 'application/x-mpegURL',
-      },
-    ],
-    enableSmoothSeeking: true,
-    enableDocumentPictureInPicture: true,
-    // apply fullscreen options ... ?!
-    sourceOrder: true,
-  };
+  // poster ... ?
+  options = VIDEO_PLAYER_OPTIONS;
 
   qualityLevels = [
     this.playableVideo().hlsPlaylist,
@@ -185,6 +179,16 @@ export class VideoPlayer {
 
   constructor() {}
 
+  getOptions() {
+    const options = VIDEO_PLAYER_OPTIONS;
+    const source = {
+      src: this.playableVideo().hlsPlaylist,
+      type: 'application/x-mpegURL',
+    };
+    options.sources.push(source);
+    return options;
+  }
+
   onMouseMove(event: MouseEvent) {
     const time = Date.now();
     if (time - this.lastMouseMove < 100) return;
@@ -218,14 +222,13 @@ export class VideoPlayer {
   }
 
   ngAfterViewInit() {
-    this.facade.setPlayerContainer(this.videoPlayer);
-    this.facade.setPlayer(this.video, this.options);
-    this.facade.setSources(this.options.sources);
+    this.facade.setPlayerBox(this.videoPlayer.nativeElement);
+    this.facade.setPlayer(this.video.nativeElement, this.getOptions());
+    // this.facade.setPlayer(this.video.nativeElement, this.options);
+    this.facade.setSources(this.sourceArray);
     this.facade.setTitle(this.playableVideo().title);
     this.player()?.ready(() => {
       console.log('player ready');
-      console.log('player src: ', this.player()?.currentSource());
-      console.log('select source: ', this.facade.getPlayer()?.currentSources());
     });
     this.facade.listenToDurationChange();
 

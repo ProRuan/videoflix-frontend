@@ -20,8 +20,7 @@ export class FullscreenController {
    */
   toggleFullscreen() {
     this.facade.clearPlayTimeout();
-    const element = this.facade.playerContainer()?.nativeElement;
-    this.isFullscreen() ? this.exitFullscreen() : this.enterFullscreen(element);
+    this.isFullscreen() ? this.exitFullscreen() : this.enterFullscreen();
   }
 
   /**
@@ -35,10 +34,10 @@ export class FullscreenController {
 
   /**
    * Enter a video´s fullscreen mode.
-   * @param element - The element to be displayed in fullscreen mode.
    */
-  enterFullscreen(element?: HTMLDivElement) {
-    if (document.fullscreenEnabled) {
+  enterFullscreen() {
+    const element = this.facade.playerBox();
+    if (element && document.fullscreenEnabled) {
       element?.requestFullscreen();
     }
   }

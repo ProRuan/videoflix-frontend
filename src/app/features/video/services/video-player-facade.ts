@@ -3,28 +3,22 @@ import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
 import { getHours, getMinutes, getSeconds } from '../utils/time-utils';
 import { TimeoutId } from '@shared/constants';
+import { SourceObject } from 'video.js/dist/types/tech/tech';
+import { VideoPlayerOptions } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideoPlayerFacade {
-  playerContainer = signal<ElementRef<HTMLDivElement> | null>(null);
+  playerBox = signal<HTMLDivElement | null>(null);
   player = signal<Player | null>(null);
 
-  // replace any ...
-  // set private keyword ...
-
   // no interval needed ... ?!
-  // options: getter, signal, set value, markForCheck ...
-  //   --> first getter, second signal/computed ...
-
-  // work with quality levels (for auto rendering) ...
 
   // think about private properties and methods (0/2) ...
 
-  // reset facade on destory ... !
+  // reset facade on destroy ... !
 
-  // improve and/or rename playerContainer ...
   // dispose player on destroy ... !
 
   private readonly stepSize: number = 10;
@@ -52,7 +46,7 @@ export class VideoPlayerFacade {
   isMute = computed(() => this.volume() === 0);
 
   // to edit
-  sources = signal<any[]>([]);
+  sources = signal<SourceObject[]>([]);
   wasPlayingBeforePause = signal(false);
 
   // use isPlayerReady to display interface when player is ready .. ?
@@ -71,6 +65,32 @@ export class VideoPlayerFacade {
         this.isPlaying.set(false);
       }
     }, 1000 / 60);
+  }
+
+  /**
+   * Set the player box.
+   * @param element - The element to be set.
+   */
+  setPlayerBox(element: HTMLDivElement) {
+    this.playerBox.set(element);
+  }
+
+  /**
+   * Set the player and its options.
+   * @param player - The element to be set.
+   * @param options - The options to be set.
+   */
+  setPlayer(player: HTMLVideoElement, options: VideoPlayerOptions) {
+    this.player.set(videojs(player, options));
+    this.setVolume(0.5);
+  }
+
+  /**
+   * Set the available video sources.
+   * @param sources - The video sources to be set.
+   */
+  setSources(sources: SourceObject[]) {
+    this.sources.set(sources);
   }
 
   /**
@@ -337,28 +357,5 @@ export class VideoPlayerFacade {
    */
   private getVolume() {
     return this.player()?.volume() ?? 0;
-  }
-
-  // --- edit --- edit --- edit ---
-  // ------------------------------
-
-  // remove at the end ...
-  getPlayer() {
-    return this.player();
-  }
-
-  setPlayer(player: ElementRef<HTMLVideoElement>, options: any) {
-    this.player.set(videojs(player.nativeElement, options));
-    this.setVolume(0.5);
-  }
-
-  setPlayerContainer(element: ElementRef<HTMLDivElement>) {
-    this.playerContainer.set(element);
-  }
-
-  // quality button
-  // replace any ... !
-  setSources(sources: any[]) {
-    this.sources.set(sources);
   }
 }
