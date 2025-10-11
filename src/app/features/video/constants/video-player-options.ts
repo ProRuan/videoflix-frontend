@@ -2,9 +2,8 @@ import { VideoPlayerOptions } from '../interfaces';
 
 export const VIDEO_PLAYER_OPTIONS: VideoPlayerOptions = {
   controls: false,
-  fluid: true,
-  aspectRatio: '16:9',
-  inactivityTimeout: 3000,
+  fluid: false,
+  inactivityTimeout: 2000,
   responsive: true,
   autoplay: false,
   muted: false,

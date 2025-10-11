@@ -7,55 +7,42 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
+
+import { VideoSettingsDialog } from '@features/video/components';
+import { VIDEO_PLAYER_OPTIONS } from '@features/video/constants';
 import { PlayableVideo } from '@features/video/models';
 import {
   FullscreenController,
   QualityLevelController,
+  VideoDialogConfigurator,
   VideoPlayerFacade,
-  VideoStore,
 } from '@features/video/services';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { AuthStore, UserClient } from '@core/auth/services';
-import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
-// import { PlaybackRateDialog } from '@features/video/components/dialogs/playback-rate-dialog/playback-rate-dialog';
 import { OverlayManagerBase } from '@shared/services';
-import { VideoSettingsDialog } from '@features/video/components/dialogs';
-import { VideoDialogConfigurator } from '@features/video/services';
-import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
-import { VIDEO_PLAYER_OPTIONS } from '@features/video/constants';
-// import { VideoQualityDialog } from '@features/video/components/dialogs/video-quality-dialog/video-quality-dialog';
 
+import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
+
+import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-level-list';
+import { map } from 'rxjs';
+import { SourceObject } from '@features/video/interfaces';
+import { TimeoutId } from '@shared/constants';
+
+/**
+ * Class representing a video player component.
+ */
 @Component({
   selector: 'app-video-player',
-  imports: [
-    VideoPlayerHeader,
-    VideoPlayerMultiBar,
-    // PlaybackRateDialog,
-    // VideoQualityDialog,
-    VideoSettingsDialog,
-  ],
+  imports: [VideoPlayerHeader, VideoPlayerMultiBar, VideoSettingsDialog],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
   host: {
     '(document:mousemove)': 'onMouseMove($event)',
-    '(document:mouseup)': 'stopDrag()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VideoPlayer {
-  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
-  private router: Router = inject(Router);
-  private auth = inject(AuthStore);
-  private user: UserClient = inject(UserClient);
-  private vs: VideoStore = inject(VideoStore);
-
-  // improve header quality message ...
-
-  // wasPlayingBeforePause ...
-  //   --> update quality level controller ...
-
-  // reset facade on destroy ... !
+  private route = inject(ActivatedRoute);
 
   // testing
   private facade = inject(VideoPlayerFacade);
@@ -64,137 +51,43 @@ export class VideoPlayer {
   private dialogs = inject(OverlayManagerBase);
   private config = inject(VideoDialogConfigurator);
 
-  // move ui elements to video player ui bar ...
+  // rename SourceObject to PlayerSource ...
+  // rename VideoPlayerOptions to PlayerOptions ...
 
-  // I. Video quality / resolutions ...
-  // II. Video progress ...
+  // improve header quality message ...
+  //   --> update also on fullscreen change or (quality level) change ...
 
-  // update resolution message ...
+  // wasPlayingBeforePause ...
+  //   --> update quality level controller ...
 
-  // rename activatedRoute to route
-  data = toSignal(this.activatedRoute.data);
-  playableVideo = computed(
+  // reset facade on destroy ... !
+
+  // improve (using one liners) ...
+  private readonly data = toSignal(this.route.data);
+  private playableVideo = computed(
     () => this.data()?.['playableVideo'] as PlayableVideo
   );
+  private masterUrl = computed(() => this.playableVideo()?.hlsPlaylist);
+  private qualityLevelUrls = computed(() =>
+    this.playableVideo()?.qualityLevels.map((l) => l.source)
+  );
+  private title = computed(() => this.playableVideo()?.title);
 
-  playerHeaderHidden = signal(false);
-  playerBarHidden = signal(false);
-  hiddenTimeoutId!: ReturnType<typeof setTimeout>;
-  lastTimeLock: number = Date.now();
+  private options = computed(() => this.getOptions());
+  private sources = computed(() => this.getSources());
 
-  // as signal ... ?
-  playbackRateConfig = this.config.playbackRateDialogConfig;
+  readonly playbackRateConfig = this.config.playbackRateDialogConfig;
+  readonly qualityLevelConfig = this.config.qualityLevelsDialogConfig;
 
-  // as signal ... ?
-  qualityLevelConfig = this.config.qualityLevelsDialogConfig;
-
-  // add video quality options ...
-  // add video progress logic ...
-
-  // fix progress bar height, transition and colors ...
-  // fix bar box-shadows ...
-  // fix full screen (theater mode) ...
-
-  // fix loading behavior ...
-
-  // finalize video-player design ...
-  // clean code ...
-
-  player = computed(() => this.facade.player());
-
-  // rename ... !
-  sourceArray = [
-    {
-      src: this.playableVideo().hlsPlaylist,
-      type: 'application/x-mpegURL',
-    },
-    {
-      src: this.playableVideo().qualityLevels[0].source,
-      type: 'application/x-mpegURL',
-    },
-    {
-      src: this.playableVideo().qualityLevels[1].source,
-      type: 'application/x-mpegURL',
-    },
-    {
-      src: this.playableVideo().qualityLevels[2].source,
-      type: 'application/x-mpegURL',
-    },
-    {
-      src: this.playableVideo().qualityLevels[3].source,
-      type: 'application/x-mpegURL',
-    },
-  ];
-
-  // // update quality level sources ... !
-  sources = {
-    auto: {
-      src: this.playableVideo().hlsPlaylist,
-      type: 'application/x-mpegURL',
-    },
-    '1080p': {
-      src: this.playableVideo().qualityLevels[0].source,
-      type: 'application/x-mpegURL',
-    },
-    '720p': {
-      src: this.playableVideo().qualityLevels[1].source,
-      type: 'application/x-mpegURL',
-    },
-    '360p': {
-      src: this.playableVideo().qualityLevels[2].source,
-      type: 'application/x-mpegURL',
-    },
-    '144p': {
-      src: this.playableVideo().qualityLevels[3].source,
-      type: 'application/x-mpegURL',
-    },
-  };
-
-  // poster ... ?
-  options = VIDEO_PLAYER_OPTIONS;
-
-  qualityLevels = [
-    this.playableVideo().hlsPlaylist,
-    this.playableVideo().qualityLevels[0].source,
-    this.playableVideo().qualityLevels[1].source,
-    this.playableVideo().qualityLevels[2].source,
-    this.playableVideo().qualityLevels[3].source,
-  ];
-
-  qualityMessage = signal('');
-
-  playing: boolean = false;
-  volume: number = 0.5;
-  draggingCurrentTime: boolean = false;
-  dragging = false;
-  wasPlayingBeforeDrag: boolean = false;
-  playbackrate: number = 1;
   fullScreenEnabled: boolean = false;
   isFullscreen = signal(false);
 
   lastMouseMove: number = 0;
-  controlTimeout: ReturnType<typeof setTimeout> = -1;
+  controlTimeout: TimeoutId = -1;
   hasControls = signal(false);
-
-  videoWidth = signal('100%');
-  videoHeight = signal('auto');
 
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
-  @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
-  @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
-
-  constructor() {}
-
-  getOptions() {
-    const options = VIDEO_PLAYER_OPTIONS;
-    const source = {
-      src: this.playableVideo().hlsPlaylist,
-      type: 'application/x-mpegURL',
-    };
-    options.sources.push(source);
-    return options;
-  }
 
   onMouseMove(event: MouseEvent) {
     const time = Date.now();
@@ -204,67 +97,16 @@ export class VideoPlayer {
     this.hasControls.set(true);
     this.controlTimeout = setTimeout(() => {
       this.hasControls.set(false);
-    }, 3000);
-  }
-
-  onBack() {
-    const token = this.auth.getToken();
-    this.router.navigateByUrl(`/video/offer/${token}`);
-    // this.router.navigateByUrl('video-offer');
-  }
-
-  stopDrag() {
-    this.draggingCurrentTime = false;
-    if (this.wasPlayingBeforeDrag) {
-      this.video.nativeElement.play();
-    }
-    this.dragging = false;
-    this.wasPlayingBeforeDrag = false;
-  }
-
-  // remove
-  ngOnInit() {
-    console.log('playable video data: ', this.playableVideo());
-    console.log('options: ', this.options);
+    }, 2000);
   }
 
   ngAfterViewInit() {
-    this.facade.setPlayerBox(this.videoPlayer.nativeElement);
-    this.facade.setPlayer(this.video.nativeElement, this.getOptions());
-    // this.facade.setPlayer(this.video.nativeElement, this.options);
-    this.facade.setSources(this.sourceArray);
-    this.facade.setTitle(this.playableVideo().title);
-    this.player()?.ready(() => {
-      console.log('player ready');
-    });
-    this.facade.listenToDurationChange();
-
-    // const player = this.facade.getPlayer() as any;
-    // const qualityLevels = player.qualityLevels() as QualityLevelList;
-    // // set on or one ... ?
-    // qualityLevels.on('change', (event: Event) => {
-    //   console.log('change: ', event);
-    //   this.facade.setQualityLevels();
-    //   console.log('quality levels signal: ', this.facade.qualityLevels());
-
-    //   if (this.facade.isMasterSource()) {
-    //     const qualityLevelEvent = event as any;
-    //     const selectedIndex = qualityLevelEvent.selectedIndex;
-    //     console.log('selected index: ', selectedIndex);
-
-    //     const level = this.facade.qualityLevels()[selectedIndex];
-    //     console.log('master level: ', level);
-
-    //     const height = document.body.clientHeight;
-    //     const percent = Math.round((level.height / height) * 100);
-    //     console.log('percent: ', percent);
-    //     this.facade.optimizingPercent.set(percent);
-    //   }
-    // });
+    this.setPlayer();
+    this.setPlayerEvents();
 
     const player = this.qlContr.player() as any;
     const qualityLevels = player.qualityLevels() as QualityLevelList;
-    // set on or one ... ?
+
     qualityLevels.on('change', (event: Event) => {
       console.log('change: ', event);
       this.qlContr.setQualityLevels();
@@ -286,38 +128,53 @@ export class VideoPlayer {
     });
   }
 
-  updateSource(key: 'auto' | '1080p' | '720p' | '360p' | '144p') {
-    this.player()?.pause();
-    const currentTime = this.player()?.currentTime();
-    this.player()?.src(this.sources[key]);
-
-    this.setQualityMessage(key);
-
-    this.player()?.ready(() => {
-      this.player()?.currentTime(currentTime);
-      this.player()?.play();
-      console.log('source: ', this.player()?.currentSource());
-    });
+  /**
+   * Set the video player.
+   */
+  setPlayer() {
+    this.facade.setPlayerBox(this.videoPlayer.nativeElement);
+    this.facade.setPlayer(this.video.nativeElement, this.options());
+    this.facade.setSources(this.sources());
+    this.facade.setTitle(this.title());
   }
 
-  setQualityMessage(height: string) {
-    if (height.includes('p')) {
-      const h = height.match(/\d{1,}/)?.[0] ?? '0';
-      console.log('height: ', h);
-      const bodyHeight = document.body.clientHeight;
-      const value = Math.round((Number(h) / bodyHeight) * 100);
-      const message = `Optimizing video for your screen ${value}%`;
-      this.qualityMessage.set(message);
-      console.log('message: ', message);
-    }
+  /**
+   * Get video player options.
+   * @returns The video player options.
+   */
+  private getOptions() {
+    const options = VIDEO_PLAYER_OPTIONS;
+    const source = this.getSourceObject(this.masterUrl());
+    options.sources = [source];
+    return options;
   }
 
-  onEventStop(event: Event) {
-    event.stopPropagation();
+  /**
+   * Get a player source object.
+   * @param url - The video URL.
+   * @returns The player source object.
+   */
+  private getSourceObject(url: string): SourceObject {
+    return {
+      src: url,
+      type: 'application/x-mpegURL',
+    };
   }
 
-  onDragPreventCurrentTime(event: DragEvent) {
-    event.preventDefault();
+  /**
+   * Get player sources.
+   * @returns The player sources.
+   */
+  private getSources() {
+    const urls = [this.masterUrl(), ...this.qualityLevelUrls()];
+    return urls.map((u) => this.getSourceObject(u));
+  }
+
+  /**
+   * Set the video player events.
+   */
+  setPlayerEvents() {
+    this.facade.listenToDurationChange();
   }
 
   // rename ...

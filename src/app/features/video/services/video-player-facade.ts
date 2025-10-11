@@ -2,11 +2,10 @@ import { computed, Injectable, OnDestroy, signal } from '@angular/core';
 
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
-import { SourceObject } from 'video.js/dist/types/tech/tech';
 
 import { IntervalId, TimeoutId } from '@shared/constants';
 
-import { VideoPlayerOptions } from '../interfaces';
+import { SourceObject, VideoPlayerOptions } from '../interfaces';
 import { getHours, getMinutes, getSeconds } from '../utils';
 
 /**

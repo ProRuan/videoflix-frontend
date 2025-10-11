@@ -1,9 +1,8 @@
-import { SourceObject } from 'video.js/dist/types/tech/tech';
+import { SourceObject } from './source-object';
 
 export interface VideoPlayerOptions {
   controls: boolean;
   fluid: boolean;
-  aspectRatio: string;
   inactivityTimeout: number;
   responsive: boolean;
   autoplay: boolean;

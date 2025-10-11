@@ -60,7 +60,7 @@ export class QualityLevelController {
   private updateSource(id: number) {
     const source = this.sources()[id];
     const enabled = id === 0 ? true : false;
-    this.player()?.updateSourceCaches_(source);
+    this.player()?.updateSourceCaches_(source.src);
     this.hasMasterSource.update(() => enabled);
   }
 

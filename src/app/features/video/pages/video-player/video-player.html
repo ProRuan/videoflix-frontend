@@ -1,6 +1,4 @@
 <section #videoPlayer class="video-player" (fullscreenchange)="onFullscreenChange($event)">
-    <!-- set [percent]="..." -->
-    <!-- work with quality levels plugin -->
     <app-video-player-header [class.move-up]="isUIDisabled()"></app-video-player-header>
 
     <div class="video-cont" [class.full-size]="isFullscreenNew()" (click)="onPlayToggleLate()"

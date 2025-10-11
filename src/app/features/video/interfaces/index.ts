@@ -1,5 +1,6 @@
 export * from './available-resolutions';
 export * from './playable-video-data';
+export * from './source-object';
 export * from './video-data';
 export * from './video-group';
 export * from './video-group-data';
