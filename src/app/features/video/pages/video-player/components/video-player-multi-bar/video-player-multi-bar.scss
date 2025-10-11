@@ -15,7 +15,7 @@ $gradient: linear-gradient(
   transition: transform 100ms ease-in-out;
 }
 
-.multi-bar {
+.video-player-multi-bar {
   @include spacing($p: 0 32px 10px 32px);
   @include flexbox($fd: column, $g: 16px);
   height: 108px;

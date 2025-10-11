@@ -1,6 +1,6 @@
 @use "mixins" as *;
 
-$player-header-gradient: linear-gradient(
+$gradient: linear-gradient(
   180deg,
   rgba(0, 0, 0, 0.7) 0%,
   rgba(0, 0, 0, 0) 100%
@@ -9,7 +9,7 @@ $player-header-gradient: linear-gradient(
 :host {
   @include position($pos: absolute, $l: 0, $t: 0);
   width: 100%;
-  background: $player-header-gradient;
+  background: $gradient;
   z-index: $z-header;
   transform: translateY(0);
   transition: transform 100ms ease-in-out;
