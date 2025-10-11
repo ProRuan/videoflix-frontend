@@ -39,11 +39,6 @@ export class VideoPlayerFacade implements OnDestroy {
   bufferPercent = computed(() => this.getBufferedPercent());
   playedPercent = computed(() => this.getPlayedPercent());
 
-  volume = signal(0.5);
-  cachedVolume = signal(0.5);
-  volumePercent = computed(() => this.volume() * 100);
-  isMute = computed(() => this.volume() === 0);
-
   /**
    * Creates a video player facade service.
    */
@@ -87,7 +82,7 @@ export class VideoPlayerFacade implements OnDestroy {
    * @returns True if the player´s property value is existing and true,
    *          otherwise false.
    */
-  private hasProperty(key: keyof Player): boolean {
+  hasProperty(key: keyof Player): boolean {
     return this.player()?.[key]() ?? false;
   }
 
@@ -106,7 +101,7 @@ export class VideoPlayerFacade implements OnDestroy {
    */
   setPlayer(player: HTMLVideoElement, options: VideoPlayerOptions) {
     this.player.set(videojs(player, options));
-    this.setVolume(0.5);
+    this.player()?.volume(0.5);
   }
 
   /**
@@ -204,7 +199,7 @@ export class VideoPlayerFacade implements OnDestroy {
    * @param key - The players´s property key.
    * @returns The player´s property value.
    */
-  private getProperty(key: keyof Player): number {
+  getProperty(key: keyof Player): number {
     return this.player()?.[key]() ?? 0;
   }
 
@@ -331,65 +326,6 @@ export class VideoPlayerFacade implements OnDestroy {
    */
   private getTimeStep(backwards: boolean = false) {
     return backwards ? -this.stepSize : this.stepSize;
-  }
-
-  /**
-   * Toggle between mute and volume.
-   */
-  toggleMute() {
-    if (this.isMuted()) {
-      this.updateVolume(false, this.cachedVolume());
-    } else {
-      this.updateVolume(true, 0, this.getVolume());
-    }
-  }
-
-  /**
-   * Check if the video is muted.
-   * @returns True if the video is muted, otherwise false.
-   */
-  private isMuted() {
-    return this.hasProperty('muted');
-  }
-
-  /**
-   * Update the volume parameters.
-   * @param muted - A boolean value.
-   * @param volume - The volume to be set.
-   * @param currentVolume - The current volume.
-   */
-  private updateVolume(muted: boolean, volume: number, currentVolume?: number) {
-    this.setMute(muted);
-    this.cachedVolume.update((value) => currentVolume ?? value);
-    this.setVolume(volume);
-  }
-
-  /**
-   * Set the mute state of the video.
-   * @param value - The value to be set.
-   */
-  private setMute(value: boolean) {
-    this.player()?.muted(value);
-  }
-
-  /**
-   * Set the volume of the video.
-   * @param value - The value to be set.
-   */
-  setVolume(value: number) {
-    this.volume.set(value);
-    this.player()?.volume(value);
-    if (this.volume() > 0) {
-      this.setMute(false);
-    }
-  }
-
-  /**
-   * Get the volume of the video.
-   * @returns - The volume of the video.
-   */
-  private getVolume() {
-    return this.getProperty('volume');
   }
 
   /**

@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { VideoPlayerFacade } from '@features/video/services';
+import { VolumeController } from '@features/video/services';
 
 /**
  * Class representing a volume button component.
@@ -23,11 +23,11 @@ import { VideoPlayerFacade } from '@features/video/services';
   },
 })
 export class VolumeControl {
-  private facade = inject(VideoPlayerFacade);
+  private volContr = inject(VolumeController);
 
   isDragging = signal(false);
-  volumePercent = computed(() => this.facade.volumePercent());
-  isMute = computed(() => this.facade.isMute());
+  volumePercent = computed(() => this.volContr.volumePercent());
+  isMute = computed(() => this.volContr.isMute());
 
   @ViewChild('volumeBar') volumeBar!: ElementRef<HTMLDivElement>;
 
@@ -66,7 +66,7 @@ export class VolumeControl {
    * @param value - The volume value to be set.
    */
   private setVolume(value: number) {
-    this.facade.setVolume(value);
+    this.volContr.setVolume(value);
   }
 
   /**
@@ -80,7 +80,7 @@ export class VolumeControl {
    * Toggle mute state on click.
    */
   onMute() {
-    this.facade.toggleMute();
+    this.volContr.toggleMute();
   }
 
   /**
