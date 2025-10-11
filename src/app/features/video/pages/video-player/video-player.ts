@@ -50,6 +50,12 @@ export class VideoPlayer {
   private user: UserClient = inject(UserClient);
   private vs: VideoStore = inject(VideoStore);
 
+  // wasPlayingBeforePause ...
+  //   --> update quality level controller ...
+  // create volume controller ...
+
+  // reset facade on destroy ... !
+
   // testing
   private facade = inject(VideoPlayerFacade);
   private qlContr = inject(QualityLevelController);

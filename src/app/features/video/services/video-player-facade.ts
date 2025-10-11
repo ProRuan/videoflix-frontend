@@ -1,70 +1,94 @@
-import { computed, ElementRef, Injectable, signal } from '@angular/core';
+import { computed, Injectable, OnDestroy, signal } from '@angular/core';
+
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
-import { getHours, getMinutes, getSeconds } from '../utils/time-utils';
-import { TimeoutId } from '@shared/constants';
 import { SourceObject } from 'video.js/dist/types/tech/tech';
-import { VideoPlayerOptions } from '../interfaces';
 
+import { IntervalId, TimeoutId } from '@shared/constants';
+
+import { VideoPlayerOptions } from '../interfaces';
+import { getHours, getMinutes, getSeconds } from '../utils';
+
+/**
+ * Class representing a video player facade service.
+ *
+ * Provides a player´s properties and methods.
+ */
 @Injectable({
   providedIn: 'root',
 })
-export class VideoPlayerFacade {
-  playerBox = signal<HTMLDivElement | null>(null);
-  player = signal<Player | null>(null);
-
-  // no interval needed ... ?!
-
-  // think about private properties and methods (0/2) ...
-
-  // reset facade on destroy ... !
-
-  // dispose player on destroy ... !
-
+export class VideoPlayerFacade implements OnDestroy {
   private readonly stepSize: number = 10;
 
-  title = signal('');
+  private progressIntervalId: IntervalId = -1;
+  private playTimeoutId: TimeoutId = -1;
 
-  isPlaying = signal(false);
+  playerBox = signal<HTMLDivElement | null>(null);
+  player = signal<Player | null>(null);
+  title = signal('');
+  sources = signal<SourceObject[]>([]);
 
   currentDisplayTime = signal('');
   remainingDisplayTime = signal('');
   duration = signal(0);
   buffered = signal(0);
   currentTime = signal(0);
+  isPlaying = signal(false);
+  wasPlayingBeforePause = signal(false);
   hasEnded = signal(false);
-
   bufferPercent = computed(() => this.getBufferedPercent());
   playedPercent = computed(() => this.getPlayedPercent());
 
-  playTimeoutId: TimeoutId = -1;
-
-  // in progress
-  cachedVolume = signal(0.5);
   volume = signal(0.5);
+  cachedVolume = signal(0.5);
   volumePercent = computed(() => this.volume() * 100);
   isMute = computed(() => this.volume() === 0);
 
-  // to edit
-  sources = signal<SourceObject[]>([]);
-  wasPlayingBeforePause = signal(false);
-
-  // use isPlayerReady to display interface when player is ready .. ?
-  // isPlayerReady = signal(false);
-
-  // 60 fps ... ?!
+  /**
+   * Creates a video player facade service.
+   */
   constructor() {
-    setInterval(() => {
-      this.currentDisplayTime.update(() => this.getCurrentDisplayTime());
-      this.remainingDisplayTime.update(() => this.getRemainingDisplayTime());
-      this.currentTime.update(() => this.getCurrentTime());
-      this.buffered.update(() => this.getBufferEnd());
+    this.setProgressInterval();
+  }
 
-      this.hasEnded.update(() => this.player()?.ended() ?? false);
-      if (this.hasEnded()) {
-        this.isPlaying.set(false);
-      }
+  /**
+   * Set the progress interval for updating play progress parameters.
+   */
+  private setProgressInterval() {
+    this.progressIntervalId = setInterval(() => {
+      this.updatePlayProgress();
+      this.updatePlayProgressEnd();
     }, 1000 / 60);
+  }
+
+  /**
+   * Update the video´s play progress parameters.
+   */
+  private updatePlayProgress() {
+    this.currentDisplayTime.update(() => this.getCurrentDisplayTime());
+    this.remainingDisplayTime.update(() => this.getRemainingDisplayTime());
+    this.currentTime.update(() => this.getCurrentTime());
+    this.buffered.update(() => this.getBufferEnd());
+  }
+
+  /**
+   * Update the video´s play progress end.
+   */
+  private updatePlayProgressEnd() {
+    this.hasEnded.update(() => this.hasProperty('ended'));
+    if (this.hasEnded()) {
+      this.isPlaying.set(false);
+    }
+  }
+
+  /**
+   * Check the player for a specific property value.
+   * @param key - The player´s property key.
+   * @returns True if the player´s property value is existing and true,
+   *          otherwise false.
+   */
+  private hasProperty(key: keyof Player): boolean {
+    return this.player()?.[key]() ?? false;
   }
 
   /**
@@ -103,7 +127,7 @@ export class VideoPlayerFacade {
 
   /**
    * Toggle between play and pause with delay.
-   * @returns Void.
+   * @returns Void if the player has a play timeout.
    */
   togglePlayWithDelay() {
     if (this.hasPlayTimeout()) return;
@@ -139,7 +163,7 @@ export class VideoPlayerFacade {
    * @returns True if the video is paused, otherwise false.
    */
   isPaused() {
-    return this.player()?.paused() ?? false;
+    return this.hasProperty('paused');
   }
 
   /**
@@ -172,7 +196,16 @@ export class VideoPlayerFacade {
    * @returns The current time of the video.
    */
   getCurrentTime() {
-    return this.player()?.currentTime() ?? 0;
+    return this.getProperty('currentTime');
+  }
+
+  /**
+   * Get a player´s property value.
+   * @param key - The players´s property key.
+   * @returns The player´s property value.
+   */
+  private getProperty(key: keyof Player): number {
+    return this.player()?.[key]() ?? 0;
   }
 
   /**
@@ -213,7 +246,7 @@ export class VideoPlayerFacade {
    * @returns The remaining time of the video.
    */
   private getRemainingTime() {
-    return this.player()?.remainingTime() ?? 0;
+    return this.getProperty('remainingTime');
   }
 
   /**
@@ -236,7 +269,7 @@ export class VideoPlayerFacade {
    * @returns The duration of the video.
    */
   private getDuration() {
-    return this.player()?.duration() ?? 0;
+    return this.getProperty('duration');
   }
 
   /**
@@ -244,7 +277,7 @@ export class VideoPlayerFacade {
    * @returns The buffer end of the video.
    */
   private getBufferEnd() {
-    return this.player()?.bufferedEnd() ?? 0;
+    return this.getProperty('bufferedEnd');
   }
 
   /**
@@ -316,7 +349,7 @@ export class VideoPlayerFacade {
    * @returns True if the video is muted, otherwise false.
    */
   private isMuted() {
-    return this.player()?.muted() ?? false;
+    return this.hasProperty('muted');
   }
 
   /**
@@ -356,6 +389,14 @@ export class VideoPlayerFacade {
    * @returns - The volume of the video.
    */
   private getVolume() {
-    return this.player()?.volume() ?? 0;
+    return this.getProperty('volume');
+  }
+
+  /**
+   * Clear progress interval and player on destroy.
+   */
+  ngOnDestroy(): void {
+    clearInterval(this.progressIntervalId);
+    this.player()?.dispose();
   }
 }
