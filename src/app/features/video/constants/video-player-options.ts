@@ -1,6 +1,6 @@
-import { VideoPlayerOptions } from '../interfaces';
+import { PlayerOptions } from '../interfaces';
 
-export const VIDEO_PLAYER_OPTIONS: VideoPlayerOptions = {
+export const VIDEO_PLAYER_OPTIONS: PlayerOptions = {
   controls: false,
   fluid: false,
   inactivityTimeout: 2000,

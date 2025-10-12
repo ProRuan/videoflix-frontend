@@ -5,7 +5,7 @@ import Player from 'video.js/dist/types/player';
 
 import { IntervalId, TimeoutId } from '@shared/constants';
 
-import { SourceObject, VideoPlayerOptions } from '../interfaces';
+import { PlayerOptions, PlayerSource } from '../interfaces';
 import { getHours, getMinutes, getSeconds } from '../utils';
 
 /**
@@ -25,16 +25,17 @@ export class VideoPlayerFacade implements OnDestroy {
   playerBox = signal<HTMLDivElement | null>(null);
   player = signal<Player | null>(null);
   title = signal('');
-  sources = signal<SourceObject[]>([]);
+  sources = signal<PlayerSource[]>([]);
 
   currentDisplayTime = signal('');
   remainingDisplayTime = signal('');
   duration = signal(0);
-  buffered = signal(0);
+  bufferEnd = signal(0);
   currentTime = signal(0);
   isPlaying = signal(false);
   wasPlayingBeforePause = signal(false);
   hasEnded = signal(false);
+
   bufferPercent = computed(() => this.getBufferedPercent());
   playedPercent = computed(() => this.getPlayedPercent());
 
@@ -62,122 +63,11 @@ export class VideoPlayerFacade implements OnDestroy {
     this.currentDisplayTime.update(() => this.getCurrentDisplayTime());
     this.remainingDisplayTime.update(() => this.getRemainingDisplayTime());
     this.currentTime.update(() => this.getCurrentTime());
-    this.buffered.update(() => this.getBufferEnd());
+    this.bufferEnd.update(() => this.getBufferEnd());
   }
 
   /**
-   * Update the video´s play progress end.
-   */
-  private updatePlayProgressEnd() {
-    this.hasEnded.update(() => this.hasProperty('ended'));
-    if (this.hasEnded()) {
-      this.isPlaying.set(false);
-    }
-  }
-
-  /**
-   * Check the player for a specific property value.
-   * @param key - The player´s property key.
-   * @returns True if the player´s property value is existing and true,
-   *          otherwise false.
-   */
-  hasProperty(key: keyof Player): boolean {
-    return this.player()?.[key]() ?? false;
-  }
-
-  /**
-   * Set the player box.
-   * @param element - The element to be set.
-   */
-  setPlayerBox(element: HTMLDivElement) {
-    this.playerBox.set(element);
-  }
-
-  /**
-   * Set the player and its options.
-   * @param player - The element to be set.
-   * @param options - The options to be set.
-   */
-  setPlayer(player: HTMLVideoElement, options: VideoPlayerOptions) {
-    this.player.set(videojs(player, options));
-    this.player()?.volume(0.5);
-  }
-
-  /**
-   * Set the available video sources.
-   * @param sources - The video sources to be set.
-   */
-  setSources(sources: SourceObject[]) {
-    this.sources.set(sources);
-  }
-
-  /**
-   * Set the video title.
-   * @param value - The value to be set.
-   */
-  setTitle(value: string) {
-    this.title.set(value);
-  }
-
-  /**
-   * Toggle between play and pause with delay.
-   * @returns Void if the player has a play timeout.
-   */
-  togglePlayWithDelay() {
-    if (this.hasPlayTimeout()) return;
-    this.playTimeoutId = setTimeout(() => this.togglePlay(), 250);
-  }
-
-  /**
-   * Check if a play timeout is set.
-   * @returns True if the play timeout id is greater than -1, otherwise false.
-   */
-  private hasPlayTimeout() {
-    return this.playTimeoutId > -1;
-  }
-
-  /**
-   * Toggle between play and pause.
-   */
-  togglePlay() {
-    this.clearPlayTimeout();
-    this.isPaused() ? this.play() : this.pause();
-  }
-
-  /**
-   * Clear the play timeout.
-   */
-  clearPlayTimeout() {
-    clearTimeout(this.playTimeoutId);
-    this.playTimeoutId = -1;
-  }
-
-  /**
-   * Check if the video is paused.
-   * @returns True if the video is paused, otherwise false.
-   */
-  isPaused() {
-    return this.hasProperty('paused');
-  }
-
-  /**
-   * Play the video.
-   */
-  play() {
-    this.player()?.play();
-    this.isPlaying.set(true);
-  }
-
-  /**
-   * Pause the video.
-   */
-  pause() {
-    this.player()?.pause();
-    this.isPlaying.set(false);
-  }
-
-  /**
-   * Get the current display time of the video.
+   * Get the current display time of a video.
    * @returns The current display time of the video.
    */
   private getCurrentDisplayTime() {
@@ -244,9 +134,79 @@ export class VideoPlayerFacade implements OnDestroy {
   }
 
   /**
+   * Get the buffer end of a video.
+   * @returns The buffer end of the video.
+   */
+  private getBufferEnd() {
+    return this.getProperty('bufferedEnd');
+  }
+
+  /**
+   * Get the buffered percent of a video.
+   * @returns The buffered percent of the video.
+   */
+  private getBufferedPercent() {
+    return (this.bufferEnd() / this.duration()) * 100;
+  }
+
+  /**
+   * Update the video´s play progress end.
+   */
+  private updatePlayProgressEnd() {
+    this.hasEnded.update(() => this.hasProperty('ended'));
+    if (this.hasEnded()) {
+      this.isPlaying.set(false);
+    }
+  }
+
+  /**
+   * Check the player for a specific property value.
+   * @param key - The player´s property key.
+   * @returns True if the player´s property value is existing and true,
+   *          otherwise false.
+   */
+  hasProperty(key: keyof Player): boolean {
+    return this.player()?.[key]() ?? false;
+  }
+
+  /**
+   * Set the player box.
+   * @param element - The element to be set.
+   */
+  setPlayerBox(element: HTMLDivElement) {
+    this.playerBox.set(element);
+  }
+
+  /**
+   * Set the player and its options.
+   * @param player - The element to be set.
+   * @param options - The options to be set.
+   */
+  setPlayer(player: HTMLVideoElement, options: PlayerOptions) {
+    this.player.set(videojs(player, options));
+    this.player()?.volume(0.5);
+  }
+
+  /**
+   * Set the available video sources.
+   * @param sources - The video sources to be set.
+   */
+  setSources(sources: PlayerSource[]) {
+    this.sources.set(sources);
+  }
+
+  /**
+   * Set the video title.
+   * @param value - The value to be set.
+   */
+  setTitle(value: string) {
+    this.title.set(value);
+  }
+
+  /**
    * Listen to duration change events to update the video`s duration.
    */
-  listenToDurationChange() {
+  listenToDurationChanges() {
     this.player()?.on('durationchange', () => this.setDuration());
   }
 
@@ -259,7 +219,7 @@ export class VideoPlayerFacade implements OnDestroy {
   }
 
   /**
-   * Get the duration of the video.
+   * Get the duration of a video.
    * @returns The duration of the video.
    */
   private getDuration() {
@@ -267,31 +227,64 @@ export class VideoPlayerFacade implements OnDestroy {
   }
 
   /**
-   * Get the buffer end of a video.
-   * @returns The buffer end of the video.
+   * Toggle between play and pause with delay.
+   * @returns Void if the player has a play timeout.
    */
-  private getBufferEnd() {
-    return this.getProperty('bufferedEnd');
+  togglePlayWithDelay() {
+    if (this.hasPlayTimeout()) return;
+    this.playTimeoutId = setTimeout(() => this.togglePlay(), 250);
   }
 
   /**
-   * Get the buffered percent of the video.
-   * @returns The buffered percent of the video.
+   * Check if a play timeout is set.
+   * @returns True if the play timeout id is greater than -1, otherwise false.
    */
-  private getBufferedPercent() {
-    return (this.buffered() / this.duration()) * 100;
+  private hasPlayTimeout() {
+    return this.playTimeoutId > -1;
   }
 
   /**
-   * Set the current time of the video.
-   * @param value - The value to be set.
+   * Toggle between play and pause.
    */
-  setCurrentTime(value: number) {
-    this.player()?.currentTime(value);
+  togglePlay() {
+    this.clearPlayTimeout();
+    this.isPaused() ? this.play() : this.pause();
   }
 
   /**
-   * Get the played percent of the video.
+   * Clear the play timeout.
+   */
+  clearPlayTimeout() {
+    clearTimeout(this.playTimeoutId);
+    this.playTimeoutId = -1;
+  }
+
+  /**
+   * Check if the video is paused.
+   * @returns True if the video is paused, otherwise false.
+   */
+  isPaused() {
+    return this.hasProperty('paused');
+  }
+
+  /**
+   * Play the video.
+   */
+  play() {
+    this.player()?.play();
+    this.isPlaying.set(true);
+  }
+
+  /**
+   * Pause the video.
+   */
+  pause() {
+    this.player()?.pause();
+    this.isPlaying.set(false);
+  }
+
+  /**
+   * Get the played percent of a video.
    * @returns The played percent of the video.
    */
   private getPlayedPercent() {
@@ -305,6 +298,14 @@ export class VideoPlayerFacade implements OnDestroy {
   skipPlayProgress(backwards: boolean = false) {
     const time = this.getSkipTargetTime(backwards);
     this.setCurrentTime(time);
+  }
+
+  /**
+   * Set the current time of the video.
+   * @param value - The value to be set.
+   */
+  setCurrentTime(value: number) {
+    this.player()?.currentTime(value);
   }
 
   /**

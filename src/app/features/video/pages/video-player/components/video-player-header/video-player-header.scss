@@ -13,6 +13,10 @@ $gradient: linear-gradient(
   z-index: $z-header;
   transform: translateY(0);
   transition: transform 100ms ease-in-out;
+
+  &.move-up {
+    transform: translateY(-108px);
+  }
 }
 
 .video-player-header {

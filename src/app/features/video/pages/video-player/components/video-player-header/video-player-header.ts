@@ -1,6 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 
-import { QualityLevelController } from '@features/video/services';
+import {
+  FullscreenController,
+  QualityLevelController,
+} from '@features/video/services';
 import { BackButton } from '@shared/components/buttons';
 
 /**
@@ -11,9 +14,14 @@ import { BackButton } from '@shared/components/buttons';
   imports: [BackButton],
   templateUrl: './video-player-header.html',
   styleUrl: './video-player-header.scss',
+  host: {
+    '[class.move-up]': 'isVideoOnly()',
+  },
 })
 export class VideoPlayerHeader {
+  private fsContr = inject(FullscreenController);
   private qlContr = inject(QualityLevelController);
 
+  isVideoOnly = computed(() => this.fsContr.isVideoOnly());
   percent = computed(() => this.qlContr.optimizingPercent());
 }

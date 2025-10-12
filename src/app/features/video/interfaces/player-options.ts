@@ -1,6 +1,9 @@
-import { SourceObject } from './source-object';
+import { PlayerSource } from './player-source';
 
-export interface VideoPlayerOptions {
+/**
+ * Interface representing player options.
+ */
+export interface PlayerOptions {
   controls: boolean;
   fluid: boolean;
   inactivityTimeout: number;
@@ -10,7 +13,7 @@ export interface VideoPlayerOptions {
   preload: string;
   playsinline: boolean;
   techOrder: string[];
-  sources: SourceObject[];
+  sources: PlayerSource[];
   enableDocumentPictureInPicture: boolean;
   suppressNotSupportedError: boolean;
   playbackRates: number[];

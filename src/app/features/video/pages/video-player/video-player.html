@@ -1,17 +1,14 @@
-<section #videoPlayer class="video-player" (fullscreenchange)="onFullscreenChange($event)">
-    <app-video-player-header [class.move-up]="isUIDisabled()"></app-video-player-header>
-
-    <div class="video-cont" [class.full-size]="isFullscreenNew()" (click)="onPlayToggleLate()"
-        (dblclick)="onFullScreen()">
+<section #videoPlayer class="video-player">
+    <app-video-player-header></app-video-player-header>
+    <div class="scalable-video" [class.immersive]="isFullscreen()" (click)="onPlayToggle()" (dblclick)="onFullScreen()">
         <video #video class="video video-js"></video>
     </div>
+    <app-video-player-multi-bar></app-video-player-multi-bar>
 
-    <app-video-player-multi-bar [class.move-down]="isUIDisabled()"></app-video-player-multi-bar>
-
-    @if (isPlaybackRateMenu()) {
+    @if (isPlaybackRateDialogOpen()) {
     <app-video-settings-dialog [config]="playbackRateConfig"></app-video-settings-dialog>
     }
-    @if (isQualityMenu()) {
+    @if (isQualityLevelsDialogOpen()) {
     <app-video-settings-dialog [config]="qualityLevelConfig"></app-video-settings-dialog>
     }
 </section>

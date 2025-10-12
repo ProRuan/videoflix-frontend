@@ -10,7 +10,10 @@ import {
   SkipForwardButton,
   VolumeControl,
 } from '@features/video/components';
-import { VideoPlayerFacade } from '@features/video/services';
+import {
+  FullscreenController,
+  VideoPlayerFacade,
+} from '@features/video/services';
 
 /**
  * Class representing a video player multi bar component.
@@ -31,9 +34,14 @@ import { VideoPlayerFacade } from '@features/video/services';
   ],
   templateUrl: './video-player-multi-bar.html',
   styleUrl: './video-player-multi-bar.scss',
+  host: {
+    '[class.move-down]': 'isVideoOnly()',
+  },
 })
 export class VideoPlayerMultiBar {
   private facade = inject(VideoPlayerFacade);
+  private fsContr = inject(FullscreenController);
 
+  isVideoOnly = computed(() => this.fsContr.isVideoOnly());
   title = computed(() => this.facade.title());
 }

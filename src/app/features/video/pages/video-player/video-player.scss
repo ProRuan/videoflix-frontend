@@ -1,39 +1,23 @@
 @use "mixins" as *;
 
 .video-player {
-  @include flexbox($jc: center, $ai: center);
   height: 100vh;
-  position: relative;
-  overflow-y: hidden;
 }
 
-// move to video-player-header ...
-.move-up {
-  transform: translateY(-108px);
-}
-
-// move to video-player-multi-bar ...
-.move-down {
-  transform: translateY(108px);
-}
-
-// set values ...
-.video-cont {
+.scalable-video {
   @include spacing($p: 108px 0);
   @include size($w: 100%, $h: 100%);
   @include flexbox($jc: center, $ai: center);
+
+  &.immersive {
+    padding: 0 0;
+  }
 }
 
-// rename mixin image to media or block?
 .video {
   @include size($w: 100%, $h: 100%);
-  // padding: 108px 0;
   background-color: $prim-dark;
   display: block;
+  outline: none;
   cursor: pointer;
-}
-
-.full-size {
-  @include size($w: 100%, $h: 100%);
-  padding: 0;
 }
