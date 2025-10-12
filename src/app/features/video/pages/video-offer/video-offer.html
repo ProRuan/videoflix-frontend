@@ -1,22 +1,26 @@
 <app-video-header></app-video-header>
 
 <main class="main">
+    <!-- check case library empty -->
     @if (library().length > 0) {
-    <section class="preview">
-        <div class="video-shadow-cont">
-            <video #preview class="video" [autoplay]="true" [loop]="true" [muted]="true">
-                <source src="Kristallbruch_preview.mp4" type="video/mp4">
-            </video>
-            <div class="shadow"></div>
+    <section class="hero">
+        <div class="preview-background">
+            <div class="video-shadow-cont">
+                <video #preview class="video" [autoplay]="true" [loop]="true" [muted]="true">
+                    <!-- remove and use variable source instead -->
+                    <!-- use random video id -->
+                    <source src="Kristallbruch_preview.mp4" type="video/mp4">
+                </video>
+                <div class="shadow"></div>
+            </div>
         </div>
-    </section>
 
-    <section class="preview-info">
-        <div class="column-32">
-            <h1 class="info-title">{{ title() }}</h1>
-            <p class="info-description">{{ description() }}</p>
-            <!-- play by video id?! -->
-            <app-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-button>
+        <div class="preview-foreground">
+            <div class="video-info">
+                <h1 class="video-info-title">{{ title() }}</h1>
+                <p class="video-info-description">{{ description() }}</p>
+                <app-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-button>
+            </div>
         </div>
     </section>
     }

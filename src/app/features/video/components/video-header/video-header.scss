@@ -1,6 +1,8 @@
 @use "mixins" as *;
 
 :host {
+  @include position($pos: absolute, $l: 0, $t: 0);
+  width: 100%;
   z-index: $z-header;
 }
 

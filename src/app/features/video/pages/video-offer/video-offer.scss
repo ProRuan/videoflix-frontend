@@ -15,7 +15,6 @@ $library-gradient: linear-gradient(
 :host {
   @include flexbox($fd: column);
   min-height: 100vh;
-  position: relative;
 }
 
 .main {
@@ -24,50 +23,71 @@ $library-gradient: linear-gradient(
   flex: 1;
 }
 
-.preview {
+.hero {
+  height: 100vh;
+  position: relative;
+}
+
+.preview-background {
+  @include size($w: 100%, $h: 100%);
+  @include flexbox($jc: center, $ai: center);
   @include position($pos: absolute, $l: 0, $t: 0);
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  display: flex;
   z-index: 0;
+  overflow-x: hidden;
 }
 
 .video-shadow-cont {
-  width: 100%;
+  @include flexbox($jc: center, $ai: center);
+  height: 100%;
   position: relative;
 }
 
 .video {
-  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 .shadow {
+  @include size($w: 100%, $h: 100%);
   @include position($pos: absolute, $l: 0, $t: 0);
-  width: 100%;
   aspect-ratio: 16 / 9;
   background: $preview-gradient;
-}
-
-.preview-info {
-  @include spacing($p: 62px 96px 52px 96px);
-  width: 100%;
-  min-height: 486px;
-  display: flex;
-  flex: 1;
   z-index: 1;
 }
 
-.info-title {
+.preview-foreground {
+  @include spacing($p: 170px 96px 108px 96px);
+  @include size($w: 100%, $h: 100%);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  display: flex;
+  z-index: 1;
+}
+
+.video-info {
+  @include spacing($p: 43px 56px);
+  @include flexbox($fd: column, $g: 32px);
+  border-radius: 48px;
+  height: fit-content;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: rgba(27, 27, 34, 0.85);
+  }
+}
+
+.video-info-title {
   @include font($fs: 88px, $fw: 700, $lh: 115px);
+  width: fit-content;
   color: $white;
 }
 
-.info-description {
-  @include font($fs: 16px, $lh: 21px);
+.video-info-description {
+  @include font($fs: 16px, $lh: 24px);
   max-width: 440px;
   color: $white;
 }
 
+// continue here ...
 .library {
   @include spacing($p: 52px 96px);
   @include flexbox($fd: column, $g: 48px);
