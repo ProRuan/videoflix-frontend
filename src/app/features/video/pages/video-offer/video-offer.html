@@ -1,15 +1,12 @@
 <app-video-header></app-video-header>
 
 <main class="main">
-    <!-- check case library empty -->
     @if (library().length > 0) {
     <section class="hero">
         <div class="preview-background">
             <div class="video-shadow-cont">
                 <video #preview class="video" [autoplay]="true" [loop]="true" [muted]="true">
-                    <!-- remove and use variable source instead -->
-                    <!-- use random video id -->
-                    <source src="Kristallbruch_preview.mp4" type="video/mp4">
+                    <source [src]="previewClip()" type="video/mp4">
                 </video>
                 <div class="shadow"></div>
             </div>
@@ -31,7 +28,7 @@
             <h3 class="genre-title">{{ group.genre }}</h3>
             <div class="genre-videos">
                 @for (video of group.videos; track video) {
-                <button type="button" class="video-button" (click)="setVideo(video)">
+                <button type="button" class="video-button" (click)="onPreview(video)">
                     <img [src]="video.thumbnailImage" alt="thumbnail" class="thumbnail-image">
                     <div class="thumbnail-shadow"></div>
                     <div class="thumbnail-title">
