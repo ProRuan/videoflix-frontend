@@ -27,41 +27,19 @@
 
     <section class="library">
         @for (group of library(); track group.genre; let index = $index) {
-        <div class="column-16 pos-relative">
+        <div class="genre-cont">
             <h3 class="genre-title">{{ group.genre }}</h3>
-            <!-- testing + set passive event -->
-            @if (currentTranslation()[$index] < 0 || currentTranslation()[$index]> leftStop()[$index] &&
-                leftStop()[$index] < 0) { <div class="slide-controller" [class.open]="scrollArea()"
-                    (click)="switchScrollArea()" (wheel)="onScroll($event, $index)">
-                    <span>Scroll here</span>
-        </div>
-        }
-        <div #genreRowTrack class="genre-row-track pos-relative">
-            @if (currentTranslation()[$index] < 0) { <button #genreRowButton class="genre-row-button-left"
-                (click)="onToRight($index)">To left</button>
+            <div class="genre-videos">
+                @for (video of group.videos; track video) {
+                <button type="button" class="video-button" (click)="setVideo(video)">
+                    <img [src]="video.thumbnailImage" alt="thumbnail" class="thumbnail-image">
+                    <div class="thumbnail-shadow"></div>
+                    <div class="thumbnail-title">
+                        <span class="thumbnail-title-text">{{ video.title }}</span>
+                    </div>
+                </button>
                 }
-
-                <div #genreRow class="row-16">
-                    @for (video of group.videos; track video) {
-                    <button type="button" class="thumbnail-cont" (click)="setVideo(video)">
-                        <div class="thumbnail-shadow"></div>
-                        <img [src]="video.thumbnailImage" alt="thumbnail" class="thumbnail-image">
-                        <div class="thumbnail-title-cont">
-                            <span class="thumbnail-title">{{ video.title }}</span>
-                        </div>
-                    </button>
-                    }
-                </div>
-                <!-- fix right button for short rows -->
-                @if (currentTranslation()[$index] > leftStop()[$index] && leftStop()[$index] < 0) { <button
-                    #genreRowButton class="genre-row-button-right" (click)="onToLeft($index)">To right</button>
-                    }
-        </div>
-        <div class="scroll-progress-track">
-            <div [style.width.%]="currentTranslation()[$index] / leftStop()[$index] * 100"
-                class="scroll-progress-indicator"></div>
-            <!-- <div [style.width.%]="scrollData()[$index].trackPercent" class="scroll-progress-indicator"></div> -->
-        </div>
+            </div>
         </div>
         } @empty {
         <div class="empty-text">
