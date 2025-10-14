@@ -39,7 +39,6 @@ export class VideoOffer implements OnInit {
   response = computed(() => this.data()?.['response'] as AuthResponse);
   library = computed(() => this.data?.()?.['library'] as VideoGroup[]);
   hasLibrary = computed(() => this.library().length > 0);
-  newVideos = computed(() => this.library()[0].videos);
 
   /**
    * Initialize a video offer component.
@@ -61,8 +60,9 @@ export class VideoOffer implements OnInit {
    * Set the video preview.
    */
   private setPreview() {
+    if (!this.hasLibrary()) return;
     const id = this.getRandomVideoId();
-    const video = this.newVideos()[id];
+    const video = this.getRandomVideo(id);
     this.facade.video.set(video);
   }
 
@@ -71,8 +71,25 @@ export class VideoOffer implements OnInit {
    * @returns - The random video id.
    */
   private getRandomVideoId() {
-    const lastId = this.newVideos().length - 1;
-    return Math.round(Math.random() * lastId);
+    const amount = this.getAmountOfNewVideos();
+    return Math.round(Math.random() * amount);
+  }
+
+  /**
+   * Get an amount of new videos.
+   * @returns The amount of new videos.
+   */
+  private getAmountOfNewVideos() {
+    return this.library()[0].videos.length - 1;
+  }
+
+  /**
+   * Get a random video.
+   * @param id - The video id.
+   * @returns The random video.
+   */
+  private getRandomVideo(id: number) {
+    return this.library()[0].videos.at(id) ?? null;
   }
 
   /**
