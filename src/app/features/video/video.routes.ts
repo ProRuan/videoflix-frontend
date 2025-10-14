@@ -6,6 +6,7 @@ import { videoGuard } from './guards';
 import { VideoPlayerResolver } from './services/video-player-resolver';
 import { CoreLayout } from '@core/layout';
 import { VideoNotFound } from 'features/errors/pages/video-not-found/video-not-found';
+import { authResolver } from '@core/auth/resolvers';
 
 export const videoRoutes: Routes = [
   // change routes to video/offer, video/player etc.
@@ -13,7 +14,10 @@ export const videoRoutes: Routes = [
     path: 'offer/:token',
     component: VideoOffer,
     canActivate: [tokenGuard],
-    resolve: { result: VideoOfferResolver },
+    resolve: {
+      response: authResolver,
+      result: VideoOfferResolver,
+    },
   },
   {
     // add child ./error ...

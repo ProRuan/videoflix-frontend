@@ -11,7 +11,8 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { AuthStore, UserClient } from '@core/auth/services';
+import { AuthResponse } from '@core/auth/interfaces';
+import { UserClient } from '@core/auth/services';
 import { Footer } from '@core/layout/components';
 import { VideoHeader } from '@features/video/components';
 import { VideoGroup } from '@features/video/interfaces';
@@ -28,23 +29,18 @@ import { Button } from '@shared/components/buttons';
   styleUrl: './video-offer.scss',
 })
 export class VideoOffer implements OnInit {
-  private route: ActivatedRoute = inject(ActivatedRoute);
-  private router: Router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private scroller = inject(ViewportScroller);
-  private auth = inject(AuthStore);
+  private user = inject(UserClient);
 
   // review video header ...
   // review video footer ...
 
-  // use newest video library[0].videos[0] ... ?
-
-  // review ...
-  private user: UserClient = inject(UserClient);
-
   data = toSignal(this.route.data);
+  response = computed(() => this.data()?.['response'] as AuthResponse);
   library = computed(() => this.data?.()?.['result'] as VideoGroup[]);
 
-  // review ...
   newVideos = computed(() => this.library()[0].videos);
 
   video = signal<Video | null>(null);
@@ -53,21 +49,21 @@ export class VideoOffer implements OnInit {
   description = computed(() => this.video()?.description);
   previewClip = computed(() => this.video()?.previewClip);
 
-  // use source instead ... ?
   @ViewChild('preview') preview?: ElementRef<HTMLVideoElement>;
 
-  // edit ...
+  /**
+   * Initialize a video offer component.
+   */
   ngOnInit() {
+    this.setUser();
     this.setRandomVideo();
+  }
 
-    this.route.paramMap.subscribe({
-      next: (value) =>
-        this.user.logIn({
-          token: value?.get('token') ?? '',
-          email: '',
-          user_id: 0,
-        }),
-    });
+  /**
+   * Set the current user.
+   */
+  private setUser() {
+    this.user.logIn(this.response());
   }
 
   /**
@@ -100,7 +96,7 @@ export class VideoOffer implements OnInit {
    * @returns The video player URL.
    */
   private getVideoPlayerUrl() {
-    const token = this.auth.getToken();
+    const token = this.user.token;
     const id = this.id();
     return `/video/player/${token}/${id}`;
   }

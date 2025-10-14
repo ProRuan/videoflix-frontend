@@ -9,7 +9,7 @@ import { RouteUtils } from '@core/services';
  * Resolves the data of a token check.
  *
  * @param route - The ActivatedRouteSnapshot.
- * @returns True or a URL tree.
+ * @returns String, number or redirect command.
  */
 export const tokenResolver: ResolveFn<string | number | RedirectCommand> = (
   route

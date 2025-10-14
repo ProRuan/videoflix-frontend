@@ -10,6 +10,8 @@ export class UserClient {
   private router = inject(Router);
   private auth = inject(AuthStore);
 
+  // use token instead of getToken and setToken ... ?!
+
   startEmail: string = '';
 
   email: string = '';
@@ -17,11 +19,27 @@ export class UserClient {
 
   constructor() {}
 
+  /**
+   * Get the user´s authentication token.
+   * @returns The user´s authentication token.
+   */
+  get token() {
+    return this.auth.getToken();
+  }
+
+  /**
+   * Set the user´s authentication token.
+   * @param value - The value to be set.
+   */
+  set token(value: string) {
+    this.auth.setToken(value);
+  }
+
+  // rename ... ?!
   logIn(response: AuthResponse) {
     this.email = response.email;
     this.id = response.user_id;
-    // move ... ?
-    this.auth.setToken(response.token);
+    this.token = response.token;
   }
 
   // move request or add error notification service

@@ -10,7 +10,7 @@ export const signOutRoutes: Routes = [
     path: ':token',
     component: SignOut,
     canActivate: [authGuard],
-    resolve: { email: authResolver },
+    resolve: { response: authResolver },
   },
   { path: '**', redirectTo: 'unauthorized' },
 ];

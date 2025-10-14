@@ -61,14 +61,13 @@ export class RouteUtils {
   /**
    * Resolve an authentication token.
    * @param route - The ActivatedRouteSnapshot.
-   * @returns An Observable with email or redirect command.
+   * @returns An Observable with authentication response or redirect command.
    */
   resolveAuthToken(route: ActivatedRouteSnapshot) {
     this.setToken(route);
-    return this.tokens.checkToken().pipe(
-      map((data) => data['email']),
-      catchError(() => this.redirect$('/unauthorized'))
-    );
+    return this.tokens
+      .checkToken()
+      .pipe(catchError(() => this.redirect$('/unauthorized')));
   }
 
   /**

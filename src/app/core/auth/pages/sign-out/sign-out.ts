@@ -8,7 +8,12 @@ import { Observable } from 'rxjs';
 
 import { AUTH_DIALOG_CONFIG, AUTH_TOAST_CONFIG } from '@core/auth/constants';
 import { AuthFormBase } from '@core/auth/directives';
-import { EmailResponse, LoginForm, LoginPayload } from '@core/auth/interfaces';
+import {
+  AuthResponse,
+  EmailResponse,
+  LoginForm,
+  LoginPayload,
+} from '@core/auth/interfaces';
 import { AuthFormUtils, AuthStore } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { EmailInput, PasswordInput } from '@shared/components/inputs';
@@ -38,7 +43,8 @@ export class SignOut extends AuthFormBase<
   private toasts = inject(ToastManager);
 
   private data = toSignal(this.route.data);
-  private requestEmail = computed(() => this.data()?.['email'] as string);
+  private response = computed(() => this.data()?.['response'] as AuthResponse);
+  private requestEmail = computed(() => this.response().email);
 
   private readonly config: DialogConfig = AUTH_DIALOG_CONFIG.signOut;
   private readonly error: ToastConfig = AUTH_TOAST_CONFIG.signOut;
