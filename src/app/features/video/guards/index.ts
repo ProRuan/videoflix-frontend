@@ -1,1 +1,1 @@
-export * from './video-guard';
+export * from './id-guard';

@@ -4,5 +4,6 @@ export * from './quality-level-controller';
 export * from './video-dialog-configurator';
 export * from './video-offer-facade';
 export * from './video-player-facade';
+export * from './video-route-utils';
 export * from './video-store';
 export * from './volume-controller';

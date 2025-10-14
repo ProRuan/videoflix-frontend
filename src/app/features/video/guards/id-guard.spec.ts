@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
-import { videoGuard } from './video-guard';
+import { idGuard } from './id-guard';
 
-describe('videoGuard', () => {
+describe('idGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => videoGuard(...guardParameters));
+      TestBed.runInInjectionContext(() => idGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
