@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VideoHeader } from './video-header';
+import { VideoOfferHeader } from './video-offer-header';
 
-describe('VideoHeader', () => {
-  let component: VideoHeader;
-  let fixture: ComponentFixture<VideoHeader>;
+describe('VideoOfferHeader', () => {
+  let component: VideoOfferHeader;
+  let fixture: ComponentFixture<VideoOfferHeader>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VideoHeader]
+      imports: [VideoOfferHeader]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VideoHeader);
+    fixture = TestBed.createComponent(VideoOfferHeader);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
