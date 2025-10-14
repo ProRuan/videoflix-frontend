@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -25,6 +26,8 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
 
 /**
  * Class representing a video player component.
+ *
+ * @implements {AfterViewInit}
  */
 @Component({
   selector: 'app-video-player',
@@ -37,7 +40,7 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VideoPlayer {
+export class VideoPlayer implements AfterViewInit {
   private route = inject(ActivatedRoute);
   private facade = inject(VideoPlayerFacade);
   private qlContr = inject(QualityLevelController);

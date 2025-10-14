@@ -16,7 +16,7 @@ export const videoRoutes: Routes = [
     canActivate: [tokenGuard],
     resolve: {
       response: authResolver,
-      result: VideoOfferResolver,
+      library: VideoOfferResolver,
     },
   },
   {

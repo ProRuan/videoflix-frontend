@@ -1,0 +1,115 @@
+@use "mixins" as *;
+
+$thumbnail-gradient: linear-gradient(
+  180deg,
+  rgba(20, 20, 20, 0.6) 0%,
+  rgba(20, 20, 20, 0) 50%,
+  $prim-dark 100%
+);
+$library-gradient: linear-gradient(
+  88.67deg,
+  rgba(20, 20, 20, 0) 1.13%,
+  $prim-dark 48.04%
+);
+
+:host {
+  @include spacing($p: 108px 96px 52px 96px);
+  @include flexbox($fd: column, $g: 48px);
+  flex: 1;
+  position: relative;
+}
+
+::-webkit-scrollbar {
+  @include size($w: 12px, $h: 12px);
+}
+
+::-webkit-scrollbar-thumb {
+  @include border($b: none, $br: 12px);
+  background: $primBlue;
+  margin: 0 auto;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hoverBlue;
+  }
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 12px;
+  background: $track-gray;
+  cursor: pointer;
+
+  &:hover {
+    background: $white;
+  }
+}
+
+.genre-cont {
+  @include flexbox($fd: column, $g: 16px);
+}
+
+.genre-title {
+  @include font($fs: 22px, $fw: 700, $lh: 29px);
+  color: $white;
+}
+
+.genre-videos {
+  @include flexbox($g: 16px);
+  overflow-x: auto;
+}
+
+.video-button {
+  @include width($min: 213px, $max: 213px);
+  @include height($min: 120px, $max: 120px);
+  @include font();
+  border: none;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbnail-image {
+  @include image($w: 100%, $h: 100%);
+}
+
+.thumbnail-shadow {
+  @include size($w: 100%, $h: 100%);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  background: $thumbnail-gradient;
+  opacity: 0.5;
+  transition: opacity 100ms ease-in-out;
+
+  &:hover {
+    opacity: 0;
+  }
+}
+
+.thumbnail-title {
+  @include flexbox($jc: center);
+  @include position($pos: absolute, $l: 0, $b: 0);
+  padding: 4px;
+  width: 100%;
+  background: $formBG;
+  transition: transform 100ms ease-in-out;
+
+  .video-button:hover & {
+    transform: translateY(31px);
+  }
+}
+
+.thumbnail-title-text {
+  text-align: center;
+  color: $white;
+}
+
+.empty-text {
+  @include flexbox($fd: column, $jc: center, $ai: center);
+  color: $white;
+  flex: 1;
+}
+
+.library-shadow {
+  @include size($w: 200px, $h: calc(100% - 149px));
+  @include position($pos: absolute, $r: 0, $b: 52px);
+  background: $library-gradient;
+}

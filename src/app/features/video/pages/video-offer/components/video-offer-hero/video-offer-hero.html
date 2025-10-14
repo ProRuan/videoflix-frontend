@@ -1,0 +1,16 @@
+<section class="preview-background">
+    <div class="video-shadow-cont">
+        <video #preview class="video" [autoplay]="true" [loop]="true" [muted]="true">
+            <source [src]="previewClip()" type="video/mp4">
+        </video>
+        <div class="shadow"></div>
+    </div>
+</section>
+
+<section class="preview-foreground">
+    <div class="video-info">
+        <h1 class="title">{{ title() }}</h1>
+        <p class="description">{{ description() }}</p>
+        <app-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-button>
+    </div>
+</section>

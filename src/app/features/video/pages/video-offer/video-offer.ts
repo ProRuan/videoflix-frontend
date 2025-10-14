@@ -1,59 +1,53 @@
-import { ViewportScroller } from '@angular/common';
-import {
-  Component,
-  computed,
-  ElementRef,
-  inject,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { AuthResponse } from '@core/auth/interfaces';
 import { UserClient } from '@core/auth/services';
 import { VideoGroup } from '@features/video/interfaces';
-import { Video } from '@features/video/models';
-import { Button } from '@shared/components/buttons';
+import { VideoOfferFacade } from '@features/video/services';
 
-import { VideoOfferFooter, VideoOfferHeader } from './components';
+import {
+  VideoOfferFooter,
+  VideoOfferHeader,
+  VideoOfferHero,
+  VideoOfferLibrary,
+} from './components';
 
 /**
  * Class representing a video offer component.
+ *
+ * @implements {OnInit}
  */
 @Component({
   selector: 'app-video-offer',
-  imports: [Button, VideoOfferFooter, VideoOfferHeader],
+  imports: [
+    VideoOfferFooter,
+    VideoOfferHeader,
+    VideoOfferHero,
+    VideoOfferLibrary,
+  ],
   templateUrl: './video-offer.html',
   styleUrl: './video-offer.scss',
 })
 export class VideoOffer implements OnInit {
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private scroller = inject(ViewportScroller);
   private user = inject(UserClient);
+  private facade = inject(VideoOfferFacade);
 
   data = toSignal(this.route.data);
   response = computed(() => this.data()?.['response'] as AuthResponse);
-  library = computed(() => this.data?.()?.['result'] as VideoGroup[]);
-
+  library = computed(() => this.data?.()?.['library'] as VideoGroup[]);
+  hasLibrary = computed(() => this.library().length > 0);
   newVideos = computed(() => this.library()[0].videos);
-
-  video = signal<Video | null>(null);
-  id = computed(() => this.video()?.id);
-  title = computed(() => this.video()?.title);
-  description = computed(() => this.video()?.description);
-  previewClip = computed(() => this.video()?.previewClip);
-
-  @ViewChild('preview') preview?: ElementRef<HTMLVideoElement>;
 
   /**
    * Initialize a video offer component.
    */
   ngOnInit() {
     this.setUser();
-    this.setRandomVideo();
+    this.setPreview();
+    this.setLibrary();
   }
 
   /**
@@ -64,11 +58,12 @@ export class VideoOffer implements OnInit {
   }
 
   /**
-   * Set a random video.
+   * Set the video preview.
    */
-  private setRandomVideo() {
+  private setPreview() {
     const id = this.getRandomVideoId();
-    this.video.update(() => this.newVideos()[id]);
+    const video = this.newVideos()[id];
+    this.facade.video.set(video);
   }
 
   /**
@@ -81,30 +76,9 @@ export class VideoOffer implements OnInit {
   }
 
   /**
-   * Redirect the user to the video player on click.
+   * Set the video library.
    */
-  onPlay() {
-    const url = this.getVideoPlayerUrl();
-    this.router.navigateByUrl(url);
-  }
-
-  /**
-   * Get a video player URL.
-   * @returns The video player URL.
-   */
-  private getVideoPlayerUrl() {
-    const token = this.user.token;
-    const id = this.id();
-    return `/video/player/${token}/${id}`;
-  }
-
-  /**
-   * Update the video preview on click.
-   * @param video - The video to be set.
-   */
-  onPreview(video: Video) {
-    this.video.set(video);
-    this.preview?.nativeElement.load();
-    this.scroller.scrollToPosition([0, 0], { behavior: 'smooth' });
+  private setLibrary() {
+    this.facade.library.set(this.library());
   }
 }

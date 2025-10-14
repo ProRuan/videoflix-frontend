@@ -1,0 +1,23 @@
+@for (group of library(); track group.genre; let index = $index) {
+<div class="genre-cont">
+    <h3 class="genre-title">{{ group.genre }}</h3>
+    <div class="genre-videos">
+        @for (video of group.videos; track video) {
+        <button type="button" class="video-button" (click)="onPreview(video)">
+            <img [src]="video.thumbnailImage" alt="thumbnail" class="thumbnail-image">
+            <div class="thumbnail-shadow"></div>
+            <div class="thumbnail-title">
+                <span class="thumbnail-title-text">{{ video.title }}</span>
+            </div>
+        </button>
+        }
+    </div>
+</div>
+} @empty {
+<div class="empty-text">
+    <p>Sorry, there’s nothing to watch here right now.</p>
+    <p>Try refreshing the page or come back later!</p>
+</div>
+}
+
+<div class="library-shadow"></div>

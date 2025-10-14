@@ -11,7 +11,7 @@ import { getHours, getMinutes, getSeconds } from '../utils';
 /**
  * Class representing a video player facade service.
  *
- * Provides a player´s properties and methods.
+ * Provides a video player´s properties and methods.
  */
 @Injectable({
   providedIn: 'root',

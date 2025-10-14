@@ -1,0 +1,70 @@
+@use "mixins" as *;
+
+$preview-gradient: linear-gradient(
+  180deg,
+  rgba(20, 20, 20, 0.6) 0%,
+  rgba(20, 20, 20, 0) 50%,
+  $prim-dark 100%
+);
+
+:host {
+  height: 100vh;
+  position: relative;
+}
+
+.preview-background {
+  @include size($w: 100%, $h: 100%);
+  @include flexbox($jc: center, $ai: center);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  z-index: 0;
+  overflow-x: hidden;
+}
+
+.video-shadow-cont {
+  @include flexbox($jc: center, $ai: center);
+  height: 100%;
+  position: relative;
+}
+
+.video {
+  height: 100%;
+  z-index: 0;
+}
+
+.shadow {
+  @include size($w: 100%, $h: 100%);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  background: $preview-gradient;
+  z-index: 1;
+}
+
+.preview-foreground {
+  @include spacing($p: 170px 96px 108px 96px);
+  @include size($w: 100%, $h: 100%);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  z-index: 1;
+}
+
+.video-info {
+  @include spacing($p: 43px 56px);
+  @include size($w: fit-content, $h: fit-content);
+  @include flexbox($fd: column, $g: 32px);
+  border-radius: 48px;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: rgba(27, 27, 34, 0.85);
+  }
+}
+
+.title {
+  @include font($fs: 88px, $fw: 700, $lh: 115px);
+  width: fit-content;
+  color: $white;
+}
+
+.description {
+  @include font($fs: 16px, $lh: 24px);
+  max-width: 440px;
+  color: $white;
+}

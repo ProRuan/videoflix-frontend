@@ -1,51 +1,10 @@
 <app-video-offer-header></app-video-offer-header>
 
 <main class="main">
-    @if (library().length > 0) {
-    <section class="hero">
-        <div class="preview-background">
-            <div class="video-shadow-cont">
-                <video #preview class="video" [autoplay]="true" [loop]="true" [muted]="true">
-                    <source [src]="previewClip()" type="video/mp4">
-                </video>
-                <div class="shadow"></div>
-            </div>
-        </div>
-
-        <div class="preview-foreground">
-            <div class="video-info">
-                <h1 class="video-info-title">{{ title() }}</h1>
-                <p class="video-info-description">{{ description() }}</p>
-                <app-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-button>
-            </div>
-        </div>
-    </section>
+    @if (hasLibrary()) {
+    <app-video-offer-hero></app-video-offer-hero>
     }
-
-    <section class="library">
-        @for (group of library(); track group.genre; let index = $index) {
-        <div class="genre-cont">
-            <h3 class="genre-title">{{ group.genre }}</h3>
-            <div class="genre-videos">
-                @for (video of group.videos; track video) {
-                <button type="button" class="video-button" (click)="onPreview(video)">
-                    <img [src]="video.thumbnailImage" alt="thumbnail" class="thumbnail-image">
-                    <div class="thumbnail-shadow"></div>
-                    <div class="thumbnail-title">
-                        <span class="thumbnail-title-text">{{ video.title }}</span>
-                    </div>
-                </button>
-                }
-            </div>
-        </div>
-        } @empty {
-        <div class="empty-text">
-            <p>Sorry, there’s nothing to watch here right now.</p>
-            <p>Try refreshing the page or come back later!</p>
-        </div>
-        }
-        <div class="library-shadow"></div>
-    </section>
+    <app-video-offer-library></app-video-offer-library>
 </main>
 
 <app-video-offer-footer></app-video-offer-footer>

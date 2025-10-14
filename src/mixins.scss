@@ -98,6 +98,12 @@ $two-thirds: calc(2 * $one-third);
   line-height: $lh;
 }
 
+@mixin height($h: auto, $min: 0, $max: none) {
+  height: $h;
+  min-height: $min;
+  max-height: $max;
+}
+
 @mixin image($w: auto, $h: auto) {
   display: block;
   width: $w;
