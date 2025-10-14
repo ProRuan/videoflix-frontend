@@ -114,6 +114,7 @@ $library-gradient: linear-gradient(
 }
 
 // 170px for library only ... ?
+// footer padding ... !
 .library {
   @include spacing($p: 108px 96px 104px 96px);
   @include flexbox($fd: column, $g: 48px);

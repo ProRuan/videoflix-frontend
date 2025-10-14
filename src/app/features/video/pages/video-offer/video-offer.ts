@@ -13,19 +13,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthResponse } from '@core/auth/interfaces';
 import { UserClient } from '@core/auth/services';
-import { Footer } from '@core/layout/components';
 import { VideoGroup } from '@features/video/interfaces';
 import { Video } from '@features/video/models';
 import { Button } from '@shared/components/buttons';
 
-import { VideoOfferHeader } from './components';
+import { VideoOfferFooter, VideoOfferHeader } from './components';
 
 /**
  * Class representing a video offer component.
  */
 @Component({
   selector: 'app-video-offer',
-  imports: [Button, Footer, VideoOfferHeader],
+  imports: [Button, VideoOfferFooter, VideoOfferHeader],
   templateUrl: './video-offer.html',
   styleUrl: './video-offer.scss',
 })
@@ -34,8 +33,6 @@ export class VideoOffer implements OnInit {
   private router = inject(Router);
   private scroller = inject(ViewportScroller);
   private user = inject(UserClient);
-
-  // review video footer ...
 
   data = toSignal(this.route.data);
   response = computed(() => this.data()?.['response'] as AuthResponse);
