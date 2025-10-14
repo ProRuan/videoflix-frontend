@@ -26,7 +26,6 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
 
 /**
  * Class representing a video player component.
- *
  * @implements {AfterViewInit}
  */
 @Component({

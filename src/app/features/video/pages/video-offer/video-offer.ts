@@ -16,7 +16,6 @@ import {
 
 /**
  * Class representing a video offer component.
- *
  * @implements {OnInit}
  */
 @Component({

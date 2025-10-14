@@ -1,5 +1,6 @@
+import { PlayableVideoData, QualityLevelData } from '../interfaces';
+
 import { Video } from './video';
-import { AvailableResolutions, PlayableVideoData } from '../interfaces';
 
 /**
  * Class representing a playable video.
@@ -8,8 +9,7 @@ import { AvailableResolutions, PlayableVideoData } from '../interfaces';
 export class PlayableVideo extends Video {
   readonly duration: number;
   readonly hlsPlaylist: string;
-  readonly qualityLevels: { label: string; source: string }[];
-  // readonly availableResolutions: AvailableResolutions;
+  readonly qualityLevels: QualityLevelData[];
 
   /**
    * Creates a playable video.
@@ -20,6 +20,5 @@ export class PlayableVideo extends Video {
     this.hlsPlaylist = data.hls_playlist;
     this.duration = data.duration;
     this.qualityLevels = data.quality_levels;
-    // this.availableResolutions = data.available_resolutions;
   }
 }

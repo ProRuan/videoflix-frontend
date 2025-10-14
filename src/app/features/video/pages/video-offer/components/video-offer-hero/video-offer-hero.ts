@@ -14,7 +14,6 @@ import { Button } from '@shared/components/buttons';
 
 /**
  * Class representing a video offer hero component.
- *
  * @implements {AfterViewInit}
  */
 @Component({

@@ -2,27 +2,23 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { UserClient } from '@core/auth/services';
 import { BaseStore } from '@shared/services';
 
 import { PlayableVideoData, VideoGroupData } from '../interfaces';
 
+/**
+ * Class representing a video store service.
+ *
+ * Provides methods for Videoflix API video requests.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class VideoStore {
   store = inject(BaseStore);
-  user = inject(UserClient);
-
-  // fix GET "/api/videos/{id}/" ...
-  // return { ... } and not video: { ... } ...
-
-  // write class comment ...
-  // review comments ...
-  // compare with other services ...
 
   /**
-   * List the videos from the video store.
+   * List the videos from the Videoflix API.
    * @returns An Observable with the video group data array.
    */
   listVideos(): Observable<VideoGroupData[]> {
@@ -30,7 +26,7 @@ export class VideoStore {
   }
 
   /**
-   * Retrieve a video from the video store.
+   * Retrieve a video from the the Videoflix API.
    * @param id - The video id.
    * @returns An Observable with the playable video data.
    */

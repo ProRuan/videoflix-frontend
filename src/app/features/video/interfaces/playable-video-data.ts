@@ -1,4 +1,4 @@
-import { AvailableResolutions } from './available-resolutions';
+import { QualityLevelData } from './quality-level-data';
 import { VideoData } from './video-data';
 
 /**
@@ -8,9 +8,5 @@ import { VideoData } from './video-data';
 export interface PlayableVideoData extends VideoData {
   duration: number;
   hls_playlist: string;
-  // interface for quality levels ... !
-  quality_levels: {
-    label: string;
-    source: string;
-  }[];
+  quality_levels: QualityLevelData[];
 }

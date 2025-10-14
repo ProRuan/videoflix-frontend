@@ -8,9 +8,7 @@ export class Video {
   readonly title: string;
   readonly genre: string;
   readonly description: string;
-  // rename
   readonly previewClip: string;
-  // rename
   readonly thumbnailImage: string;
   readonly createdAt: string;
 
