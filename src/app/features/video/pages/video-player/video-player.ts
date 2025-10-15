@@ -23,7 +23,7 @@ import {
   VideoDialogConfigurator,
   VideoPlayerFacade,
 } from '@features/video/services';
-import { OverlayManagerBase } from '@shared/services';
+import { DialogManager } from '@shared/services';
 
 import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
 
@@ -50,7 +50,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private qlContr = inject(QualityLevelController);
   private fsContr = inject(FullscreenController);
   private config = inject(VideoDialogConfigurator);
-  private dialogs = inject(OverlayManagerBase);
+  private dialogs = inject(DialogManager);
 
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);

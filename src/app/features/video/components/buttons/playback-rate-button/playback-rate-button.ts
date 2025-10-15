@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 
-import { OverlayManagerBase } from '@shared/services';
+import { DialogManager } from '@shared/services';
 
 /**
  * Class representing a playback rate button component.
@@ -12,7 +12,7 @@ import { OverlayManagerBase } from '@shared/services';
   styleUrl: './playback-rate-button.scss',
 })
 export class PlaybackRateButton {
-  private dialogs = inject(OverlayManagerBase);
+  private dialogs = inject(DialogManager);
 
   /**
    * Open playback rate dialog on click.

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 
-import { OverlayManagerBase } from '@shared/services';
+import { DialogManager } from '@shared/services';
 
 /**
  * Class representing a quality button component.
@@ -12,7 +12,7 @@ import { OverlayManagerBase } from '@shared/services';
   styleUrl: './quality-button.scss',
 })
 export class QualityButton {
-  private dialogs = inject(OverlayManagerBase);
+  private dialogs = inject(DialogManager);
 
   /**
    * Open a quality levels dialog on click.

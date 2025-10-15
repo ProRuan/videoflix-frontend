@@ -9,8 +9,6 @@ import { Injectable, signal, WritableSignal } from '@angular/core';
   providedIn: 'root',
 })
 export class OverlayManagerBase {
-  // rename overlay manager base ...
-
   protected activeElement: WritableSignal<string> = signal('');
   protected hasCloseStyle: WritableSignal<boolean> = signal(false);
 

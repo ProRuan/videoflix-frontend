@@ -1,7 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
 
 import { VideoSettingsDialogConfig } from '@features/video/interfaces';
-import { OverlayManagerBase } from '@shared/services';
+import { DialogManager } from '@shared/services';
 
 /**
  * Class representing a video settings dialog component.
@@ -13,7 +13,7 @@ import { OverlayManagerBase } from '@shared/services';
   styleUrl: './video-settings-dialog.scss',
 })
 export class VideoSettingsDialog {
-  private dialogs = inject(OverlayManagerBase);
+  private dialogs = inject(DialogManager);
 
   config = input.required<VideoSettingsDialogConfig>();
   id = computed(() => this.config().id);
