@@ -72,7 +72,7 @@ export class LogIn extends AuthFormBase<LoginForm, LoginPayload, AuthResponse> {
    */
   protected onSuccess(response: AuthResponse): void {
     this.form.reset();
-    this.user.logIn(response);
+    this.user.set(response);
     this.router.navigateByUrl(`/video/offer/${response.token}`);
   }
 

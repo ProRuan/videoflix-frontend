@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
 
-import { AuthStore } from '@core/auth/services';
+import { AuthStore, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { ToastManager } from '@shared/services';
 
@@ -18,9 +18,10 @@ import { ToastManager } from '@shared/services';
   styleUrl: './video-offer-header.scss',
 })
 export class VideoOfferHeader {
-  router = inject(Router);
-  auth = inject(AuthStore);
-  toasts = inject(ToastManager);
+  private router = inject(Router);
+  private auth = inject(AuthStore);
+  private user = inject(UserClient);
+  private toasts = inject(ToastManager);
 
   isLoading = signal(false);
 
@@ -43,8 +44,16 @@ export class VideoOfferHeader {
       .logOut()
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: () => this.router.navigateByUrl('/log-in'),
+        next: () => this.resetAndRedirect(),
         error: (error: HttpErrorResponse) => this.toasts.showError(error),
       });
+  }
+
+  /**
+   * Reset user data and redirect to log-in.
+   */
+  private resetAndRedirect() {
+    this.user.reset();
+    this.router.navigateByUrl('/log-in');
   }
 }

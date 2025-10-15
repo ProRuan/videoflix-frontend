@@ -52,7 +52,7 @@ export class VideoOffer implements OnInit {
    * Set the current user.
    */
   private setUser() {
-    this.user.logIn(this.response());
+    this.user.set(this.response());
   }
 
   /**
