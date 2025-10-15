@@ -44,19 +44,19 @@ $buffer-gray: #ececec;
   @include size($w: 0px, $h: 4px);
   @include position($pos: absolute, $l: 0, $t: 0);
   border-radius: 100px;
-  background-color: $primBlue;
+  background-color: $prim-blue;
 }
 
 .handle {
   @include size($w: 16px, $h: 16px);
   @include position($pos: absolute, $l: 0, $t: -6px);
   border-radius: 8px;
-  background-color: $primBlue;
+  background-color: $prim-blue;
   transform: translateX(-50%);
   transition: background-color 100ms ease-in-out;
 
   &:hover,
   &:active {
-    background-color: $hoverBlue;
+    background-color: $prim-blue-hover;
   }
 }

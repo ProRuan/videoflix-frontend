@@ -5,7 +5,7 @@
   @include spacing($p: 12px 24px);
   @include size($w: 360px, $h: 48px);
   @include font();
-  @include colors($c: $white, $bgc: $inputBG);
+  @include colors($c: $white, $bgc: $input-bg);
   min-height: 48px;
   transition: border-color 100ms ease-in-out;
 
@@ -14,7 +14,7 @@
   }
 
   &:focus-within {
-    border-color: $primBlue;
+    border-color: $prim-blue;
   }
 
   &.invalid {

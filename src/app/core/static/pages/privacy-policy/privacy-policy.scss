@@ -12,7 +12,7 @@
 
 h1 {
   @include font($fs: 32px, $fw: 700, $lh: 42px);
-  color: $hoverBlue;
+  color: $prim-blue-hover;
 }
 
 article {
@@ -34,7 +34,7 @@ li {
 
 a {
   text-decoration: none;
-  color: $hoverBlue;
+  color: $prim-blue-hover;
 
   &:hover {
     text-decoration: underline;
@@ -59,7 +59,7 @@ a {
   background-image: linear-gradient(
     90deg,
     $white 50%,
-    $hoverBlue 55%,
+    $prim-blue-hover 55%,
     $white 85%
   );
   transform: translateX(0);

@@ -32,13 +32,13 @@
   }
 
   &.tertiary {
-    color: $primBlue;
+    color: $prim-blue;
   }
 }
 
 .background {
   @include size($w: 300%, $h: 100%);
-  @include button-gradient($primBlue, $hoverBlue);
+  @include button-gradient($prim-blue, $prim-blue-hover);
   @include position($pos: absolute, $l: 0, $t: 0);
   transform: translateX(-$two-thirds);
   transition: transform 100ms ease-in-out;
@@ -48,7 +48,7 @@
   }
 
   .button.tertiary & {
-    @include button-gradient($white, $hoverBlue);
+    @include button-gradient($white, $prim-blue-hover);
   }
 
   .button:hover & {

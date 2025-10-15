@@ -6,7 +6,7 @@ body {
   @include font();
   margin: 0;
   min-height: 100vh;
-  font-family: $dmSans;
+  font-family: $dm-sans;
   background-color: $prim-dark;
 }
 
@@ -23,12 +23,12 @@ ul {
 }
 
 input {
-  font-family: $dmSans;
+  font-family: $dm-sans;
   outline: none;
 }
 
 button {
-  font-family: $dmSans;
+  font-family: $dm-sans;
   outline: none;
   cursor: pointer;
 
@@ -194,7 +194,7 @@ button {
   @include flexbox($fd: column, $jc: center, $g: 32px);
   border-radius: 48px;
   width: 520px;
-  background-color: $formBG;
+  background-color: $form-bg;
   position: relative;
 }
 

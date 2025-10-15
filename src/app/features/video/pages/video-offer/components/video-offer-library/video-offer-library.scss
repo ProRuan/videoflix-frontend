@@ -25,12 +25,12 @@ $library-gradient: linear-gradient(
 
 ::-webkit-scrollbar-thumb {
   @include border($b: none, $br: 12px);
-  background: $primBlue;
+  background: $prim-blue;
   margin: 0 auto;
   cursor: pointer;
 
   &:hover {
-    background-color: $hoverBlue;
+    background-color: $prim-blue-hover;
   }
 }
 
@@ -89,7 +89,7 @@ $library-gradient: linear-gradient(
   @include position($pos: absolute, $l: 0, $b: 0);
   padding: 4px;
   width: 100%;
-  background: $formBG;
+  background: $form-bg;
   transition: transform 100ms ease-in-out;
 
   .video-button:hover & {

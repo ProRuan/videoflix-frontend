@@ -10,10 +10,10 @@ $forward-icon: url("/images/players/forward_10.svg");
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: $primBlue;
+    background-color: $prim-blue;
   }
 
   &:active {
-    background-color: $hoverBlue;
+    background-color: $prim-blue-hover;
   }
 }

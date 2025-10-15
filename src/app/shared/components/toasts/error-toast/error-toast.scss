@@ -8,7 +8,7 @@ $image: url("/images/toasts/close_small.png");
   @include flexbox($ai: center, $g: 16px);
   @include position($pos: fixed, $l: 32px, $b: 32px);
   border-radius: 20px;
-  background-color: $primBlue;
+  background-color: $prim-blue;
   z-index: 10;
   transition: transform 100ms ease-in-out;
   transform: translateX(0);

@@ -25,7 +25,7 @@ $close-icon: url("/images/players/close_small.svg");
   @include flexbox($fd: column, $ai: center, $g: 16px);
   @include position($pos: relative, $r: 32px, $b: 124px);
   width: fit-content;
-  background-color: $formBG;
+  background-color: $form-bg;
   box-shadow: 0 0 8px 3px $white;
   transform: translateX(0);
   transition: transform 100ms ease-in-out;
@@ -51,7 +51,7 @@ $close-icon: url("/images/players/close_small.svg");
 }
 
 .border {
-  border-bottom: 3px solid $primBlue;
+  border-bottom: 3px solid $prim-blue;
   border-radius: 1px;
   width: 85%;
 }
@@ -66,11 +66,11 @@ $close-icon: url("/images/players/close_small.svg");
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: $hoverBlue;
+    background-color: $prim-blue-hover;
   }
 
   &:active {
-    background-color: $primBlue;
+    background-color: $prim-blue;
   }
 }
 
@@ -97,7 +97,7 @@ $close-icon: url("/images/players/close_small.svg");
   }
 
   &:disabled {
-    background-color: $primBlue;
+    background-color: $prim-blue;
     cursor: default;
   }
 }

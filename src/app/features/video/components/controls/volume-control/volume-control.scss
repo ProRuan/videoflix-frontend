@@ -15,11 +15,11 @@ $mute-icon: url("/images/players/mute.svg");
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: $primBlue;
+    background-color: $prim-blue;
   }
 
   &:active {
-    background-color: $hoverBlue;
+    background-color: $prim-blue-hover;
   }
 
   &.mute {
@@ -45,19 +45,19 @@ $mute-icon: url("/images/players/mute.svg");
   @include size($w: 50%, $h: 8px);
   @include position($pos: absolute, $l: 0, $t: 0);
   border-radius: 4px;
-  background-color: $primBlue;
+  background-color: $prim-blue;
 }
 
 .handle {
   @include size($w: 16px, $h: 16px);
   @include position($pos: absolute, $l: 0, $t: -4px);
   border-radius: 8px;
-  background-color: $primBlue;
+  background-color: $prim-blue;
   transform: translateX(-50%);
   transition: background-color 100ms ease-in-out;
 
   &:hover,
   &:active {
-    background-color: $hoverBlue;
+    background-color: $prim-blue-hover;
   }
 }
