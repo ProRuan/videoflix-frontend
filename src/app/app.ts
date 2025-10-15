@@ -1,74 +1,38 @@
 import { Component, inject } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 
-import { DialogIds, ToastIds } from '@shared/constants';
 import { SuccessDialog } from '@shared/components/dialogs';
 import { ErrorToast } from '@shared/components/toasts';
+import { DialogIds, ToastIds } from '@shared/constants';
+import { DialogManager, ToastManager } from '@shared/services';
 
-import { DialogManager } from './shared/services/dialog-manager';
-import { ToastManager } from './shared/services/toast-manager';
-import { filter, map } from 'rxjs';
-
+/**
+ * Class representing a Videoflix App.
+ */
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SuccessDialog, ErrorToast],
+  imports: [ErrorToast, RouterOutlet, SuccessDialog],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
-  private router = inject(Router);
   private dialogs = inject(DialogManager);
   private toasts = inject(ToastManager);
 
-  // update multiple line comments ... !
-
-  // dialogs (3/3) ...
-  // error-toasts (4/7) ...
-
-  // finalize success dialog ...
-
-  // auth form: think about "matchError" --> "mismatched" ... ?!
-
-  // think about FormValidator naming and code (class/service, structure) ...
-
-  // disabled submit buttons during submission logic ... !!!
-
-  // Important tasks for later
-  // -------------------------
-  // 1. startsite: implement AuthForm and email-check (backend) ...
-  // 2. rebuild project with file schematics ... !!!
-
-  // 3. secondary button style + fix blinking styles (0/2):
-  // .button {
-  //   @include border($b: none, $br: 40px);
-  //   @include spacing($p: 12px 24px);
-  //   @include size($w: fit-content, $h: 48px);
-  //   @include font($fw: 700);
-  //   @include colors($c: $primBlue, $bgc: $white);
-  //   transition: color 100ms ease-in-out, background-color 100ms ease-in-out;
-
-  //   &:hover {
-  //     @include colors($c: $white, $bgc: $hoverBlue);
-  //   }
-
-  //   &:active {
-  //     @include colors($c: $white, $bgc: $activeBlue);
-  //   }
-
-  //   &:disabled {
-  //     background-color: $disabled;
-  //     cursor: default;
-  //   }
-  // }
-
   protected title = 'videoflix-frontend';
 
-  constructor() {}
-
+  /**
+   * Check if a success dialog is open.
+   * @returns True if a success dialog is open, otherwise false.
+   */
   isDialogOpen() {
     return this.dialogs.isOpen(DialogIds.Success);
   }
 
+  /**
+   * Check if an error toast is open.
+   * @returns True if an error toast is open, otherwise false.
+   */
   isToastOpen() {
     return this.toasts.isOpen(ToastIds.Error);
   }

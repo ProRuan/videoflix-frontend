@@ -1,30 +1,9 @@
 import { Routes } from '@angular/router';
 
-// review imports
-import { CoreLayout } from '@core/layout';
 import { authRoutes } from '@core/auth/auth.routes';
+import { CoreLayout } from '@core/layout';
 import { Imprint, PrivacyPolicy } from '@core/static/pages';
 import { videoRoutes } from '@features/video/video.routes';
-
-// generate video layout ... ?
-
-// PageNotFound with second button ...
-//   - replace url and go one step back ... ?
-
-// guide
-// -----
-// move data to parents ...
-// choose consitent keys for resolved data ...
-// add wild card ...
-// add lazy loading (e. g. video) ...
-// update router guards and route resolver redirections ...
-
-// generate imprint and privacy policy ...
-
-// improve concept of video player guard + resolver ...
-
-// map resolved data, e. g. res => res.token ... !
-// user more resolvers { token: TokenResolver, video: VideoResolver } ...
 
 export const routes: Routes = [
   { path: '', component: CoreLayout, children: authRoutes },
