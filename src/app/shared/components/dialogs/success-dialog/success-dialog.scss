@@ -1,0 +1,33 @@
+@use "mixins" as *;
+
+.dialog-box {
+  @include spacing($p: 32px 40px);
+  @include flexbox($fd: column, $jc: center, $g: 24px);
+  width: 520px;
+  border-radius: 48px;
+  background-color: rgba(27, 27, 34, 1);
+  box-shadow: 0 0 8px 3px $white;
+  transform: scale(1);
+  transition: opacity 100ms ease-in-out, transform 100ms ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.zoom-out {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.dialog-headline {
+  @include font($fs: 36px, $fw: 700, $lh: 47px);
+  text-align: center;
+  color: $white;
+}
+
+.dialog-text {
+  text-align: center;
+  color: $white;
+}

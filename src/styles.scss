@@ -10,8 +10,6 @@ body {
   background-color: $prim-dark;
 }
 
-// check for column-16 and others if necessary ... !
-
 h1,
 h2,
 h3,
@@ -31,8 +29,12 @@ button {
   font-family: $dm-sans;
   outline: none;
   cursor: pointer;
+}
 
-  // disabled: cursor: default
+.header {
+  @include spacing($p: 10px 96px);
+  @include size($w: 100%, $h: 108px);
+  @include flexbox($jc: space-between, $ai: center);
 }
 
 .headline-2 {
@@ -46,43 +48,23 @@ button {
   text-align: center;
 }
 
-.c-error {
-  color: $error;
-}
-
-.c-success {
-  color: $success;
-}
-
-// remove
 .headline-error {
   @include font($fs: 32px, $fw: 700, $lh: 42px);
   color: $error;
 }
 
-.row-16 {
-  @include flexbox($g: 16px);
-}
-
-.column {
-  @include flexbox($fd: column);
-}
-
-.column-16 {
-  @include flexbox($fd: column, $g: 16px);
-}
-
-.column-32 {
-  @include flexbox($fd: column, $g: 32px);
+.auth-form {
+  @include spacing($p: 43px 56px);
+  @include flexbox($fd: column, $jc: center, $g: 32px);
+  border-radius: 48px;
+  width: 520px;
+  background-color: $form-bg;
+  position: relative;
 }
 
 .input-error-cont {
   @include flexbox($fd: column, $g: 4px);
   height: 48px;
-}
-
-.pos-relative {
-  position: relative;
 }
 
 .input-icon {
@@ -104,7 +86,6 @@ button {
   color: $error;
 }
 
-// dialog styles
 .dialog {
   @include size($w: 100%, $h: 100vh);
   @include flexbox($jc: center, $ai: center);
@@ -113,10 +94,8 @@ button {
   border: none;
   padding: 0;
   background-color: rgba(0, 0, 0, 0.55);
-  // check z-index ... !
-  z-index: 10;
-  // set ms!!!
-  transition: background-color 125ms ease-in-out;
+  z-index: $z-header;
+  transition: background-color 100ms ease-in-out;
 
   @starting-style {
     background-color: transparent;
@@ -127,96 +106,10 @@ button {
   background-color: transparent;
 }
 
-// check padding
-// check gap
-.dialog-box {
-  @include spacing($p: 32px 40px);
-  @include flexbox($fd: column, $jc: center, $g: 24px);
-  width: 520px;
-  border-radius: 48px;
-  background-color: rgba(27, 27, 34, 1);
-  // background-color: $formBG;
-  box-shadow: 0 0 8px 3px $white;
-  transform: scale(1);
-  transition: opacity 125ms ease-in-out, transform 125ms ease-in-out;
-
-  @starting-style {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-}
-
-.zoom-out {
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-.dialog-headline {
-  @include font($fs: 36px, $fw: 700, $lh: 47px);
-  text-align: center;
-  color: $white;
-}
-
-.dialog-text {
-  text-align: center;
-  color: $white;
-}
-
-.jc-evenly {
-  @include flexbox($jc: space-evenly);
-}
-
-// .toast {
-//   @include position($pos: fixed, $l: 32px, $b: 32px);
-//   transition: transform 100ms ease-in-out;
-//   transform: translateX(0);
-
-//   @starting-style {
-//     transform: translateX(calc(-100% - 64px));
-//   }
-// }
-
-// check this!!
-// .slide-out {
-//   transform: translateX(calc(-100% - 64px));
-// }
-
-// move global style to this style sheet
-// use index.ts for imports
-.auth-main {
-  @include flexbox($jc: center, $ai: center);
-  width: 100%;
-  flex: 1;
-}
-
-.auth-form {
-  @include spacing($p: 43px 56px);
-  @include flexbox($fd: column, $jc: center, $g: 32px);
-  border-radius: 48px;
-  width: 520px;
-  background-color: $form-bg;
-  position: relative;
-}
-
-.c-white {
-  color: $white;
-}
-
-.hidden {
-  display: none !important;
-}
-
 .static-main {
-  // @include flexbox($fd: column, $g: 40px);
   padding: 48px 96px 156px 96px;
   display: flex;
   flex: 1;
-}
-
-.header {
-  @include spacing($p: 10px 96px);
-  @include size($w: 100%, $h: 108px);
-  @include flexbox($jc: space-between, $ai: center);
 }
 
 .it-kanzlei-timestamp {
@@ -225,4 +118,42 @@ button {
   color: $white;
 }
 
-// sort and move styles
+.c-error {
+  color: $error;
+}
+
+.c-success {
+  color: $success;
+}
+
+.c-white {
+  color: $white;
+}
+
+.row-16 {
+  @include flexbox($g: 16px);
+}
+
+.column {
+  @include flexbox($fd: column);
+}
+
+.column-16 {
+  @include flexbox($fd: column, $g: 16px);
+}
+
+.column-32 {
+  @include flexbox($fd: column, $g: 32px);
+}
+
+.jc-evenly {
+  @include flexbox($jc: space-evenly);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.pos-relative {
+  position: relative;
+}
