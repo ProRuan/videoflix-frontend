@@ -1,5 +1,18 @@
 import { inject, Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  RedirectCommand,
+  Router,
+} from '@angular/router';
+
+import { catchError, map, of } from 'rxjs';
+
+import { UserClient } from '@core/auth/services';
+
+import { VideoGroup, VideoGroupData } from '../interfaces';
+import { PlayableVideo, Video } from '../models';
+
+import { VideoStore } from './video-store';
 
 /**
  * Class representing video route utils.
@@ -11,6 +24,8 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 })
 export class VideoRouteUtils {
   private router = inject(Router);
+  private user = inject(UserClient);
+  private store = inject(VideoStore);
 
   /**
    * Check if the activated route contains an ID.
@@ -25,10 +40,11 @@ export class VideoRouteUtils {
   /**
    * Get an ID from the activated route.
    * @param route - The ActivatedRouteSnapshot.
-   * @returns The ID as string.
+   * @returns The ID from the activated route.
    */
   private getId(route: ActivatedRouteSnapshot) {
-    return route.paramMap.get('id') ?? '0';
+    const id = route.paramMap.get('id') ?? '0';
+    return Number(id);
   }
 
   /**
@@ -36,9 +52,8 @@ export class VideoRouteUtils {
    * @param value - The value to be checked.
    * @returns True if the value is not an ID, otherwise false.
    */
-  private isNotId(value: string) {
-    const number = Number(value);
-    return isNaN(number) || number < 0;
+  private isNotId(value: number) {
+    return isNaN(value) || value < 0;
   }
 
   /**
@@ -47,5 +62,79 @@ export class VideoRouteUtils {
    */
   private getUrlTree() {
     return this.router.createUrlTree(['/bad-request']);
+  }
+
+  /**
+   * Resolve a video list.
+   * @returns An Observable with video group array or redirect command.
+   */
+  resolveVideoList() {
+    return this.store.listVideos().pipe(
+      map((data: VideoGroupData[]) => this.convertLibrary(data)),
+      catchError(() => this.redirect$('/unauthorized'))
+    );
+  }
+
+  /**
+   * Convert a video library.
+   * @param data - The video group data array.
+   * @returns The video group array.
+   */
+  private convertLibrary(data: VideoGroupData[]): VideoGroup[] {
+    return data.map((group) => this.convertVideoGroup(group));
+  }
+
+  /**
+   * Convert a video group.
+   * @param data - The video group data.
+   * @returns The video group.
+   */
+  private convertVideoGroup(data: VideoGroupData): VideoGroup {
+    return {
+      genre: data.genre,
+      videos: data.videos.map((video) => new Video(video)),
+    };
+  }
+
+  /**
+   * Redirect to an alternative route.
+   * @param url - The alternative URL.
+   * @returns An Observable with a redirect command.
+   */
+  private redirect$(url: string) {
+    const urlTree = this.router.parseUrl(url);
+    const command = new RedirectCommand(urlTree);
+    return of(command);
+  }
+
+  /**
+   * Resolve a video.
+   * @param route - The ActivatedRouteSnapshot.
+   * @returns An Observable with playable video or redirect command.
+   */
+  resolveVideo(route: ActivatedRouteSnapshot) {
+    const id = this.getId(route);
+    return this.store.retrieveVideo(id).pipe(
+      map((data) => new PlayableVideo(data)),
+      catchError(() => this.redirectToNotFound$())
+    );
+  }
+
+  /**
+   * Redirect to the video-not-found page.
+   * @returns An Observable with the redirect command.
+   */
+  private redirectToNotFound$() {
+    const url = this.getNotFoundUrl();
+    return this.redirect$(url);
+  }
+
+  /**
+   * Get a video-not-found URL.
+   * @returns The video-not-found URL.
+   */
+  private getNotFoundUrl() {
+    const token = this.user.token;
+    return `/video/${token}/not-found`;
   }
 }

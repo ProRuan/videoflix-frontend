@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { videoOfferResolver } from './video-offer-resolver';
+import { videoPlayerResolver } from './video-player-resolver';
 
-describe('videoOfferResolver', () => {
+describe('videoPlayerResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => videoOfferResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => videoPlayerResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

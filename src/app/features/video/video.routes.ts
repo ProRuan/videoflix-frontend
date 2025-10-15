@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
 import { VideoOffer, VideoPlayer } from './pages';
 
-import { VideoOfferResolver } from './resolvers';
-import { VideoPlayerResolver } from './services/video-player-resolver';
+import { videoOfferResolver, videoPlayerResolver } from './resolvers';
 import { CoreLayout } from '@core/layout';
 import { VideoNotFound } from 'features/errors/pages/video-not-found/video-not-found';
 import { authResolver } from '@core/auth/resolvers';
@@ -23,7 +22,7 @@ export const videoRoutes: Routes = [
     canActivate: [authGuard],
     resolve: {
       response: authResolver,
-      library: VideoOfferResolver,
+      library: videoOfferResolver,
     },
   },
   {
@@ -31,7 +30,8 @@ export const videoRoutes: Routes = [
     component: VideoPlayer,
     canActivate: [authGuard, idGuard],
     resolve: {
-      playableVideo: VideoPlayerResolver,
+      response: authResolver,
+      playableVideo: videoPlayerResolver,
     },
   },
   {

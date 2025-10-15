@@ -5,11 +5,14 @@ import {
   computed,
   ElementRef,
   inject,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 
+import { AuthResponse } from '@core/auth/interfaces';
+import { UserClient } from '@core/auth/services';
 import { VideoSettingsDialog } from '@features/video/components';
 import { VIDEO_PLAYER_OPTIONS } from '@features/video/constants';
 import { PlayerSource } from '@features/video/interfaces';
@@ -27,6 +30,7 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
 /**
  * Class representing a video player component.
  * @implements {AfterViewInit}
+ * @implements {OnInit}
  */
 @Component({
   selector: 'app-video-player',
@@ -39,8 +43,9 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VideoPlayer implements AfterViewInit {
+export class VideoPlayer implements AfterViewInit, OnInit {
   private route = inject(ActivatedRoute);
+  private user = inject(UserClient);
   private facade = inject(VideoPlayerFacade);
   private qlContr = inject(QualityLevelController);
   private fsContr = inject(FullscreenController);
@@ -48,6 +53,7 @@ export class VideoPlayer implements AfterViewInit {
   private dialogs = inject(OverlayManagerBase);
 
   private data = toSignal(this.route.data);
+  private response = computed(() => this.data()?.['response'] as AuthResponse);
   private playableVideo = computed(
     () => this.data()?.['playableVideo'] as PlayableVideo
   );
@@ -68,6 +74,20 @@ export class VideoPlayer implements AfterViewInit {
 
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
+
+  /**
+   * Initialize a video player component.
+   */
+  ngOnInit() {
+    this.setUser();
+  }
+
+  /**
+   * Set the current user.
+   */
+  private setUser() {
+    this.user.logIn(this.response());
+  }
 
   /**
    * Show player UI on mouse move.
