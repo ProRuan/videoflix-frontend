@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { VIDEO_NOT_FOUND } from '@features/video/errors';
 import { ErrorPage } from '@shared/components/pages';
 
 import { authChildrenRoutes, authData } from './auth.config';
@@ -28,4 +29,10 @@ export const authRoutes: Routes = [
   { path: 'bad-request', component: ErrorPage, data: d.badRequest },
   { path: 'unauthorized', component: ErrorPage, data: d.unauthorized },
   { path: 'page-not-found', component: ErrorPage, data: d.pageNotFound },
+
+  {
+    path: 'video/not-found',
+    component: ErrorPage,
+    data: { config: VIDEO_NOT_FOUND },
+  },
 ];

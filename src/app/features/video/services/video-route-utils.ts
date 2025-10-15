@@ -7,8 +7,6 @@ import {
 
 import { catchError, map, of } from 'rxjs';
 
-import { UserClient } from '@core/auth/services';
-
 import { VideoGroup, VideoGroupData } from '../interfaces';
 import { PlayableVideo, Video } from '../models';
 
@@ -24,7 +22,6 @@ import { VideoStore } from './video-store';
 })
 export class VideoRouteUtils {
   private router = inject(Router);
-  private user = inject(UserClient);
   private store = inject(VideoStore);
 
   /**
@@ -116,25 +113,7 @@ export class VideoRouteUtils {
     const id = this.getId(route);
     return this.store.retrieveVideo(id).pipe(
       map((data) => new PlayableVideo(data)),
-      catchError(() => this.redirectToNotFound$())
+      catchError(() => this.redirect$('/video/not-found'))
     );
-  }
-
-  /**
-   * Redirect to the video-not-found page.
-   * @returns An Observable with the redirect command.
-   */
-  private redirectToNotFound$() {
-    const url = this.getNotFoundUrl();
-    return this.redirect$(url);
-  }
-
-  /**
-   * Get a video-not-found URL.
-   * @returns The video-not-found URL.
-   */
-  private getNotFoundUrl() {
-    const token = this.user.token;
-    return `/video/${token}/not-found`;
   }
 }

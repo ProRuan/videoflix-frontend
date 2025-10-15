@@ -1,19 +1,11 @@
 import { Routes } from '@angular/router';
-import { VideoOffer, VideoPlayer } from './pages';
 
-import { videoOfferResolver, videoPlayerResolver } from './resolvers';
-import { CoreLayout } from '@core/layout';
-import { VideoNotFound } from 'features/errors/pages/video-not-found/video-not-found';
-import { authResolver } from '@core/auth/resolvers';
-import { idGuard } from './guards';
 import { authGuard } from '@core/auth/guards';
+import { authResolver } from '@core/auth/resolvers';
 
-// replace VideoOfferResolver with videoOfferResolver ...
-// replace VideoPlayerResolver width videoPlayerResolver ...
-// add resolver for auth data and video data (1/2) ...
-// add error page ... ?
-//   --> review features/errors ... !
-// review token page ... ?
+import { idGuard } from './guards';
+import { VideoOffer, VideoPlayer } from './pages';
+import { videoOfferResolver, videoPlayerResolver } from './resolvers';
 
 export const videoRoutes: Routes = [
   {
@@ -33,10 +25,5 @@ export const videoRoutes: Routes = [
       response: authResolver,
       playableVideo: videoPlayerResolver,
     },
-  },
-  {
-    path: ':token',
-    component: CoreLayout,
-    children: [{ path: 'not-found', component: VideoNotFound }],
   },
 ];
