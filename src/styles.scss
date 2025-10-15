@@ -157,3 +157,163 @@ button {
 .pos-relative {
   position: relative;
 }
+
+// move to media.scss ... ?!
+// @media (max-width: 400px) {
+// display: block;
+// }
+
+@media (max-width: 400px) {
+  .header {
+    padding: 10px 16px;
+  }
+
+  // body {
+  //   @include font();
+  //   margin: 0;
+  //   min-height: 100vh;
+  //   font-family: $dm-sans;
+  //   background-color: $prim-dark;
+  // }
+
+  // h1,
+  // h2,
+  // h3,
+  // h4,
+  // h5,
+  // p,
+  // ul {
+  //   margin: 0;
+  // }
+
+  // input {
+  //   font-family: $dm-sans;
+  //   outline: none;
+  // }
+
+  // button {
+  //   font-family: $dm-sans;
+  //   outline: none;
+  //   cursor: pointer;
+  // }
+
+  .header {
+    padding: 10px 16px;
+  }
+
+  .headline-2 {
+    @include font($fs: 40px, $fw: 700, $lh: 52px);
+  }
+
+  // .headline-4 {
+  //   @include font($fs: 24px, $fw: 700, $lh: 32px);
+  //   text-align: center;
+  // }
+
+  // .headline-error {
+  //   @include font($fs: 32px, $fw: 700, $lh: 42px);
+  //   color: $error;
+  // }
+
+  // set width ... !
+  .auth-form {
+    @include spacing($p: 43px 24px);
+    // width: 520px;
+  }
+
+  // .input-error-cont {
+  //   @include flexbox($fd: column, $g: 4px);
+  //   height: 48px;
+  // }
+
+  // .input-icon {
+  //   @include image($w: 24px, $h: 24px);
+  //   @include position($pos: absolute, $l: 25px, $t: 12px);
+  // }
+
+  // .error-cont {
+  //   @include flexbox($ai: center, $g: 4px);
+  //   transition: opacity 100ms ease-in-out;
+
+  //   @starting-style {
+  //     opacity: 0;
+  //   }
+  // }
+
+  // .error {
+  //   @include font($fs: 15px, $lh: 20px);
+  //   color: $error;
+  // }
+
+  // .dialog {
+  //   @include size($w: 100%, $h: 100vh);
+  //   @include flexbox($jc: center, $ai: center);
+  //   @include position($pos: fixed, $l: 0, $t: 0);
+  //   margin: 0;
+  //   border: none;
+  //   padding: 0;
+  //   background-color: rgba(0, 0, 0, 0.55);
+  //   z-index: $z-header;
+  //   transition: background-color 100ms ease-in-out;
+
+  //   @starting-style {
+  //     background-color: transparent;
+  //   }
+  // }
+
+  // .transparent {
+  //   background-color: transparent;
+  // }
+
+  // .static-main {
+  //   padding: 48px 96px 156px 96px;
+  //   display: flex;
+  //   flex: 1;
+  // }
+
+  // .it-kanzlei-timestamp {
+  //   @include font($fs: 16px, $lh: 21px);
+  //   white-space: nowrap;
+  //   color: $white;
+  // }
+
+  // .c-error {
+  //   color: $error;
+  // }
+
+  // .c-success {
+  //   color: $success;
+  // }
+
+  // .c-white {
+  //   color: $white;
+  // }
+
+  // .row-16 {
+  //   @include flexbox($g: 16px);
+  // }
+
+  // .column {
+  //   @include flexbox($fd: column);
+  // }
+
+  // .column-16 {
+  //   @include flexbox($fd: column, $g: 16px);
+  // }
+
+  // .column-32 {
+  //   @include flexbox($fd: column, $g: 32px);
+  // }
+
+  // .jc-evenly {
+  //   @include flexbox($jc: space-evenly);
+  // }
+
+  // .hidden {
+  //   display: none !important;
+  // }
+
+  // .pos-relative {
+  //   position: relative;
+  // }
+}

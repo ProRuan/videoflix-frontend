@@ -19,6 +19,11 @@
   &:hover {
     text-decoration: underline;
   }
+
+  &:active {
+    text-decoration: none;
+    color: $prim-blue-hover;
+  }
 }
 
 .sign-up-info {
@@ -38,5 +43,36 @@
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &:active {
+    text-decoration: none;
+    color: $prim-blue-hover;
+  }
+}
+
+@media (max-width: 400px) {
+  .forgot-password-link {
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:active {
+      color: $prim-blue-hover;
+    }
+  }
+
+  .sign-up-info {
+    gap: 24px;
+  }
+
+  .sign-up-link {
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:active {
+      color: $prim-blue-hover;
+    }
   }
 }

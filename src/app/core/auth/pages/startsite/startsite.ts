@@ -35,6 +35,17 @@ export class Startsite extends AuthFormBase<
   private user = inject(UserClient);
   private toasts = inject(ToastManager);
 
+  // responsiveness .../.../400px/.../.../.../...
+  // --------------
+  // startsite, sign-up, log-in, forgot-password, reset-password (5/5) - check
+  // activate-account (0/4) ...
+
+  // success-dialog ...
+  // error-toast ...
+
+  // mobile-text on mobiles only ... !
+  // create mobile service with isMobile an so on ... ?
+
   private readonly error: ToastConfig = AUTH_TOAST_CONFIG.startsite;
 
   /**

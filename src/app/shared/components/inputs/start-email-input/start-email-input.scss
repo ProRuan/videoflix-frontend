@@ -21,3 +21,9 @@
     border-color: $error;
   }
 }
+
+@media (max-width: 400px) {
+  .input {
+    @include font($fs: 16px, $lh: 21px);
+  }
+}

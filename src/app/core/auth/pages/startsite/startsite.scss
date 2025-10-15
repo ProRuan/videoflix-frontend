@@ -15,7 +15,40 @@
   @include flexbox($fd: column, $ai: center, $g: 24px);
 }
 
+.mobile-text {
+  @include font($fs: 20px, $fw: 500, $lh: 26px);
+  text-align: center;
+  color: $white;
+}
+
 .text {
   text-align: center;
   color: $white;
+}
+
+.form {
+  @include flexbox($g: 16px);
+}
+
+@media (max-width: 400px) {
+  .headline-2 {
+    line-height: 40px;
+  }
+
+  .content {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .title-text-cont {
+    gap: 32px;
+  }
+
+  .text {
+    @include font($fs: 16px, $lh: 21px);
+  }
+
+  .form {
+    @include flexbox($fd: column, $ai: center, $g: 32px);
+  }
 }

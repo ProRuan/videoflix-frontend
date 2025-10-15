@@ -22,3 +22,10 @@ main {
   @include flexbox($fd: column);
   flex: 1;
 }
+
+// check padding ...
+@media (max-width: 400px) {
+  main {
+    padding: 16px;
+  }
+}

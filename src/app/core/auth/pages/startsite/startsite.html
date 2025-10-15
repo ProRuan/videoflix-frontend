@@ -1,10 +1,13 @@
 <div class="content">
     <div class="title-text-cont">
-        <h2 class="headline-2">Movies, TV shows, and more</h2>
+        <div class="column-16">
+            <h2 class="headline-2">Movies, TV shows, and more</h2>
+            <p class="mobile-text">Watch whenever you want wherever you want</p>
+        </div>
         <p class="text">Enter your email to create or restart your subscription.</p>
     </div>
 
-    <form [formGroup]="form" class="row-16" (ngSubmit)="onRequest()">
+    <form [formGroup]="form" class="form" (ngSubmit)="onRequest()">
         <app-start-email-input [control]="email"></app-start-email-input>
         <app-button icon="chevron_right" text="Sign up" type="submit" [disabled]="isFormUnready()"
             [reverse]="true"></app-button>

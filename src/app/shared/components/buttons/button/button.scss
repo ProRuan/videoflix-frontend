@@ -74,3 +74,20 @@
   @include font($fw: 700);
   position: relative;
 }
+
+@media (max-width: 400px) {
+  .background {
+    .button:hover & {
+      transform: translateX(-$two-thirds);
+    }
+
+    .button:active & {
+      transform: translateX(-$one-third);
+    }
+
+    .button:disabled & {
+      background-color: $disabled;
+      background-image: none;
+    }
+  }
+}

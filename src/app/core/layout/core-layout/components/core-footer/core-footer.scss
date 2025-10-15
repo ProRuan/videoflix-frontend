@@ -22,10 +22,31 @@
   &:hover {
     text-decoration: underline;
   }
+
+  &:active {
+    text-decoration: none;
+    color: $prim-blue-hover;
+  }
 }
 
 @media (min-width: 1441px) {
   .footer {
     padding: 10px calc(50% - 624px);
+  }
+}
+
+@media (max-width: 400px) {
+  .footer {
+    padding: 10px 16px;
+  }
+
+  .link {
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:active {
+      color: $prim-blue-hover;
+    }
   }
 }
