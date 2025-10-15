@@ -1,33 +1,21 @@
-$dmSans: "DM Sans", Arial, Helvetica, sans-serif;
-
 $prim-dark: #141414;
 
-// rename + review prim-blue-active
-$primBlue: #2e3edf;
-$hoverBlue: #2facde;
-$activeBlue: #2f75de;
-
-$video-gray: #e2e2e2;
-$track-gray: #b5b5b5;
-
-// review sec-blue-active
 $sec-blue: #49509e;
 $sec-blue-hover: #9e8c49;
-// $sec-blue-hover: #49869E;
-// update like activeBlue or in use?
-$sec-blue-active: #535bb4;
 
-$gray: #d3d3d3;
-$white: #ffffff;
+$track-gray: #b5b5b5;
 
 $error: #ff002e;
 $success: #00cc66;
 $disabled: #5e5e5e;
 
-$formBG: rgba(27, 27, 34, 0.85);
-$inputBG: rgba(28, 26, 32, 0.8);
+$gray: #d3d3d3;
+$white: #ffffff;
 
-// $test: 180deg, #000000 -19.89%, rgba(0, 0, 0, 0.55) 40.46%, #000000 100%;
+$startsite-bg: url("/images/backgrounds/startsite_bg.jpg");
+$sign-up-bg: url("/images/backgrounds/sign_up_bg.jpg");
+$login-bg: url("/images/backgrounds/login_bg.jpg");
+
 $startsite-gradient: linear-gradient(
   180deg,
   #000000 -19.89%,
@@ -41,21 +29,27 @@ $auth-gradient: linear-gradient(
   rgba(0, 0, 0, 0.8) 100%
 );
 
-$startsite-bg: url("/images/backgrounds/startsite_bg.jpg");
-$sign-up-bg: url("/images/backgrounds/sign_up_bg.jpg");
-$login-bg: url("/images/backgrounds/login_bg.jpg");
-
-// add other z-indices like this (search)
 $z-header: 10;
 $z-dialog: 20;
 
 $one-third: calc(100% / 3);
 $two-thirds: calc(2 * $one-third);
 
-// add move variables if needed ... !
-
 // think about naming for variables above ... !
 // think about naming, e. g. $variable-name ... !
+
+// --- start --- start --- start ---
+$dmSans: "DM Sans", Arial, Helvetica, sans-serif;
+
+// rename + review prim-blue-active
+$primBlue: #2e3edf;
+$hoverBlue: #2facde;
+$activeBlue: #2f75de;
+
+$formBG: rgba(27, 27, 34, 0.85);
+$inputBG: rgba(28, 26, 32, 0.8);
+
+// --- end --- end --- end ---
 
 @mixin background(
   $color: transparent,
