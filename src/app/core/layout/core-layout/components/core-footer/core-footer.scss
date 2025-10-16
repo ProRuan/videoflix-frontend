@@ -1,13 +1,14 @@
 @use "mixins" as *;
 
 :host {
-  @include flexbox($jc: center, $ai: center);
+  @include flexbox($jc: center);
 }
 
 .footer {
   @include spacing($p: 10px 96px);
   @include size($w: 100%, $h: 104px);
   @include flexbox($jc: center, $ai: center);
+  max-width: 1920px;
 }
 
 .link-group {
@@ -26,12 +27,6 @@
   &:active {
     text-decoration: none;
     color: $prim-blue-hover;
-  }
-}
-
-@media (min-width: 1441px) {
-  .footer {
-    padding: 10px calc(50% - 624px);
   }
 }
 

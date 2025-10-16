@@ -35,6 +35,7 @@ button {
   @include spacing($p: 10px 96px);
   @include size($w: 100%, $h: 108px);
   @include flexbox($jc: space-between, $ai: center);
+  max-width: 1920px;
 }
 
 .headline-2 {
