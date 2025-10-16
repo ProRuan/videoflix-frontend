@@ -60,3 +60,42 @@ $image: url("/images/toasts/close_small.png");
     border-color: transparent;
   }
 }
+
+// error toast mobile ...
+// set border values ...
+// add logic and if conditions ...
+// rename styles ...
+// add y transitons ...
+.error-toast-mobile {
+  @include size($w: 100%, $h: 232px);
+  @include flexbox($fd: column, $ai: center);
+  @include position($pos: fixed, $l: 0, $b: 0);
+  border-radius: 20px 20px 0 0;
+  background-color: $prim-blue;
+  overflow: hidden;
+}
+
+.rectangle-mobile {
+  @include size($w: 100%, $h: 16px);
+  background-color: $error;
+}
+
+.error-toast-cont {
+  @include spacing($p: 32px 24px);
+  @include flexbox($fd: column, $ai: center, $g: 16px);
+  flex: 1;
+}
+
+.message-cont {
+  @include flexbox($g: 16px);
+}
+
+// .icon ...
+
+// column 4px for messages ...
+.message-mobile {
+  @include font($fs: 16px, $lh: 21px);
+  color: $white;
+}
+
+// .button ...
