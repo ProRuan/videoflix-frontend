@@ -1,11 +1,30 @@
 @use "mixins" as *;
 
 :host {
-  @include spacing($p: 48px 96px);
-  @include flexbox($fd: column, $g: 40px);
+  @include flexbox($fd: column, $ai: center, $g: 40px);
   flex: 1;
+}
+
+.error-page {
+  @include flexbox($fd: column, $g: 32px);
+  @include width($w: 100%, $max: 1728px);
+}
+
+.headline-error {
+  @include font($fs: 32px, $fw: 700, $lh: 42px);
+  color: $error;
+}
+
+.message {
+  color: $white;
 }
 
 .button-group {
   @include flexbox($g: 48px);
+}
+
+@media (max-width: 400px) {
+  .message {
+    @include font($fs: 16px, $lh: 21px);
+  }
 }

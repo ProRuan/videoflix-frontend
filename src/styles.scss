@@ -49,11 +49,6 @@ button {
   text-align: center;
 }
 
-.headline-error {
-  @include font($fs: 32px, $fw: 700, $lh: 42px);
-  color: $error;
-}
-
 .auth-form {
   @include spacing($p: 43px 56px);
   @include flexbox($fd: column, $jc: center, $g: 32px);
@@ -130,10 +125,6 @@ button {
 
 .c-success {
   color: $success;
-}
-
-.c-white {
-  color: $white;
 }
 
 .row-16 {
@@ -300,10 +291,6 @@ button {
 
   // .c-success {
   //   color: $success;
-  // }
-
-  // .c-white {
-  //   color: $white;
   // }
 
   // .row-16 {
