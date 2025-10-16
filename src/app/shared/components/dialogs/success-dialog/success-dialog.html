@@ -3,9 +3,9 @@
     <div class="dialog-box" [class.zoom-out]="closing" (click)="onEventStop($event)">
         <h3 class="dialog-headline">{{ title() }}</h3>
         @for(message of messages(); track message) {
-        <p class="dialog-text">{{ message }}</p>
+        <p class="auth-text">{{ message }}</p>
         }
-        <div class="jc-evenly">
+        <div class="button-group">
             <app-button text="Close" type="button" variant="secondary" (click)="onCloseStart()"></app-button>
             <app-button [text]="label()" type="button" (click)="onRedirect()"></app-button>
         </div>

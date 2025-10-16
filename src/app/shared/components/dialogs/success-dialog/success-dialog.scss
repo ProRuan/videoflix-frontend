@@ -1,9 +1,10 @@
 @use "mixins" as *;
 
 .dialog-box {
-  @include spacing($p: 32px 40px);
+  @include spacing($p: 43px 24px);
+  @include width($w: 100%, $max: 520px);
   @include flexbox($fd: column, $jc: center, $g: 24px);
-  width: 520px;
+  margin: 24px;
   border-radius: 48px;
   background-color: rgba(27, 27, 34, 1);
   box-shadow: 0 0 8px 3px $white;
@@ -27,7 +28,37 @@
   color: $white;
 }
 
-.dialog-text {
-  text-align: center;
-  color: $white;
+.button-group {
+  @include flexbox($jc: space-evenly);
+}
+
+@media (max-width: 768px) {
+  .dialog-box {
+    max-width: 400px;
+    gap: 16px;
+  }
+
+  .dialog-headline {
+    @include font($fs: 32px, $fw: 700, $lh: 42px);
+  }
+
+  .button-group {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+@media (max-height: 560px) {
+  .dialog-box {
+    padding: 24px;
+  }
+
+  .auth-text {
+    @include font($fs: 16px, $lh: 21px);
+  }
+
+  .button-group {
+    @include flexbox($jc: space-evenly);
+  }
 }

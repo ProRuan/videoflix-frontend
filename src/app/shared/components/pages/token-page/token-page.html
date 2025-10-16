@@ -3,11 +3,11 @@
 
     <div class="column-16">
         @for (message of messages(); track message) {
-        <p class="text">{{ message }}</p>
+        <p class="auth-text">{{ message }}</p>
         }
     </div>
 
-    <div class="jc-evenly">
+    <div class="button-group">
         @if (hasSecOption()) {
         <app-button [text]="secLabel()" variant="secondary" (click)="onSecRoute()"></app-button>
         }
