@@ -5,17 +5,6 @@
   flex: 1;
 }
 
-.text {
-  text-align: center;
-  color: $white;
-}
-
 .button-cont {
   @include flexbox($jc: center);
-}
-
-@media (max-width: 400px) {
-  .text {
-    @include font($fs: 16px, $lh: 21px);
-  }
 }

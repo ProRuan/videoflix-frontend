@@ -25,7 +25,7 @@
   @include flexbox($g: 16px);
 }
 
-@media (max-width: 400px) {
+@media (max-width: 768px) {
   .headline-2 {
     line-height: 40px;
   }
@@ -41,11 +41,11 @@
 
   .form {
     @include flexbox($fd: column, $ai: center, $g: 32px);
-    width: 100%;
+    @include width($w: 100%, $max: 360px);
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 368px) {
   .headline-2 {
     line-height: 32px;
   }

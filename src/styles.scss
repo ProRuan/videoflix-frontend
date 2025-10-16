@@ -163,16 +163,33 @@ button {
   position: relative;
 }
 
+@media (max-width: 1280px) {
+  .header {
+    padding: 10px 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 16px;
+  }
+
+  .headline-2 {
+    @include font($fs: 40px, $fw: 700, $lh: 52px);
+  }
+
+  .auth-form {
+    @include spacing($p: 43px 24px);
+    @include width($w: 100%, $max: 368px);
+  }
+}
+
 // move to media.scss ... ?!
 // @media (max-width: 400px) {
 // display: block;
 // }
 
 @media (max-width: 400px) {
-  .header {
-    padding: 10px 16px;
-  }
-
   // body {
   //   @include font();
   //   margin: 0;
@@ -206,10 +223,6 @@ button {
     padding: 10px 16px;
   }
 
-  .headline-2 {
-    @include font($fs: 40px, $fw: 700, $lh: 52px);
-  }
-
   // .headline-4 {
   //   @include font($fs: 24px, $fw: 700, $lh: 32px);
   //   text-align: center;
@@ -219,12 +232,6 @@ button {
   //   @include font($fs: 32px, $fw: 700, $lh: 42px);
   //   color: $error;
   // }
-
-  // set width ... !
-  .auth-form {
-    @include spacing($p: 43px 24px);
-    // width: 520px;
-  }
 
   .auth-text {
     @include font($fs: 16px, $lh: 21px);
@@ -327,7 +334,7 @@ button {
   // }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 368px) {
   .headline-2 {
     @include font($fs: 32px, $fw: 700, $lh: 42px);
   }

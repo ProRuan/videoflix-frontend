@@ -20,11 +20,17 @@
 
 main {
   @include flexbox($fd: column);
+  padding: 16px 96px;
   flex: 1;
 }
 
-// check padding ...
-@media (max-width: 400px) {
+@media (max-width: 1280px) {
+  main {
+    padding: 16px 48px;
+  }
+}
+
+@media (max-width: 768px) {
   main {
     padding: 16px;
   }
