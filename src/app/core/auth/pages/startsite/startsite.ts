@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { AuthFormUtils, AuthStore, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
 import { ToastConfig } from '@shared/interfaces';
-import { ToastManager } from '@shared/services';
+import { ToastManager, WindowResizer } from '@shared/services';
 
 /**
  * Class representing a startsite component.
@@ -34,26 +34,11 @@ export class Startsite extends AuthFormBase<
   private utils = inject(AuthFormUtils);
   private user = inject(UserClient);
   private toasts = inject(ToastManager);
-
-  // fix heading two-liners ... !
-
-  // responsiveness 320/368/400 + 768/1280 + 1440/1920 + 1920+
-  // --------------
-  // video-pages (0/2) ...
-  // header, footer (0/2) ...
-  // static-pages (0/2) ...
-  // dialogs, toasts (1/2) ...
-
-  // media 320/368/400 + 768/1280 + 1440/1920 + 1920+ + height ...
-  // ------------------------------------------------
-  // error-toast ...
-
-  // video-settings-dialog ...
-
-  // mobile-text on mobiles only ... !
-  // create mobile service with isMobile an so on ... ?
+  private resizer = inject(WindowResizer);
 
   private readonly error: ToastConfig = AUTH_TOAST_CONFIG.startsite;
+
+  isSmallTablet = computed(() => this.resizer.isSmallTablet());
 
   /**
    * Get an email form.
