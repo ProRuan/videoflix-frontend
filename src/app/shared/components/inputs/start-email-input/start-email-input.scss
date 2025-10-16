@@ -1,9 +1,14 @@
 @use "mixins" as *;
 
+:host {
+  display: inline-block;
+  width: 360px;
+}
+
 .input {
   @include border($b: 1px solid $white, $br: 40px);
   @include spacing($p: 12px 24px);
-  @include size($w: 360px, $h: 48px);
+  @include size($w: 100%, $h: 48px);
   @include font();
   @include colors($c: $white, $bgc: $input-bg);
   min-height: 48px;
@@ -23,6 +28,10 @@
 }
 
 @media (max-width: 400px) {
+  :host {
+    @include width($w: 100%, $max: 360px);
+  }
+
   .input {
     @include font($fs: 16px, $lh: 21px);
   }

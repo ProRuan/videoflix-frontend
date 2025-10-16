@@ -21,11 +21,6 @@
   color: $white;
 }
 
-.text {
-  text-align: center;
-  color: $white;
-}
-
 .form {
   @include flexbox($g: 16px);
 }
@@ -44,11 +39,18 @@
     gap: 32px;
   }
 
-  .text {
-    @include font($fs: 16px, $lh: 21px);
-  }
-
   .form {
     @include flexbox($fd: column, $ai: center, $g: 32px);
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .headline-2 {
+    line-height: 32px;
+  }
+
+  .mobile-text {
+    @include font($fs: 18px, $fw: 500, $lh: 23px);
   }
 }

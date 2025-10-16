@@ -62,6 +62,11 @@ button {
   position: relative;
 }
 
+.auth-text {
+  text-align: center;
+  color: $white;
+}
+
 .input-error-cont {
   @include flexbox($fd: column, $g: 4px);
   height: 48px;
@@ -221,6 +226,10 @@ button {
     // width: 520px;
   }
 
+  .auth-text {
+    @include font($fs: 16px, $lh: 21px);
+  }
+
   // .input-error-cont {
   //   @include flexbox($fd: column, $g: 4px);
   //   height: 48px;
@@ -316,4 +325,14 @@ button {
   // .pos-relative {
   //   position: relative;
   // }
+}
+
+@media (max-width: 360px) {
+  .headline-2 {
+    @include font($fs: 32px, $fw: 700, $lh: 42px);
+  }
+
+  .error {
+    @include font($fs: 12px, $lh: 16px);
+  }
 }

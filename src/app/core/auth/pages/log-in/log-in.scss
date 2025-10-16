@@ -27,7 +27,7 @@
 }
 
 .sign-up-info {
-  @include size($w: fit-content, $h: 23px);
+  @include size($w: fit-content);
   @include flexbox($jc: center, $ai: center, $g: 16px);
 }
 
@@ -74,5 +74,12 @@
     &:active {
       color: $prim-blue-hover;
     }
+  }
+}
+
+@media (max-width: 360px) {
+  .sign-up-info {
+    flex-direction: column;
+    gap: 8px;
   }
 }
