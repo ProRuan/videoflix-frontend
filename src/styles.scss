@@ -35,7 +35,6 @@ button {
   @include spacing($p: 10px 96px);
   @include size($w: 100%, $h: 108px);
   @include flexbox($jc: space-between, $ai: center);
-  max-width: 1920px;
 }
 
 .headline-2 {
@@ -108,7 +107,7 @@ button {
 }
 
 .static-main {
-  padding: 48px 96px 156px 96px;
+  padding: 48px 96px 152px 96px;
   display: flex;
   flex: 1;
 }
@@ -155,9 +154,25 @@ button {
   position: relative;
 }
 
+@media (min-width: 1921px) {
+  .header {
+    padding-left: $filling-padding;
+    padding-right: $filling-padding;
+  }
+
+  .static-main {
+    padding-left: $filling-padding;
+    padding-right: $filling-padding;
+  }
+}
+
 @media (max-width: 1280px) {
   .header {
     padding: 10px 48px;
+  }
+
+  .static-main {
+    padding: 48px 48px 152px 48px;
   }
 }
 
@@ -173,6 +188,10 @@ button {
   .auth-form {
     @include spacing($p: 43px 24px);
     @include width($w: 100%, $max: 368px);
+  }
+
+  .static-main {
+    padding: 40px 16px 152px 16px;
   }
 }
 
@@ -267,12 +286,6 @@ button {
   //   @starting-style {
   //     background-color: transparent;
   //   }
-  // }
-
-  // .static-main {
-  //   padding: 48px 96px 156px 96px;
-  //   display: flex;
-  //   flex: 1;
   // }
 
   // .it-kanzlei-timestamp {

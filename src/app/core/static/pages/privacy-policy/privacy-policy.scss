@@ -39,6 +39,10 @@ a {
   &:hover {
     text-decoration: underline;
   }
+
+  &:active {
+    text-decoration: none;
+  }
 }
 
 .it-kanzlei-copyright {
@@ -79,7 +83,48 @@ a {
   position: relative;
 }
 
-.button-cont {
-  @include flexbox($jc: flex-end);
-  height: 48px;
+@media (max-width: 1280px) {
+  h2 {
+    @include font($fs: 28px, $fw: 700, $lh: 36px);
+  }
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:active {
+      text-decoration: underline;
+    }
+  }
+
+  .it-kanzlei-copyright {
+    @include flexbox($fd: column-reverse, $ai: center, $g: 16px);
+  }
+
+  .it-kanzlei-bg {
+    .it-kanzlei-link:hover & {
+      transform: translateX(0);
+    }
+
+    .it-kanzlei-link:active & {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  h2 {
+    @include font($fs: 24px, $fw: 700, $lh: 32px);
+  }
+}
+
+@media (max-width: 400px) {
+  h2 {
+    @include font($fs: 20px, $fw: 700, $lh: 26px);
+  }
+
+  .it-kanzlei-logo {
+    width: 263px;
+  }
 }

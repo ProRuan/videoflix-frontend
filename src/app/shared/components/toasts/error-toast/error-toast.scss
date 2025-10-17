@@ -64,7 +64,7 @@ $image: url("/images/toasts/close_small.png");
 
 @media (min-width: 1921px) {
   .error-toast {
-    left: calc(25% + 32px);
+    left: calc(50% - 960px + 32px);
   }
 }
 
