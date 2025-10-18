@@ -8,7 +8,7 @@ $preview-gradient: linear-gradient(
 );
 
 :host {
-  height: 100vh;
+  @include height($h: 100vh, $max: 1080px);
   position: relative;
 }
 
@@ -50,6 +50,7 @@ $preview-gradient: linear-gradient(
   @include size($w: fit-content, $h: fit-content);
   @include flexbox($fd: column, $g: 32px);
   border-radius: 48px;
+  translate: -56px -43px;
   transition: background-color 100ms ease-in-out;
 
   &:hover {
@@ -67,4 +68,70 @@ $preview-gradient: linear-gradient(
   @include font($fs: 16px, $lh: 24px);
   max-width: 440px;
   color: $white;
+}
+
+@media (min-width: 1921px) {
+  :host {
+    padding-left: $filling-padding;
+    padding-right: $filling-padding;
+  }
+
+  .preview-foreground {
+    padding-left: $filling-padding;
+    padding-right: $filling-padding;
+  }
+}
+
+@media (max-width: 1280px) {
+  .preview-foreground {
+    padding: 170px 48px 108px 48px;
+  }
+
+  .video-info {
+    padding: 43px 24px;
+    translate: -24px -43px;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .title {
+    @include font($fs: 72px, $fw: 700, $lh: 94px);
+  }
+}
+
+// add style for overlay ...
+@media (max-width: 768px) {
+  .title {
+    @include font($fs: 56px, $fw: 700, $lh: 73px);
+  }
+}
+
+@media (max-width: 400px) {
+  :host {
+    @include flexbox($fd: column);
+  }
+
+  .preview-background {
+    max-height: 360px;
+    position: static;
+  }
+
+  .preview-foreground {
+    padding: 40px 16px;
+    height: auto;
+    flex: 1;
+    position: static;
+  }
+
+  .video-info {
+    border-radius: 0;
+    padding: 0;
+    translate: none;
+  }
+
+  .title {
+    @include font($fs: 40px, $fw: 700, $lh: 52px);
+  }
 }

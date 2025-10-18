@@ -21,16 +21,37 @@ export class App {
   private resizer = inject(WindowResizer);
 
   // fix error-toasts on app ... !
-  // fix heading two-liners ... !
+  // fix heading two-liners + empty-text ... !
   // create MobileService for resize and rotation events ...
 
   // responsiveness 320/368/400 + 768/1280 + 1440/1920 + 1920+
   // --------------
   // video-pages (0/2) ...
+  //   --> video-offer: 320/368/400/.../1280/1440/1920 + 1920+ + height
+  //   --> add media 768px ...
+  //   --> hero as overlay ...
+  //   --> add styles ...
   // header, footer (0/4) ...
   // video-settings-dialog ...
 
+  // fix video-info with transform and/or vis-button ... ?
+  // preview-forground as overlay on click ... ?
+
+  // is window resizer necessary ... ?
+  //   --> just use media + display:none ... ?!
+
+  // epmpty-message for hero (not library) ... ?!
+  // add video preview for mobile ...
+  // fix vider-offer footer padding ... !
+  // video-offer video-button size for 1920px ... ?
+  // add hasLibrary for library padding and library-shadow (1/2) ...
+  // add sign-out button to footer ...
+
+  // last tasks
+  // ----------
+  // add font-families ... !
   // README for frontend ... !
+  // browser check ... !
 
   protected title = 'videoflix-frontend';
 

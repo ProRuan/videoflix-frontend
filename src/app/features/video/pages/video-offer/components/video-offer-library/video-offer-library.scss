@@ -29,7 +29,8 @@ $library-gradient: linear-gradient(
   margin: 0 auto;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:active {
     background-color: $prim-blue-hover;
   }
 }
@@ -39,7 +40,8 @@ $library-gradient: linear-gradient(
   background: $track-gray;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:active {
     background: $white;
   }
 }
@@ -112,4 +114,80 @@ $library-gradient: linear-gradient(
   @include size($w: 200px, $h: calc(100% - 149px));
   @include position($pos: absolute, $r: 0, $b: 52px);
   background: $library-gradient;
+}
+
+@media (min-width: 1921px) {
+  :host {
+    padding-left: $filling-padding;
+    padding-right: $filling-padding;
+  }
+}
+
+@media (max-width: 1280px) {
+  :host {
+    padding: 108px 48px 52px 48px;
+  }
+
+  .thumbnail-shadow {
+    &:hover {
+      opacity: 0.5;
+    }
+
+    &:active {
+      opacity: 0;
+    }
+  }
+
+  .thumbnail-title {
+    .video-button:hover & {
+      transform: translateY(0px);
+    }
+
+    .video-button:active & {
+      transform: translateY(31px);
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  :host {
+    padding: 148px 16px 144px 16px;
+    gap: 32px;
+  }
+
+  .genre-title {
+    @include font($fs: 20px, $fw: 700, $lh: 26px);
+  }
+
+  .genre-videos {
+    @include flexbox($g: 8px);
+  }
+
+  .video-button {
+    @include width($min: 176px, $max: 176px);
+    @include height($min: 99px, $max: 99px);
+  }
+
+  // .thumbnail-title {
+  //   .video-button:hover & {
+  //     transform: translateY(0px);
+  //   }
+
+  //   .video-button:active & {
+  //     transform: translateY(31px);
+  //   }
+  // }
+
+  .thumbnail-title-text {
+    @include font($fs: 16px, $lh: 21px);
+  }
+
+  .empty-text {
+    @include font($fs: 16px, $lh: 21px);
+    text-align: center;
+  }
+
+  .library-shadow {
+    display: none;
+  }
 }

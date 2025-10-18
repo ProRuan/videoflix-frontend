@@ -13,6 +13,7 @@ import {
   VideoOfferHero,
   VideoOfferLibrary,
 } from './components';
+import { WindowResizer } from '@shared/services';
 
 /**
  * Class representing a video offer component.
@@ -33,11 +34,13 @@ export class VideoOffer implements OnInit {
   private route = inject(ActivatedRoute);
   private user = inject(UserClient);
   private facade = inject(VideoOfferFacade);
+  private resizer = inject(WindowResizer);
 
   data = toSignal(this.route.data);
   response = computed(() => this.data()?.['response'] as AuthResponse);
   library = computed(() => this.data?.()?.['library'] as VideoGroup[]);
   hasLibrary = computed(() => this.library().length > 0);
+  isLargeTablet = computed(() => !this.resizer.isSmallTablet());
 
   /**
    * Initialize a video offer component.

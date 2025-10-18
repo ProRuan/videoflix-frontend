@@ -6,7 +6,7 @@
   position: relative;
 }
 
-.main {
+.video-offer-main {
   @include flexbox($fd: column);
   flex: 1;
 }
