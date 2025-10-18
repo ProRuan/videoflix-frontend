@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { AuthFormUtils, AuthStore, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
 import { StartEmailInput } from '@shared/components/inputs';
 import { ToastConfig } from '@shared/interfaces';
-import { ToastManager, WindowResizer } from '@shared/services';
+import { ToastManager } from '@shared/services';
 
 /**
  * Class representing a startsite component.
@@ -34,11 +34,8 @@ export class Startsite extends AuthFormBase<
   private utils = inject(AuthFormUtils);
   private user = inject(UserClient);
   private toasts = inject(ToastManager);
-  private resizer = inject(WindowResizer);
 
   private readonly error: ToastConfig = AUTH_TOAST_CONFIG.startsite;
-
-  isSmallTablet = computed(() => this.resizer.isSmallTablet());
 
   /**
    * Get an email form.

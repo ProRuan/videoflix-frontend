@@ -16,6 +16,8 @@ export class VideoOfferFacade {
   video = signal<Video | null>(null);
   preview = signal<ElementRef<HTMLVideoElement> | undefined>(undefined);
 
+  hasPreview = signal(false);
+
   /**
    * Update the video preview.
    * @param video - The video to be set.

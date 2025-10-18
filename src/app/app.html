@@ -4,7 +4,7 @@
 <app-success-dialog></app-success-dialog>
 }
 
-@if (isToastOpen() && this.isSmallTablet()) {
+@if (isToastOpen() && this.isMobile()) {
 <app-error-toast-mobile></app-error-toast-mobile>
 } @else if(isToastOpen()) {
 <app-error-toast></app-error-toast>

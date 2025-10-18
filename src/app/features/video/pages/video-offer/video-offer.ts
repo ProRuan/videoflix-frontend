@@ -6,6 +6,7 @@ import { AuthResponse } from '@core/auth/interfaces';
 import { UserClient } from '@core/auth/services';
 import { VideoGroup } from '@features/video/interfaces';
 import { VideoOfferFacade } from '@features/video/services';
+import { WindowResizer } from '@shared/services';
 
 import {
   VideoOfferFooter,
@@ -13,7 +14,6 @@ import {
   VideoOfferHero,
   VideoOfferLibrary,
 } from './components';
-import { WindowResizer } from '@shared/services';
 
 /**
  * Class representing a video offer component.
@@ -39,8 +39,11 @@ export class VideoOffer implements OnInit {
   data = toSignal(this.route.data);
   response = computed(() => this.data()?.['response'] as AuthResponse);
   library = computed(() => this.data?.()?.['library'] as VideoGroup[]);
-  hasLibrary = computed(() => this.library().length > 0);
-  isLargeTablet = computed(() => !this.resizer.isSmallTablet());
+  isEmpty = computed(() => this.library().length < 1);
+
+  isDesktop = computed(() => this.resizer.isDesktop());
+  hasPreview = computed(() => this.isDesktop() || this.facade.hasPreview());
+  hasLibrary = computed(() => this.isDesktop() || !this.facade.hasPreview());
 
   /**
    * Initialize a video offer component.
@@ -62,7 +65,7 @@ export class VideoOffer implements OnInit {
    * Set the video preview.
    */
   private setPreview() {
-    if (!this.hasLibrary()) return;
+    if (this.isEmpty()) return;
     const id = this.getRandomVideoId();
     const video = this.getRandomVideo(id);
     this.facade.video.set(video);

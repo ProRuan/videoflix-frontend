@@ -8,6 +8,7 @@ body {
   min-height: 100vh;
   font-family: $dm-sans;
   background-color: $prim-dark;
+  overflow-x: hidden;
 }
 
 h1,
@@ -154,6 +155,10 @@ button {
   position: relative;
 }
 
+.mobile {
+  display: none;
+}
+
 @media (min-width: 1921px) {
   .header {
     padding-left: $filling-padding;
@@ -192,6 +197,14 @@ button {
 
   .static-main {
     padding: 40px 16px 152px 16px;
+  }
+
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: flex;
   }
 }
 
@@ -340,3 +353,6 @@ button {
     @include font($fs: 12px, $lh: 16px);
   }
 }
+
+// remove mobile and desktop ... ?
+// just use specific classes ... ?

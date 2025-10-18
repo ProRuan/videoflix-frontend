@@ -13,7 +13,7 @@ $library-gradient: linear-gradient(
 );
 
 :host {
-  @include spacing($p: 108px 96px 52px 96px);
+  @include spacing($p: 64px 96px 80px 96px);
   @include flexbox($fd: column, $g: 48px);
   flex: 1;
   position: relative;
@@ -125,7 +125,7 @@ $library-gradient: linear-gradient(
 
 @media (max-width: 1280px) {
   :host {
-    padding: 108px 48px 52px 48px;
+    padding: 48px 48px 152px 48px;
   }
 
   .thumbnail-shadow {
@@ -147,14 +147,30 @@ $library-gradient: linear-gradient(
       transform: translateY(31px);
     }
   }
+
+  .library-shadow {
+    width: 152px;
+  }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 768px) {
   :host {
     padding: 148px 16px 144px 16px;
     gap: 32px;
+    transform: translateX(0);
+    transition: transform 100ms ease-in-out;
+
+    @starting-style {
+      transform: translateX(-100%);
+    }
   }
 
+  .library-shadow {
+    width: 128px;
+  }
+}
+
+@media (max-width: 400px) {
   .genre-title {
     @include font($fs: 20px, $fw: 700, $lh: 26px);
   }
@@ -167,16 +183,6 @@ $library-gradient: linear-gradient(
     @include width($min: 176px, $max: 176px);
     @include height($min: 99px, $max: 99px);
   }
-
-  // .thumbnail-title {
-  //   .video-button:hover & {
-  //     transform: translateY(0px);
-  //   }
-
-  //   .video-button:active & {
-  //     transform: translateY(31px);
-  //   }
-  // }
 
   .thumbnail-title-text {
     @include font($fs: 16px, $lh: 21px);

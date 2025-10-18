@@ -19,6 +19,7 @@
   @include font($fs: 20px, $fw: 500, $lh: 26px);
   text-align: center;
   color: $white;
+  display: none;
 }
 
 .form {
@@ -37,6 +38,10 @@
 
   .title-text-cont {
     gap: 32px;
+  }
+
+  .mobile-text {
+    display: block;
   }
 
   .form {

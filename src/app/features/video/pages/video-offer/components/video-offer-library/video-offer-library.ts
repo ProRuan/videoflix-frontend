@@ -3,6 +3,7 @@ import { Component, computed, inject } from '@angular/core';
 
 import { Video } from '@features/video/models';
 import { VideoOfferFacade } from '@features/video/services';
+import { WindowResizer } from '@shared/services';
 
 /**
  * Class representing a video offer library component.
@@ -16,8 +17,10 @@ import { VideoOfferFacade } from '@features/video/services';
 export class VideoOfferLibrary {
   private scroller = inject(ViewportScroller);
   private facade = inject(VideoOfferFacade);
+  private resizer = inject(WindowResizer);
 
   library = computed(() => this.facade.library());
+  isMobile = computed(() => this.resizer.isMobile());
 
   /**
    * Update the video preview on click.
@@ -25,6 +28,10 @@ export class VideoOfferLibrary {
    */
   onPreview(video: Video) {
     this.facade.updateVideoPreview(video);
-    this.scroller.scrollToPosition([0, 0], { behavior: 'smooth' });
+    if (this.isMobile()) {
+      this.facade.hasPreview.set(true);
+    } else {
+      this.scroller.scrollToPosition([0, 0], { behavior: 'smooth' });
+    }
   }
 }

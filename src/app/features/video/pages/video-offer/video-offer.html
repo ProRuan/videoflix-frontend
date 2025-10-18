@@ -1,11 +1,12 @@
 <app-video-offer-header></app-video-offer-header>
 
 <main class="video-offer-main">
-    <!-- isLargeTablet ... -->
-    @if (hasLibrary()) {
+    @if (hasPreview()) {
     <app-video-offer-hero></app-video-offer-hero>
     }
+    @if (hasLibrary()) {
     <app-video-offer-library></app-video-offer-library>
+    }
 </main>
 
 <app-video-offer-footer></app-video-offer-footer>

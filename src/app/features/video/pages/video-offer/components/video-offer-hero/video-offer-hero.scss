@@ -6,9 +6,12 @@ $preview-gradient: linear-gradient(
   rgba(20, 20, 20, 0) 50%,
   $prim-dark 100%
 );
+$visibility: url("/images/buttons/visibility.svg");
+$visibility-off: url("/images/buttons/visibility_off.svg");
 
 :host {
   @include height($h: 100vh, $max: 1080px);
+  display: block;
   position: relative;
 }
 
@@ -16,6 +19,7 @@ $preview-gradient: linear-gradient(
   @include size($w: 100%, $h: 100%);
   @include flexbox($jc: center, $ai: center);
   @include position($pos: absolute, $l: 0, $t: 0);
+  min-height: 315px;
   z-index: 0;
   overflow-x: hidden;
 }
@@ -39,7 +43,7 @@ $preview-gradient: linear-gradient(
 }
 
 .preview-foreground {
-  @include spacing($p: 170px 96px 108px 96px);
+  @include spacing($p: 172px 96px 64px 96px);
   @include size($w: 100%, $h: 100%);
   @include position($pos: absolute, $l: 0, $t: 0);
   z-index: 1;
@@ -53,7 +57,7 @@ $preview-gradient: linear-gradient(
   translate: -56px -43px;
   transition: background-color 100ms ease-in-out;
 
-  &:hover {
+  &.bg {
     background-color: rgba(27, 27, 34, 0.85);
   }
 }
@@ -70,6 +74,30 @@ $preview-gradient: linear-gradient(
   color: $white;
 }
 
+.button-group {
+  @include flexbox($ai: center, $g: 48px);
+}
+
+.vis-button {
+  @include spacing($p: 0);
+  @include border($b: none, $br: 40px);
+  @include size($w: 36px, $h: 36px);
+  @include background(
+    $color: $prim-blue,
+    $image: $visibility,
+    $size: 24px 24px
+  );
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $prim-blue-hover;
+  }
+
+  &.vis-off {
+    background-image: $visibility-off;
+  }
+}
+
 @media (min-width: 1921px) {
   :host {
     padding-left: $filling-padding;
@@ -84,42 +112,48 @@ $preview-gradient: linear-gradient(
 
 @media (max-width: 1280px) {
   .preview-foreground {
-    padding: 170px 48px 108px 48px;
+    padding: 156px 48px 48px 48px;
   }
 
   .video-info {
     padding: 43px 24px;
     translate: -24px -43px;
-
-    &:hover {
-      background-color: transparent;
-    }
   }
 
   .title {
     @include font($fs: 72px, $fw: 700, $lh: 94px);
   }
-}
 
-// add style for overlay ...
-@media (max-width: 768px) {
-  .title {
-    @include font($fs: 56px, $fw: 700, $lh: 73px);
+  .vis-button {
+    &:hover {
+      background-color: $prim-blue;
+    }
+
+    &:active {
+      background-color: $prim-blue-hover;
+    }
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 768px) {
   :host {
     @include flexbox($fd: column);
+    min-height: 900px;
+    transform: translateX(0);
+    transition: transform 100ms ease-in-out;
+
+    @starting-style {
+      transform: translateX(100%);
+    }
   }
 
   .preview-background {
-    max-height: 360px;
+    max-height: 432px;
     position: static;
   }
 
   .preview-foreground {
-    padding: 40px 16px;
+    padding: 40px 16px 144px 16px;
     height: auto;
     flex: 1;
     position: static;
@@ -133,5 +167,17 @@ $preview-gradient: linear-gradient(
 
   .title {
     @include font($fs: 40px, $fw: 700, $lh: 52px);
+  }
+}
+
+@media (max-width: 400px) {
+  .preview-background {
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 368px) {
+  .title {
+    @include font($fs: 36px, $fw: 700, $lh: 47px);
   }
 }

@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { finalize } from 'rxjs';
 
 import { AuthStore, UserClient } from '@core/auth/services';
 import { Button } from '@shared/components/buttons';
-import { ToastManager, WindowResizer } from '@shared/services';
+import { ToastManager } from '@shared/services';
 
 /**
  * Class representing a video offer header component.
@@ -22,10 +22,8 @@ export class VideoOfferHeader {
   private auth = inject(AuthStore);
   private user = inject(UserClient);
   private toasts = inject(ToastManager);
-  private resizer = inject(WindowResizer);
 
   isLoading = signal(false);
-  isLargeTablet = computed(() => !this.resizer.isSmallTablet());
 
   /**
    * Redirect to the sign-out on click.

@@ -10,7 +10,8 @@ import { asapScheduler, concatAll, fromEvent, map, of, scheduled } from 'rxjs';
 })
 export class WindowResizer {
   width = signal(0);
-  isSmallTablet = computed(() => this.width() < 768 + 1);
+  isDesktop = computed(() => this.width() > 768);
+  isMobile = computed(() => !this.isDesktop());
 
   /**
    * Creates a window resizer service.
