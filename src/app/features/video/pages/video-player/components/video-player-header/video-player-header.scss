@@ -26,10 +26,81 @@ $gradient: linear-gradient(
 }
 
 .message {
-  @include font($fs: 16px, $lh: 21px);
+  @include font($fs: 15px, $lh: 20px);
   color: $white;
+}
+
+.mobile-message {
+  display: none;
+}
+
+.logo-title-cont {
+  @include flexbox($ai: center, $g: 24px);
 }
 
 .logo {
   @include image($h: 48px);
+}
+
+.video-title {
+  @include font($fs: 24px, $fw: 700, $lh: 32px);
+  color: $white;
+  display: none;
+}
+
+@media (min-width: 1921px) {
+  .video-player-header {
+    padding-left: calc(50% - 960px + 32px);
+    padding-right: calc(50% - 960px + 32px);
+  }
+}
+
+@media (max-width: 1280px) {
+  .video-player-header {
+    flex-direction: row-reverse;
+  }
+
+  .desktop-message {
+    display: none;
+  }
+
+  .mobile-message {
+    display: inline-block;
+  }
+
+  .video-title {
+    display: block;
+  }
+}
+
+@media (max-width: 1280px) and (orientation: portrait) {
+  .message {
+    display: none;
+  }
+}
+
+// use code above ... !
+// remove ... ?
+// set width again ... !!!
+@media (max-height: 844px) {
+  :host {
+    &.move-up {
+      transform: translateY(-80px);
+    }
+  }
+
+  .video-player-header {
+    padding: 10px 16px;
+    height: 80px;
+    // flex-direction: row-reverse;
+  }
+
+  .logo {
+    height: 32px;
+  }
+
+  .video-title {
+    @include font($fs: 20px, $fw: 500, $lh: 26px);
+    // display: block;
+  }
 }

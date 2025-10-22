@@ -13,7 +13,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { AuthResponse } from '@core/auth/interfaces';
 import { UserClient } from '@core/auth/services';
-import { VideoSettingsDialog } from '@features/video/components';
+import {
+  PlayButton,
+  SkipBackwardsButton,
+  SkipForwardButton,
+  VideoSettingsDialog,
+} from '@features/video/components';
 import { VIDEO_PLAYER_OPTIONS } from '@features/video/constants';
 import { PlayerSource } from '@features/video/interfaces';
 import { PlayableVideo } from '@features/video/models';
@@ -23,7 +28,7 @@ import {
   VideoDialogConfigurator,
   VideoPlayerFacade,
 } from '@features/video/services';
-import { DialogManager } from '@shared/services';
+import { DialogManager, WindowResizer } from '@shared/services';
 
 import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
 
@@ -34,11 +39,19 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
  */
 @Component({
   selector: 'app-video-player',
-  imports: [VideoPlayerHeader, VideoPlayerMultiBar, VideoSettingsDialog],
+  imports: [
+    PlayButton,
+    SkipBackwardsButton,
+    SkipForwardButton,
+    VideoPlayerHeader,
+    VideoPlayerMultiBar,
+    VideoSettingsDialog,
+  ],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
   host: {
-    '(document:mousemove)': 'onPlayerInteraction()',
+    '(document:mousemove)': 'onPlayerInteraction($event)',
+    '(document:pointerdown)': 'onPlayerInteraction($event)',
     '(document:fullscreenchange)': 'onPlayerUIUpdate()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +64,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private fsContr = inject(FullscreenController);
   private config = inject(VideoDialogConfigurator);
   private dialogs = inject(DialogManager);
+  private resizer = inject(WindowResizer);
 
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);
@@ -67,7 +81,13 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private options = computed(() => this.getOptions());
   private sources = computed(() => this.getSources());
 
-  isFullscreen = computed(() => this.fsContr.isFullscreen());
+  hasPlayerUI = computed(() => this.fsContr.hasPlayerUI());
+  isFullscreen = computed(
+    () => this.fsContr.isFullscreen() || this.resizer.isFullscreen()
+  );
+  isMobileScreen = computed(() => this.resizer.isFullscreen());
+  isIdle = computed(() => this.fsContr.isIdle());
+  isDisplayed = computed(() => !this.fsContr.isIdle());
 
   readonly playbackRateConfig = this.config.playbackRateDialogConfig;
   readonly qualityLevelConfig = this.config.qualityLevelsDialogConfig;
@@ -91,8 +111,11 @@ export class VideoPlayer implements AfterViewInit, OnInit {
 
   /**
    * Show player UI on mouse move.
+   * @param event - The event.
    */
-  onPlayerInteraction() {
+  onPlayerInteraction(event: Event) {
+    const type = event.type;
+    if (type === 'mousemove' && this.isMobileScreen()) return;
     this.fsContr.showPlayerUIWithTimeout();
   }
 
@@ -151,6 +174,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
     this.facade.setPlayer(this.video.nativeElement, this.options());
     this.facade.setSources(this.sources());
     this.facade.setTitle(this.title());
+    this.facade.showMessageWithTimeout();
   }
 
   /**
@@ -165,6 +189,10 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    * Toggle between play and pause with a delay on click.
    */
   onPlayToggle() {
+    if (this.isMobileScreen()) {
+      this.fsContr.showPlayerUIWithTimeout();
+      return;
+    }
     this.facade.togglePlayWithDelay();
   }
 

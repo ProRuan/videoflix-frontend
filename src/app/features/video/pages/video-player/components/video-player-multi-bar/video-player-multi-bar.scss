@@ -37,3 +37,59 @@ $gradient: linear-gradient(
   @include font($fs: 24px, $fw: 700, $lh: 32px);
   color: $white;
 }
+
+.mobile-control-bar {
+  @include flexbox($jc: space-between, $ai: center);
+  display: none;
+}
+
+// set width again ... !!!
+@media (max-width: 1280px) {
+  // :host {
+  //   @include position($pos: absolute, $l: 0, $b: 0);
+  //   width: 100%;
+  //   background: $gradient;
+  //   z-index: $z-header;
+  //   transform: translateY(0);
+  //   transition: transform 100ms ease-in-out;
+
+  //   &.move-down {
+  //     transform: translateY(108px);
+  //   }
+  // }
+
+  .video-player-multi-bar {
+    padding: 0 16px 8px 16px;
+    height: 64px;
+    gap: 8px;
+  }
+
+  .control-bar {
+    display: none;
+  }
+
+  // .control-button-group {
+  //   @include flexbox($g: 24px);
+  // }
+
+  .video-title {
+    display: none;
+  }
+
+  .mobile-control-bar {
+    display: flex;
+  }
+}
+
+@media (min-width: 1921px) {
+  .video-player-multi-bar {
+    padding-left: calc(50% - 960px + 32px);
+    padding-right: calc(50% - 960px + 32px);
+  }
+}
+
+@media (max-width: 1280px) and (orientation: portrait) {
+  :host {
+    display: none;
+  }
+}

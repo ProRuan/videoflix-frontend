@@ -101,3 +101,82 @@ $close-icon: url("/images/players/close_small.svg");
     cursor: default;
   }
 }
+
+@media (max-width: 1280px) {
+  .dialog {
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+
+  .dialog-box {
+    @include size($w: 100%, $h: 64px);
+    border-radius: 0;
+    background-color: $prim-dark;
+    box-shadow: none;
+    flex-direction: row;
+    justify-content: space-between;
+    left: 0;
+    right: auto;
+    bottom: 0;
+    transform: translateY(0);
+
+    @starting-style {
+      transform: translateY(80px);
+    }
+  }
+
+  .slide-out {
+    transform: translateY(80px);
+  }
+
+  .title-border-cont {
+    padding: 0;
+    flex-direction: row;
+  }
+
+  .title {
+    text-align: left;
+  }
+
+  .border {
+    display: none;
+  }
+
+  .close-button {
+    @include position($pos: relative, $t: 0, $r: 0);
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:active {
+      background-color: $prim-blue;
+    }
+  }
+
+  .options {
+    width: fit-content;
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .value-button {
+    @include font($fs: 14px, $fw: 500, $lh: 18px);
+    padding: 4px 8px;
+    width: fit-content;
+    min-width: 32px;
+    background-color: rgba(255, 255, 255, 0.15);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0);
+    }
+
+    &:active {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:disabled {
+      background-color: $prim-blue;
+    }
+  }
+}

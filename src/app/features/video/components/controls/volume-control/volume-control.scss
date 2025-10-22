@@ -8,11 +8,7 @@ $mute-icon: url("/images/players/mute.svg");
 }
 
 .volume-button {
-  @include border($b: none, $br: 40px);
-  @include spacing($p: 0);
-  @include size($w: 48px, $h: 48px);
-  @include background($image: $volume-icon, $size: auto);
-  transition: background-color 100ms ease-in-out;
+  @include background($image: $volume-icon);
 
   &:hover {
     background-color: $prim-blue;
@@ -32,6 +28,9 @@ $mute-icon: url("/images/players/mute.svg");
   @include flexbox($ai: center);
   background-color: transparent;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .track {
@@ -55,9 +54,22 @@ $mute-icon: url("/images/players/mute.svg");
   background-color: $prim-blue;
   transform: translateX(-50%);
   transition: background-color 100ms ease-in-out;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 
   &:hover,
   &:active {
     background-color: $prim-blue-hover;
+  }
+}
+
+@media (max-width: 1280px) {
+  :host {
+    height: 32px;
+  }
+
+  .volume-button {
+    @include size($w: 32px, $h: 32px);
   }
 }

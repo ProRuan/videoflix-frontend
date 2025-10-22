@@ -1,11 +1,1 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-  <!-- Top-left arrow pointing outwards -->
-  <path d="M6 12H12V6H15V15H6V12Z" fill="white"/>
-  <!-- Top-right arrow pointing outwards -->
-  <path d="M24 6V12H30V15H21V6H24Z" fill="white"/>
-  <!-- Bottom-left arrow pointing outwards -->
-  <path d="M6 21H15V30H12V24H6V21Z" fill="white"/>
-  <!-- Bottom-right arrow pointing outwards -->
-  <path d="M21 21H30V24H24V30H21V21Z" fill="white"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#FFFFFF"><path d="M253-120v-133H120v-60h193v193h-60Zm394 0v-193h193v60H707v133h-60ZM120-647v-60h133v-133h60v193H120Zm527 0v-193h60v133h133v60H647Z"/></svg>

@@ -18,8 +18,8 @@ import { VideoPlayerFacade } from '@features/video/services';
   templateUrl: './play-progress-bar.html',
   styleUrl: './play-progress-bar.scss',
   host: {
-    '(document:mousemove)': 'onScrubbing($event)',
-    '(document:mouseup)': 'onScrubbingEnd()',
+    '(document:pointermove)': 'onScrubbing($event)',
+    '(document:pointerup)': 'onScrubbingEnd($event)',
   },
 })
 export class PlayProgressBar {
@@ -28,7 +28,9 @@ export class PlayProgressBar {
   private duration = computed(() => this.facade.duration());
   private isDragging = signal(false);
   private wasPlayingBeforeDrag = signal(false);
+  private activePointerId = signal<number | null>(null);
 
+  currentTime = signal(0);
   remainingDisplayTime = computed(() => this.facade.remainingDisplayTime());
   currentDisplayTime = computed(() => this.facade.currentDisplayTime());
   bufferPercent = computed(() => this.facade.bufferPercent());
@@ -38,33 +40,40 @@ export class PlayProgressBar {
 
   /**
    * Navigate through the video on mouse move.
-   * @param event - The mouse event.
+   * @param event - The pointer event.
    */
-  onScrubbing(event: MouseEvent) {
-    if (this.isDragging()) this.updateCurrentTime(event);
+  onScrubbing(event: PointerEvent) {
+    if (!this.isDragging() || this.activePointerId() !== event.pointerId)
+      return;
+    event.preventDefault();
+    this.updateCurrentTime(event.clientX);
+    // if (this.isDragging()) this.updateCurrentTime(event);
   }
 
   /**
    * Update the current time.
-   * @param event - The mouse event.
+   * @param clientX - The pointer client x.
    */
-  private updateCurrentTime(event: MouseEvent) {
-    const value = this.getCurrentTime(event);
-    this.setCurrentTime(value);
+  private updateCurrentTime(clientX: number) {
+    const time = this.getCurrentTime(clientX);
+    this.setCurrentTime(time);
   }
 
   /**
    * Get a current time.
-   * @param event - The mouse event.
+   * @param clientX - The pointer client x.
    * @returns The current time.
    */
-  private getCurrentTime(event: MouseEvent) {
+  private getCurrentTime(clientX: number) {
     const progressBar = this.progressBar.nativeElement;
     const rect = progressBar.getBoundingClientRect();
-    const deltaX = event.clientX - rect.left;
-    const relativeProgress = deltaX / rect.width;
-    const absoluteProgress = relativeProgress * this.duration();
-    return Math.min(this.duration(), absoluteProgress);
+    const deltaX = clientX - rect.left;
+    const ratio = rect.width > 0 ? deltaX / rect.width : 0;
+    const clampedRatio = Math.max(0, Math.min(1, ratio));
+    return clampedRatio * this.duration();
+    // const relativeProgress = deltaX / rect.width;
+    // const absoluteProgress = relativeProgress * this.duration();
+    // return Math.min(this.duration(), absoluteProgress);
   }
 
   /**
@@ -72,13 +81,29 @@ export class PlayProgressBar {
    * @param value - The value to be set.
    */
   private setCurrentTime(value: number) {
+    this.currentTime.set(value);
     this.facade.setCurrentTime(value);
   }
 
-  onScrubbingEnd() {
+  onScrubbingEnd(event: PointerEvent) {
+    if (!this.isDragging() || this.activePointerId() !== event.pointerId)
+      return;
+
+    try {
+      (this.progressBar.nativeElement as Element).releasePointerCapture?.(
+        event.pointerId
+      );
+    } catch (_) {}
+
+    this.isDragging.set(false);
+    this.activePointerId.set(null);
+
     if (this.isInProgress()) this.facade.play();
     this.wasPlayingBeforeDrag.set(false);
-    this.isDragging.set(false);
+
+    // if (this.isInProgress()) this.facade.play();
+    // this.wasPlayingBeforeDrag.set(false);
+    // this.isDragging.set(false);
   }
 
   /**
@@ -92,29 +117,42 @@ export class PlayProgressBar {
 
   /**
    * Prepare the player for dragging the play progress.
-   * @param event - The mouse event.
+   * @param event - The pointer event.
    */
-  onScrubbingStart(event: MouseEvent) {
+  onScrubbingStart(event: PointerEvent) {
+    if (!event.isPrimary) return;
+    const pointer = event.target as Element;
+    const id = event.pointerId;
+    pointer.setPointerCapture?.(id);
+    this.activePointerId.set(id);
     event.preventDefault();
+
     this.isDragging.set(true);
     this.pausePlayer();
-    this.updateCurrentTime(event);
+
+    this.updateCurrentTime(event.clientX);
+
+    // event.preventDefault();
+    // this.isDragging.set(true);
+    // this.pausePlayer();
+    // this.updateCurrentTime(event);
   }
 
   /**
    * Pause the player while dragging.
    */
   private pausePlayer() {
-    const value = !this.facade.isPaused();
-    this.wasPlayingBeforeDrag.set(value);
+    const playing = !this.facade.isPaused();
+    this.wasPlayingBeforeDrag.set(playing);
     this.facade.pause();
   }
 
   /**
    * Updates the current time on click.
-   * @param event - The mouse event.
+   * @param event - The event.
    */
-  onCurrentTime(event: MouseEvent) {
-    this.updateCurrentTime(event);
+  onCurrentTime(event: Event) {
+    const pointer = event as PointerEvent;
+    this.updateCurrentTime(pointer.clientX);
   }
 }

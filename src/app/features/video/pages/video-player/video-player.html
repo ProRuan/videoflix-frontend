@@ -1,9 +1,28 @@
 <section #videoPlayer class="video-player">
     <app-video-player-header></app-video-player-header>
-    <div class="scalable-video" [class.immersive]="isFullscreen()" (click)="onPlayToggle()" (dblclick)="onFullScreen()">
+    <div class="scalable-video" [class.immersive]="isFullscreen()" (click)="onPlayToggle()" (dblclick)="onFullScreen()"
+        (pointerdown)="onPlayToggle()">
         <video #video class="video video-js"></video>
     </div>
+
+    <div class="hint-cont">
+        <img class="hint-img" src="/images/players/screen_rotation_alt.svg" alt="screen rotation alt">
+        <span class="hint-text">Please rotate your device.</span>
+    </div>
+
     <app-video-player-multi-bar></app-video-player-multi-bar>
+
+    @if (isDisplayed()) {
+    <div class="mobile-ui">
+        <div class="mobile-button-group">
+            <div class="shadow">
+                <app-skip-backwards-button></app-skip-backwards-button>
+                <app-play-button></app-play-button>
+                <app-skip-forward-button></app-skip-forward-button>
+            </div>
+        </div>
+    </div>
+    }
 
     @if (isPlaybackRateDialogOpen()) {
     <app-video-settings-dialog [config]="playbackRateConfig"></app-video-settings-dialog>

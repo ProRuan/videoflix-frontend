@@ -4,12 +4,15 @@ $play-icon: url("/images/players/play.svg");
 $pause-icon: url("/images/players/pause.svg");
 $replay-icon: url("/images/players/replay.svg");
 
-.play-button {
-  @include border($b: none, $br: 40px);
-  @include spacing($p: 0);
+// set pause-icon size (0/2) ...
+// fix host and button sizes ...
+
+:host {
   @include size($w: 48px, $h: 48px);
-  @include background($image: $play-icon, $position: 16px 11px, $size: auto);
-  transition: background-color 100ms ease-in-out;
+}
+
+.play-button {
+  @include background($image: $play-icon);
 
   &:hover {
     background-color: $prim-blue;
@@ -21,11 +24,29 @@ $replay-icon: url("/images/players/replay.svg");
 
   &.pause {
     background-image: $pause-icon;
-    background-position: center;
+    background-size: 44px 44px;
   }
 
   &.replay {
     background-image: $replay-icon;
-    background-position: 6px 2px;
   }
 }
+
+@media (max-width: 1280px) {
+  :host {
+    @include size($w: 56px, $h: 56px);
+  }
+
+  .play-button {
+    @include size($w: 56px, $h: 56px);
+  }
+}
+
+// // replace with width ... !!!
+// @media (max-height: 844px) {
+//   .play-button {
+//     &.pause {
+//       background-size: 28px 28px;
+//     }
+//   }
+// }

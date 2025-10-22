@@ -3,11 +3,7 @@
 $quality-icon: url("/images/players/quality.svg");
 
 .quality-button {
-  @include border($b: none, $br: 40px);
-  @include spacing($p: 0);
-  @include size($w: 48px, $h: 48px);
-  @include background($image: $quality-icon, $size: 36px 36px);
-  transition: background-color 100ms ease-in-out;
+  @include background($image: $quality-icon, $size: 40px 40px);
 
   &:hover {
     background-color: $prim-blue;
@@ -15,5 +11,19 @@ $quality-icon: url("/images/players/quality.svg");
 
   &:active {
     background-color: $prim-blue-hover;
+  }
+}
+
+@media (max-width: 1280px) {
+  :host {
+    @include size($w: 32px, $h: 32px);
+  }
+
+  .player-button {
+    @include size($w: 32px, $h: 32px);
+  }
+
+  .quality-button {
+    background-size: 27px 27px;
   }
 }

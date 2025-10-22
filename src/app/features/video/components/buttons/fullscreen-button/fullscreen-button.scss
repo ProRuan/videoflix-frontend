@@ -4,11 +4,7 @@ $fullscreen-icon: url("/images/players/fullscreen.svg");
 $exit-fullscreen-icon: url("/images/players/exit_fullscreen.svg");
 
 .fullscreen-button {
-  @include border($b: none, $br: 40px);
-  @include spacing($p: 0);
-  @include size($w: 48px, $h: 48px);
-  @include background($image: $fullscreen-icon, $size: 28px 28px);
-  transition: background-color 100ms ease-in-out;
+  @include background($image: $fullscreen-icon, $size: 40px 40px);
 
   &:hover {
     background-color: $prim-blue;
@@ -20,5 +16,12 @@ $exit-fullscreen-icon: url("/images/players/exit_fullscreen.svg");
 
   &.exit {
     background-image: $exit-fullscreen-icon;
+  }
+}
+
+// replace with width ... !!!
+@media (max-height: 844px) {
+  .fullscreen-button {
+    background-size: 27px 27px;
   }
 }

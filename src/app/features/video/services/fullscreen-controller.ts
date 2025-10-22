@@ -2,6 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { VideoPlayerFacade } from './video-player-facade';
 import { TimeoutId } from '@shared/constants';
+import { WindowResizer } from '@shared/services';
 
 /**
  * Class representing a fullscreen controller service.
@@ -13,12 +14,23 @@ import { TimeoutId } from '@shared/constants';
 })
 export class FullscreenController {
   private facade = inject(VideoPlayerFacade);
+  private resizer = inject(WindowResizer);
+
+  // isIdle && !hasPlayerUI ...
+  // fix 1280px and mouse move ...
 
   private playerUITimeout: TimeoutId = -1;
 
+  isMobile = computed(() => this.resizer.isMobile());
+
   isFullscreen = signal(false);
   hasPlayerUI = signal(true);
-  isVideoOnly = computed(() => this.isFullscreen() && !this.hasPlayerUI());
+  isIdle = signal(false);
+  isVideoOnly = computed(
+    () =>
+      (this.isFullscreen() && !this.hasPlayerUI()) ||
+      (this.isMobile() && !this.hasPlayerUI())
+  );
 
   /**
    * Toggle a video´s fullscreen mode.
@@ -63,8 +75,16 @@ export class FullscreenController {
   showPlayerUIWithTimeout() {
     clearTimeout(this.playerUITimeout);
     this.hasPlayerUI.set(true);
+    this.isIdle.set(false);
     this.playerUITimeout = setTimeout(() => {
       this.hasPlayerUI.set(false);
+      this.isIdle.set(true);
     }, 2000);
+  }
+
+  hidePlayerUI() {
+    clearTimeout(this.playerUITimeout);
+    this.hasPlayerUI.set(false);
+    this.isIdle.set(true);
   }
 }

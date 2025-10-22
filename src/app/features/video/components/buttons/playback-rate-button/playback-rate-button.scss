@@ -2,16 +2,12 @@
 
 $speed-icon: url("/images/players/speed.svg");
 
-.playback-rate-button {
-  @include border($b: none, $br: 40px);
-  @include spacing($p: 0);
+:host {
   @include size($w: 48px, $h: 48px);
-  @include background(
-    $image: $speed-icon,
-    $position: 7px 9px,
-    $size: 35px 28px
-  );
-  transition: background-color 100ms ease-in-out;
+}
+
+.playback-rate-button {
+  @include background($image: $speed-icon, $size: 40px 40px);
 
   &:hover {
     background-color: $prim-blue;
@@ -21,3 +17,24 @@ $speed-icon: url("/images/players/speed.svg");
     background-color: $prim-blue-hover;
   }
 }
+
+@media (max-width: 1280px) {
+  :host {
+    @include size($w: 32px, $h: 32px);
+  }
+
+  .playback-rate-button {
+    background-size: 28px 28px;
+  }
+
+  .player-button {
+    @include size($w: 32px, $h: 32px);
+  }
+}
+
+// // replace with width ... !!!
+// @media (max-height: 844px) {
+//   .playback-rate-button {
+//     background-size: 26px 26px;
+//   }
+// }

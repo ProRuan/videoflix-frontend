@@ -9,12 +9,18 @@
             <app-volume-control></app-volume-control>
         </div>
 
-        <span class="video-title">{{ title() }}</span>
+        <h6 class="video-title">{{ title() }}</h6>
 
         <div class="control-button-group">
             <app-playback-rate-button></app-playback-rate-button>
             <app-quality-button></app-quality-button>
             <app-fullscreen-button></app-fullscreen-button>
         </div>
+    </div>
+
+    <div class="mobile-control-bar">
+        <app-volume-control></app-volume-control>
+        <app-playback-rate-button></app-playback-rate-button>
+        <app-quality-button></app-quality-button>
     </div>
 </section>

@@ -127,6 +127,7 @@ export class QualityLevelController {
     this.player()?.load();
     this.player()?.ready(() => {
       this.facade.setCurrentTime(currentTime);
+      this.facade.showMessageWithTimeout();
       this.facade.play();
     });
   }

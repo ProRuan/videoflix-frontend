@@ -1,5 +1,15 @@
 <header class="video-player-header">
-    <app-back-button></app-back-button>
-    <p class="message">Optimizing video for your screen {{ percent() }}%</p>
-    <img class="logo" src="/images/players/logo.svg" alt="logo">
+    <app-close-video-button></app-close-video-button>
+    <!-- <app-back-button></app-back-button> -->
+    @if (isMessageDisplayed()) {
+    <p class="message">
+        <span class="desktop-message">Optimizing video for your screen </span>
+        <span class="mobile-message">Video to screen: </span>
+        {{ percent() }}%
+    </p>
+    }
+    <div class="logo-title-cont">
+        <img class="logo" src="/images/players/logo.svg" alt="logo">
+        <h6 class="video-title">{{ title() }}</h6>
+    </div>
 </header>

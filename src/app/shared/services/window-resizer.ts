@@ -13,11 +13,18 @@ export class WindowResizer {
   isDesktop = computed(() => this.width() > 768);
   isMobile = computed(() => !this.isDesktop());
 
+  orientationType = signal<typeof screen.orientation.type>('landscape-primary');
+  orientation = computed(() => this.orientationType().split('-')[0]);
+  isPortrait = computed(() => this.orientation() === 'portrait');
+  isLandscape = computed(() => this.orientation() === 'landscape');
+  isFullscreen = computed(() => this.width() < 1280 + 1);
+
   /**
    * Creates a window resizer service.
    */
   constructor() {
     this.listenToWindowWidth();
+    this.listenToOrientation();
   }
 
   /**
@@ -45,5 +52,28 @@ export class WindowResizer {
    */
   private getChangedWidth() {
     return fromEvent(window, 'resize').pipe(map(() => window.innerWidth));
+  }
+
+  private listenToOrientation() {
+    const initial$ = this.getInitialOrientation();
+    const resize$ = this.getChangedOrientation();
+    scheduled([initial$, resize$], asapScheduler)
+      .pipe(concatAll())
+      .subscribe((value) => {
+        this.orientationType.set(value);
+        // console.log('orientation: ', value);
+        // console.log('is portrait: ', this.isPortrait());
+        // console.log('is landscape: ', this.isLandscape());
+      });
+  }
+
+  private getInitialOrientation() {
+    return of(screen.orientation.type);
+  }
+
+  private getChangedOrientation() {
+    return fromEvent(screen.orientation, 'change').pipe(
+      map(() => screen.orientation.type)
+    );
   }
 }

@@ -16,6 +16,7 @@ h2,
 h3,
 h4,
 h5,
+h6,
 p,
 ul {
   margin: 0;
@@ -30,6 +31,19 @@ button {
   font-family: $dm-sans;
   outline: none;
   cursor: pointer;
+}
+
+app-fullscreen-button,
+app-play-button,
+app-playback-rate-button,
+app-quality-button,
+app-skip-backwards-button,
+app-skip-forward-button {
+  @include size($w: 48px, $h: 48px);
+}
+
+app-volume-control {
+  height: 48px;
 }
 
 .header {
@@ -105,6 +119,15 @@ button {
 
 .transparent {
   background-color: transparent;
+}
+
+// dev
+// move in style above ... ?!
+.player-button {
+  @include border($b: none, $br: 40px);
+  @include spacing($p: 0);
+  @include size($w: 48px, $h: 48px);
+  transition: background-color 100ms ease-in-out;
 }
 
 .static-main {
@@ -213,6 +236,28 @@ button {
 // display: block;
 // }
 
+// for testing only ... !
+// improve app styles ... !
+// @media (max-width: 1280px) {
+//   app-close-video-button,
+//   app-fullscreen-button,
+//   app-play-button,
+//   app-playback-rate-button,
+//   app-quality-button,
+//   app-skip-backwards-button,
+//   app-skip-forward-button {
+//     @include size($w: 32px, $h: 32px);
+//   }
+
+//   app-volume-control {
+//     height: 32px;
+//   }
+
+//   .player-button {
+//     @include size($w: 32px, $h: 32px);
+//   }
+// }
+
 @media (max-width: 400px) {
   // body {
   //   @include font();
@@ -299,6 +344,10 @@ button {
   //   @starting-style {
   //     background-color: transparent;
   //   }
+  // }
+
+  // .player-button {
+  //   scale: calc($two-thirds);
   // }
 
   // .it-kanzlei-timestamp {

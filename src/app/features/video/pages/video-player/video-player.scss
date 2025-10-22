@@ -1,5 +1,12 @@
 @use "mixins" as *;
 
+$gradient: linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0.8) -27.44%,
+  rgba(0, 0, 0, 0.44) 44.23%,
+  rgba(0, 0, 0, 0.8) 100%
+);
+
 .video-player {
   height: 100vh;
 }
@@ -20,4 +27,79 @@
   display: block;
   outline: none;
   cursor: pointer;
+}
+
+// rename hint classes ...
+.hint-cont {
+  @include flexbox($fd: column, $jc: center, $ai: center, $g: 16px);
+  height: 100vh;
+  display: none;
+}
+
+.hint-img {
+  @include image($w: 80px, $h: 80px);
+}
+
+.hint-text {
+  @include font($fs: 24px, $lh: 32px);
+  color: $white;
+}
+
+.mobile-ui {
+  @include size($w: 100%, $h: 100vh);
+  @include position($pos: fixed, $l: 0, $t: 0);
+  display: none;
+}
+
+.shadow {
+  @include size($w: 100%, $h: 100%);
+  @include flexbox($jc: center, $ai: center, $g: 104px);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  background: $gradient;
+  opacity: 1;
+  transition: opacity 100ms ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.mobile-button-group {
+  @include flexbox($ai: center, $g: 104px);
+}
+
+@media (min-width: 1921px) {
+  .scalable-video {
+    padding-left: calc(50% - 960px);
+    padding-right: calc(50% - 960px);
+  }
+}
+
+// edit ...
+// @media (max-width: 1280px) and (orientation: portrait) {
+//   .video-player {
+//     display: none;
+//   }
+// }
+
+// @media (max-width: 1280px) {
+//   .scalable-video {
+//     padding: 0;
+//   }
+// }
+
+@media (max-width: 1280px) and (orientation: portrait) {
+  .scalable-video {
+    display: none;
+  }
+
+  .hint-cont {
+    display: flex;
+  }
+}
+
+@media (max-width: 1280px) and (orientation: landscape) {
+  .mobile-ui {
+    display: flex;
+  }
 }
