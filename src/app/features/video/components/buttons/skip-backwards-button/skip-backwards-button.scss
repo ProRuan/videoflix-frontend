@@ -3,13 +3,5 @@
 $backward-icon: url("/images/players/backward_10.svg");
 
 .skip-backwards-button {
-  @include background($image: $backward-icon);
-
-  &:hover {
-    background-color: $prim-blue;
-  }
-
-  &:active {
-    background-color: $prim-blue-hover;
-  }
+  @include player-button($icon: $backward-icon);
 }

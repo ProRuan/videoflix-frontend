@@ -72,6 +72,9 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   // rename fsContr to screenModes ...
   // rename qlContr to videoQualities ...
 
+  // fix button styles (7/8) ...
+  // move play-button hidePlayerUI() ... ?!
+
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);
   private playableVideo = computed(

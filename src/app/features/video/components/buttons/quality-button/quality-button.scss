@@ -3,27 +3,17 @@
 $quality-icon: url("/images/players/quality.svg");
 
 .quality-button {
-  @include background($image: $quality-icon, $size: 40px 40px);
-
-  &:hover {
-    background-color: $prim-blue;
-  }
-
-  &:active {
-    background-color: $prim-blue-hover;
-  }
+  @include player-button($icon: $quality-icon, $icon-size: 42px 42px);
 }
 
 @media (max-width: 1280px) {
-  :host {
-    @include size($w: 32px, $h: 32px);
-  }
-
-  .player-button {
-    @include size($w: 32px, $h: 32px);
-  }
-
   .quality-button {
-    background-size: 27px 27px;
+    background-size: 35px 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .quality-button {
+    background-size: 28px 28px;
   }
 }

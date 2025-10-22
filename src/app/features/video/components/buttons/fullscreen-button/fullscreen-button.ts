@@ -12,14 +12,14 @@ import { FullscreenController } from '@features/video/services';
   styleUrl: './fullscreen-button.scss',
 })
 export class FullscreenButton {
-  private fsContr = inject(FullscreenController);
+  private screenModes = inject(FullscreenController);
 
-  isExit = computed(() => this.fsContr.isFullscreen());
+  hasExit = computed(() => this.screenModes.isFullscreen());
 
   /**
    * Toggle fullscreen mode on click.
    */
   onFullscreen() {
-    this.fsContr.toggleFullscreen();
+    this.screenModes.toggleFullscreen();
   }
 }

@@ -122,3 +122,30 @@ $two-thirds: calc(2 * $one-third);
   min-width: $min;
   max-width: $max;
 }
+
+// advanced mixins
+@mixin player-button($icon, $icon-size: cover) {
+  @include border($b: none, $br: 40px);
+  @include spacing($p: 0);
+  @include size($w: 100%, $h: 100%);
+  @include background($image: $icon, $size: $icon-size);
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $prim-blue;
+  }
+
+  &:active {
+    background-color: $prim-blue-hover;
+  }
+
+  @media (max-width: 1280px) {
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:active {
+      background-color: $prim-blue;
+    }
+  }
+}

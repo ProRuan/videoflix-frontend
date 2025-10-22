@@ -3,13 +3,5 @@
 $forward-icon: url("/images/players/forward_10.svg");
 
 .skip-forward-button {
-  @include background($image: $forward-icon);
-
-  &:hover {
-    background-color: $prim-blue;
-  }
-
-  &:active {
-    background-color: $prim-blue-hover;
-  }
+  @include player-button($icon: $forward-icon);
 }

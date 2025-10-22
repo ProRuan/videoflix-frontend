@@ -16,19 +16,22 @@ import {
 })
 export class PlayButton {
   private facade = inject(VideoPlayerFacade);
-  private fsContr = inject(FullscreenController);
+  private screenModes = inject(FullscreenController);
 
   isPlaying = computed(() => this.facade.isPlaying());
-  isPause = computed(() => this.facade.isPlaying());
-  isReplay = computed(() => this.facade.hasEnded());
+  hasPause = computed(() => this.facade.isPlaying());
+  hasReplay = computed(() => this.facade.hasEnded());
 
-  // edit ... ?
-  icons = computed(() => {
+  /**
+   * Get an icon css class.
+   * @returns The icon css class.
+   */
+  getClass() {
     return {
-      pause: this.isPause(),
-      replay: this.isReplay(),
+      pause: this.hasPause(),
+      replay: this.hasReplay(),
     };
-  });
+  }
 
   /**
    * Toggle between play and pause on click.
@@ -36,7 +39,7 @@ export class PlayButton {
   onPlay() {
     this.facade.togglePlay();
     if (this.isPlaying()) {
-      this.fsContr.hidePlayerUI();
+      this.screenModes.hidePlayerUI();
     }
   }
 }

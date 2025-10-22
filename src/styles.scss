@@ -33,6 +33,8 @@ button {
   cursor: pointer;
 }
 
+// set media 1280px, 768px and 400px ...
+app-close-video-button,
 app-fullscreen-button,
 app-play-button,
 app-playback-rate-button,
@@ -195,6 +197,16 @@ app-volume-control {
 }
 
 @media (max-width: 1280px) {
+  app-close-video-button,
+  app-playback-rate-button,
+  app-quality-button {
+    @include size($w: 40px, $h: 40px);
+  }
+
+  app-play-button {
+    @include size($w: 56px, $h: 56px);
+  }
+
   .header {
     padding: 10px 48px;
   }
@@ -205,6 +217,12 @@ app-volume-control {
 }
 
 @media (max-width: 768px) {
+  app-close-video-button,
+  app-playback-rate-button,
+  app-quality-button {
+    @include size($w: 32px, $h: 32px);
+  }
+
   .header {
     padding: 10px 16px;
   }
