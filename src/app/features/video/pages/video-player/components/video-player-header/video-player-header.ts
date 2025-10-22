@@ -1,12 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
-import { CloseVideoButton } from '@features/video/components/buttons/close-video-button/close-video-button';
 
+import { CloseVideoButton } from '@features/video/components';
 import {
   FullscreenController,
   QualityLevelController,
   VideoPlayerFacade,
 } from '@features/video/services';
-// import { BackButton } from '@shared/components/buttons';
 
 /**
  * Class representing a video player header component.
@@ -22,12 +21,11 @@ import {
 })
 export class VideoPlayerHeader {
   private facade = inject(VideoPlayerFacade);
-  private fsContr = inject(FullscreenController);
-  private qlContr = inject(QualityLevelController);
+  private screenModes = inject(FullscreenController);
+  private videoQualities = inject(QualityLevelController);
 
   title = computed(() => this.facade.title());
-  isVideoOnly = computed(() => this.fsContr.isVideoOnly());
-  percent = computed(() => this.qlContr.optimizingPercent());
-
   isMessageDisplayed = computed(() => this.facade.isMessageDisplayed());
+  isVideoOnly = computed(() => this.screenModes.isVideoOnly());
+  percent = computed(() => this.videoQualities.optimizingPercent());
 }

@@ -40,7 +40,9 @@ $auth-gradient: linear-gradient(
 $z-header: 10;
 $z-dialog: 20;
 
+// replace filling-padding with wide-padding ...
 $filling-padding: calc(50% - 960px + 96px);
+$wide-padding: calc(50% - 960px);
 $one-third: calc(100% / 3);
 $two-thirds: calc(2 * $one-third);
 

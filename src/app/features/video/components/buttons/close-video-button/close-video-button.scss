@@ -1,11 +1,18 @@
 @use "mixins" as *;
 
-// set icons ...
 $play-icon: url("/images/players/arrow_back.svg");
 $close-icon: url("/images/players/close_medium.svg");
 
+:host {
+  @include size($w: 48px, $h: 48px);
+}
+
 .close-video-button {
+  @include border($b: none, $br: 40px);
+  @include spacing($p: 0);
+  @include size($w: 100%, $h: 100%);
   @include background($image: $play-icon);
+  transition: background-color 100ms ease-in-out;
 
   &:hover {
     background-color: $prim-blue;
@@ -17,7 +24,31 @@ $close-icon: url("/images/players/close_medium.svg");
 }
 
 @media (max-width: 1280px) {
+  :host {
+    @include size($w: 40px, $h: 40px);
+  }
+
   .close-video-button {
     background-image: $close-icon;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:active {
+      background-color: $prim-blue;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    @include size($w: 36px, $h: 36px);
+  }
+}
+
+@media (max-width: 400px) {
+  :host {
+    @include size($w: 32px, $h: 32px);
   }
 }

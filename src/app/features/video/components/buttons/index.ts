@@ -1,3 +1,4 @@
+export * from './close-video-button/close-video-button';
 export * from './fullscreen-button/fullscreen-button';
 export * from './play-button/play-button';
 export * from './playback-rate-button/playback-rate-button';
