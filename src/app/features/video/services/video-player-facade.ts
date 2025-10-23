@@ -34,7 +34,7 @@ export class VideoPlayerFacade implements OnDestroy {
   bufferEnd = signal(0);
   currentTime = signal(0);
   isPlaying = signal(false);
-  wasPlayingBeforePause = signal(false);
+  wasPlaying = signal(false);
   hasEnded = signal(false);
 
   bufferPercent = computed(() => this.getBufferedPercent());
@@ -47,14 +47,6 @@ export class VideoPlayerFacade implements OnDestroy {
    */
   constructor() {
     this.setProgressInterval();
-  }
-
-  showMessageWithTimeout() {
-    clearTimeout(this.messageTimeoutId);
-    this.isMessageDisplayed.set(true);
-    this.messageTimeoutId = setTimeout(() => {
-      this.isMessageDisplayed.set(false);
-    }, 2000);
   }
 
   /**
@@ -267,7 +259,6 @@ export class VideoPlayerFacade implements OnDestroy {
    */
   clearPlayTimeout() {
     clearTimeout(this.playTimeoutId);
-    this.playTimeoutId = -1;
   }
 
   /**
@@ -282,16 +273,34 @@ export class VideoPlayerFacade implements OnDestroy {
    * Play the video.
    */
   play() {
+    this.updatePreviousPlayingState();
     this.player()?.play();
     this.isPlaying.set(true);
+  }
+
+  /**
+   * Update the previous playing state.
+   */
+  private updatePreviousPlayingState() {
+    const playing = !this.hasProperty('paused');
+    this.wasPlaying.set(playing);
   }
 
   /**
    * Pause the video.
    */
   pause() {
+    this.updatePreviousPlayingState();
     this.player()?.pause();
     this.isPlaying.set(false);
+  }
+
+  /**
+   * Continue playing if the video was playing before.
+   */
+  continuePlaying() {
+    if (!this.wasPlaying()) return;
+    this.play();
   }
 
   /**
@@ -337,6 +346,17 @@ export class VideoPlayerFacade implements OnDestroy {
    */
   private getTimeStep(backwards: boolean = false) {
     return backwards ? -this.stepSize : this.stepSize;
+  }
+
+  /**
+   * Show video quality message with timeout.
+   */
+  showMessageWithTimeout() {
+    clearTimeout(this.messageTimeoutId);
+    this.isMessageDisplayed.set(true);
+    this.messageTimeoutId = setTimeout(() => {
+      this.isMessageDisplayed.set(false);
+    }, 2000);
   }
 
   /**

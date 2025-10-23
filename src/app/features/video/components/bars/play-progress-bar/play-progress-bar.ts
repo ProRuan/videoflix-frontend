@@ -3,7 +3,6 @@ import {
   computed,
   ElementRef,
   inject,
-  signal,
   ViewChild,
 } from '@angular/core';
 
@@ -24,7 +23,6 @@ export class PlayProgressBar extends SliderBase {
   private facade = inject(VideoPlayerFacade);
 
   private duration = computed(() => this.facade.duration());
-  private wasPlayingBeforeDrag = signal(false);
 
   remainingDisplayTime = computed(() => this.facade.remainingDisplayTime());
   currentDisplayTime = computed(() => this.facade.currentDisplayTime());
@@ -79,21 +77,12 @@ export class PlayProgressBar extends SliderBase {
    */
   onScrubStart(event: PointerEvent) {
     if (!event.isPrimary) return;
+    this.facade.pause();
     this.pointerId.set(event.pointerId);
     this.setPointerMoveEvent(this.progressBar, this.onSlidding);
     this.setPointerCapture(event);
     this.updateCurrentTime(event.clientX);
-    this.pausePlayer();
     event.preventDefault();
-  }
-
-  /**
-   * Pause the player while dragging.
-   */
-  private pausePlayer() {
-    const playing = !this.facade.isPaused();
-    this.wasPlayingBeforeDrag.set(playing);
-    this.facade.pause();
   }
 
   /**
@@ -116,17 +105,7 @@ export class PlayProgressBar extends SliderBase {
       this.releasePointerCapture(this.progressBar, event.pointerId);
       this.setPointerMoveEvent(this.progressBar, null);
       this.pointerId.set(null);
+      this.facade.continuePlaying();
     }
-    if (this.isInProgress()) this.facade.play();
-    this.wasPlayingBeforeDrag.set(false);
-  }
-
-  /**
-   * Check if the video is in progress.
-   * @returns True if the cached value is true and the video has not ended,
-   *          otherwise false.
-   */
-  private isInProgress() {
-    return this.wasPlayingBeforeDrag() && !this.facade.hasEnded();
   }
 }

@@ -16,6 +16,9 @@ import QualityLevelList from 'videojs-contrib-quality-levels/dist/types/quality-
 export class QualityLevelController {
   private facade = inject(VideoPlayerFacade);
 
+  private currentTime: number = 0;
+  private playbackRate: number = 1;
+
   player = computed(() => this.facade.player());
   sources = computed(() => this.facade.sources());
 
@@ -120,16 +123,20 @@ export class QualityLevelController {
    */
   updateQualityLevel(id: number) {
     this.qualityLevelId.set(id);
-    this.facade.pause();
-    const currentTime = this.facade.getCurrentTime();
+    this.freezePlayer();
     this.updateSource(id);
     this.updateOptimizingPercent(id);
     this.player()?.load();
-    this.player()?.ready(() => {
-      this.facade.setCurrentTime(currentTime);
-      this.facade.showMessageWithTimeout();
-      this.facade.play();
-    });
+    this.player()?.ready(() => this.updatePlayer());
+  }
+
+  /**
+   * Pause the player, cache current time and playback rate.
+   */
+  private freezePlayer() {
+    this.facade.pause();
+    this.currentTime = this.facade.getProperty('currentTime');
+    this.playbackRate = this.facade.getProperty('playbackRate');
   }
 
   /**
@@ -155,5 +162,15 @@ export class QualityLevelController {
     const height = document.body.clientHeight;
     const percent = Math.round((level.height / height) * 100);
     this.optimizingPercent.set(percent);
+  }
+
+  /**
+   * Update the player settings.
+   */
+  private updatePlayer() {
+    this.facade.player()?.currentTime(this.currentTime);
+    this.facade.player()?.playbackRate(this.playbackRate);
+    this.facade.showMessageWithTimeout();
+    this.facade.continuePlaying();
   }
 }
