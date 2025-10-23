@@ -17,7 +17,7 @@ export class PlaybackRateController {
 
   player = computed(() => this.facade.player());
 
-  currentPlaybackRate = signal(0);
+  playbackRateId = signal(3);
 
   /**
    * Update the video´s playback rate.
@@ -25,17 +25,17 @@ export class PlaybackRateController {
    */
   updatePlaybackRate(id: number) {
     const value = this.availablePlaybackRates[id];
-    this.currentPlaybackRate.set(value);
+    this.playbackRateId.set(id);
     this.player()?.playbackRate(value);
   }
 
   /**
    * Check if a playback rate matches the current playback rate.
-   * @param index - The playback rate id.
+   * @param id - The playback rate id.
    * @returns True if the playback rate matches the current playback rate,
    *          otherwise false.
    */
-  isCurrentPlaybackRate(index: number) {
-    return this.currentPlaybackRate() === this.availablePlaybackRates[index];
+  isCurrentPlaybackRate(id: number) {
+    return id === this.playbackRateId();
   }
 }

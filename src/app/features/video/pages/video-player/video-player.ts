@@ -75,6 +75,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   // play button
   // -----------
   // move play-button hidePlayerUI() ... ?!
+  // cache playing/paused state before toggle ...
 
   // play progress bar
   // -----------------
