@@ -31,12 +31,12 @@ $close-icon: url("/images/players/close_small.svg");
   transition: transform 100ms ease-in-out;
 
   @starting-style {
-    transform: translateX(304px);
+    transform: translateX(296px);
   }
 }
 
 .slide-out {
-  transform: translateX(304px);
+  transform: translateX(296px);
 }
 
 .title-border-cont {
@@ -54,24 +54,6 @@ $close-icon: url("/images/players/close_small.svg");
   border-bottom: 3px solid $prim-blue;
   border-radius: 1px;
   width: 85%;
-}
-
-.close-button {
-  @include spacing($p: 0);
-  @include border($b: none, $br: 40px);
-  @include size($w: 24px, $h: 24px);
-  @include background($image: $close-icon, $size: 10px 10px);
-  @include position($pos: absolute, $t: 16px, $r: 16px);
-  margin: 0;
-  transition: background-color 100ms ease-in-out;
-
-  &:hover {
-    background-color: $prim-blue-hover;
-  }
-
-  &:active {
-    background-color: $prim-blue;
-  }
 }
 
 .options {
@@ -102,6 +84,30 @@ $close-icon: url("/images/players/close_small.svg");
   }
 }
 
+.close-button {
+  @include spacing($p: 0);
+  @include border($b: none, $br: 40px);
+  @include size($w: 24px, $h: 24px);
+  @include background($image: $close-icon, $size: 10px 10px);
+  @include position($pos: absolute, $t: 16px, $r: 16px);
+  margin: 0;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: $prim-blue-hover;
+  }
+
+  &:active {
+    background-color: $prim-blue;
+  }
+}
+
+@media (min-width: 1921px) {
+  .dialog-box {
+    right: calc($wide-padding + 32px);
+  }
+}
+
 @media (max-width: 1280px) {
   .dialog {
     justify-content: flex-start;
@@ -109,7 +115,7 @@ $close-icon: url("/images/players/close_small.svg");
   }
 
   .dialog-box {
-    @include size($w: 100%, $h: 64px);
+    @include size($w: 100%, $h: 72px);
     border-radius: 0;
     background-color: $prim-dark;
     box-shadow: none;
@@ -121,12 +127,12 @@ $close-icon: url("/images/players/close_small.svg");
     transform: translateY(0);
 
     @starting-style {
-      transform: translateY(80px);
+      transform: translateY(88px);
     }
   }
 
   .slide-out {
-    transform: translateY(80px);
+    transform: translateY(88px);
   }
 
   .title-border-cont {
@@ -140,18 +146,6 @@ $close-icon: url("/images/players/close_small.svg");
 
   .border {
     display: none;
-  }
-
-  .close-button {
-    @include position($pos: relative, $t: 0, $r: 0);
-
-    &:hover {
-      background-color: transparent;
-    }
-
-    &:active {
-      background-color: $prim-blue;
-    }
   }
 
   .options {
@@ -168,7 +162,7 @@ $close-icon: url("/images/players/close_small.svg");
     background-color: rgba(255, 255, 255, 0.15);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0);
+      background-color: rgba(255, 255, 255, 0.15);
     }
 
     &:active {
@@ -178,5 +172,31 @@ $close-icon: url("/images/players/close_small.svg");
     &:disabled {
       background-color: $prim-blue;
     }
+  }
+
+  .close-button {
+    @include position($pos: relative, $t: 0, $r: 0);
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:active {
+      background-color: $prim-blue;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dialog-box {
+    height: 64px;
+
+    @starting-style {
+      transform: translateY(80px);
+    }
+  }
+
+  .slide-out {
+    transform: translateY(80px);
   }
 }

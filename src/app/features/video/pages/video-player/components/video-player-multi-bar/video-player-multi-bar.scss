@@ -15,7 +15,7 @@ $gradient: linear-gradient(
   transition: transform 100ms ease-in-out;
 
   &.move-down {
-    transform: translateY(108px);
+    transform: translateY(124px);
   }
 }
 
@@ -43,36 +43,27 @@ $gradient: linear-gradient(
   display: none;
 }
 
-// set width again ... !!!
-@media (max-width: 1280px) {
-  // :host {
-  //   @include position($pos: absolute, $l: 0, $b: 0);
-  //   width: 100%;
-  //   background: $gradient;
-  //   z-index: $z-header;
-  //   transform: translateY(0);
-  //   transition: transform 100ms ease-in-out;
+@media (min-width: 1921px) {
+  .video-player-multi-bar {
+    padding-left: calc($wide-padding + 32px);
+    padding-right: calc($wide-padding + 32px);
+  }
+}
 
-  //   &.move-down {
-  //     transform: translateY(108px);
-  //   }
-  // }
+@media (max-width: 1280px) {
+  :host {
+    &.move-down {
+      transform: translateY(88px);
+    }
+  }
 
   .video-player-multi-bar {
     padding: 0 16px 8px 16px;
-    height: 64px;
+    height: 72px;
     gap: 8px;
   }
 
   .control-bar {
-    display: none;
-  }
-
-  // .control-button-group {
-  //   @include flexbox($g: 24px);
-  // }
-
-  .video-title {
     display: none;
   }
 
@@ -81,15 +72,20 @@ $gradient: linear-gradient(
   }
 }
 
-@media (min-width: 1921px) {
-  .video-player-multi-bar {
-    padding-left: calc(50% - 960px + 32px);
-    padding-right: calc(50% - 960px + 32px);
-  }
-}
-
 @media (max-width: 1280px) and (orientation: portrait) {
   :host {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    &.move-down {
+      transform: translateY(80px);
+    }
+  }
+
+  .video-player-multi-bar {
+    height: 64px;
   }
 }

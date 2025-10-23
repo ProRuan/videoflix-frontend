@@ -40,8 +40,8 @@ import {
 })
 export class VideoPlayerMultiBar {
   private facade = inject(VideoPlayerFacade);
-  private fsContr = inject(FullscreenController);
+  private screenModes = inject(FullscreenController);
 
-  isVideoOnly = computed(() => this.fsContr.isVideoOnly());
+  isVideoOnly = computed(() => this.screenModes.isVideoOnly());
   title = computed(() => this.facade.title());
 }

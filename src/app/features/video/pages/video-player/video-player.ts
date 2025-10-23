@@ -78,6 +78,11 @@ export class VideoPlayer implements AfterViewInit, OnInit {
 
   // review fullscreen (desktop/mobile) (0/4) ...
 
+  // review filling-padding and wide-padding ...
+  //   --> call it space or spacing (padding, position) ... ?!
+
+  // dialog base directive ... ?
+
   // hide play button skip buttons during sliding ... ?
   // no player UI timeout for mobile ... ?
 

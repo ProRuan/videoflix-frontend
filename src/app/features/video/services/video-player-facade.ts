@@ -259,6 +259,7 @@ export class VideoPlayerFacade implements OnDestroy {
    */
   clearPlayTimeout() {
     clearTimeout(this.playTimeoutId);
+    this.playTimeoutId = -1;
   }
 
   /**

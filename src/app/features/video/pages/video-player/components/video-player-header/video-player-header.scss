@@ -16,7 +16,7 @@ $auto-padding: calc($wide-padding + 32px);
   transition: transform 100ms ease-in-out;
 
   &.move-up {
-    transform: translateY(-108px);
+    transform: translateY(-124px);
   }
 }
 
@@ -59,7 +59,7 @@ $auto-padding: calc($wide-padding + 32px);
 @media (max-width: 1280px) {
   :host {
     &.move-up {
-      transform: translateY(-80px);
+      transform: translateY(-96px);
     }
   }
 
