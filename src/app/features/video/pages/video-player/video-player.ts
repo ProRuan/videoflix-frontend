@@ -77,8 +77,13 @@ export class VideoPlayer implements AfterViewInit, OnInit {
 
   // play progress bar
   // -----------------
-  // like volume bar ... !
-  // create slider base directive ... ?
+  // reduce double code --> use register methods ...
+  // improve onScrubStart() ...
+  //   --> improve pausePlayer() ...
+  // improve onScrubEnd() ...
+
+  // hide play button skip buttons during sliding ... ?
+  // no player UI timeout for mobile ... ?
 
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);

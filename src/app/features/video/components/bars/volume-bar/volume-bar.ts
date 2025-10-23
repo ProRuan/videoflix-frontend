@@ -1,9 +1,11 @@
-import { Component, computed, ElementRef, inject, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject } from '@angular/core';
 
+import { SliderBase } from '@features/video/directives';
 import { VolumeController } from '@features/video/services';
 
 /**
  * Class representing a volume bar component.
+ * @extends SliderBase
  */
 @Component({
   selector: 'app-volume-bar',
@@ -16,10 +18,9 @@ import { VolumeController } from '@features/video/services';
     '(pointerup)': 'onSlideEnd($event)',
   },
 })
-export class VolumeBar {
+export class VolumeBar extends SliderBase {
   private volumes = inject(VolumeController);
 
-  pointerId = signal<number | null>(null);
   volumePercent = computed(() => this.volumes.volumePercent());
 
   onSlidding = (event: PointerEvent) => this.slide(event);
@@ -28,7 +29,9 @@ export class VolumeBar {
    * Creates a volume bar component.
    * @param volumeBar - The element reference of the volume bar.
    */
-  constructor(private volumeBar: ElementRef<HTMLDivElement>) {}
+  constructor(private volumeBar: ElementRef<HTMLDivElement>) {
+    super();
+  }
 
   /**
    * Update the volume on click.
@@ -56,19 +59,7 @@ export class VolumeBar {
   private getVolume(clientX: number) {
     const volumeBar = this.volumeBar.nativeElement;
     const rect = volumeBar.getBoundingClientRect();
-    const ratio = this.getRatio(clientX, rect);
-    return Math.max(0, Math.min(1, ratio));
-  }
-
-  /**
-   * Get a volume ratio.
-   * @param clientX - The pointer client x.
-   * @param rect - The volume bar as rectangle.
-   * @returns The volume ratio.
-   */
-  private getRatio(clientX: number, rect: DOMRect) {
-    const deltaX = clientX - rect.left;
-    return rect.width > 0 ? deltaX / rect.width : 0;
+    return this.getRatio(clientX, rect);
   }
 
   /**
@@ -86,27 +77,10 @@ export class VolumeBar {
   onSlideStart(event: PointerEvent) {
     if (!event.isPrimary) return;
     this.pointerId.set(event.pointerId);
-    this.setPointerMoveEvent(this.onSlidding);
+    this.setPointerMoveEvent(this.volumeBar, this.onSlidding);
     this.setPointerCapture(event);
     this.updateVolume(event.clientX);
     event.preventDefault();
-  }
-
-  /**
-   * Set the pointer move event listener.
-   * @param fn - The function to be set.
-   */
-  private setPointerMoveEvent(fn: ((event: PointerEvent) => void) | null) {
-    this.volumeBar.nativeElement.onpointermove = fn;
-  }
-
-  /**
-   * Set the pointer capture.
-   * @param event - The pointer event.
-   */
-  private setPointerCapture(event: PointerEvent) {
-    const pointer = event.target as Element;
-    pointer.setPointerCapture(event.pointerId);
   }
 
   /**
@@ -121,34 +95,13 @@ export class VolumeBar {
   }
 
   /**
-   * Check if a pointer id matches the active pointer id.
-   * @param id - The pointer id.
-   * @returns True if the pointer id matches the active pointer id,
-   *          otherwise false.
-   */
-  private isPointerId(id: number) {
-    return this.pointerId() === id;
-  }
-
-  /**
    * End dragging the slider on pointer up.
    */
   onSlideEnd(event: PointerEvent) {
     if (this.isPointerId(event.pointerId)) {
-      this.releasePointerCapture(event.pointerId);
-      this.setPointerMoveEvent(null);
+      this.releasePointerCapture(this.volumeBar, event.pointerId);
+      this.setPointerMoveEvent(this.volumeBar, null);
       this.pointerId.set(null);
-    }
-  }
-
-  /**
-   * Release the pointer capture.
-   * @param id - The pointer id.
-   */
-  private releasePointerCapture(id: number) {
-    const volumeBar = this.volumeBar.nativeElement;
-    if (volumeBar.hasPointerCapture(id)) {
-      volumeBar.releasePointerCapture(id);
     }
   }
 }

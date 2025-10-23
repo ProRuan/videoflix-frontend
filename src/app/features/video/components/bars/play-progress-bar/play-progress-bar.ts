@@ -7,47 +7,41 @@ import {
   ViewChild,
 } from '@angular/core';
 
+import { SliderBase } from '@features/video/directives';
 import { VideoPlayerFacade } from '@features/video/services';
 
 /**
  * Class representing a play progress bar component.
+ * @extends SliderBase
  */
 @Component({
   selector: 'app-play-progress-bar',
   imports: [],
   templateUrl: './play-progress-bar.html',
   styleUrl: './play-progress-bar.scss',
-  host: {
-    '(document:pointermove)': 'onScrubbing($event)',
-    '(document:pointerup)': 'onScrubbingEnd($event)',
-  },
 })
-export class PlayProgressBar {
+export class PlayProgressBar extends SliderBase {
   private facade = inject(VideoPlayerFacade);
 
   private duration = computed(() => this.facade.duration());
-  private isDragging = signal(false);
   private wasPlayingBeforeDrag = signal(false);
-  private activePointerId = signal<number | null>(null);
 
-  currentTime = signal(0);
   remainingDisplayTime = computed(() => this.facade.remainingDisplayTime());
   currentDisplayTime = computed(() => this.facade.currentDisplayTime());
   bufferPercent = computed(() => this.facade.bufferPercent());
   playedPercent = computed(() => this.facade.playedPercent());
 
+  onSlidding = (event: PointerEvent) => this.scrub(event);
+
   @ViewChild('progressBar') progressBar!: ElementRef<HTMLDivElement>;
 
   /**
-   * Navigate through the video on mouse move.
-   * @param event - The pointer event.
+   * Update the current time on click.
+   * @param event - The event.
    */
-  onScrubbing(event: PointerEvent) {
-    if (!this.isDragging() || this.activePointerId() !== event.pointerId)
-      return;
-    event.preventDefault();
-    this.updateCurrentTime(event.clientX);
-    // if (this.isDragging()) this.updateCurrentTime(event);
+  onCurrentTime(event: Event) {
+    const pointer = event as PointerEvent;
+    this.updateCurrentTime(pointer.clientX);
   }
 
   /**
@@ -67,13 +61,8 @@ export class PlayProgressBar {
   private getCurrentTime(clientX: number) {
     const progressBar = this.progressBar.nativeElement;
     const rect = progressBar.getBoundingClientRect();
-    const deltaX = clientX - rect.left;
-    const ratio = rect.width > 0 ? deltaX / rect.width : 0;
-    const clampedRatio = Math.max(0, Math.min(1, ratio));
-    return clampedRatio * this.duration();
-    // const relativeProgress = deltaX / rect.width;
-    // const absoluteProgress = relativeProgress * this.duration();
-    // return Math.min(this.duration(), absoluteProgress);
+    const ratio = this.getRatio(clientX, rect);
+    return ratio * this.duration();
   }
 
   /**
@@ -81,61 +70,21 @@ export class PlayProgressBar {
    * @param value - The value to be set.
    */
   private setCurrentTime(value: number) {
-    this.currentTime.set(value);
     this.facade.setCurrentTime(value);
   }
 
-  onScrubbingEnd(event: PointerEvent) {
-    if (!this.isDragging() || this.activePointerId() !== event.pointerId)
-      return;
-
-    try {
-      (this.progressBar.nativeElement as Element).releasePointerCapture?.(
-        event.pointerId
-      );
-    } catch (_) {}
-
-    this.isDragging.set(false);
-    this.activePointerId.set(null);
-
-    if (this.isInProgress()) this.facade.play();
-    this.wasPlayingBeforeDrag.set(false);
-
-    // if (this.isInProgress()) this.facade.play();
-    // this.wasPlayingBeforeDrag.set(false);
-    // this.isDragging.set(false);
-  }
-
   /**
-   * Check if the video is in progress.
-   * @returns True if the cached value is true and the video has not ended,
-   *          otherwise false.
-   */
-  private isInProgress() {
-    return this.wasPlayingBeforeDrag() && !this.facade.hasEnded();
-  }
-
-  /**
-   * Prepare the player for dragging the play progress.
+   * Start navigating through the video on pointer down.
    * @param event - The pointer event.
    */
-  onScrubbingStart(event: PointerEvent) {
+  onScrubStart(event: PointerEvent) {
     if (!event.isPrimary) return;
-    const pointer = event.target as Element;
-    const id = event.pointerId;
-    pointer.setPointerCapture?.(id);
-    this.activePointerId.set(id);
-    event.preventDefault();
-
-    this.isDragging.set(true);
-    this.pausePlayer();
-
+    this.pointerId.set(event.pointerId);
+    this.setPointerMoveEvent(this.progressBar, this.onSlidding);
+    this.setPointerCapture(event);
     this.updateCurrentTime(event.clientX);
-
-    // event.preventDefault();
-    // this.isDragging.set(true);
-    // this.pausePlayer();
-    // this.updateCurrentTime(event);
+    this.pausePlayer();
+    event.preventDefault();
   }
 
   /**
@@ -148,11 +97,36 @@ export class PlayProgressBar {
   }
 
   /**
-   * Updates the current time on click.
-   * @param event - The event.
+   * Navigate through the video on pointer move.
+   * @param event - The pointer event.
    */
-  onCurrentTime(event: Event) {
-    const pointer = event as PointerEvent;
-    this.updateCurrentTime(pointer.clientX);
+  scrub(event: PointerEvent) {
+    if (this.isPointerId(event.pointerId)) {
+      event.preventDefault();
+      this.updateCurrentTime(event.clientX);
+    }
+  }
+
+  /**
+   * End scrubbing on pointer up.
+   * @param event - The pointer event.
+   */
+  onScrubEnd(event: PointerEvent) {
+    if (this.isPointerId(event.pointerId)) {
+      this.releasePointerCapture(this.progressBar, event.pointerId);
+      this.setPointerMoveEvent(this.progressBar, null);
+      this.pointerId.set(null);
+    }
+    if (this.isInProgress()) this.facade.play();
+    this.wasPlayingBeforeDrag.set(false);
+  }
+
+  /**
+   * Check if the video is in progress.
+   * @returns True if the cached value is true and the video has not ended,
+   *          otherwise false.
+   */
+  private isInProgress() {
+    return this.wasPlayingBeforeDrag() && !this.facade.hasEnded();
   }
 }
