@@ -1,0 +1,12 @@
+@use "mixins" as *;
+
+$volume-icon: url("/images/players/volume.svg");
+$mute-icon: url("/images/players/mute.svg");
+
+.mute-button {
+  @include player-button($icon: $volume-icon);
+
+  &.mute {
+    background-image: $mute-icon;
+  }
+}

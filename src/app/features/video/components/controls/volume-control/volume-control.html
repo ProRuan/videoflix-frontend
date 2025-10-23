@@ -1,5 +1,5 @@
 <div class="volume-control">
-    <button class="player-button volume-button" [class.mute]="isMute()" (click)="onMute()"></button>
+    <app-mute-button></app-mute-button>
 
     <div #volumeBar class="volume-bar" (click)="onVolume($event)" (pointerdown)="onVolumeStart($event)">
         <div class="track">

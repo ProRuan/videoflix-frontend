@@ -36,16 +36,13 @@ button {
 // set media 1280px, 768px and 400px ...
 app-close-video-button,
 app-fullscreen-button,
+app-mute-button,
 app-play-button,
 app-playback-rate-button,
 app-quality-button,
 app-skip-backwards-button,
 app-skip-forward-button {
   @include size($w: 48px, $h: 48px);
-}
-
-app-volume-control {
-  height: 48px;
 }
 
 .header {
@@ -198,6 +195,7 @@ app-volume-control {
 
 @media (max-width: 1280px) {
   app-close-video-button,
+  app-mute-button,
   app-playback-rate-button,
   app-quality-button {
     @include size($w: 40px, $h: 40px);
@@ -218,6 +216,7 @@ app-volume-control {
 
 @media (max-width: 768px) {
   app-close-video-button,
+  app-mute-button,
   app-playback-rate-button,
   app-quality-button {
     @include size($w: 32px, $h: 32px);

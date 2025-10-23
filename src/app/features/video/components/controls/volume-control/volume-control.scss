@@ -1,26 +1,11 @@
 @use "mixins" as *;
 
-$volume-icon: url("/images/players/volume.svg");
-$mute-icon: url("/images/players/mute.svg");
+:host {
+  height: 48px;
+}
 
 .volume-control {
   @include flexbox($ai: center, $g: 16px);
-}
-
-.volume-button {
-  @include background($image: $volume-icon);
-
-  &:hover {
-    background-color: $prim-blue;
-  }
-
-  &:active {
-    background-color: $prim-blue-hover;
-  }
-
-  &.mute {
-    background-image: $mute-icon;
-  }
 }
 
 .volume-bar {
@@ -66,10 +51,22 @@ $mute-icon: url("/images/players/mute.svg");
 
 @media (max-width: 1280px) {
   :host {
-    height: 32px;
+    height: 40px;
   }
 
-  .volume-button {
-    @include size($w: 32px, $h: 32px);
+  .handle {
+    &:hover {
+      background-color: $prim-blue;
+    }
+
+    &:active {
+      background-color: $prim-blue-hover;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    height: 32px;
   }
 }
