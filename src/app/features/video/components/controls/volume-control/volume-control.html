@@ -1,10 +1,2 @@
-<div class="volume-control">
-    <app-mute-button></app-mute-button>
-
-    <div #volumeBar class="volume-bar" (click)="onVolume($event)" (pointerdown)="onVolumeStart($event)">
-        <div class="track">
-            <div class="fill" [style.width.%]="volumePercent()"></div>
-            <div class="handle" [style.left.%]="volumePercent()"></div>
-        </div>
-    </div>
-</div>
+<app-mute-button></app-mute-button>
+<app-volume-bar></app-volume-bar>

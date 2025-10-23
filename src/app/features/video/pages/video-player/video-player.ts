@@ -75,12 +75,10 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   // fix button styles (7/8) ...
   // move play-button hidePlayerUI() ... ?!
 
-  // volume control
-  // --------------
-  // set events only on dragging ... !
-  // move pointermove to method ...
-  // move pointerup to volume bar ...
-  // rename volume events ... !
+  // play progress bar
+  // -----------------
+  // like volume bar ... !
+  // create slider base directive ... ?
 
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);

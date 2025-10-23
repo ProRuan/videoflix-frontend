@@ -1,67 +1,13 @@
 @use "mixins" as *;
 
 :host {
-  height: 48px;
-}
-
-.volume-control {
   @include flexbox($ai: center, $g: 16px);
-}
-
-.volume-bar {
-  @include size($w: 100px, $h: 16px);
-  @include flexbox($ai: center);
-  background-color: transparent;
-  cursor: pointer;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.track {
-  @include size($w: 100%, $h: 8px);
-  border-radius: 4px;
-  background-color: $track-gray;
-  position: relative;
-}
-
-.fill {
-  @include size($w: 50%, $h: 8px);
-  @include position($pos: absolute, $l: 0, $t: 0);
-  border-radius: 4px;
-  background-color: $prim-blue;
-}
-
-.handle {
-  @include size($w: 16px, $h: 16px);
-  @include position($pos: absolute, $l: 0, $t: -4px);
-  border-radius: 8px;
-  background-color: $prim-blue;
-  transform: translateX(-50%);
-  transition: background-color 100ms ease-in-out;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-
-  &:hover,
-  &:active {
-    background-color: $prim-blue-hover;
-  }
+  height: 48px;
 }
 
 @media (max-width: 1280px) {
   :host {
     height: 40px;
-  }
-
-  .handle {
-    &:hover {
-      background-color: $prim-blue;
-    }
-
-    &:active {
-      background-color: $prim-blue-hover;
-    }
   }
 }
 
