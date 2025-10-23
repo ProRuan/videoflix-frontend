@@ -1,7 +1,7 @@
 import { Component, computed, ElementRef, inject } from '@angular/core';
 
-import { SliderBase } from '@features/video/directives';
 import { VolumeController } from '@features/video/services';
+import { SliderBase } from '@shared/directives';
 
 /**
  * Class representing a volume bar component.

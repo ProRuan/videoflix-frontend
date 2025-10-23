@@ -50,7 +50,7 @@ $buffer-gray: #ececec;
   background-color: $prim-blue;
 }
 
-.handle {
+.slider {
   @include size($w: 16px, $h: 16px);
   @include position($pos: absolute, $l: 0, $t: -6px);
   border-radius: 8px;
