@@ -12,6 +12,7 @@ import {
 } from '@features/video/components';
 import {
   FullscreenController,
+  QualityLevelController,
   VideoPlayerFacade,
 } from '@features/video/services';
 
@@ -37,20 +38,26 @@ import {
   host: {
     '[class.move-down]': 'isLeaving()',
     '[class.move-up]': 'isEntering()',
-    '(transitionend)': 'onLeave()',
+    '(transitionend)': 'onLeaveEnd()',
   },
 })
 export class VideoPlayerMultiBar {
   private facade = inject(VideoPlayerFacade);
   private screenModes = inject(FullscreenController);
+  private videoQualites = inject(QualityLevelController);
 
   title = computed(() => this.facade.title());
 
-  // new
   isLeaving = computed(() => this.screenModes.isLeaving());
   isEntering = computed(() => this.screenModes.isEntering());
+  isMobileScreen = computed(() => this.screenModes.isMobileScreen());
 
-  onLeave() {
+  hasQualityLevels = computed(() => this.videoQualites.hasQualityLevels());
+
+  /**
+   * Hide the player UI on transition end.
+   */
+  onLeaveEnd() {
     this.screenModes.hidePlayerUI();
   }
 }

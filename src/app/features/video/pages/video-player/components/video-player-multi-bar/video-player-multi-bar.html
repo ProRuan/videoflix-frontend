@@ -1,26 +1,28 @@
-<section class="video-player-multi-bar">
-    <app-play-progress-bar></app-play-progress-bar>
+<app-play-progress-bar></app-play-progress-bar>
 
-    <div class="control-bar">
-        <div class="control-button-group">
-            <app-play-button></app-play-button>
-            <app-skip-backwards-button></app-skip-backwards-button>
-            <app-skip-forward-button></app-skip-forward-button>
-            <app-volume-control></app-volume-control>
-        </div>
-
-        <h6 class="video-title">{{ title() }}</h6>
-
-        <div class="control-button-group">
-            <app-playback-rate-button></app-playback-rate-button>
-            <app-quality-button></app-quality-button>
-            <app-fullscreen-button></app-fullscreen-button>
-        </div>
+@if (isMobileScreen()) {
+<div class="control-bar">
+    <app-volume-control></app-volume-control>
+    <app-playback-rate-button></app-playback-rate-button>
+    @if (hasQualityLevels()) {
+    <app-quality-button></app-quality-button>
+    }
+</div>
+} @else {
+<div class="control-bar">
+    <div class="button-group">
+        <app-play-button></app-play-button>
+        <app-skip-backwards-button></app-skip-backwards-button>
+        <app-skip-forward-button></app-skip-forward-button>
+        <app-volume-control></app-volume-control>
     </div>
 
-    <div class="mobile-control-bar">
-        <app-volume-control></app-volume-control>
+    <h6 class="video-title">{{ title() }}</h6>
+
+    <div class="button-group">
         <app-playback-rate-button></app-playback-rate-button>
         <app-quality-button></app-quality-button>
+        <app-fullscreen-button></app-fullscreen-button>
     </div>
-</section>
+</div>
+}

@@ -18,25 +18,27 @@ import {
   host: {
     '[class.move-up]': 'isLeaving()',
     '[class.move-down]': 'isEntering()',
-    '(transitionend)': 'onLeave()',
+    '(transitionend)': 'onLeaveEnd()',
   },
 })
 export class VideoPlayerHeader {
   private facade = inject(VideoPlayerFacade);
-  private screenModes = inject(FullscreenController);
   private videoQualities = inject(QualityLevelController);
-
-  // css class move-down with starting style ...
+  private screenModes = inject(FullscreenController);
 
   title = computed(() => this.facade.title());
-  isMessageDisplayed = computed(() => this.facade.isMessageDisplayed());
+
+  hasMessage = computed(() => this.videoQualities.hasMessage());
   percent = computed(() => this.videoQualities.optimizingPercent());
 
-  // new
   isLeaving = computed(() => this.screenModes.isLeaving());
   isEntering = computed(() => this.screenModes.isEntering());
+  isMobileScreen = computed(() => this.screenModes.isMobileScreen());
 
-  onLeave() {
+  /**
+   * Hide the player UI on transition end.
+   */
+  onLeaveEnd() {
     this.screenModes.hidePlayerUI();
   }
 }

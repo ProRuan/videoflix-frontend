@@ -8,8 +8,10 @@ $gradient: linear-gradient(
 $auto-padding: calc($wide-padding + 32px);
 
 :host {
+  @include spacing($p: 10px 32px);
+  @include size($w: 100%, $h: 108px);
+  @include flexbox($jc: space-between, $ai: center);
   @include position($pos: absolute, $l: 0, $t: 0);
-  width: 100%;
   background: $gradient;
   z-index: $z-header;
   transform: translateY(0);
@@ -19,7 +21,6 @@ $auto-padding: calc($wide-padding + 32px);
     transform: translateY(-124px);
   }
 
-  // update media styles ... !
   &.move-down {
     transform: translateY(0px);
 
@@ -29,19 +30,9 @@ $auto-padding: calc($wide-padding + 32px);
   }
 }
 
-.video-player-header {
-  @include spacing($p: 10px 32px);
-  @include flexbox($jc: space-between, $ai: center);
-  height: 108px;
-}
-
 .message {
   @include font($fs: 15px, $lh: 20px);
   color: $white;
-}
-
-.mobile-message {
-  display: none;
 }
 
 .logo-title-cont {
@@ -59,7 +50,7 @@ $auto-padding: calc($wide-padding + 32px);
 }
 
 @media (min-width: 1921px) {
-  .video-player-header {
+  :host {
     padding-left: $auto-padding;
     padding-right: $auto-padding;
   }
@@ -67,23 +58,21 @@ $auto-padding: calc($wide-padding + 32px);
 
 @media (max-width: 1280px) {
   :host {
-    &.move-up {
-      transform: translateY(-96px);
-    }
-  }
-
-  .video-player-header {
     padding: 10px 16px;
     height: 80px;
     flex-direction: row-reverse;
-  }
 
-  .desktop-message {
-    display: none;
-  }
+    &.move-up {
+      transform: translateY(-96px);
+    }
 
-  .mobile-message {
-    display: inline-block;
+    &.move-down {
+      transform: translateY(0px);
+
+      @starting-style {
+        transform: translateY(-96px);
+      }
+    }
   }
 
   .logo {

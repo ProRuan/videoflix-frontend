@@ -21,7 +21,6 @@ export class VideoPlayerFacade implements OnDestroy {
 
   private progressIntervalId: IntervalId = -1;
   private playTimeoutId: TimeoutId = -1;
-  private messageTimeoutId: TimeoutId = -1;
 
   playerBox = signal<HTMLDivElement | null>(null);
   player = signal<Player | null>(null);
@@ -39,8 +38,6 @@ export class VideoPlayerFacade implements OnDestroy {
 
   bufferPercent = computed(() => this.getBufferedPercent());
   playedPercent = computed(() => this.getPlayedPercent());
-
-  isMessageDisplayed = signal(true);
 
   /**
    * Creates a video player facade service.
@@ -347,17 +344,6 @@ export class VideoPlayerFacade implements OnDestroy {
    */
   private getTimeStep(backwards: boolean = false) {
     return backwards ? -this.stepSize : this.stepSize;
-  }
-
-  /**
-   * Show video quality message with timeout.
-   */
-  showMessageWithTimeout() {
-    clearTimeout(this.messageTimeoutId);
-    this.isMessageDisplayed.set(true);
-    this.messageTimeoutId = setTimeout(() => {
-      this.isMessageDisplayed.set(false);
-    }, 2000);
   }
 
   /**

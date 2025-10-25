@@ -7,22 +7,21 @@ $gradient: linear-gradient(
 );
 
 :host {
+  @include spacing($p: 0 32px 10px 32px);
+  @include size($w: 100%, $h: 108px);
+  @include flexbox($fd: column, $g: 16px);
   @include position($pos: absolute, $l: 0, $b: 0);
-  width: 100%;
   background: $gradient;
   z-index: $z-header;
-  transform: translateY(0);
+  transform: translateY(0px);
   transition: transform 100ms ease-in-out;
 
   &.move-down {
     transform: translateY(124px);
   }
 
-  // update media styles ... !
   &.move-up {
-    &.move-down {
-      transform: translateY(-124px);
-    }
+    transform: translateY(0px);
 
     @starting-style {
       transform: translateY(124px);
@@ -30,18 +29,12 @@ $gradient: linear-gradient(
   }
 }
 
-.video-player-multi-bar {
-  @include spacing($p: 0 32px 10px 32px);
-  @include flexbox($fd: column, $g: 16px);
-  height: 108px;
-}
-
 .control-bar {
   @include flexbox($jc: space-between, $ai: center);
 }
 
-.control-button-group {
-  @include flexbox($g: 24px);
+.button-group {
+  @include flexbox($ai: center, $g: 24px);
 }
 
 .video-title {
@@ -49,13 +42,8 @@ $gradient: linear-gradient(
   color: $white;
 }
 
-.mobile-control-bar {
-  @include flexbox($jc: space-between, $ai: center);
-  display: none;
-}
-
 @media (min-width: 1921px) {
-  .video-player-multi-bar {
+  :host {
     padding-left: calc($wide-padding + 32px);
     padding-right: calc($wide-padding + 32px);
   }
@@ -63,23 +51,21 @@ $gradient: linear-gradient(
 
 @media (max-width: 1280px) {
   :host {
-    &.move-down {
-      transform: translateY(88px);
-    }
-  }
-
-  .video-player-multi-bar {
     padding: 0 16px 8px 16px;
     height: 72px;
     gap: 8px;
-  }
 
-  .control-bar {
-    display: none;
-  }
+    &.move-down {
+      transform: translateY(88px);
+    }
 
-  .mobile-control-bar {
-    display: flex;
+    &.move-up {
+      transform: translateY(0px);
+
+      @starting-style {
+        transform: translateY(88px);
+      }
+    }
   }
 }
 
@@ -91,12 +77,18 @@ $gradient: linear-gradient(
 
 @media (max-width: 768px) {
   :host {
+    height: 64px;
+
     &.move-down {
       transform: translateY(80px);
     }
-  }
 
-  .video-player-multi-bar {
-    height: 64px;
+    &.move-up {
+      transform: translateY(0px);
+
+      @starting-style {
+        transform: translateY(80px);
+      }
+    }
   }
 }

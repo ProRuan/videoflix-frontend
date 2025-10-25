@@ -195,7 +195,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
     this.facade.setPlayer(this.video.nativeElement, this.options());
     this.facade.setSources(this.sources());
     this.facade.setTitle(this.title());
-    this.facade.showMessageWithTimeout();
+    this.qlContr.showMessageWithTimeout();
   }
 
   /**

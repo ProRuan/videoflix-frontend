@@ -1,5 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 
+import { TimeoutId } from '@shared/constants';
+
 import { VideoPlayerFacade } from './video-player-facade';
 
 import QualityLevel from 'videojs-contrib-quality-levels/dist/types/quality-level';
@@ -18,6 +20,7 @@ export class QualityLevelController {
 
   private currentTime: number = 0;
   private playbackRate: number = 1;
+  private messageTimeoutId: TimeoutId = -1;
 
   player = computed(() => this.facade.player());
   sources = computed(() => this.facade.sources());
@@ -28,6 +31,11 @@ export class QualityLevelController {
   qualityLevelId = signal(0);
   hasQualityLevels = signal(false);
   optimizingPercent = signal(0);
+  isMessageDisplayed = signal(true);
+
+  hasNoQualityLevels = computed(() => this.qualityLevels().length < 1);
+  hasPercent = computed(() => this.optimizingPercent() > 0);
+  hasMessage = computed(() => this.isMessageDisplayed() && this.hasPercent());
 
   /**
    * Listen to quality level change events to update the video´s quality level.
@@ -122,6 +130,7 @@ export class QualityLevelController {
    * @param id - The quality level id.
    */
   updateQualityLevel(id: number) {
+    if (this.hasNoQualityLevels()) return;
     this.qualityLevelId.set(id);
     this.freezePlayer();
     this.updateSource(id);
@@ -170,7 +179,18 @@ export class QualityLevelController {
   private updatePlayer() {
     this.facade.player()?.currentTime(this.currentTime);
     this.facade.player()?.playbackRate(this.playbackRate);
-    this.facade.showMessageWithTimeout();
     this.facade.continuePlaying();
+    this.showMessageWithTimeout();
+  }
+
+  /**
+   * Show video quality message with timeout.
+   */
+  showMessageWithTimeout() {
+    clearTimeout(this.messageTimeoutId);
+    this.isMessageDisplayed.set(true);
+    this.messageTimeoutId = setTimeout(() => {
+      this.isMessageDisplayed.set(false);
+    }, 2000);
   }
 }

@@ -7,6 +7,9 @@ import {
 } from '@features/video/components';
 import { FullscreenController } from '@features/video/services';
 
+/**
+ * Class representing a video player touch control component.
+ */
 @Component({
   selector: 'app-video-player-touch-control',
   imports: [PlayButton, SkipBackwardsButton, SkipForwardButton],
@@ -15,17 +18,19 @@ import { FullscreenController } from '@features/video/services';
   host: {
     '[class.fade-out]': 'isLeaving()',
     '[class.fade-in]': 'isEntering()',
-    '(transitionend)': 'onLeave()',
+    '(transitionend)': 'onLeaveEnd()',
   },
 })
 export class VideoPlayerTouchControl {
   private screenModes = inject(FullscreenController);
 
-  // new
   isLeaving = computed(() => this.screenModes.isLeaving());
   isEntering = computed(() => this.screenModes.isEntering());
 
-  onLeave() {
+  /**
+   * Hide the player UI on transition end.
+   */
+  onLeaveEnd() {
     this.screenModes.hidePlayerUI();
   }
 }
