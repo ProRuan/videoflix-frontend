@@ -21,16 +21,19 @@ export class FullscreenController {
 
   private playerUITimeout: TimeoutId = -1;
 
-  isMobile = computed(() => this.resizer.isMobile());
-
+  // new
   isFullscreen = signal(false);
+  isMobileScreen = computed(() => this.resizer.width() < 1280 + 1);
+  isImmersive = computed(() => this.isMobileScreen() || this.isFullscreen());
+  isStandard = computed(() => !this.isImmersive());
+
   hasPlayerUI = signal(true);
-  isIdle = signal(false);
-  isVideoOnly = computed(
-    () =>
-      (this.isFullscreen() && !this.hasPlayerUI()) ||
-      (this.isMobile() && !this.hasPlayerUI())
-  );
+  isActive = computed(() => this.isStandard() || this.hasPlayerUI());
+  isIdle = computed(() => !this.isActive());
+
+  isLeaving = signal<boolean | null>(null);
+  isEntering = computed(() => this.isLeaving() === false);
+  isLocked = signal(false);
 
   /**
    * Toggle a video´s fullscreen mode.
@@ -64,6 +67,7 @@ export class FullscreenController {
    */
   updatePlayerUI() {
     this.isFullscreen.update((value) => !value);
+    clearTimeout(this.playerUITimeout);
     if (this.isFullscreen()) {
       this.showPlayerUIWithTimeout();
     }
@@ -75,16 +79,30 @@ export class FullscreenController {
   showPlayerUIWithTimeout() {
     clearTimeout(this.playerUITimeout);
     this.hasPlayerUI.set(true);
-    this.isIdle.set(false);
+    // this.isIdle.set(false);
+    if (this.isLocked()) return;
     this.playerUITimeout = setTimeout(() => {
-      this.hasPlayerUI.set(false);
-      this.isIdle.set(true);
+      this.isLeaving.set(true);
+      // this.hasPlayerUI.set(false);
+      // this.isIdle.set(true);
     }, 2000);
   }
 
   hidePlayerUI() {
-    clearTimeout(this.playerUITimeout);
-    this.hasPlayerUI.set(false);
-    this.isIdle.set(true);
+    if (this.isLeaving()) {
+      this.isLeaving.set(false);
+      this.hasPlayerUI.set(false);
+    }
+    // clearTimeout(this.playerUITimeout);
+    // this.hasPlayerUI.set(false);
+    // this.isIdle.set(true);
+  }
+
+  // check ...
+  setLocked(value: boolean) {
+    this.isLocked.set(value);
+    if (value === true) {
+      clearTimeout(this.playerUITimeout);
+    }
   }
 }

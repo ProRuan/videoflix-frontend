@@ -35,7 +35,7 @@ export class PlaybackRateController {
    * @returns True if the playback rate matches the current playback rate,
    *          otherwise false.
    */
-  isCurrentPlaybackRate(id: number) {
+  isPlaybackRate(id: number) {
     return id === this.playbackRateId();
   }
 }

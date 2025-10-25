@@ -1,0 +1,51 @@
+@use "mixins" as *;
+
+$gradient: linear-gradient(
+  180deg,
+  rgba(0, 0, 0, 0.8) -27.44%,
+  rgba(0, 0, 0, 0.44) 44.23%,
+  rgba(0, 0, 0, 0.8) 100%
+);
+
+:host {
+  @include size($w: 100%, $h: 100vh);
+  @include position($pos: fixed, $l: 0, $t: 0);
+  display: none;
+  transition: opacity 100ms ease-in-out;
+
+  &.fade-out {
+    opacity: 0;
+  }
+
+  // update media styles ... !
+  &.fade-in {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+.shadow {
+  @include size($w: 100%, $h: 100%);
+  @include flexbox($jc: center, $ai: center, $g: 104px);
+  @include position($pos: absolute, $l: 0, $t: 0);
+  background: $gradient;
+  opacity: 1;
+  transition: opacity 100ms ease-in-out;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.mobile-button-group {
+  @include flexbox($ai: center, $g: 104px);
+}
+
+@media (max-width: 1280px) and (orientation: landscape) {
+  :host {
+    display: flex;
+  }
+}

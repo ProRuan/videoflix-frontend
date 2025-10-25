@@ -13,24 +13,25 @@ import { ActivatedRoute } from '@angular/router';
 
 import { AuthResponse } from '@core/auth/interfaces';
 import { UserClient } from '@core/auth/services';
+import { VideoSettingsDialog } from '@features/video/components';
 import {
-  PlayButton,
-  SkipBackwardsButton,
-  SkipForwardButton,
-  VideoSettingsDialog,
-} from '@features/video/components';
-import { VIDEO_PLAYER_OPTIONS } from '@features/video/constants';
+  VIDEO_PLAYER_OPTIONS,
+  VideoDialogIds,
+} from '@features/video/constants';
 import { PlayerSource } from '@features/video/interfaces';
 import { PlayableVideo } from '@features/video/models';
 import {
   FullscreenController,
   QualityLevelController,
-  VideoDialogConfigurator,
   VideoPlayerFacade,
 } from '@features/video/services';
 import { DialogManager, WindowResizer } from '@shared/services';
 
-import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
+import {
+  VideoPlayerHeader,
+  VideoPlayerMultiBar,
+  VideoPlayerTouchControl,
+} from './components';
 
 /**
  * Class representing a video player component.
@@ -40,18 +41,16 @@ import { VideoPlayerHeader, VideoPlayerMultiBar } from './components';
 @Component({
   selector: 'app-video-player',
   imports: [
-    PlayButton,
-    SkipBackwardsButton,
-    SkipForwardButton,
     VideoPlayerHeader,
     VideoPlayerMultiBar,
+    VideoPlayerTouchControl,
     VideoSettingsDialog,
   ],
   templateUrl: './video-player.html',
   styleUrl: './video-player.scss',
   host: {
     '(document:mousemove)': 'onPlayerInteraction($event)',
-    '(document:pointerdown)': 'onPlayerInteraction($event)',
+    '(document:pointerup)': 'onPlayerInteraction($event)',
     '(document:fullscreenchange)': 'onPlayerUIUpdate()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,12 +61,12 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private facade = inject(VideoPlayerFacade);
   private qlContr = inject(QualityLevelController);
   private fsContr = inject(FullscreenController);
-  private config = inject(VideoDialogConfigurator);
   private dialogs = inject(DialogManager);
   private resizer = inject(WindowResizer);
 
+  // simplify multi bar html ...
+
   // keep header in portrait mode or not ...
-  // header: @if, displayed, hidding ...
 
   // rename fsContr to screenModes ...
   // rename qlContr to videoQualities ...
@@ -76,8 +75,6 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   // -----------
   // move play-button hidePlayerUI() ... ?!
 
-  // review fullscreen (desktop/mobile) (0/4) ...
-
   // review filling-padding and wide-padding ...
   //   --> call it space or spacing (padding, position) ... ?!
 
@@ -85,6 +82,9 @@ export class VideoPlayer implements AfterViewInit, OnInit {
 
   // hide play button skip buttons during sliding ... ?
   // no player UI timeout for mobile ... ?
+
+  // optional: hidePlayerUI on pointerup ... ?
+  // optional: fix video quality change on mobile (emulator) ... ?
 
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);
@@ -101,16 +101,15 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private options = computed(() => this.getOptions());
   private sources = computed(() => this.getSources());
 
+  // new
+  isActive = computed(() => this.fsContr.isActive());
+  isImmersive = computed(() => this.fsContr.isImmersive());
+  isStandard = computed(() => this.fsContr.isStandard());
+
   hasPlayerUI = computed(() => this.fsContr.hasPlayerUI());
-  isFullscreen = computed(
-    () => this.fsContr.isFullscreen() || this.resizer.isFullscreen()
-  );
   isMobileScreen = computed(() => this.resizer.isFullscreen());
   isIdle = computed(() => this.fsContr.isIdle());
   isDisplayed = computed(() => !this.fsContr.isIdle());
-
-  readonly playbackRateConfig = this.config.playbackRateDialogConfig;
-  readonly qualityLevelConfig = this.config.qualityLevelsDialogConfig;
 
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
@@ -134,6 +133,8 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    * @param event - The event.
    */
   onPlayerInteraction(event: Event) {
+    if (this.isStandard()) return;
+    // active ... ?!
     const type = event.type;
     if (type === 'mousemove' && this.isMobileScreen()) return;
     this.fsContr.showPlayerUIWithTimeout();
@@ -209,10 +210,11 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    * Toggle between play and pause with a delay on click.
    */
   onPlayToggle() {
-    if (this.isMobileScreen()) {
-      this.fsContr.showPlayerUIWithTimeout();
-      return;
-    }
+    if (this.isMobileScreen()) return;
+    // if (this.isMobileScreen()) {
+    //   this.fsContr.showPlayerUIWithTimeout();
+    //   return;
+    // }
     this.facade.togglePlayWithDelay();
   }
 
@@ -220,22 +222,18 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    * Toggle a video´s fullscreen mode on click.
    */
   onFullScreen() {
+    if (this.isMobileScreen()) return;
     this.fsContr.toggleFullscreen();
   }
 
   /**
-   * Check if the playback rate dialog is open.
-   * @returns True if the playback rate dialog is open, otherwise false.
+   * Check if a video settings dialog is open.
+   * @returns True if a video settings dialog is open, otherwise false.
    */
-  isPlaybackRateDialogOpen() {
-    return this.dialogs.isOpen('playback-rate-dialog');
-  }
-
-  /**
-   * Check if the quality levels dialog is open.
-   * @returns True if the quality levels dialog is open, otherwise false.
-   */
-  isQualityLevelsDialogOpen() {
-    return this.dialogs.isOpen('quality-levels-dialog');
+  isDialogOpen() {
+    for (const [key, value] of Object.entries(VideoDialogIds)) {
+      if (this.dialogs.isOpen(value)) return true;
+    }
+    return false;
   }
 }

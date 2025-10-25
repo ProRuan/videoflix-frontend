@@ -16,7 +16,9 @@ import {
   templateUrl: './video-player-header.html',
   styleUrl: './video-player-header.scss',
   host: {
-    '[class.move-up]': 'isVideoOnly()',
+    '[class.move-up]': 'isLeaving()',
+    '[class.move-down]': 'isEntering()',
+    '(transitionend)': 'onLeave()',
   },
 })
 export class VideoPlayerHeader {
@@ -24,8 +26,17 @@ export class VideoPlayerHeader {
   private screenModes = inject(FullscreenController);
   private videoQualities = inject(QualityLevelController);
 
+  // css class move-down with starting style ...
+
   title = computed(() => this.facade.title());
   isMessageDisplayed = computed(() => this.facade.isMessageDisplayed());
-  isVideoOnly = computed(() => this.screenModes.isVideoOnly());
   percent = computed(() => this.videoQualities.optimizingPercent());
+
+  // new
+  isLeaving = computed(() => this.screenModes.isLeaving());
+  isEntering = computed(() => this.screenModes.isEntering());
+
+  onLeave() {
+    this.screenModes.hidePlayerUI();
+  }
 }

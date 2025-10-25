@@ -6,7 +6,10 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { VideoPlayerFacade } from '@features/video/services';
+import {
+  FullscreenController,
+  VideoPlayerFacade,
+} from '@features/video/services';
 import { SliderBase } from '@shared/directives';
 
 /**
@@ -21,6 +24,7 @@ import { SliderBase } from '@shared/directives';
 })
 export class PlayProgressBar extends SliderBase {
   private facade = inject(VideoPlayerFacade);
+  private screenModes = inject(FullscreenController);
 
   private duration = computed(() => this.facade.duration());
 
@@ -78,6 +82,7 @@ export class PlayProgressBar extends SliderBase {
   onScrubStart(event: PointerEvent) {
     if (!event.isPrimary) return;
     this.facade.pause();
+    this.screenModes.setLocked(true);
     this.pointerId.set(event.pointerId);
     this.setPointerMoveEvent(this.progressBar, this.onSlidding);
     this.setPointerCapture(event);
@@ -105,6 +110,7 @@ export class PlayProgressBar extends SliderBase {
       this.releasePointerCapture(this.progressBar, event.pointerId);
       this.setPointerMoveEvent(this.progressBar, null);
       this.pointerId.set(null);
+      this.screenModes.setLocked(false);
       this.facade.continuePlaying();
     }
   }

@@ -18,6 +18,15 @@ $auto-padding: calc($wide-padding + 32px);
   &.move-up {
     transform: translateY(-124px);
   }
+
+  // update media styles ... !
+  &.move-down {
+    transform: translateY(0px);
+
+    @starting-style {
+      transform: translateY(-124px);
+    }
+  }
 }
 
 .video-player-header {

@@ -13,6 +13,14 @@ export class OverlayManagerBase {
   protected hasCloseStyle: WritableSignal<boolean> = signal(false);
 
   /**
+   * Get the active element id.
+   * @returns The active element id.
+   */
+  getId() {
+    return this.activeElement();
+  }
+
+  /**
    * Open an overlay element.
    * @param id - The overlay element id.
    */

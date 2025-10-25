@@ -17,6 +17,17 @@ $gradient: linear-gradient(
   &.move-down {
     transform: translateY(124px);
   }
+
+  // update media styles ... !
+  &.move-up {
+    &.move-down {
+      transform: translateY(-124px);
+    }
+
+    @starting-style {
+      transform: translateY(124px);
+    }
+  }
 }
 
 .video-player-multi-bar {

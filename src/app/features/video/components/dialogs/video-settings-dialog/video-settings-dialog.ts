@@ -1,6 +1,10 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 
-import { VideoSettingsDialogConfig } from '@features/video/interfaces';
+import { VideoDialogIds } from '@features/video/constants';
+import {
+  FullscreenController,
+  VideoDialogConfigurator,
+} from '@features/video/services';
 import { DialogManager } from '@shared/services';
 
 /**
@@ -13,14 +17,32 @@ import { DialogManager } from '@shared/services';
   styleUrl: './video-settings-dialog.scss',
 })
 export class VideoSettingsDialog {
+  private configurator = inject(VideoDialogConfigurator);
   private dialogs = inject(DialogManager);
+  private screenModes = inject(FullscreenController);
 
-  config = input.required<VideoSettingsDialogConfig>();
+  config = signal(this.configurator.playbackRateDialogConfig);
   id = computed(() => this.config().id);
   title = computed(() => this.config().title);
   values = computed(() => this.config().values);
 
   isClosing = computed(() => this.dialogs.isClosing(this.id()));
+
+  /**
+   * Initialize a video settings dialog component.
+   */
+  ngOnInit() {
+    this.setConfig();
+  }
+
+  /**
+   * Set the video settings dialog configuration.
+   */
+  private setConfig() {
+    const id = this.dialogs.getId() as VideoDialogIds;
+    const config = this.configurator.getConfig(id);
+    this.config.set(config);
+  }
 
   /**
    * Start closing a dialog on click.
@@ -35,6 +57,8 @@ export class VideoSettingsDialog {
   onCloseEnd() {
     if (this.isClosing()) {
       this.dialogs.close();
+      this.screenModes.setLocked(false);
+      this.screenModes.showPlayerUIWithTimeout();
     }
   }
 
@@ -47,7 +71,7 @@ export class VideoSettingsDialog {
   }
 
   /**
-   * Check a button for being selected (disabled).
+   * Check a button for being selected.
    * @param index - The button index.
    * @returns True if the button is selected, otherwise false.
    */

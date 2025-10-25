@@ -1,6 +1,9 @@
 import { Component, computed, ElementRef, inject } from '@angular/core';
 
-import { VolumeController } from '@features/video/services';
+import {
+  FullscreenController,
+  VolumeController,
+} from '@features/video/services';
 import { SliderBase } from '@shared/directives';
 
 /**
@@ -20,6 +23,7 @@ import { SliderBase } from '@shared/directives';
 })
 export class VolumeBar extends SliderBase {
   private volumes = inject(VolumeController);
+  private screenModes = inject(FullscreenController);
 
   volumePercent = computed(() => this.volumes.volumePercent());
 
@@ -76,6 +80,7 @@ export class VolumeBar extends SliderBase {
    */
   onSlideStart(event: PointerEvent) {
     if (!event.isPrimary) return;
+    this.screenModes.setLocked(true);
     this.pointerId.set(event.pointerId);
     this.setPointerMoveEvent(this.volumeBar, this.onSlidding);
     this.setPointerCapture(event);
@@ -102,6 +107,7 @@ export class VolumeBar extends SliderBase {
       this.releasePointerCapture(this.volumeBar, event.pointerId);
       this.setPointerMoveEvent(this.volumeBar, null);
       this.pointerId.set(null);
+      this.screenModes.setLocked(false);
     }
   }
 }

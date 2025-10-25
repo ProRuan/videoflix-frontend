@@ -113,7 +113,7 @@ export class QualityLevelController {
    * @returns True if the id matches the current quality level id,
    *          otherwise false.
    */
-  isCurrentQualityLevel(id: number) {
+  isQualityLevel(id: number) {
     return id === this.qualityLevelId();
   }
 

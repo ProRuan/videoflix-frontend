@@ -35,13 +35,22 @@ import {
   templateUrl: './video-player-multi-bar.html',
   styleUrl: './video-player-multi-bar.scss',
   host: {
-    '[class.move-down]': 'isVideoOnly()',
+    '[class.move-down]': 'isLeaving()',
+    '[class.move-up]': 'isEntering()',
+    '(transitionend)': 'onLeave()',
   },
 })
 export class VideoPlayerMultiBar {
   private facade = inject(VideoPlayerFacade);
   private screenModes = inject(FullscreenController);
 
-  isVideoOnly = computed(() => this.screenModes.isVideoOnly());
   title = computed(() => this.facade.title());
+
+  // new
+  isLeaving = computed(() => this.screenModes.isLeaving());
+  isEntering = computed(() => this.screenModes.isEntering());
+
+  onLeave() {
+    this.screenModes.hidePlayerUI();
+  }
 }

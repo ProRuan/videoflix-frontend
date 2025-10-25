@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 
+import { VideoDialogIds } from '@features/video/constants';
+import { FullscreenController } from '@features/video/services';
 import { DialogManager } from '@shared/services';
 
 /**
@@ -13,11 +15,13 @@ import { DialogManager } from '@shared/services';
 })
 export class PlaybackRateButton {
   private dialogs = inject(DialogManager);
+  private screenModes = inject(FullscreenController);
 
   /**
    * Open playback rate dialog on click.
    */
   onPlaybackRate() {
-    this.dialogs.open('playback-rate-dialog');
+    this.screenModes.setLocked(true);
+    this.dialogs.open(VideoDialogIds.PlaybackRate);
   }
 }
