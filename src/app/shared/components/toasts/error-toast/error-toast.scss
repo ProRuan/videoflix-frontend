@@ -3,15 +3,16 @@
 $image: url("/images/toasts/close_small.png");
 
 .error-toast {
-  @include spacing($p: 24px 32px);
+  @include spacing($p: 24px 32px 24px 38px);
   @include size($w: fit-content, $h: 80px);
   @include flexbox($ai: center, $g: 16px);
   @include position($pos: fixed, $l: 32px, $b: 32px);
   border-radius: 20px;
   background-color: $prim-blue;
-  z-index: 10;
-  transition: transform 100ms ease-in-out;
+  z-index: $z-dialog;
+  overflow: hidden;
   transform: translateX(0);
+  transition: transform 100ms ease-in-out;
 
   @starting-style {
     transform: translateX(calc(-100% - 64px));
@@ -25,18 +26,25 @@ $image: url("/images/toasts/close_small.png");
 .rectangle {
   @include size($w: 22px, $h: 80px);
   @include position($pos: absolute, $l: 0, $t: 0);
-  border-radius: 20px 0 0 20px;
+  min-width: 22px;
   background-color: $error;
-  z-index: 1;
+}
+
+.element-group {
+  @include flexbox($ai: center, $g: 16px);
 }
 
 .icon {
   @include image($h: 32px);
 }
 
+.message-group {
+  @include flexbox($fd: column);
+  max-width: 323px;
+}
+
 .message {
   @include font($fs: 16px, $lh: 21px);
-  max-width: 323px;
   color: $white;
 }
 
@@ -62,9 +70,13 @@ $image: url("/images/toasts/close_small.png");
   }
 }
 
+.mobile-button {
+  display: none;
+}
+
 @media (min-width: 1921px) {
   .error-toast {
-    left: calc(50% - 960px + 32px);
+    left: calc($wide-padding + 32px);
   }
 }
 
@@ -77,5 +89,42 @@ $image: url("/images/toasts/close_small.png");
     &:active {
       border-color: $white;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .error-toast {
+    @include size($w: 100%, $h: 232px);
+    border-radius: 20px 20px 0 0;
+    padding: 48px 24px 32px 24px;
+    flex-direction: column;
+    left: 0;
+    bottom: 0;
+    transform: translateY(0);
+
+    @starting-style {
+      transform: translateY(296px);
+    }
+
+    &.slide-out {
+      transform: translateY(296px);
+    }
+  }
+
+  .rectangle {
+    @include width($w: 100%, $min: 0);
+    @include height($h: 16px, $min: 16px);
+  }
+
+  .desktop-button {
+    display: none;
+  }
+
+  .border {
+    display: none;
+  }
+
+  .mobile-button {
+    display: inline-block;
   }
 }

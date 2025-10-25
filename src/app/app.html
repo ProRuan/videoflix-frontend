@@ -1,11 +1,5 @@
 <router-outlet></router-outlet>
 
-@if(isDialogOpen()) {
-<app-success-dialog></app-success-dialog>
-}
-
-@if (isToastOpen() && this.isMobile()) {
-<app-error-toast-mobile></app-error-toast-mobile>
-} @else if(isToastOpen()) {
+@if(isToastOpen()) {
 <app-error-toast></app-error-toast>
 }
