@@ -1,8 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 
-import { VideoPlayerFacade } from './video-player-facade';
 import { TimeoutId } from '@shared/constants';
 import { WindowResizer } from '@shared/services';
+
+import { VideoPlayerFacade } from './video-player-facade';
 
 /**
  * Class representing a fullscreen controller service.
@@ -16,12 +17,8 @@ export class FullscreenController {
   private facade = inject(VideoPlayerFacade);
   private resizer = inject(WindowResizer);
 
-  // isIdle && !hasPlayerUI ...
-  // fix 1280px and mouse move ...
-
   private playerUITimeout: TimeoutId = -1;
 
-  // new
   isFullscreen = signal(false);
   isMobileScreen = computed(() => this.resizer.width() < 1280 + 1);
   isImmersive = computed(() => this.isMobileScreen() || this.isFullscreen());
@@ -29,7 +26,6 @@ export class FullscreenController {
 
   hasPlayerUI = signal(true);
   isActive = computed(() => this.isStandard() || this.hasPlayerUI());
-  isIdle = computed(() => !this.isActive());
 
   isLeaving = signal<boolean | null>(null);
   isEntering = computed(() => this.isLeaving() === false);
@@ -46,7 +42,7 @@ export class FullscreenController {
   /**
    * Exit the video´s fullscreen mode.
    */
-  exitFullscreen() {
+  private exitFullscreen() {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     }
@@ -55,7 +51,7 @@ export class FullscreenController {
   /**
    * Enter a video´s fullscreen mode.
    */
-  enterFullscreen() {
+  private enterFullscreen() {
     const element = this.facade.playerBox();
     if (element && document.fullscreenEnabled) {
       element?.requestFullscreen();
@@ -79,26 +75,26 @@ export class FullscreenController {
   showPlayerUIWithTimeout() {
     clearTimeout(this.playerUITimeout);
     this.hasPlayerUI.set(true);
-    // this.isIdle.set(false);
     if (this.isLocked()) return;
     this.playerUITimeout = setTimeout(() => {
       this.isLeaving.set(true);
-      // this.hasPlayerUI.set(false);
-      // this.isIdle.set(true);
     }, 2000);
   }
 
+  /**
+   * Hide the player UI.
+   */
   hidePlayerUI() {
     if (this.isLeaving()) {
       this.isLeaving.set(false);
       this.hasPlayerUI.set(false);
     }
-    // clearTimeout(this.playerUITimeout);
-    // this.hasPlayerUI.set(false);
-    // this.isIdle.set(true);
   }
 
-  // check ...
+  /**
+   * Set the lock state of the player UI.
+   * @param value - A boolean value.
+   */
   setLocked(value: boolean) {
     this.isLocked.set(value);
     if (value === true) {

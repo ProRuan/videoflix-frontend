@@ -25,7 +25,7 @@ import {
   QualityLevelController,
   VideoPlayerFacade,
 } from '@features/video/services';
-import { DialogManager, WindowResizer } from '@shared/services';
+import { DialogManager } from '@shared/services';
 
 import {
   VideoPlayerHeader,
@@ -62,7 +62,6 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private videoQualities = inject(QualityLevelController);
   private screenModes = inject(FullscreenController);
   private dialogs = inject(DialogManager);
-  private resizer = inject(WindowResizer);
 
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);
@@ -79,7 +78,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private options = computed(() => this.getOptions());
   private sources = computed(() => this.getSources());
 
-  isMobileScreen = computed(() => this.resizer.isFullscreen());
+  isMobileScreen = computed(() => this.screenModes.isMobileScreen());
   isImmersive = computed(() => this.screenModes.isImmersive());
   isStandard = computed(() => this.screenModes.isStandard());
   isActive = computed(() => this.screenModes.isActive());
