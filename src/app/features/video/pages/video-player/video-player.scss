@@ -8,11 +8,11 @@
 
 .scalable-video {
   @include spacing($p: 108px 0);
-  @include size($w: 100%, $h: 100%);
   @include flexbox($jc: center, $ai: center);
+  height: 100%;
 
   &.immersive {
-    padding: 0 0;
+    padding: 0;
   }
 }
 
@@ -24,17 +24,16 @@
   cursor: pointer;
 }
 
-// rename hint classes ...
-.hint-cont {
-  @include flexbox($fd: column, $jc: center, $ai: center, $g: 16px);
+.rotation-hint {
+  @include flexbox($fd: column, $ai: center, $g: 16px);
   display: none;
 }
 
-.hint-img {
+.img {
   @include image($w: 80px, $h: 80px);
 }
 
-.hint-text {
+.text {
   @include font($fs: 20px, $lh: 26px);
   text-align: center;
   color: $white;
@@ -42,58 +41,45 @@
 
 @media (min-width: 1921px) {
   .scalable-video {
-    padding-left: calc(50% - 960px);
-    padding-right: calc(50% - 960px);
+    padding-left: $wide-padding;
+    padding-right: $wide-padding;
   }
 }
-
-// edit ...
-// @media (max-width: 1280px) and (orientation: portrait) {
-//   .video-player {
-//     display: none;
-//   }
-// }
-
-// @media (max-width: 1280px) {
-//   .scalable-video {
-//     padding: 0;
-//   }
-// }
 
 @media (max-width: 1280px) and (orientation: portrait) {
   .video {
     display: none;
   }
 
-  .hint-cont {
+  .rotation-hint {
     display: flex;
   }
 }
 
 @media (max-width: 768px) {
-  .hint-cont {
+  .rotation-hint {
     gap: 14px;
   }
 
-  .hint-img {
+  .img {
     @include size($w: 72px, $h: 72px);
   }
 
-  .hint-text {
+  .text {
     @include font($fs: 18px, $lh: 24px);
   }
 }
 
 @media (max-width: 400px) {
-  .hint-cont {
+  .rotation-hint {
     gap: 12px;
   }
 
-  .hint-img {
+  .img {
     @include size($w: 64px, $h: 64px);
   }
 
-  .hint-text {
+  .text {
     @include font($fs: 16px, $lh: 21px);
   }
 }

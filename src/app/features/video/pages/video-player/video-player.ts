@@ -59,32 +59,10 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private route = inject(ActivatedRoute);
   private user = inject(UserClient);
   private facade = inject(VideoPlayerFacade);
-  private qlContr = inject(QualityLevelController);
-  private fsContr = inject(FullscreenController);
+  private videoQualities = inject(QualityLevelController);
+  private screenModes = inject(FullscreenController);
   private dialogs = inject(DialogManager);
   private resizer = inject(WindowResizer);
-
-  // simplify multi bar html ...
-
-  // keep header in portrait mode or not ...
-
-  // rename fsContr to screenModes ...
-  // rename qlContr to videoQualities ...
-
-  // play button
-  // -----------
-  // move play-button hidePlayerUI() ... ?!
-
-  // review filling-padding and wide-padding ...
-  //   --> call it space or spacing (padding, position) ... ?!
-
-  // dialog base directive ... ?
-
-  // hide play button skip buttons during sliding ... ?
-  // no player UI timeout for mobile ... ?
-
-  // optional: hidePlayerUI on pointerup ... ?
-  // optional: fix video quality change on mobile (emulator) ... ?
 
   private data = toSignal(this.route.data);
   private response = computed(() => this.data()?.['response'] as AuthResponse);
@@ -101,15 +79,10 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   private options = computed(() => this.getOptions());
   private sources = computed(() => this.getSources());
 
-  // new
-  isActive = computed(() => this.fsContr.isActive());
-  isImmersive = computed(() => this.fsContr.isImmersive());
-  isStandard = computed(() => this.fsContr.isStandard());
-
-  hasPlayerUI = computed(() => this.fsContr.hasPlayerUI());
   isMobileScreen = computed(() => this.resizer.isFullscreen());
-  isIdle = computed(() => this.fsContr.isIdle());
-  isDisplayed = computed(() => !this.fsContr.isIdle());
+  isImmersive = computed(() => this.screenModes.isImmersive());
+  isStandard = computed(() => this.screenModes.isStandard());
+  isActive = computed(() => this.screenModes.isActive());
 
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLDivElement>;
   @ViewChild('video') video!: ElementRef<HTMLVideoElement>;
@@ -129,25 +102,6 @@ export class VideoPlayer implements AfterViewInit, OnInit {
   }
 
   /**
-   * Show player UI on mouse move.
-   * @param event - The event.
-   */
-  onPlayerInteraction(event: Event) {
-    if (this.isStandard()) return;
-    // active ... ?!
-    const type = event.type;
-    if (type === 'mousemove' && this.isMobileScreen()) return;
-    this.fsContr.showPlayerUIWithTimeout();
-  }
-
-  /**
-   * Update the player UI display state on fullscreen change.
-   */
-  onPlayerUIUpdate() {
-    this.fsContr.updatePlayerUI();
-  }
-
-  /**
    * Get video player options.
    * @returns The video player options.
    */
@@ -164,10 +118,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    * @returns The player source.
    */
   private getPlayerSource(url: string): PlayerSource {
-    return {
-      src: url,
-      type: 'application/x-mpegURL',
-    };
+    return { src: url, type: 'application/x-mpegURL' };
   }
 
   /**
@@ -195,7 +146,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
     this.facade.setPlayer(this.video.nativeElement, this.options());
     this.facade.setSources(this.sources());
     this.facade.setTitle(this.title());
-    this.qlContr.showMessageWithTimeout();
+    this.videoQualities.showMessageWithTimeout();
   }
 
   /**
@@ -203,7 +154,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    */
   setPlayerEvents() {
     this.facade.listenToDurationChanges();
-    this.qlContr.listenToQualityLevelChanges();
+    this.videoQualities.listenToQualityLevelChanges();
   }
 
   /**
@@ -211,10 +162,6 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    */
   onPlayToggle() {
     if (this.isMobileScreen()) return;
-    // if (this.isMobileScreen()) {
-    //   this.fsContr.showPlayerUIWithTimeout();
-    //   return;
-    // }
     this.facade.togglePlayWithDelay();
   }
 
@@ -223,7 +170,7 @@ export class VideoPlayer implements AfterViewInit, OnInit {
    */
   onFullScreen() {
     if (this.isMobileScreen()) return;
-    this.fsContr.toggleFullscreen();
+    this.screenModes.toggleFullscreen();
   }
 
   /**
@@ -235,5 +182,32 @@ export class VideoPlayer implements AfterViewInit, OnInit {
       if (this.dialogs.isOpen(value)) return true;
     }
     return false;
+  }
+
+  /**
+   * Show player UI on mouse move.
+   * @param event - The event.
+   */
+  onPlayerInteraction(event: Event) {
+    if (this.isStandard()) return;
+    if (this.isMouseOut(event.type)) return;
+    this.screenModes.showPlayerUIWithTimeout();
+  }
+
+  /**
+   * Check if the mouse event is out.
+   * @param type - The event type.
+   * @returns True if the event type is 'mousemove' and the window width
+   *          is 1280px or less, otherwise false.
+   */
+  private isMouseOut(type: string) {
+    return type === 'mousemove' && this.isMobileScreen();
+  }
+
+  /**
+   * Update the player UI display state on fullscreen change.
+   */
+  onPlayerUIUpdate() {
+    this.screenModes.updatePlayerUI();
   }
 }

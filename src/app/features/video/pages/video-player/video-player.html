@@ -1,9 +1,9 @@
 <section #videoPlayer class="video-player">
     <div class="scalable-video" [class.immersive]="isImmersive()" (click)="onPlayToggle()" (dblclick)="onFullScreen()">
         <video #video class="video video-js"></video>
-        <div class="hint-cont">
-            <img class="hint-img" src="/images/players/mobile_rotate.svg" alt="screen rotation alt">
-            <span class="hint-text">Please rotate your device.</span>
+        <div class="rotation-hint">
+            <img class="img" src="/images/players/mobile_rotate.svg" alt="mobile rotate">
+            <span class="text">Please rotate your device.</span>
         </div>
     </div>
 
