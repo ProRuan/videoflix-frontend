@@ -33,7 +33,6 @@ button {
   cursor: pointer;
 }
 
-// set media 1280px, 768px and 400px ...
 app-close-video-button,
 app-fullscreen-button,
 app-mute-button,
@@ -120,15 +119,6 @@ app-skip-forward-button {
   background-color: transparent;
 }
 
-// dev
-// move in style above ... ?!
-.player-button {
-  @include border($b: none, $br: 40px);
-  @include spacing($p: 0);
-  @include size($w: 48px, $h: 48px);
-  transition: background-color 100ms ease-in-out;
-}
-
 .static-main {
   padding: 48px 96px 152px 96px;
   display: flex;
@@ -161,20 +151,12 @@ app-skip-forward-button {
   @include flexbox($fd: column, $g: 32px);
 }
 
-.jc-evenly {
-  @include flexbox($jc: space-evenly);
-}
-
 .hidden {
   display: none !important;
 }
 
 .pos-relative {
   position: relative;
-}
-
-.mobile {
-  display: none;
 }
 
 @media (min-width: 1921px) {
@@ -234,176 +216,16 @@ app-skip-forward-button {
   .static-main {
     padding: 40px 16px 152px 16px;
   }
-
-  .desktop {
-    display: none;
-  }
-
-  .mobile {
-    display: flex;
-  }
 }
 
-// move to media.scss ... ?!
-// @media (max-width: 400px) {
-// display: block;
-// }
-
-// for testing only ... !
-// improve app styles ... !
-// @media (max-width: 1280px) {
-//   app-close-video-button,
-//   app-fullscreen-button,
-//   app-play-button,
-//   app-playback-rate-button,
-//   app-quality-button,
-//   app-skip-backwards-button,
-//   app-skip-forward-button {
-//     @include size($w: 32px, $h: 32px);
-//   }
-
-//   app-volume-control {
-//     height: 32px;
-//   }
-
-//   .player-button {
-//     @include size($w: 32px, $h: 32px);
-//   }
-// }
-
 @media (max-width: 400px) {
-  // body {
-  //   @include font();
-  //   margin: 0;
-  //   min-height: 100vh;
-  //   font-family: $dm-sans;
-  //   background-color: $prim-dark;
-  // }
-
-  // h1,
-  // h2,
-  // h3,
-  // h4,
-  // h5,
-  // p,
-  // ul {
-  //   margin: 0;
-  // }
-
-  // input {
-  //   font-family: $dm-sans;
-  //   outline: none;
-  // }
-
-  // button {
-  //   font-family: $dm-sans;
-  //   outline: none;
-  //   cursor: pointer;
-  // }
-
   .header {
     padding: 10px 16px;
   }
 
-  // .headline-4 {
-  //   @include font($fs: 24px, $fw: 700, $lh: 32px);
-  //   text-align: center;
-  // }
-
-  // .headline-error {
-  //   @include font($fs: 32px, $fw: 700, $lh: 42px);
-  //   color: $error;
-  // }
-
   .auth-text {
     @include font($fs: 16px, $lh: 21px);
   }
-
-  // .input-error-cont {
-  //   @include flexbox($fd: column, $g: 4px);
-  //   height: 48px;
-  // }
-
-  // .input-icon {
-  //   @include image($w: 24px, $h: 24px);
-  //   @include position($pos: absolute, $l: 25px, $t: 12px);
-  // }
-
-  // .error-cont {
-  //   @include flexbox($ai: center, $g: 4px);
-  //   transition: opacity 100ms ease-in-out;
-
-  //   @starting-style {
-  //     opacity: 0;
-  //   }
-  // }
-
-  // .error {
-  //   @include font($fs: 15px, $lh: 20px);
-  //   color: $error;
-  // }
-
-  // .dialog {
-  //   @include size($w: 100%, $h: 100vh);
-  //   @include flexbox($jc: center, $ai: center);
-  //   @include position($pos: fixed, $l: 0, $t: 0);
-  //   margin: 0;
-  //   border: none;
-  //   padding: 0;
-  //   background-color: rgba(0, 0, 0, 0.55);
-  //   z-index: $z-header;
-  //   transition: background-color 100ms ease-in-out;
-
-  //   @starting-style {
-  //     background-color: transparent;
-  //   }
-  // }
-
-  // .player-button {
-  //   scale: calc($two-thirds);
-  // }
-
-  // .it-kanzlei-timestamp {
-  //   @include font($fs: 16px, $lh: 21px);
-  //   white-space: nowrap;
-  //   color: $white;
-  // }
-
-  // .c-error {
-  //   color: $error;
-  // }
-
-  // .c-success {
-  //   color: $success;
-  // }
-
-  // .row-16 {
-  //   @include flexbox($g: 16px);
-  // }
-
-  // .column {
-  //   @include flexbox($fd: column);
-  // }
-
-  // .column-16 {
-  //   @include flexbox($fd: column, $g: 16px);
-  // }
-
-  // .column-32 {
-  //   @include flexbox($fd: column, $g: 32px);
-  // }
-
-  // .jc-evenly {
-  //   @include flexbox($jc: space-evenly);
-  // }
-
-  // .hidden {
-  //   display: none !important;
-  // }
-
-  // .pos-relative {
-  //   position: relative;
-  // }
 }
 
 @media (max-width: 368px) {
@@ -415,6 +237,3 @@ app-skip-forward-button {
     @include font($fs: 12px, $lh: 16px);
   }
 }
-
-// remove mobile and desktop ... ?
-// just use specific classes ... ?

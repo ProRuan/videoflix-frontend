@@ -13,9 +13,9 @@
         <p class="description">{{ description() }}</p>
         <div class="button-group">
             <app-button icon="play_arrow" text="Play" type="button" (click)="onPlay()"></app-button>
-            <button type="button" class="vis-button desktop" [class.vis-off]="isVisible()"
-                (click)="onVisToggle()"></button>
-            <app-button text="Back" type="button" variant="secondary" class="mobile" (click)="onLibrary()"></app-button>
+            <button type="button" class="vis-button" [class.vis-off]="isVisible()" (click)="onVisToggle()"></button>
+            <app-button text="Back" type="button" variant="secondary" class="mobile-button"
+                (click)="onLibrary()"></app-button>
         </div>
     </div>
 </section>

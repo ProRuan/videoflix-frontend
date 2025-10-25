@@ -13,3 +13,9 @@
 .button-group {
   @include flexbox($jc: flex-end, $g: 48px);
 }
+
+@media (max-width: 768px) {
+  .desktop-button {
+    display: none;
+  }
+}
