@@ -104,7 +104,7 @@ $close-icon: url("/images/players/close_small.svg");
 
 @media (min-width: 1921px) {
   .dialog-box {
-    right: calc($wide-padding + 32px);
+    right: calc($space + 32px);
   }
 }
 

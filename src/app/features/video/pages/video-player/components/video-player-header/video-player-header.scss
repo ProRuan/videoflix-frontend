@@ -5,7 +5,6 @@ $gradient: linear-gradient(
   rgba(0, 0, 0, 0.7) 0%,
   rgba(0, 0, 0, 0) 100%
 );
-$auto-padding: calc($wide-padding + 32px);
 
 :host {
   @include spacing($p: 10px 32px);
@@ -51,8 +50,8 @@ $auto-padding: calc($wide-padding + 32px);
 
 @media (min-width: 1921px) {
   :host {
-    padding-left: $auto-padding;
-    padding-right: $auto-padding;
+    padding-left: $wide-padding-32;
+    padding-right: $wide-padding-32;
   }
 }
 

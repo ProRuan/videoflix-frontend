@@ -37,8 +37,8 @@ $gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 50%);
 
 @media (min-width: 1921px) {
   .footer {
-    padding-left: $filling-padding;
-    padding-right: $filling-padding;
+    padding-left: $wide-padding-96;
+    padding-right: $wide-padding-96;
   }
 }
 

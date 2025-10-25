@@ -44,8 +44,8 @@ $gradient: linear-gradient(
 
 @media (min-width: 1921px) {
   :host {
-    padding-left: calc($wide-padding + 32px);
-    padding-right: calc($wide-padding + 32px);
+    padding-left: $wide-padding-32;
+    padding-right: $wide-padding-32;
   }
 }
 

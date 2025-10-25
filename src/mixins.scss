@@ -40,9 +40,9 @@ $auth-gradient: linear-gradient(
 $z-header: 10;
 $z-dialog: 20;
 
-// replace filling-padding with wide-padding ...
-$filling-padding: calc(50% - 960px + 96px);
-$wide-padding: calc(50% - 960px);
+$space: calc(50% - 960px);
+$wide-padding-32: calc($space + 32px);
+$wide-padding-96: calc($space + 96px);
 $one-third: calc(100% / 3);
 $two-thirds: calc(2 * $one-third);
 
@@ -123,7 +123,6 @@ $two-thirds: calc(2 * $one-third);
   max-width: $max;
 }
 
-// advanced mixins
 @mixin player-button($icon, $icon-size: cover) {
   @include border($b: none, $br: 40px);
   @include spacing($p: 0);
