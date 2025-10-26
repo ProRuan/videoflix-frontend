@@ -1,4 +1,4 @@
-# 🎬 Videoflix App – REST API Documentation
+# 🎬 Videoflix App – Frontend Documentation
 
 **Videoflix** is a video platform that allows users to create accounts,
 browse a video library, and watching videos.
@@ -30,7 +30,6 @@ http://localhost:4200/
 Clone and set up the project:
 
 ```bash
-# Clone the repository
 git clone https://github.com/ProRuan/videoflix-frontend.git
 cd ./videoflix-frontend/
 ng serve --open
