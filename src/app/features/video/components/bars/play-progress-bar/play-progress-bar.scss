@@ -20,8 +20,8 @@ $buffer-gray: #ececec;
   transition: background-color 100ms ease-in-out;
   cursor: pointer;
   touch-action: none;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 
   &:hover,
   &:active {
@@ -58,8 +58,8 @@ $buffer-gray: #ececec;
   transform: translateX(-50%);
   transition: background-color 100ms ease-in-out;
   touch-action: none;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 
   &:hover,
   &:active {
