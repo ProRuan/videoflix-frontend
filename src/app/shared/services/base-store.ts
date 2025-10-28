@@ -4,6 +4,8 @@ import { inject, Injectable } from '@angular/core';
 import { SKIP_AUTH } from '@core/http';
 import { HttpContextOptions } from '@shared/interfaces';
 
+import { environment } from '../../../environments/environment';
+
 /**
  * Class representing a base store service.
  *
@@ -15,7 +17,7 @@ import { HttpContextOptions } from '@shared/interfaces';
 export class BaseStore {
   private http = inject(HttpClient);
 
-  private readonly baseUrl = 'http://127.0.0.1:8000/api/';
+  private readonly baseUrl = environment.apiBaseUrl;
 
   /**
    * Perform a POST request via API.
@@ -25,6 +27,8 @@ export class BaseStore {
    * @returns An Observable with the specified response.
    */
   post<T, U>(endpoint: string, payload: T, options: HttpContextOptions = {}) {
+    console.log('base URL: ', environment);
+
     const url = this.getEndpointUrl(endpoint);
     const context = this.getHttpContext(options);
     return this.http.post<U>(url, payload, { context });
