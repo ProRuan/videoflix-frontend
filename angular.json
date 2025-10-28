@@ -29,7 +29,16 @@
             "styles": ["src/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["src"]
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "global/window",
+              "global/document",
+              "@videojs/xhr",
+              "videojs-vtt.js",
+              "mux.js/lib/tools/parse-sidx",
+              "mux.js/lib/utils/clock",
+              "@xmldom/xmldom"
+            ]
           },
           "configurations": {
             "production": {

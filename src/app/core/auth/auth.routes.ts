@@ -4,19 +4,12 @@ import { VIDEO_NOT_FOUND } from '@features/video/errors';
 import { ErrorPage } from '@shared/components/pages';
 
 import { authChildrenRoutes, authData } from './auth.config';
-import {
-  ForgotPassword,
-  LogIn,
-  ReactivateAccount,
-  SignUp,
-  Startsite,
-} from './pages';
+import { ForgotPassword, LogIn, ReactivateAccount, SignUp } from './pages';
 
 const d = authData;
 const r = authChildrenRoutes;
 
 export const authRoutes: Routes = [
-  { path: '', component: Startsite, data: d.startsite },
   { path: 'sign-up', component: SignUp, data: d.signUp },
   { path: 'activate-account', data: d.signUp, children: r.activateAccount },
   { path: 'reactivate-account', component: ReactivateAccount, data: d.signUp },
